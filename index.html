@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DarkPulse — Threat Intelligence Dashboard</title>
+  <meta name="description" content="Real-time cybersecurity threat intelligence feed powered by DarkPulse collectors." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── BACKGROUND GRID OVERLAY ─────────────────────────────────── -->
+<div class="bg-grid" aria-hidden="true"></div>
+
+<!-- ── HEADER ──────────────────────────────────────────────────── -->
+<header class="header" role="banner">
+  <div class="header-inner">
+    <div class="logo" aria-label="DarkPulse">
+      <span class="logo-pulse" aria-hidden="true"></span>
+      <span class="logo-text">Dark<span class="logo-accent">Pulse</span></span>
+    </div>
+    <div class="header-center">
+      <div class="status-pill" id="statusPill" aria-live="polite">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Connecting…</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="last-updated" id="lastUpdated" aria-live="polite"></span>
+      <button class="icon-btn" id="settingsBtn" aria-label="API Key Settings" title="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ── STATS BAR ────────────────────────────────────────────────── -->
+<section class="stats-bar" aria-label="Statistics">
+  <div class="stats-inner" id="statsBar">
+    <div class="stat-card">
+      <span class="stat-value" id="statTotal">—</span>
+      <span class="stat-label">Total Articles</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value" id="statToday">—</span>
+      <span class="stat-label">Today</span>
+    </div>
+    <div class="stat-divider" aria-hidden="true"></div>
+    <div class="stat-tags" id="statTags" aria-label="Category breakdown"></div>
+  </div>
+</section>
+
+<!-- ── MAIN LAYOUT ──────────────────────────────────────────────── -->
+<main class="layout" id="mainLayout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar" aria-label="Filters">
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle filters">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="10" y2="18"/></svg>
+      Filters
+    </button>
+
+    <div class="sidebar-body" id="sidebarBody">
+      <!-- Search -->
+      <div class="filter-section">
+        <label class="filter-label" for="searchInput">Search</label>
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="searchInput" class="search-input" placeholder="Title, description…" aria-label="Search articles" />
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div class="filter-section">
+        <span class="filter-label">Categories</span>
+        <div id="categoryFilters" class="filter-list" role="group" aria-label="Category filters"></div>
+      </div>
+
+      <!-- Date Range -->
+      <div class="filter-section">
+        <span class="filter-label">Date Range</span>
+        <label class="date-label" for="dateFrom">From</label>
+        <input type="date" id="dateFrom" class="date-input" aria-label="From date" />
+        <label class="date-label" for="dateTo">To</label>
+        <input type="date" id="dateTo" class="date-input" aria-label="To date" />
+      </div>
+
+      <!-- Sources -->
+      <div class="filter-section">
+        <span class="filter-label">Sources</span>
+        <div id="sourceFilters" class="filter-list" role="group" aria-label="Source filters"></div>
+      </div>
+
+      <button class="clear-btn" id="clearFilters" aria-label="Clear all filters">Clear Filters</button>
+    </div>
+  </aside>
+
+  <!-- FEED -->
+  <section class="feed" aria-label="Threat Intelligence Feed">
+
+    <!-- Lock screen (when no API key) -->
+    <div class="lock-screen hidden" id="lockScreen">
+      <div class="lock-icon" aria-hidden="true">🔒</div>
+      <h2 class="lock-title">API Key Required</h2>
+      <p class="lock-sub">Click the settings icon to enter your DarkPulse API key.</p>
+      <button class="btn-primary" id="lockSettingsBtn">Enter API Key</button>
+    </div>
+
+    <!-- Error screen -->
+    <div class="error-screen hidden" id="errorScreen">
+      <div class="error-icon" aria-hidden="true">⚠️</div>
+      <h2 class="error-title" id="errorTitle">Something went wrong</h2>
+      <p class="error-sub" id="errorSub"></p>
+      <button class="btn-primary" id="retryBtn">Retry</button>
+    </div>
+
+    <!-- Article cards grid -->
+    <div class="cards-grid" id="cardsGrid" aria-live="polite" aria-label="Articles"></div>
+
+    <!-- Load more -->
+    <div class="load-more-wrap" id="loadMoreWrap">
+      <button class="btn-load-more hidden" id="loadMoreBtn">Load More</button>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state hidden" id="emptyState">
+      <span aria-hidden="true">📡</span>
+      <p>No articles match your filters.</p>
+    </div>
+
+  </section>
+</main>
+
+<!-- ── ARTICLE DETAIL MODAL ─────────────────────────────────────── -->
+<div class="modal-backdrop hidden" id="detailBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal modal-detail">
+    <div class="modal-header">
+      <div class="modal-source" id="modalSource"></div>
+      <button class="modal-close" id="detailClose" aria-label="Close modal">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="modalTopTag"></div>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <div class="modal-meta" id="modalMeta"></div>
+      <div class="modal-section">
+        <div class="section-label">⚡ AI Summary</div>
+        <p class="modal-summary" id="modalSummary"></p>
+      </div>
+      <div class="modal-section" id="modalEntitiesSection">
+        <div class="section-label">🏷 Entities</div>
+        <div class="entity-groups" id="modalEntities"></div>
+      </div>
+      <div class="modal-section">
+        <div class="section-label">📊 Category Confidence</div>
+        <div id="modalCategories"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="btn-primary" id="modalReadBtn" href="#" target="_blank" rel="noopener noreferrer">Read Full Article →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── API KEY MODAL ─────────────────────────────────────────────── -->
+<div class="modal-backdrop hidden" id="settingsBackdrop" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+  <div class="modal modal-settings">
+    <div class="modal-header">
+      <h2 class="modal-title" id="settingsModalTitle">⚙ API Settings</h2>
+      <button class="modal-close" id="settingsClose" aria-label="Close settings">✕</button>
+    </div>
+    <div class="modal-body">
+      <label class="filter-label" for="apiKeyInput">API Key (X-API-Key)</label>
+      <input type="password" id="apiKeyInput" class="search-input" placeholder="your-api-key" aria-label="API Key" />
+      <label class="filter-label" for="apiBaseInput" style="margin-top:1rem">Backend URL</label>
+      <input type="text" id="apiBaseInput" class="search-input" placeholder="http://localhost:8000" aria-label="Backend URL" />
+      <div id="testResult" class="test-result" aria-live="polite"></div>
+    </div>
+    <div class="modal-footer" style="gap:.75rem">
+      <button class="btn-secondary" id="testConnBtn">Test Connection</button>
+      <button class="btn-primary" id="saveSettingsBtn">Save & Reload</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

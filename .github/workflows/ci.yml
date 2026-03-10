@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  lint-and-sanity:
+    name: Lint & Import Sanity Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          # Install core deps only (skip heavy NLP stack for CI speed)
+          pip install \
+            fastapi uvicorn pydantic python-dotenv \
+            beautifulsoup4 requests redis \
+            apscheduler ruff
+
+      - name: Ruff lint check
+        run: |
+          ruff check \
+            config.py \
+            logger.py \
+            orchestrator.py \
+            ui_server.py \
+            crawler/request_manager.py \
+            crawler/request_parser.py \
+            --ignore E501
+
+      - name: Validate config module
+        env:
+          GITHUB_TOKEN: ci_placeholder
+          API_KEY: ci_placeholder
+          TOR_PROXY_URL: ""
+          REDIS_HOST: "127.0.0.1"
+          REDIS_PORT: "6379"
+        run: |
+          python -c "
+          from config import cfg
+          print('config OK:', cfg)
+          assert cfg.redis_host == '127.0.0.1'
+          assert cfg.redis_port == 6379
+          print('config assertions passed')
+          "
+
+      - name: Validate logger module
+        run: |
+          python -c "
+          from logger import get_logger
+          log = get_logger('ci_test')
+          log.info('logger OK')
+          print('logger OK')
+          "
+
+      - name: Validate orchestrator imports (no collectors run)
+        env:
+          GITHUB_TOKEN: ci_placeholder
+          API_KEY: ci_placeholder
+          TOR_PROXY_URL: ""
+        run: |
+          python -c "
+          import orchestrator
+          print('orchestrator import OK')
+          print('Registered collectors:', list(orchestrator.COLLECTORS))
+          "
+
+      - name: Check .env.example is committed and .env is not
+        run: |
+          test -f .env.example || (echo '.env.example is missing!' && exit 1)
+          test ! -f .env || (echo 'WARNING: .env is tracked by git - remove it!')
+          echo 'env file check passed'
+
+      - name: Docker Compose config validation
+        run: |
+          # Validate docker-compose.yml syntax without starting anything
+          docker compose config --quiet
+        continue-on-error: true  # Docker may not be available on all runners

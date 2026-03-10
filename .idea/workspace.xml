@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8b1568a1-947c-4c9d-83d7-022522265547" name="Changes" comment="DARKPULSE">
+      <change afterPath="$PROJECT_DIR$/api_collector/scripts/_pakdb.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/common/constants/constant.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/ai/forum_threat_filter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/crawler_services/log_manager/log_controller.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/crawler_services/redis_manager/redis_enums.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/genbot_service/helpers/mastodon/mastodon_helper_methods.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/genbot_service/helpers/reddit/reddit_helper_method.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/genbot_service/helpers/twitter/tweet_helper_methods.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/local_shared_model/data_model/defacement_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/local_shared_model/data_model/exploit_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/local_shared_model/data_model/leak_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/local_shared_model/data_model/social_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/common/crawler_instance/crawler_services/shared/helper_method.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/crawler_services/shared/helper_method.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/common/crawler_instance/local_shared_model/data_model/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/local_shared_model/data_model/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/common/crawler_instance/local_shared_model/data_model/entity_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/common/crawler_instance/local_shared_model/data_model/entity_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/request_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/request_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/defacement_collector/logs/2025-12-03/log_1.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/defacement_collector/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/defacement_collector/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/defacement_collector/scripts/generic/_tweetfeed.py" beforeDir="false" afterPath="$PROJECT_DIR$/defacement_collector/scripts/generic/_tweetfeed.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/defacement_collector/scripts/generic/_usom.py" beforeDir="false" afterPath="$PROJECT_DIR$/defacement_collector/scripts/generic/_usom.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/defacement_collector/scripts/hacks/_defacer.py" beforeDir="false" afterPath="$PROJECT_DIR$/defacement_collector/scripts/hacks/_defacer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/defacement_collector/scripts/hacks/_ownzyou.py" beforeDir="false" afterPath="$PROJECT_DIR$/defacement_collector/scripts/hacks/_ownzyou.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/defacement_collector/scripts/hacks/_zone_xsec.py" beforeDir="false" afterPath="$PROJECT_DIR$/defacement_collector/scripts/hacks/_zone_xsec.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/defacement_collector/scripts/phishing/_github_mthcht_awesome_lists.py" beforeDir="false" afterPath="$PROJECT_DIR$/defacement_collector/scripts/phishing/_github_mthcht_awesome_lists.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/defacement_collector/scripts/phishing/_github_openfish.py" beforeDir="false" afterPath="$PROJECT_DIR$/defacement_collector/scripts/phishing/_github_openfish.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/defacement_collector/scripts/phishing/_phishunt.py" beforeDir="false" afterPath="$PROJECT_DIR$/defacement_collector/scripts/phishing/_phishunt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploit_collector/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_0dayfans.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploit_collector/scripts/_0dayfans.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_anyrun_malwaretrends.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_cisa.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploit_collector/scripts/_cisa.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_cxsecurity.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploit_collector/scripts/_cxsecurity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_cybergcca.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploit_collector/scripts/_cybergcca.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_exploitdb.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploit_collector/scripts/_exploitdb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_github_trickest_cve.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploit_collector/scripts/_github_trickest_cve.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_inthewild.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploit_collector/scripts/_inthewild.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_kb_cert.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploit_collector/scripts/_kb_cert.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_krcert.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploit_collector/scripts/_krcert.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_sploitus.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_talosintelligence.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploit_collector/scripts/_talosintelligence.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exploit_collector/scripts/_vulnerability_lab.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploit_collector/scripts/_vulnerability_lab.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/leak_collector/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_34o4m3f26ucyeddzpf53bksy76wd737nf2fytslovwd3viac3by5chad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_3bnusfu2lgk5at43ceu7cdok5yv4gfbono2jv57ho74ucjvc7czirfid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_3ev4metjirohtdpshsqlkrqcmxq6zu3d7obrdhglpy5jpbr7whmlfgqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_47glxkuxyayqrvugfumgsblrdagvrah7gttfscgzn56eyss5wg3uvmqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_7ukmkdtyxdkdivtjad57klqnd3kdsmq6tp45rrsxqnu76zzv3jvitlqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_akiral2iz6a7qgd3ayp3l6yub7xx2uep76idk3u2kollpj5z3z636bad.py" beforeDir="false" afterPath="$PROJECT_DIR$/leak_collector/scripts/leak/_akiral2iz6a7qgd3ayp3l6yub7xx2uep76idk3u2kollpj5z3z636bad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_arcuufpr5xxbbkin4mlidt7itmr6znlppk63jbtkeguuhszmc5g7qdyd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_b2ykcy2gcug4gnccm6hnrb5xapnresmyjjqgvhafaypppwgo4feixwyd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_basheqtvzqwz4vp6ks5lm2ocq7i6tozqgf6vjcasj4ezmsy4bkpshhyd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_beast6azu4f7fxjakiayhnssybibsgjnmy77a6duufqw5afjzfjhzuqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_benzona6x5ggng3hx52h4mak5sgx5vukrdlrrd3of54g2uppqog2joyd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_bertblogsoqmm4ow7nqyh5ik7etsmefdbf25stauecytvwy7tkgizhad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_black3gnkizshuynieigw6ejgpblb53mpasftzd6pydqpmq2vn2xf6yd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_blogvl7tjyjvsfthobttze52w36wwiz34hrfcmorgvdzb6hikucb7aqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_brohoodyaifh2ptccph5zfljyajjabwjjo4lg6gfp4xb6ynw5w7ml6id.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_ciphbitqyg26jor7eeo6xieyq7reouctefrompp6ogvhqjba7uo4xdid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_csidb.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_ctyfftrjgtwdjzlgqh4avbd35sqrs6tde4oyam2ufbjch6oqpqtkdtid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_dcarryhaih5oldidg3tbqwnde4lxljytnpvberrwgj2vlvunopd46dad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_devmanblggk7ddrtqj3tsocnayow3bwnozab2s4yhv4shpv6ueitjzid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_direwolfcdkv5whaz2spehizdg22jsuf5aeje4asmetpbt6ri4jnd4qd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_dounczge5jhw4iztnnpzp54kd4ot3tikhjsimurtcewqssgye6vvrhqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_dragonforxxbp3awc7mzs5dkswrua3znqyx5roefmi4smjrsdi22xwqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_ebhmkoohccl45qesdbvrjqtyro2hmhkmh6vkyfyjjzfllm3ix72aqaid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_fjg4zi4opkxkvdz7mvwp7h6goe4tcby3hhkrz43pht4j3vakhy75znyd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_flock4cvoeqm4c62gyohvmncx6ck2e7ugvyqgyxqtrumklhd5ptwzpqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_genesis6ixpb5mcy4kudybtw5op2wqlrkocfogbnenz3c647ibqixiad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_github_doormanbreach.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_gunrabxbig445sjqa535uaymzerj6fp4nwc6ngc2xughf2pedjdhk4ad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_imncrewwfkbjkhr2oylerfm5qtbzfphhmpcfag43xc2kfgvluqtlgoid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_incblog6qu4y4mm4zvw5nrmue6qbwtgjsxpw6b7ixzssu36tsajldoad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_j3dp6okmaklajrsk6zljl5sfa2vpui7j2w6cwmhmmqhab6frdfbphhid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_j5o5y2feotmhvr7cbcp2j2ewayv5mn5zenl3joqwx67gtfchhezjznad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_jvkpexgkuaw5toiph7fbgucycvnafaqmfvakymfh5pdxepvahw3xryqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_k7kg3jqxang3wh7hnmaiokchk7qoebupfgoik6rha6mjpzwupwtj25yd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_kawasa2qo7345dt7ogxmx7qmn6z2hnwaoi3h5aeosupozkddqwp6lqqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_krakenccj3wr23452a4ibkbkuph4d6soyx2xgjoogtuamc3m7u7wemad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_ks5424y3wpr5zlug5c7i6svvxweinhbdcqcfnptkfcutrncfazzgz5id.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_lunalockcccxzkpfovwzifwxcytqkiuak6wzybnniqwxcmpsetpbetid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_lynxblogco7r37jt7p5wrmfxzqze7ghxw6rihzkqc455qluacwotciyd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_mblogci3rudehaagbryjznltdp33ojwzkq6hn2pckvjq33rycmzczpid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_mydatae2d63il5oaxxangwnid5loq2qmtsol2ozr6vtb7yfm5ypzo6id.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_nerqnacjmdy3obvevyol7qhazkwkv57dwqvye5v46k5bcujtfa6sduad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_netleaks.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_nleakk6sejx45jxtk7x6iyt65hwvfrkifc5v7ertdlwm3gttbpvlvxqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_nsalewdnfclsowcal6kn5csm4ryqmfpijznxwictukhrgvz2vbmjjjyd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_obscurad3aphckihv7wptdxvdnl5emma6t3vikcf3c5oiiqndq6y6xad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_om6q4a6cyipxvt7ioudxt24cw4oqu4yodmqzl25mqd2hgllymrgu4aqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_omegalock5zxwbhswbisc42o2q2i54vdulyvtqqbudqousisjgc7j7yd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_orca66hwnpciepupe5626k2ib6dds6zizjwuuashz67usjps2wehz4id.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_pdcizqzjitsgfcgqeyhuee5u6uki6zy5slzioinlhx6xjnsw25irdgqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_rnsm777cdsjrsdlbs4v5qoeppu3px6sb2igmh53jzrx7ipcrbjz5b2ad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_safepaypfxntwixwjrlcscft433ggemlhgkkdupi2ynhtcmvdgubmoyd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_sarcomawmawlhov7o5mdhz4eszxxlkyaoiyiy2b5iwxnds2dmb4jakad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_securo45z554mw7rgrt7wcgv5eenj2xmxyrsdj3fcjsvindu63s4bsid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_shinypogk4jjniry5qi7247tznop6mxdrdte2k6pdu5cyo43vdzmrwid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_silentbgdghp3zeldwpumnwabglreql7jcffhx5vqkvtf2lshc4n5zid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_tezwsse5czllksjb7cwp65rvnk4oobmzti2znn42i43bjdfd2prqqkad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_tp5cwh6d2b5hekcg6jlhoe6mawa7dlwiv47epvnfmzuaaur2dnaa3uid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_twniiyed6mydtbe64i5mdl56nihl7atfaqtpww6gqyaiohgc75apzpad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_txtggyng5euqkyzl2knbejwpm4rlq575jn2egqldu27osbqytrj6ruyd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_vkvsgl7lhipjirmz6j5ubp3w3bwvxgcdbpi3fsbqngfynetqtw4w5hyd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_warlockhga5iw3t54ps5iytlilf7hlvxy7kwrkidspn4qoh64s4vsuyd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_weyhro27ruifvuqkk3hxzcrtxv2lsalntxgkv6q2j3znkhdqudz54rqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_worldleaksartrjm3c6vasllvgacbi5u3mgzkluehrzhk2jz4taufuid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_xbkv2qey6u3gd3qxcojynrt4h5sgrhkar6whuo74wo63hijnn677jnyd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_yrz6bayqwhleymbeviter7ejccxm64sv2ppgqgderzgdhutozcbbhpqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_yzcpwxuhbkyjnyn4qsf4o5dkvu6m2fyo7dwizmnlutanlmzlos7pa6qd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_z3wqggtxft7id3ibr7srivv5gjof5fwg76slewnzwwakjuf3nlhukdid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_z6wkgghtoawog5noty5nxulmmt2zs7c3yvwr22v4czbffdoly2kl4uad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_zfytizegsze6uiswodhbaalyy5rawaytv2nzyzdkt3susbewviqqh7yd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_zktnif5vckhmz5tyrukp5bamatbfhkxjnb23rspsanyzywcrx3bvtqad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/leak/_zohlm7ahjwegcedoz7lrdrti7bvpofymcayotp744qhx6gjmxbuo2yid.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_acn.py" beforeDir="false" afterPath="$PROJECT_DIR$/leak_collector/scripts/tracking/_acn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_bsigermany.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cert.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_certPK.py" beforeDir="false" afterPath="$PROJECT_DIR$/leak_collector/scripts/tracking/_certPK.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cert_at.py" beforeDir="false" afterPath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cert_at.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cert_cn.py" beforeDir="false" afterPath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cert_cn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cert_pl.py" beforeDir="false" afterPath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cert_pl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_certeu.py" beforeDir="false" afterPath="$PROJECT_DIR$/leak_collector/scripts/tracking/_certeu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_certgovua.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cfcs_dk.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cirtbangladesh.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cncs_pt.py" beforeDir="false" afterPath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cncs_pt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_csa_gov_sg.py" beforeDir="false" afterPath="$PROJECT_DIR$/leak_collector/scripts/tracking/_csa_gov_sg.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_csocybercrime_tracking.py" beforeDir="false" afterPath="$PROJECT_DIR$/leak_collector/scripts/tracking/_csocybercrime_tracking.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cyber.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_cybernewsksa.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_idsirtii.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_incibe.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_jpcert.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_kyberturvallisuuskeskus.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_msb.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_ncsc.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_ncsc_swed.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_ncscuk.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_nsm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_nukibgovcz.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_public_tableau.py" beforeDir="false" afterPath="$PROJECT_DIR$/leak_collector/scripts/tracking/_public_tableau.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leak_collector/scripts/tracking/_thaicert.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/news_collector/scripts/_bleepingcomputer.py" beforeDir="false" afterPath="$PROJECT_DIR$/news_collector/scripts/_bleepingcomputer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/news_collector/scripts/_hackread.py" beforeDir="false" afterPath="$PROJECT_DIR$/news_collector/scripts/_hackread.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/news_collector/scripts/_infosecuritymagazine.py" beforeDir="false" afterPath="$PROJECT_DIR$/news_collector/scripts/_infosecuritymagazine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/news_collector/scripts/_krebsonsecurity.py" beforeDir="false" afterPath="$PROJECT_DIR$/news_collector/scripts/_krebsonsecurity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/news_collector/scripts/_portswigger.py" beforeDir="false" afterPath="$PROJECT_DIR$/news_collector/scripts/_portswigger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/news_collector/scripts/_thehackernews.py" beforeDir="false" afterPath="$PROJECT_DIR$/news_collector/scripts/_thehackernews.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/news_collector/scripts/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/news_collector/scripts/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/forums/_4hpfzoj3tgyp2w7sbe3gnmphqiqpxwwyijyvotamrvojl7pkra7z7byd.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/scripts/forums/_4hpfzoj3tgyp2w7sbe3gnmphqiqpxwwyijyvotamrvojl7pkra7z7byd.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/forums/_b1nd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/forums/_crackingx.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/scripts/forums/_crackingx.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/forums/_csrin.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/scripts/forums/_csrin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/forums/_dreadytofatroptsdj6io7l3xptbet6onoyno2yv7jicoxknyazubrad.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/scripts/forums/_dreadytofatroptsdj6io7l3xptbet6onoyno2yv7jicoxknyazubrad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/forums/_hacksnation.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/scripts/forums/_hacksnation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/forums/_ownzyou.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/scripts/forums/_ownzyou.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/forums/_quartertothree.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/scripts/forums/_quartertothree.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/forums/_rambleeeqrhty6s5jgefdfdtc6tfgg4jj6svr4jpgk4wjtg3qshwbaad.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/scripts/forums/_rambleeeqrhty6s5jgefdfdtc6tfgg4jj6svr4jpgk4wjtg3qshwbaad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/forums/_re27glou7lmvirstrcadoxaleoyaf5v6wdsva5d7qp7lnorhjtft6dqd.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/forums/_redump.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/forums/_xreactor.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/platform/_mastodon.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/scripts/platform/_mastodon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/platform/_pastebin.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/scripts/platform/_pastebin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/platform/_reddit.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/scripts/platform/_reddit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/social_collector/scripts/platform/_twitter.py" beforeDir="false" afterPath="$PROJECT_DIR$/social_collector/scripts/platform/_twitter.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="34U3s2iEaV5gCk4FINrmaRZ6uP5" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JavaScript Debug.news_ui.html.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.News_crawler.executor&quot;: &quot;Run&quot;,
+    &quot;Python._acn.executor&quot;: &quot;Run&quot;,
+    &quot;Python._mastodon.executor&quot;: &quot;Run&quot;,
+    &quot;Python._pakdb.executor&quot;: &quot;Run&quot;,
+    &quot;Python._pcgame_mod.executor&quot;: &quot;Run&quot;,
+    &quot;Python._thehackernews.executor&quot;: &quot;Run&quot;,
+    &quot;Python._tweetfeed.executor&quot;: &quot;Run&quot;,
+    &quot;Python._usom.executor&quot;: &quot;Run&quot;,
+    &quot;Python.apimain.executor&quot;: &quot;Run&quot;,
+    &quot;Python.apkmain.executor&quot;: &quot;Run&quot;,
+    &quot;Python.crawler.executor&quot;: &quot;Run&quot;,
+    &quot;Python.gitmain.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.mastodon_helper_methods.executor&quot;: &quot;Run&quot;,
+    &quot;Python.nlp_processor.executor&quot;: &quot;Run&quot;,
+    &quot;Python.redis_controller.executor&quot;: &quot;Run&quot;,
+    &quot;Python.request_manager.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_crawlers_once.executor&quot;: &quot;Run&quot;,
+    &quot;Python.seo_checker.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ui_server.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;ai.playground.ignore.import.keys.banner.in.settings&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/muhmmad-abdullah/Desktop/Personal Data/darkpulse/leak_collector/scripts/tracking&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/leak_collector/scripts/tracking" />
+      <recent name="$PROJECT_DIR$/defacement_collector/scripts/generic" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/api_collector" />
+      <recent name="$PROJECT_DIR$/news_collector" />
+      <recent name="C:\Users\DELL\darkpulse" />
+      <recent name="C:\Users\DELL\darkpulse\news_collector\scripts" />
+      <recent name="C:\Users\DELL\darkpulse\crawler\common\crawler_instance" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="darkpulse" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/news_collector/scripts" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/news_collector/scripts/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="seo_checker" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="darkpulse" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/api_collector/scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/api_collector/scripts/seo_checker.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.seo_checker" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.seo_checker" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.31033.139" />
+        <option value="bundled-python-sdk-2653e85de345-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.31033.139" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8b1568a1-947c-4c9d-83d7-022522265547" name="Changes" comment="" />
+      <created>1761254526166</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1761254526166</updated>
+      <workItem from="1769014501166" duration="7368000" />
+      <workItem from="1769087101311" duration="2505000" />
+      <workItem from="1769190475119" duration="4980000" />
+      <workItem from="1769195554748" duration="1209000" />
+      <workItem from="1769196778660" duration="5307000" />
+      <workItem from="1770307665609" duration="428000" />
+      <workItem from="1770308121663" duration="29000" />
+      <workItem from="1770445549256" duration="28000" />
+      <workItem from="1770446011022" duration="59102000" />
+      <workItem from="1770584791404" duration="20000" />
+      <workItem from="1770585486659" duration="51000" />
+      <workItem from="1770662439010" duration="68805000" />
+      <workItem from="1771351302998" duration="10299000" />
+      <workItem from="1771689651844" duration="18523000" />
+      <workItem from="1771874114526" duration="2930000" />
+    </task>
+    <task id="LOCAL-00001" summary="DARKPULSE">
+      <option name="closed" value="true" />
+      <created>1761311962219</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1761311962219</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="DARKPULSE" />
+    <option name="LAST_COMMIT_MESSAGE" value="DARKPULSE" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/darkpulse$redis_controller.coverage" NAME="redis_controller Coverage Results" MODIFIED="1769197320335" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/crawler/common/crawler_instance/crawler_services/redis_manager" />
+    <SUITE FILE_PATH="coverage/darkpulse$_acn.coverage" NAME="_acn Coverage Results" MODIFIED="1771015570296" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/leak_collector/scripts/tracking" />
+    <SUITE FILE_PATH="coverage/darkpulse$main.coverage" NAME="main Coverage Results" MODIFIED="1771876443487" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/news_collector/scripts" />
+    <SUITE FILE_PATH="coverage/darkpulse$mastodon_helper_methods.coverage" NAME="mastodon_helper_methods Coverage Results" MODIFIED="1770822862442" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/crawler/common/crawler_instance/genbot_service/helpers/mastodon" />
+    <SUITE FILE_PATH="coverage/darkpulse$_mastodon.coverage" NAME="_mastodon Coverage Results" MODIFIED="1770825126145" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/social_collector/scripts/platform" />
+    <SUITE FILE_PATH="coverage/darkpulse$ui_server.coverage" NAME="ui_server Coverage Results" MODIFIED="1769025676984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/darkpulse$apimain.coverage" NAME="apimain Coverage Results" MODIFIED="1771876765781" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api_collector" />
+    <SUITE FILE_PATH="coverage/darkpulse$_usom.coverage" NAME="_usom Coverage Results" MODIFIED="1770562577888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/defacement_collector/scripts/generic" />
+    <SUITE FILE_PATH="coverage/darkpulse$_pakdb.coverage" NAME="_pakdb Coverage Results" MODIFIED="1771876734160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api_collector/scripts" />
+    <SUITE FILE_PATH="coverage/darkpulse$_pcgame_mod.coverage" NAME="_pcgame_mod Coverage Results" MODIFIED="1771876754447" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api_collector/scripts" />
+    <SUITE FILE_PATH="coverage/darkpulse$seo_checker.coverage" NAME="seo_checker Coverage Results" MODIFIED="1770468338802" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api_collector/scripts" />
+    <SUITE FILE_PATH="coverage/darkpulse$gitmain.coverage" NAME="gitmain Coverage Results" MODIFIED="1770484931696" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api_collector" />
+    <SUITE FILE_PATH="coverage/darkpulse$_tweetfeed.coverage" NAME="_tweetfeed Coverage Results" MODIFIED="1770555670623" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/defacement_collector/scripts/generic" />
+    <SUITE FILE_PATH="coverage/darkpulse$apkmain.coverage" NAME="apkmain Coverage Results" MODIFIED="1770486076634" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api_collector" />
+  </component>
+</project>

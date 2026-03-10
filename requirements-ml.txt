@@ -1,0 +1,9 @@
+numpy
+transformers
+torch
+onnxruntime
+scikit-image
+pymongo
+phonenumbers
+validators
+presidio-analyzer

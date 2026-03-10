@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DarkPulse News</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#0b1020;color:#e8ecff}
+    header{padding:16px 20px;background:#101a35;position:sticky;top:0;border-bottom:1px solid #1f2a55}
+    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    input{padding:10px 12px;border-radius:10px;border:1px solid #2a3a78;background:#0e1633;color:#e8ecff;min-width:260px}
+    button{padding:10px 12px;border-radius:10px;border:1px solid #2a3a78;background:#16224a;color:#e8ecff;cursor:pointer}
+    button:hover{filter:brightness(1.1)}
+    main{padding:18px 20px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:14px}
+    .card{background:#0f1736;border:1px solid #22306a;border-radius:16px;padding:14px 14px 12px}
+    .title{font-size:16px;font-weight:700;margin:0 0 6px}
+    .meta{opacity:.9;font-size:12px;display:flex;gap:10px;flex-wrap:wrap}
+    .pill{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid #2a3a78;background:#0c1431}
+    .tag{font-weight:700}
+    .status{display:inline-flex;align-items:center;gap:6px}
+    .dot{width:10px;height:10px;border-radius:50%}
+    .dot.green{background:#2cff8f;box-shadow:0 0 12px rgba(44,255,143,.5)}
+    .dot.red{background:#ff3b3b;box-shadow:0 0 12px rgba(255,59,59,.4)}
+    .dot.yellow{background:#ffd24d;box-shadow:0 0 12px rgba(255,210,77,.4)}
+    .desc{margin:10px 0 10px;line-height:1.35;color:#d7dcff}
+    a{color:#9ab3ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+    details{margin-top:8px}
+    summary{cursor:pointer;color:#b7c4ff}
+    .small{font-size:12px;opacity:.9}
+  </style>
+</head>
+<body>
+<header>
+  <div class="row">
+    <div style="font-weight:800;font-size:18px">DarkPulse — News</div>
+    <input id="q" placeholder="Search title/author/tag/summary..." />
+    <button onclick="loadNews()">Refresh</button>
+    <span class="small" id="count"></span>
+  </div>
+</header>
+
+<main>
+  <div class="grid" id="grid"></div>
+</main>
+
+<script>
+const API = "http://127.0.0.1:8000";
+
+function esc(s){return (s??"").toString().replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));}
+
+function statusDot(linkStatus){
+  const s = (linkStatus || "").toUpperCase();
+  if (s.startsWith("ACTIVE")) return "green";
+  if (s.startsWith("INACTIVE")) return "red";
+  if (s.startsWith("UNREACHABLE")) return "yellow";
+  return "yellow";
+}
+
+// If your API doesn’t return link_status yet, we fallback to showing unknown.
+// You can add link_status to API later easily.
+function renderCard(x){
+  const title = esc(x.title);
+  const url = esc(x.url);
+  const author = esc(x.author);
+  const date = esc(x.date || x.date_raw);
+  const net = esc(x.network_type || "");
+  const tag = esc(x.top_tag || "");
+  const summary = esc(x.summary || "");
+  const desc = esc(x.description || "");
+  const linkStatus = x.link_status || ""; // optional
+  const dot = statusDot(linkStatus);
+
+  return `
+  <div class="card">
+    <p class="title">${title}</p>
+    <div class="meta">
+      ${date ? `<span class="pill">📅 ${date}</span>` : ""}
+      ${author ? `<span class="pill">👤 ${author}</span>` : ""}
+      ${net ? `<span class="pill">🌐 ${net}</span>` : ""}
+      ${tag ? `<span class="pill tag">🏷️ ${tag}</span>` : ""}
+      <span class="pill status"><span class="dot ${dot}"></span>${esc(linkStatus || "status")}</span>
+    </div>
+
+    <div class="desc">${desc || summary}</div>
+
+    <div class="meta">
+      <a href="${url}" target="_blank">Open Article</a>
+      ${x.seed_url ? `<span class="pill">source: ${esc(x.seed_url)}</span>` : ""}
+    </div>
+
+    <details>
+      <summary>Show full summary & categories</summary>
+      <div class="small" style="margin-top:8px">
+        <b>Summary:</b> ${summary || "(none)"}<br/><br/>
+        <b>Top Tag:</b> ${tag || "(none)"}<br/>
+        <b>Categories:</b> ${(x.categories||[]).slice(0,6).map(c=>`${esc(c.label)} (${Number(c.score||0).toFixed(2)})`).join(", ") || "(none)"}
+      </div>
+    </details>
+  </div>`;
+}
+
+async function loadNews(){
+  const q = (document.getElementById("q").value || "").toLowerCase();
+  const res = await fetch(`${API}/news?limit=200`);
+  const data = await res.json();
+  let items = data.items || [];
+
+  // simple search filtering
+  if (q){
+    items = items.filter(x=>{
+      const blob = [
+        x.title, x.author, x.summary, x.description, x.top_tag,
+        ...(x.categories||[]).map(c=>c.label)
+      ].join(" ").toLowerCase();
+      return blob.includes(q);
+    });
+  }
+
+  document.getElementById("count").textContent = `Showing ${items.length} of ${data.total || items.length}`;
+  document.getElementById("grid").innerHTML = items.map(renderCard).join("");
+}
+
+document.getElementById("q").addEventListener("input", ()=>loadNews());
+loadNews();
+</script>
+</body>
+</html>

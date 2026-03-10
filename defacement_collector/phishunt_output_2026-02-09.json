@@ -1,0 +1,1993 @@
+{
+  "generated_on": "2026-02-09",
+  "seed_url": "https://phishunt.io/feed.txt",
+  "count": 50,
+  "items": [
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-hotel.com",
+      "final_url": "https://amazon-hotel.com/",
+      "host": "amazon-hotel.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-hotel.com/",
+        "content_len": 11879,
+        "content_type": "text/html",
+        "server": "openresty/1.27.1.1"
+      },
+      "analysis": {
+        "title": "One moment, please...",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 2,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": true,
+        "sha1": "d50578904f9671e65d1dac06fadd6c7ee48a1aa8",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf8\"> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"> <script> (function(){ setTimeout(function(){ window.location.reload(); }, 5000); }()) </script> <link rel=\"icon\" href=\"data:,\"> <title>One moment, please...</title> <style> .spinner { -webkit-animation: s",
+        "raw_html_len": 11879
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "challenge_page_detected"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-xi-eight.vercel.app/signUp.html",
+      "final_url": "https://amazon-clone-xi-eight.vercel.app/signUp.html",
+      "host": "amazon-clone-xi-eight.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-xi-eight.vercel.app/signUp.html",
+        "content_len": 2344,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Sign Up",
+        "forms": 1,
+        "password_inputs": 2,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "c3bc008b9378bb007b833f3bacabbdc40c2d4466",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"icon\" type=\"image/x-icon\" href=\"img/favicon.svg\"> <link href=\"//db.onlinewebfonts.com/c/157c6cc36dd65b1b2adc9e7f3329c761?family=Amazon+Ember\" rel=\"stylesheet\" type=\"text/css\"/>",
+        "raw_html_len": 2344
+      },
+      "score": 100,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-xi-eight.vercel.app/orders.html",
+      "final_url": "https://amazon-clone-xi-eight.vercel.app/orders.html",
+      "host": "amazon-clone-xi-eight.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-xi-eight.vercel.app/orders.html",
+        "content_len": 12458,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Your Souq is now Amazone!!",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "34765205d2f991fcb8f80a95433737fa97fe71d3",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"icon\" type=\"image/x-icon\" href=\"img/favicon.svg\"> <link href=\"//db.onlinewebfonts.com/c/157c6cc36dd65b1b2adc9e7f3329c761?family=Amazon+Ember\" rel=\"stylesheet\" type=\"text/css\"/>",
+        "raw_html_len": 12458
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-ui-clone-pi.vercel.app",
+      "final_url": "https://amazon-ui-clone-pi.vercel.app/",
+      "host": "amazon-ui-clone-pi.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "microsoft",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-ui-clone-pi.vercel.app/",
+        "content_len": 12270,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon UI Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "112ffcb214015b07241ddc284c38d4c5d659a571",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>Amazon UI Clone</title> <link rel=\"icon\" href=\"assets/favicon.png\" type=\"image/png\" /> <link rel=\"stylesheet\" href=\"style.css\" /> </head> <body> <!-- Main Navigation Bar --> <nav> <a href=\"/\"> <img src=\"asse",
+        "raw_html_len": 12270
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,microsoft,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-gray-psi.vercel.app",
+      "final_url": "https://amazon-clone-gray-psi.vercel.app/",
+      "host": "amazon-clone-gray-psi.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-gray-psi.vercel.app/",
+        "content_len": 6486,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon.com Spend less & Smile More",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "bd4b3317fdb2a4748c1412d1ba8b637b9405e49e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>Amazon.com Spend less & Smile More</title> <link rel=\"icon\" href=\"AMZN-e9f942e4.png\" /> <link rel=\"stylesheet\" href=\"style.css\" /> <script src=\"https://kit.fontawesome.com/5ac1140461.js\" crossorigin=\"anonymous\" ><",
+        "raw_html_len": 6486
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-zeta-nine.vercel.app",
+      "final_url": "https://amazon-clone-zeta-nine.vercel.app/",
+      "host": "amazon-clone-zeta-nine.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-zeta-nine.vercel.app/",
+        "content_len": 5263,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "amazon clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "a5bccd7b2bf4f5776889365cb7bfed771122c1eb",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>amazon clone</title> <link rel=\"stylesheet\" href=\"amazon.css\"> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\" integrity=\"sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmF",
+        "raw_html_len": 5263
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone001.vercel.app",
+      "final_url": "https://amazon-clone001.vercel.app/",
+      "host": "amazon-clone001.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "microsoft",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone001.vercel.app/",
+        "content_len": 57351,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 29,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "3bce78c731bc2b49dc7bb9bddf220225f2fa2732",
+        "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" href=\"/_next/static/media/4473ecc91f70f139-s.p.woff\" as=\"font\" crossorigin=\"\" type=\"font/woff\"/><link rel=\"preload\" href=\"/_next/static/media/463dafcda517f24f-s.p.woff\" as=\"font\" crossorigin=\"\" type=\"font/woff\"/><link rel=\"stylesheet\" href=\"/_next/sta",
+        "raw_html_len": 57351
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,microsoft,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://preemix-amazon-platform.com",
+      "final_url": "https://preemix-amazon-platform.com/",
+      "host": "preemix-amazon-platform.com",
+      "category": "unknown",
+      "brands": [
+        "google"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://preemix-amazon-platform.com/",
+        "content_len": 49610,
+        "content_type": "text/html",
+        "server": "Apache"
+      },
+      "analysis": {
+        "title": "Preemix Cinema",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "36bd69798e975cba6cca5a8e5f0270795ebfdbdb",
+        "snippet": "<!DOCTYPE html> <html lang=\"es\"> <head> <style> html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden; } </style> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Preemix Cinema</title> <!-- Meta Pixel Code --> <script> !function(f,b,e,v,n,t,s) {if(f.fbq)return;n=f.fbq=func",
+        "raw_html_len": 49610
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "brand_keywords:google"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-by-shanmukh.vercel.app",
+      "final_url": "https://amazon-clone-by-shanmukh.vercel.app/",
+      "host": "amazon-clone-by-shanmukh.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "google",
+        "meta",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-by-shanmukh.vercel.app/",
+        "content_len": 131709,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Online Shopping site in India: Shop Online for Mobiles, Books, Watches,- amazon.in",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "ab92576222df4d19dbbb94819b06e023fd2d4501",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Online Shopping site in India: Shop Online for Mobiles, Books, Watches,- amazon.in</title> <link rel=\"stylesheet\" href=\"style.css\"> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\"",
+        "raw_html_len": 131709
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,google,meta,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-alpha-nine.vercel.app",
+      "final_url": "https://amazon-clone-alpha-nine.vercel.app/",
+      "host": "amazon-clone-alpha-nine.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-alpha-nine.vercel.app/",
+        "content_len": 16262,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "08ddeb193f91ebce06f98e5c99bfc71a881242ba",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon Clone</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css\" integrity=\"sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==\" crossorigi",
+        "raw_html_len": 16262
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone-plum-eight.vercel.app",
+      "final_url": "https://amazon-clone-plum-eight.vercel.app/",
+      "host": "amazon-clone-plum-eight.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-plum-eight.vercel.app/",
+        "content_len": 8297,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "9cdf515104532304119d596964ca983daeabc1eb",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon Clone</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css\" integrity=\"sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==\" cros",
+        "raw_html_len": 8297
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-gamma-ashen.vercel.app",
+      "final_url": "https://amazon-clone-gamma-ashen.vercel.app/",
+      "host": "amazon-clone-gamma-ashen.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-gamma-ashen.vercel.app/",
+        "content_len": 6211,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "90f44e0b26c3b0a4647b80dad5de7043007c2b58",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <link rel=\"stylesheet\" href=\"style.css\"> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\"/> </head> <body>",
+        "raw_html_len": 6211
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone-lime-eight.vercel.app",
+      "final_url": "https://amazon-clone-lime-eight.vercel.app/",
+      "host": "amazon-clone-lime-eight.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-lime-eight.vercel.app/",
+        "content_len": 7477,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "9b08982265d713866abce1dd064cb6d8ff999d77",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <link rel=\"stylesheet\" href=\"index.css\"> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\" integrity=\"sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT",
+        "raw_html_len": 7477
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-trial.vercel.app",
+      "final_url": "https://amazon-trial.vercel.app/",
+      "host": "amazon-trial.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-trial.vercel.app/",
+        "content_len": 90401,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Developer",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 29,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "7c66bfc0a302dc281123e394c30c2ff0ab066ecb",
+        "snippet": "<!DOCTYPE html><html lang=\"en-US\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/eb2c80e5d5b1284d.css?dpl=dpl_BGYazRZMQfdS5HoPdzrGYjKrBTo5\" data-precedence=\"next\"/><link rel=\"stylesheet\" href=\"/_next/static/css/87dac3f8c493acfe.css?dpl=dpl_BGYazRZMQfdS5HoPdzrGYjKrBTo5\" data-precedence=\"next\"/><link re",
+        "raw_html_len": 90401
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://projectamazonpr1.vercel.app",
+      "final_url": "https://projectamazonpr1.vercel.app/",
+      "host": "projectamazonpr1.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://projectamazonpr1.vercel.app/",
+        "content_len": 5705,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "a6bc8e3f9793ec532bd251c6bb84c66bd7d60784",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css\"> <link rel=\"stylesheet\" href=\"style.css\"> <link rel= \"icon\" href=\"assets/Amazon-logo-meaning.jpg\"> <title>Amazon</title> </head> <body> <",
+        "raw_html_len": 5705
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,meta"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-gamma-ecru.vercel.app",
+      "final_url": "https://amazon-clone-gamma-ecru.vercel.app/",
+      "host": "amazon-clone-gamma-ecru.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "microsoft",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-gamma-ecru.vercel.app/",
+        "content_len": 12306,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "721e6e993709d0175181921e132de2568ad8200e",
+        "snippet": "<html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon Clone</title> <link rel=\"stylesheet\" href=\"./style.css\"> </head> <body> <nav> <a href=\"/\"><img src=\"./assets/amazon_logo.png\" width=\"100\" alt=\"\"></a> <div class=\"nav-country\"> <img src=\"./assets/location_icon.png\" hei",
+        "raw_html_len": 12306
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,microsoft,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-tau-ecru.vercel.app",
+      "final_url": "https://amazon-tau-ecru.vercel.app/",
+      "host": "amazon-tau-ecru.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-tau-ecru.vercel.app/",
+        "content_len": 5583,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "06999a02eb9de843efecd7c80ba1769dbeb5510d",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/> <title>Amazon</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css\" integrity=\"sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==\" crossorigin=\"anonymou",
+        "raw_html_len": 5583
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-khaki-eight.vercel.app",
+      "final_url": "https://amazon-clone-khaki-eight.vercel.app/",
+      "host": "amazon-clone-khaki-eight.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-khaki-eight.vercel.app/",
+        "content_len": 7020,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "6e00d1b4158e27a4a1521c983df3f90a625152fe",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon Clone</title> <link rel=\"stylesheet\" href=\"style.css\"> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css\" integrity=\"sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBus",
+        "raw_html_len": 7020
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazonwebservices.security-unauthorised-request.com/login/zWDOx0s0gIihk38-aQieIuFbpbkAZ0v32U0c=1AA==6V1tXTFlYaVpZUV9Y/OU7jtVLNJA1gbiNb6px9GtUDewiAWseu",
+      "final_url": "https://amazonwebservices.security-unauthorised-request.com/login/zWDOx0s0gIihk38-aQieIuFbpbkAZ0v32U0c=1AA==6V1tXTFlYaVpZUV9Y/OU7jtVLNJA1gbiNb6px9GtUDewiAWseu",
+      "host": "amazonwebservices.security-unauthorised-request.com",
+      "category": "redirector",
+      "brands": [
+        "amazon"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazonwebservices.security-unauthorised-request.com/login/zWDOx0s0gIihk38-aQieIuFbpbkAZ0v32U0c=1AA==6V1tXTFlYaVpZUV9Y/OU7jtVLNJA1gbiNb6px9GtUDewiAWseu",
+        "content_len": 28146,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "AmazonS3"
+      },
+      "analysis": {
+        "title": "Amazon Sign In",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "f3e1048b13aaebcb588e8913d4906bd5eea82563",
+        "snippet": "<html lang=\"en-AU\" class=\"a-ws a-js a-audio a-video a-canvas a-svg a-drag-drop a-geolocation a-history a-webworker a-autofocus a-input-placeholder a-textarea-placeholder a-local-storage a-gradients a-transform3d a-touch-scrolling a-text-shadow a-text-stroke a-box-shadow a-border-radius a-border-image a-opacity a-transform a-transition a-ember\" data-19ax5a9jf=\"dingo\" data-aui-build-date=\"3.",
+        "raw_html_len": 28146
+      },
+      "score": 100,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "redirector_or_shortener",
+        "brand_keywords:amazon"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazonwebservices.security-unauthorised-request.com/login/zWDOx0s0gIihk38-aQieIuFbpbkAZ0v32U0c=1AA==8WVVZQldWZ1RXX1FW/OU7jtVLNJA1gbiNb6px9GtUDewiAWseu/",
+      "final_url": "https://amazonwebservices.security-unauthorised-request.com/login/zWDOx0s0gIihk38-aQieIuFbpbkAZ0v32U0c=1AA==8WVVZQldWZ1RXX1FW/OU7jtVLNJA1gbiNb6px9GtUDewiAWseu/",
+      "host": "amazonwebservices.security-unauthorised-request.com",
+      "category": "redirector",
+      "brands": [
+        "amazon"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazonwebservices.security-unauthorised-request.com/login/zWDOx0s0gIihk38-aQieIuFbpbkAZ0v32U0c=1AA==8WVVZQldWZ1RXX1FW/OU7jtVLNJA1gbiNb6px9GtUDewiAWseu/",
+        "content_len": 28146,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "AmazonS3"
+      },
+      "analysis": {
+        "title": "Amazon Sign In",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "f3e1048b13aaebcb588e8913d4906bd5eea82563",
+        "snippet": "<html lang=\"en-AU\" class=\"a-ws a-js a-audio a-video a-canvas a-svg a-drag-drop a-geolocation a-history a-webworker a-autofocus a-input-placeholder a-textarea-placeholder a-local-storage a-gradients a-transform3d a-touch-scrolling a-text-shadow a-text-stroke a-box-shadow a-border-radius a-border-image a-opacity a-transform a-transition a-ember\" data-19ax5a9jf=\"dingo\" data-aui-build-date=\"3.",
+        "raw_html_len": 28146
+      },
+      "score": 100,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "redirector_or_shortener",
+        "brand_keywords:amazon"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://jp.amazon.sckrston.com",
+      "final_url": "https://jp.amazon.sckrston.com/",
+      "host": "jp.amazon.sckrston.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://jp.amazon.sckrston.com/",
+        "content_len": 9696,
+        "content_type": "text/html",
+        "server": "openresty"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "cdfd4bb3cb60de0dafc262088df55526367b7fc6",
+        "snippet": "<html> <head ><style>*{margin: 0; padding: 0;}</style><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" content=\"\"></head> <body ><img src=\"https://l.cdn-fileserver.com/bping.php?crid=371572547&hvsid=00001770578881935031182287363885&wsip=170762434&ssld=%7B%22QQNN%22%3A%22r4%22%2C%22QQN75%22%3A%22QNwmzB1jOJoyj8Jz%22%2C%22QQ8E%22%3A%22%22%2C%22QQQN%22%3A%22RR%22%7",
+        "raw_html_len": 9696
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-media-productioneg.com",
+      "final_url": "https://amazon-media-productioneg.com",
+      "host": "amazon-media-productioneg.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "error": "SOCKSHTTPSConnectionPool(host='amazon-media-productioneg.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)')))",
+        "status_code": 0,
+        "final_url": "https://amazon-media-productioneg.com",
+        "content_len": 0,
+        "content_type": "",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": []
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-static-view.vercel.app",
+      "final_url": "https://amazon-clone-static-view.vercel.app/",
+      "host": "amazon-clone-static-view.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-static-view.vercel.app/",
+        "content_len": 6473,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "1cc7d6cff0119eee4453abc1d9e5ca1d7baa90b5",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <link rel=\"stylesheet\" href=\"style.css\"> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css\" integrity=\"sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck",
+        "raw_html_len": 6473
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone-navy-ten.vercel.app",
+      "final_url": "https://amazon-clone-navy-ten.vercel.app/",
+      "host": "amazon-clone-navy-ten.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-navy-ten.vercel.app/",
+        "content_len": 6669,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "b28c2e0b4e6811f8a1466daf468f73be5595a928",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <link rel=\"stylesheet\" href=\"style.css\"> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css\" integrity=\"sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck",
+        "raw_html_len": 6669
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-taupe-six.vercel.app",
+      "final_url": "https://amazon-clone-taupe-six.vercel.app/",
+      "host": "amazon-clone-taupe-six.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-taupe-six.vercel.app/",
+        "content_len": 5197,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "212c9b785af10bd8372bab45ef05bef31572dcfc",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css\" integrity=\"sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==\" crossorigi",
+        "raw_html_len": 5197
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazonnworld.standard.us-east-1.oortstorages.com/fitsal.vhb?eta",
+      "final_url": "https://amazonnworld.standard.us-east-1.oortstorages.com/fitsal.vhb?eta",
+      "host": "amazonnworld.standard.us-east-1.oortstorages.com",
+      "category": "login_branding",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazonnworld.standard.us-east-1.oortstorages.com/fitsal.vhb?eta",
+        "content_len": 11910,
+        "content_type": "text/html",
+        "server": "nginx/1.18.0 (Ubuntu)"
+      },
+      "analysis": {
+        "title": "Webmail Sign-in",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 4,
+        "iframes": 1,
+        "login_keywords": true,
+        "challenge": true,
+        "sha1": "c7cc3a7ea2b3d5c481c3c1b53e4753e3727785b0",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Webmail Sign-in</title> <!-- Include Bootstrap 5 CSS --> <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css\" rel=\"stylesheet\"> <!-- Bootstrap Icons --> <link href=\"https://cdn.jsdelivr.net/n",
+        "raw_html_len": 11910
+      },
+      "score": 55,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "challenge_page_detected"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://pillpack-user-auth-beta.auth.us-east-1.amazoncognito.com/error?error=redirect_mismatch&client_id=68dvodvb1df8imqcfm5sqf91it",
+      "final_url": "https://pillpack-user-auth-beta.auth.us-east-1.amazoncognito.com/error?error=redirect_mismatch&client_id=68dvodvb1df8imqcfm5sqf91it",
+      "host": "pillpack-user-auth-beta.auth.us-east-1.amazoncognito.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://pillpack-user-auth-beta.auth.us-east-1.amazoncognito.com/error?error=redirect_mismatch&client_id=68dvodvb1df8imqcfm5sqf91it",
+        "content_len": 28082,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Sign-in",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 4,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "dac5c5d1a6c5ec59bef5880a746a65cef1c0dd64",
+        "snippet": "<!DOCTYPE html><html lang=\"en\"><head><title>Sign-in</title><meta name=\"description\" content=\"Sign-in\"/><meta name=\"charset\" content=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"icon\" type=\"image/x-icon\" href=\"https://d2gc27jy00o0yk.cloudfront.net/default-assets/icon/cognito-icon-favicon-ico-light.ico\"/><link rel=\"icon\" type=\"image/svg+xml\" href=\"https://",
+        "raw_html_len": 28082
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-olive-eight.vercel.app",
+      "final_url": "https://amazon-clone-olive-eight.vercel.app/",
+      "host": "amazon-clone-olive-eight.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-olive-eight.vercel.app/",
+        "content_len": 7516,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "65a89b8b7b012499516ecab96205fe4c4b7341df",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\" integrity=\"sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==\" crossorigin=\"ano",
+        "raw_html_len": 7516
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone001.vercel.app/registration",
+      "final_url": "https://amazon-clone001.vercel.app/registration",
+      "host": "amazon-clone001.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone001.vercel.app/registration",
+        "content_len": 9953,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Clone",
+        "forms": 1,
+        "password_inputs": 2,
+        "scripts": 18,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "128c3d6f4dfa30e69d0a62f06bcc0cc384b36c48",
+        "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" href=\"/_next/static/media/4473ecc91f70f139-s.p.woff\" as=\"font\" crossorigin=\"\" type=\"font/woff\"/><link rel=\"preload\" href=\"/_next/static/media/463dafcda517f24f-s.p.woff\" as=\"font\" crossorigin=\"\" type=\"font/woff\"/><link rel=\"stylesheet\" href=\"/_next/sta",
+        "raw_html_len": 9953
+      },
+      "score": 100,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone-project-alpha.vercel.app",
+      "final_url": "https://amazon-clone-project-alpha.vercel.app/",
+      "host": "amazon-clone-project-alpha.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-project-alpha.vercel.app/",
+        "content_len": 6486,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "9e489be735c66ab63d650ad661953fd6c17b168e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon Clone</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css\" integrity=\"sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==\" cros",
+        "raw_html_len": 6486
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-rho-nine.vercel.app",
+      "final_url": "https://amazon-clone-rho-nine.vercel.app/",
+      "host": "amazon-clone-rho-nine.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-rho-nine.vercel.app/",
+        "content_len": 8804,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "360b2d59112f20938626c35543765778bc26f2db",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css\" integrity=\"sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==",
+        "raw_html_len": 8804
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://project2-amazone-clone.vercel.app",
+      "final_url": "https://project2-amazone-clone.vercel.app/",
+      "host": "project2-amazone-clone.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://project2-amazone-clone.vercel.app/",
+        "content_len": 10323,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "9de5883ae0ed43248c89b8c745f956c348a8a5d9",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" > <title >amazon</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css\" integrity=\"sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==\" crossorigin=\"a",
+        "raw_html_len": 10323
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazonclone-steel-two.vercel.app",
+      "final_url": "https://amazonclone-steel-two.vercel.app/",
+      "host": "amazonclone-steel-two.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazonclone-steel-two.vercel.app/",
+        "content_len": 9309,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "134e1cf443e7bc0e0cbf0865e87c5b5d2a688ffd",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <!-- Font Awesome --> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\" integrity=\"sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtA",
+        "raw_html_len": 9309
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-mocha-nine.vercel.app",
+      "final_url": "https://amazon-clone-mocha-nine.vercel.app/",
+      "host": "amazon-clone-mocha-nine.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "microsoft",
+        "meta",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-mocha-nine.vercel.app/",
+        "content_len": 10529,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amozon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fa9f91200b4dacc282e22c467c0b2a66ea222ada",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amozon</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css\" integrity=\"sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==\" crossorigin=\"ano",
+        "raw_html_len": 10529
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,microsoft,meta,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone001.vercel.app/cart",
+      "final_url": "https://amazon-clone001.vercel.app/cart",
+      "host": "amazon-clone001.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "microsoft",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone001.vercel.app/cart",
+        "content_len": 28191,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 24,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "e201322c586cc1a6ec6ffe5e64bcec080511426c",
+        "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" href=\"/_next/static/media/4473ecc91f70f139-s.p.woff\" as=\"font\" crossorigin=\"\" type=\"font/woff\"/><link rel=\"preload\" href=\"/_next/static/media/463dafcda517f24f-s.p.woff\" as=\"font\" crossorigin=\"\" type=\"font/woff\"/><link rel=\"stylesheet\" href=\"/_next/sta",
+        "raw_html_len": 28191
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,microsoft,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone-cyan-ten.vercel.app",
+      "final_url": "https://amazon-clone-cyan-ten.vercel.app/",
+      "host": "amazon-clone-cyan-ten.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "microsoft",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-cyan-ten.vercel.app/",
+        "content_len": 11184,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon India",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "980d1cba1a76d63e0cb3510cb75356200085e3f0",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon India</title> <link rel=\"stylesheet\" href=\"style.css\"> </head> <body> <nav> <a href=\"/\"><img src=\"./assets/amazon_logo.png\" width=\"100\"></a> <div class=\"nav-country\"> <img src=\"./assets/location_icon.png\"",
+        "raw_html_len": 11184
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,microsoft,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-taupe-xi.vercel.app",
+      "final_url": "https://amazon-clone-taupe-xi.vercel.app/",
+      "host": "amazon-clone-taupe-xi.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-taupe-xi.vercel.app/",
+        "content_len": 8850,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "4f9c4a42df274b4be1660acc75a50abb2c28c49b",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <meta name=\"google-site-verification\" content=\"ypTEaYQ29HBccB5xXzBNGyqXKxky_woOqoNh49MNA9Q\" /> <title>Amazon Clone</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css\" integrity=\"sha512-D",
+        "raw_html_len": 8850
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone-navy-eight.vercel.app",
+      "final_url": "https://amazon-clone-navy-eight.vercel.app/",
+      "host": "amazon-clone-navy-eight.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-navy-eight.vercel.app/",
+        "content_len": 6874,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "da67ecd730ea11006be964ad1068d044d0fa6891",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE-edge\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon Clone</title> <link rel=\"stylesheet\" href=\"styles.css\"> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\" integrity=\"sha",
+        "raw_html_len": 6874
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://us-east-1qetc1xiao.auth.us-east-1.amazoncognito.com/error?error=redirect_mismatch&client_id=7hnj2rh829875vcumuco9mmdta",
+      "final_url": "https://us-east-1qetc1xiao.auth.us-east-1.amazoncognito.com/error?error=redirect_mismatch&client_id=7hnj2rh829875vcumuco9mmdta",
+      "host": "us-east-1qetc1xiao.auth.us-east-1.amazoncognito.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://us-east-1qetc1xiao.auth.us-east-1.amazoncognito.com/error?error=redirect_mismatch&client_id=7hnj2rh829875vcumuco9mmdta",
+        "content_len": 28024,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Sign-in",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 4,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "5fc434377cfc131d16da242fbc59b85215de18e1",
+        "snippet": "<!DOCTYPE html><html lang=\"en\"><head><title>Sign-in</title><meta name=\"description\" content=\"Sign-in\"/><meta name=\"charset\" content=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"icon\" type=\"image/x-icon\" href=\"https://d2gc27jy00o0yk.cloudfront.net/default-assets/icon/cognito-icon-favicon-ico-light.ico\"/><link rel=\"icon\" type=\"image/svg+xml\" href=\"https://",
+        "raw_html_len": 28024
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-ruby-eight.vercel.app/orders.html",
+      "final_url": "https://amazon-clone-ruby-eight.vercel.app/orders.html",
+      "host": "amazon-clone-ruby-eight.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-ruby-eight.vercel.app/orders.html",
+        "content_len": 1149,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Orders",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "9518b8fa66650dea507f73f579b82857e3ab5467",
+        "snippet": "<!DOCTYPE html> <html> <head> <title>Orders</title> <!-- This code is needed for responsive design to work. (Responsive design = make the website look good on smaller screen sizes like a phone or a tablet). --> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <!-- Load a font called Roboto from Google Fonts. --> <link rel=\"preconnect\" href=\"h",
+        "raw_html_len": 1149
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazonclone-two-gamma.vercel.app",
+      "final_url": "https://amazonclone-two-gamma.vercel.app/",
+      "host": "amazonclone-two-gamma.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazonclone-two-gamma.vercel.app/",
+        "content_len": 6138,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "a94f28a2e1970cc1f1f1aa0d636b304260db3527",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css\" integrity=\"sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==\" crossorigin=\"ano",
+        "raw_html_len": 6138
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazonnworld.standard.us-east-1.oortstorages.com/fitsal.vhb?eta=3mail@a.b.c0",
+      "final_url": "https://amazonnworld.standard.us-east-1.oortstorages.com/fitsal.vhb?eta=3mail@a.b.c0",
+      "host": "amazonnworld.standard.us-east-1.oortstorages.com",
+      "category": "login_branding",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazonnworld.standard.us-east-1.oortstorages.com/fitsal.vhb?eta=3mail@a.b.c0",
+        "content_len": 11910,
+        "content_type": "text/html",
+        "server": "nginx/1.18.0 (Ubuntu)"
+      },
+      "analysis": {
+        "title": "Webmail Sign-in",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 4,
+        "iframes": 1,
+        "login_keywords": true,
+        "challenge": true,
+        "sha1": "c7cc3a7ea2b3d5c481c3c1b53e4753e3727785b0",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Webmail Sign-in</title> <!-- Include Bootstrap 5 CSS --> <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css\" rel=\"stylesheet\"> <!-- Bootstrap Icons --> <link href=\"https://cdn.jsdelivr.net/n",
+        "raw_html_len": 11910
+      },
+      "score": 55,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "challenge_page_detected"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone-xi-eight.vercel.app/signIn.html",
+      "final_url": "https://amazon-clone-xi-eight.vercel.app/signIn.html",
+      "host": "amazon-clone-xi-eight.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-xi-eight.vercel.app/signIn.html",
+        "content_len": 1848,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon Sign In",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "92819efe4e94757cc1089b1c85b2e44fcc36acec",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"icon\" type=\"image/x-icon\" href=\"img/favicon.svg\"> <link href=\"//db.onlinewebfonts.com/c/157c6cc36dd65b1b2adc9e7f3329c761?family=Amazon+Ember\" rel=\"stylesheet\" type=\"text/css\"/>",
+        "raw_html_len": 1848
+      },
+      "score": 100,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://delivery.amaz0n-notifications.com/home/34fc65095e484d948aae010b0d9a1142/a67bea09306eb410e8ec63d323a4919c4",
+      "final_url": "https://delivery.amaz0n-notifications.com/Admin/Home/Index",
+      "host": "delivery.amaz0n-notifications.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://delivery.amaz0n-notifications.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-beige-three.vercel.app/orders.html",
+      "final_url": "https://amazon-clone-beige-three.vercel.app/orders.html",
+      "host": "amazon-clone-beige-three.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-beige-three.vercel.app/orders.html",
+        "content_len": 6381,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Orders",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "f82f096a47eb147c1cf03c3e39879c63545c80f5",
+        "snippet": "<!DOCTYPE html> <html> <head> <title>Orders</title> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap\" rel=\"stylesheet\"> <link rel=\"s",
+        "raw_html_len": 6381
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://fbrbwzv.cn/ie1/f/2s/iclouds/",
+      "final_url": "https://fbrbwzv.cn/ie1/f/2s/iclouds/",
+      "host": "fbrbwzv.cn",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://fbrbwzv.cn/ie1/f/2s/iclouds/",
+        "content_len": 1787,
+        "content_type": "text/html",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "250228f6376fa2204817c9f90509243fb90ce9d9",
+        "snippet": "<!DOCTYPE html> <html> <head> <meta charset=\"UTF-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\"> <meta name=\"robots\" content=\"noindex, nofollow, noarchive, nosnippet\"> <meta name=\"format-detection\" content=\"telephone=no, email=no, address=no\"> <link rel=\"icon\"",
+        "raw_html_len": 1787
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://barclys-de.sumajks.com",
+      "final_url": "https://barclys-de.sumajks.com/",
+      "host": "barclys-de.sumajks.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://barclys-de.sumajks.com/",
+        "content_len": 2502,
+        "content_type": "text/html; charset=utf-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "Coming Soon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "f1d6401db9970ea7b84f8f9cf6d03b886a337f86",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /> <title>Coming Soon</title> <style> body { background-color: #f5f5f5; margin-top: 8%; color: #5d5d5d; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple",
+        "raw_html_len": 2502
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://www.custumer-barclaysinfo.com",
+      "final_url": "http://www.custumer-barclaysinfo.com",
+      "host": "www.custumer-barclaysinfo.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "error": "SOCKSHTTPConnectionPool(host='www.custumer-barclaysinfo.com', port=80): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<SOCKSConnection(host='www.custumer-barclaysinfo.com', port=80) at 0x7dea2605e690>, 'Connection to www.custumer-barclaysinfo.com timed out. (connect timeout=25)'))",
+        "status_code": 0,
+        "final_url": "http://www.custumer-barclaysinfo.com",
+        "content_len": 0,
+        "content_type": "",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": []
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://binance-blog.vercel.app",
+      "final_url": "https://binance-blog.vercel.app/en/blog",
+      "host": "binance-blog.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "banking",
+        "crypto"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://binance-blog.vercel.app/en/blog",
+        "content_len": 1051959,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Binance Blog Articles",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 1,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "c8f1a7b6fe80133b70f051f840356f97332e458f",
+        "snippet": "<!DOCTYPE html> <html bn-lang=en lang=en dir=ltr path-prefix=/en style> <meta charset=utf-8> <meta name=viewport content=\"width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no\"> <title data-shuvi-head=true>Binance Blog Articles</title> <meta name=keywords content=\"Blockchain Crypto Exchange, Cryptocurrency Exchange, Bitcoin Trading, Ethereum price trend, BNB, CZ,",
+        "raw_html_len": 1051959
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:banking,crypto"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://www.binance-news.blogspot.com",
+      "final_url": "https://binance-news.blogspot.com/",
+      "host": "binance-news.blogspot.com",
+      "category": "redirector",
+      "brands": [
+        "crypto"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://binance-news.blogspot.com/",
+        "content_len": 270054,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "GSE"
+      },
+      "analysis": {
+        "title": "Binance",
+        "forms": 3,
+        "password_inputs": 0,
+        "scripts": 11,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "9a0c796fc1d7635f54f377c10c241ec77e4b5da8",
+        "snippet": "<!DOCTYPE html> <html class='ltr' dir='ltr' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'> <head> <meta content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1' name='viewport'/> <title>Binance</title> <link href='//fonts.gstatic.com' rel='dns-p",
+        "raw_html_len": 270054
+      },
+      "score": 45,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "redirector_or_shortener",
+        "brand_keywords:crypto"
+      ]
+    }
+  ]
+}

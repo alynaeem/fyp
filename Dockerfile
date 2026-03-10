@@ -1,0 +1,39 @@
+# ── DarkPulse — Dockerfile ────────────────────────────────────────────────────
+# Serves the FastAPI ui_server.py on port 8000.
+# Build:  docker build -t darkpulse-api .
+# Run:    docker-compose up
+
+FROM python:3.11-slim
+
+# System deps (for Playwright, lxml, etc.)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        curl \
+        git \
+        build-essential \
+        libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python dependencies first (leverages Docker layer cache)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the full project
+COPY . .
+
+# Create logs directory
+RUN mkdir -p logs
+
+# Non-root user for security
+RUN useradd -m -u 1000 darkpulse && chown -R darkpulse:darkpulse /app
+USER darkpulse
+
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+CMD ["uvicorn", "ui_server:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]

@@ -346,7 +346,7 @@ class _infosecuritymagazine(leak_extractor_interface, ABC):
     # ---------------- Playwright helpers --------------
 
     def _launch_browser(self, p, use_proxy: bool) -> Tuple[object, object]:
-        launch_kwargs = {"headless": False}
+        launch_kwargs = {"headless": True}
         if self._chromium_exe:
             launch_kwargs["executable_path"] = self._chromium_exe
         if use_proxy and (self._proxy or {}).get("server"):
@@ -449,27 +449,12 @@ class _infosecuritymagazine(leak_extractor_interface, ABC):
         all_links: Set[str] = set()
 
         with sync_playwright() as p:
-            try:
-                browser, context = self._launch_browser(p, use_proxy=True)
-                page = context.new_page()
-                first_url = self._data_breaches_page_url(1)
-                print(f"[INFOSEC] Opening seed (proxy): {first_url}")
-                page.goto(first_url, timeout=60000, wait_until="load")
-            except Exception as ex:
-                print(f"[INFOSEC] Proxy navigation failed: {ex}. Retrying without proxy …")
-                try:
-                    context.close()
-                except Exception:
-                    pass
-                try:
-                    browser.close()
-                except Exception:
-                    pass
-                browser, context = self._launch_browser(p, use_proxy=False)
-                page = context.new_page()
-                first_url = self._data_breaches_page_url(1)
-                print(f"[INFOSEC] Opening seed (no proxy): {first_url}")
-                page.goto(first_url, timeout=60000, wait_until="load")
+            # Playwright doesn't support socks5h:// (needed for Tor DNS), so skip proxy
+            browser, context = self._launch_browser(p, use_proxy=False)
+            page = context.new_page()
+            first_url = self._data_breaches_page_url(1)
+            print(f"[INFOSEC] Opening seed: {first_url}")
+            page.goto(first_url, timeout=60000, wait_until="load")
 
             # 1) DATA-BREACHES pages
             for page_no in range(1, self._max_pages + 1):

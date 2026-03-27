@@ -1,7 +1,10 @@
+import pathlib
 from typing import Any, Dict, List
 from fastapi import FastAPI, Query, Request, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from config import cfg
@@ -42,15 +45,24 @@ app.add_middleware(
 )
 
 
+# ---------- Static file serving ----------
+_STATIC_DIR = pathlib.Path(__file__).resolve().parent
+
 # ---------- API endpoints ----------
 @app.get("/")
 def home():
-    return {
-        "ok": True,
-        "message": "DarkPulse Local API is running",
-        "endpoints": ["/news", "/news/{aid}", "/health"],
-        "auth_required": bool(cfg.api_key),
-    }
+    """Serve the frontend dashboard."""
+    return FileResponse(_STATIC_DIR / "index.html", media_type="text/html")
+
+@app.get("/app.js")
+def serve_js():
+    return FileResponse(_STATIC_DIR / "app.js", media_type="application/javascript",
+                        headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
+
+@app.get("/style.css")
+def serve_css():
+    return FileResponse(_STATIC_DIR / "style.css", media_type="text/css",
+                        headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
 
 @app.get("/health")
 async def health():
@@ -67,7 +79,7 @@ async def health():
     }
 
 @app.get("/news")
-async def list_news(limit: int = Query(20, ge=1, le=200), offset: int = Query(0, ge=0)):
+async def list_news(limit: int = Query(50, ge=1, le=500), offset: int = Query(0, ge=0)):
     # Standard MongoDB pagination
     cursor = articles_col.find({}).sort("scraped_at", -1).skip(offset).limit(limit)
     items = await cursor.to_list(length=limit)
@@ -114,3 +126,122 @@ async def get_news(aid: str):
         doc["top_tag"] = ""
         
     return doc
+
+
+# ── Collection holding raw crawl data (Redis-style KV) ──────────────────────
+kv_col = db["redis_kv_store"]
+
+# Prefixes that hold JSON item data (not news, not indexes/hashes)
+_NEWS_PREFIXES = {"THN", "BLEEPING", "CSO", "HACKREAD", "INFOSEC", "KREBS", "PORTSWIGGER", "THERECORD"}
+
+_THREAT_PREFIXES = {
+    "EXPLOIT_ITEMS":      "exploit",
+    "EXPLOIT_ENTITIES":   None,       # skip entity docs (duplicates)
+    "LEAK_ITEMS":         "leak",
+    "LEAK_ENTITIES":      None,
+    "DEFACEMENT_ITEMS":   "defacement",
+    "DEFACEMENT_ENTITIES": None,
+    "SOCIAL_ITEMS":       "social",
+    "SOCIAL_ENTITIES":    None,
+    "API_ITEMS":          "api",
+    "API_ENTITIES":       None,
+}
+
+
+def _parse_kv_item(doc) -> dict | None:
+    """Turn a redis_kv_store document whose value is a JSON-encoded dict into a
+    card-friendly article-like dict the frontend can render."""
+    import json as _json
+    raw = doc.get("value", "")
+    if not raw or not isinstance(raw, str):
+        return None
+    try:
+        data = _json.loads(raw)
+    except Exception:
+        return None
+    if not isinstance(data, dict):
+        return None
+
+    key = str(doc.get("_id", ""))
+
+    # Determine source category from key prefix
+    source_cat = "threat"
+    for pfx, cat in _THREAT_PREFIXES.items():
+        if key.startswith(pfx):
+            if cat is None:  # skip entity-only prefixes
+                return None
+            source_cat = cat
+            break
+
+    title = (data.get("m_title") or data.get("m_important_content") or data.get("m_name") or "Untitled")
+    content = data.get("m_content", "")
+    url = data.get("m_url") or ""
+    if not url:
+        links = data.get("m_weblink", [])
+        if links and isinstance(links, list):
+            url = links[0]
+    source_name = data.get("m_source") or data.get("m_scrap_file") or data.get("m_team") or source_cat
+    network = data.get("m_network", "clearnet")
+
+    return {
+        "aid": key,
+        "title": title,
+        "description": content[:500] if content else title,
+        "url": url,
+        "seed_url": data.get("m_base_url", ""),
+        "source": source_name,
+        "source_type": source_cat,
+        "scraped_at": data.get("m_leak_date") or data.get("m_exploit_year") or "",
+        "network": network,
+        "top_tag": source_cat,
+        "categories": [{"label": source_cat, "score": 1.0}],
+        "summary": content[:300] if content else "",
+        "entities": {},
+    }
+
+
+@app.get("/threats")
+async def list_threats(
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    source_type: str = Query("", description="Filter: exploit, social, leak, etc."),
+):
+    """Return non-news threat intel entries (exploits, leaks, social, etc.)
+    from the redis_kv_store collection, formatted like articles for the frontend."""
+
+    # Build list of prefixes to scan
+    prefixes = [p for p, cat in _THREAT_PREFIXES.items() if cat is not None]
+    if source_type:
+        prefixes = [p for p, cat in _THREAT_PREFIXES.items() if cat == source_type]
+        if not prefixes:
+            return {"total": 0, "offset": offset, "limit": limit, "items": []}
+
+    regex_pattern = "^(" + "|".join(prefixes) + "):"
+    query = {"_id": {"$regex": regex_pattern}}
+    total = await kv_col.count_documents(query)
+    cursor = kv_col.find(query).skip(offset).limit(limit)
+    docs = await cursor.to_list(length=limit)
+
+    items = []
+    for doc in docs:
+        parsed = _parse_kv_item(doc)
+        if parsed:
+            items.append(parsed)
+
+    return {"total": total, "offset": offset, "limit": limit, "items": items}
+
+
+@app.get("/stats")
+async def stats():
+    """Return counts per collector type for the dashboard stats bar."""
+    result = {
+        "news": await articles_col.count_documents({}),
+    }
+    for pfx, cat in _THREAT_PREFIXES.items():
+        if cat is None:
+            continue
+        regex = f"^{pfx}:"
+        count = await kv_col.count_documents({"_id": {"$regex": regex}})
+        result[cat] = result.get(cat, 0) + count
+    result["total"] = sum(result.values())
+    return result

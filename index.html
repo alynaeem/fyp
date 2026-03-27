@@ -7,7 +7,7 @@
   <meta name="description" content="Real-time cybersecurity threat intelligence feed powered by DarkPulse collectors." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=2" />
 </head>
 <body>
 
@@ -41,7 +41,7 @@
   <div class="stats-inner" id="statsBar">
     <div class="stat-card">
       <span class="stat-value" id="statTotal">—</span>
-      <span class="stat-label">Total Articles</span>
+      <span class="stat-label">Total Intel</span>
     </div>
     <div class="stat-card">
       <span class="stat-value" id="statToday">—</span>
@@ -99,6 +99,16 @@
 
   <!-- FEED -->
   <section class="feed" aria-label="Threat Intelligence Feed">
+
+    <!-- Tab Bar -->
+    <nav class="tab-bar" id="tabBar" aria-label="Data view tabs">
+      <button class="tab-btn active" data-tab="all">All</button>
+      <button class="tab-btn" data-tab="news">News <span class="tab-count" id="tabNewsCount"></span></button>
+      <button class="tab-btn" data-tab="exploit">Exploits <span class="tab-count" id="tabExploitCount"></span></button>
+      <button class="tab-btn" data-tab="social">Social <span class="tab-count" id="tabSocialCount"></span></button>
+      <button class="tab-btn" data-tab="leak">Leaks <span class="tab-count" id="tabLeakCount"></span></button>
+      <button class="tab-btn" data-tab="defacement">Defacement <span class="tab-count" id="tabDefaceCount"></span></button>
+    </nav>
 
     <!-- Lock screen (when no API key) -->
     <div class="lock-screen hidden" id="lockScreen">
@@ -184,6 +194,6 @@
   </div>
 </div>
 
-<script src="app.js"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>

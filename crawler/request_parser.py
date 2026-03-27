@@ -233,10 +233,24 @@ class RequestParser:
             except Exception:
                 pass
 
+    def _wants_tor_proxy(self) -> bool:
+        """Check if model's rule_config requests Tor proxy."""
+        try:
+            rule = getattr(self.model, "rule_config", None)
+            if rule is None:
+                return False
+            fp = getattr(rule, "m_fetch_proxy", None)
+            if fp is None:
+                return False
+            return str(fp).upper().endswith("TOR") or getattr(fp, "name", "") == "TOR"
+        except Exception:
+            return False
+
     def _run_with_playwright(self) -> Any:
         """
         Create Playwright Page, attach to model, call model.run(page) with fallback.
         Only called when _wants_playwright() is True.
+        Passes Tor proxy when model's rule_config requests FetchProxy.TOR.
         """
         if sync_playwright is None:
             raise RuntimeError(
@@ -245,26 +259,56 @@ class RequestParser:
 
         url = self._choose_playwright_url()
 
+        # Build Playwright launch kwargs — include proxy for Tor/.onion scrapers
+        launch_kwargs = {"headless": self.playwright_headless}
+        if self._wants_tor_proxy() and self.proxy:
+            server = self.proxy.get("server", "")
+            if server:
+                launch_kwargs["proxy"] = {"server": server}
+                print(f"[RequestParser][PLAYWRIGHT] Launching with Tor proxy: {server}")
+
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=self.playwright_headless)
+            browser = p.chromium.launch(**launch_kwargs)
             context = browser.new_context(ignore_https_errors=True)
-            page = context.new_page()
-
-            if url:
-                try:
-                    page.goto(url, wait_until="domcontentloaded", timeout=self.playwright_timeout)
-                except Exception as ex:
-                    # Do not hard fail; model may navigate itself
-                    print(f"[RequestParser][PLAYWRIGHT] goto failed (non-fatal): {ex}")
-
-            # Attach page to model
-            self._attach_playwright_page_to_model(page)
-
-            # Try run(page) first, fallback to run()
             try:
-                return self.model.run(page)
-            except TypeError:
-                return self.model.run()
+                page = context.new_page()
+
+                if url:
+                    try:
+                        page.goto(url, wait_until="domcontentloaded", timeout=self.playwright_timeout)
+                    except Exception as ex:
+                        # Do not hard fail; model may navigate itself
+                        print(f"[RequestParser][PLAYWRIGHT] goto failed (non-fatal): {ex}")
+
+                # Attach page to model
+                self._attach_playwright_page_to_model(page)
+
+                # Try run(page), run(), parse_leak_data(page) — whichever the model supports
+                try:
+                    return self.model.run(page)
+                except (TypeError, AttributeError):
+                    pass
+                except Exception as e:
+                    # Catch nested sync_playwright error from models that
+                    # manage their own browser
+                    if "Sync API" in str(e) and "asyncio" in str(e):
+                        print(f"[RequestParser][PLAYWRIGHT] model.run(page) nested sync_playwright detected — will retry outside wrapper")
+                        raise  # caught by outer handler below
+
+                try:
+                    return self.model.run()
+                except AttributeError:
+                    pass
+                except Exception as e:
+                    if "Sync API" in str(e) and "asyncio" in str(e):
+                        print(f"[RequestParser][PLAYWRIGHT] model.run() nested sync_playwright detected — will retry outside wrapper")
+                        raise
+
+                # Old-style leak scrapers only have parse_leak_data(page)
+                if hasattr(self.model, "parse_leak_data"):
+                    return self.model.parse_leak_data(page)
+
+                raise RuntimeError(f"Model {self.model.__class__.__name__} has no run() or parse_leak_data()")
             finally:
                 try:
                     context.close()
@@ -319,12 +363,37 @@ class RequestParser:
             # ✅ ADD: Playwright path (ONLY when explicitly configured)
             # =========================
             if self._wants_playwright():
-                raw_result = self._run_with_playwright()
+                # If the model has its own _run_playwright() method, it manages its
+                # own sync_playwright() context.  Wrapping it in ANOTHER
+                # sync_playwright() causes "Sync API inside asyncio loop" errors.
+                # → run the model directly and skip the outer wrapper.
+                if hasattr(self.model, '_run_playwright'):
+                    print("[RequestParser] Model has own _run_playwright — calling model.run() directly")
+                    raw_result = self.model.run()
+                else:
+                    try:
+                        raw_result = self._run_with_playwright()
+                    except Exception as pw_err:
+                        if "Sync API" in str(pw_err) and "asyncio" in str(pw_err):
+                            print("[RequestParser] Nested sync_playwright detected — retrying model.run() outside wrapper")
+                            raw_result = self.model.run()
+                        else:
+                            raise
             else:
                 # ✅ keep existing behavior exactly
                 raw_result = self.model.run()
 
             data = self._validate_output(raw_result)
+
+            # If run()/parse_leak_data() stored items internally, include them
+            if not data and hasattr(self.model, 'card_data') and self.model.card_data:
+                for card in self.model.card_data:
+                    if hasattr(card, 'to_dict'):
+                        data.append(card.to_dict())
+                    elif hasattr(card, '__dict__'):
+                        data.append(card.__dict__)
+                    elif isinstance(card, dict):
+                        data.append(card)
 
             meta["status"] = "success"
             meta["count"] = len(data)

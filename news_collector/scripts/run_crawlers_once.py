@@ -17,6 +17,8 @@ from news_collector.scripts._csocybercrime import _csocybercrime
 from news_collector.scripts._bleepingcomputer import _bleepingcomputer
 from news_collector.scripts._krebsonsecurity import _krebsonsecurity
 from news_collector.scripts._portswigger import _portswigger
+from news_collector.scripts._therecord import _therecord
+from news_collector.scripts._infosecuritymagazine import _infosecuritymagazine
 from config import cfg
 from logger import get_logger
 
@@ -41,12 +43,14 @@ def main():
     max_articles = cfg.max_articles
 
     log.info("=== Running news crawlers once ===")
-    run_one(_thehackernews(), "thehackernews", proxy=proxy, max_pages=1, max_articles=3)
-    run_one(_hackread(), "hackread", proxy=proxy, max_pages=1, max_articles=3)
-    run_one(_csocybercrime(), "csocybercrime", proxy=proxy, max_pages=1, max_articles=3)
-    run_one(_bleepingcomputer(), "bleepingcomputer", proxy=proxy, max_pages=1, max_articles=3)
-    run_one(_krebsonsecurity(), "krebsonsecurity", proxy=proxy, max_pages=1, max_articles=3)
-    run_one(_portswigger(), "portswigger", proxy=proxy, max_pages=1, max_articles=3)
+    run_one(_thehackernews(), "thehackernews", proxy=proxy, max_pages=max_pages, max_articles=max_articles)
+    run_one(_hackread(), "hackread", proxy=proxy, max_pages=max_pages, max_articles=max_articles)
+    run_one(_csocybercrime(), "csocybercrime", proxy=proxy, max_pages=max_pages, max_articles=max_articles)
+    run_one(_bleepingcomputer(), "bleepingcomputer", proxy=proxy, max_pages=max_pages, max_articles=max_articles)
+    run_one(_krebsonsecurity(), "krebsonsecurity", proxy=proxy, max_pages=max_pages, max_articles=max_articles)
+    run_one(_portswigger(), "portswigger", proxy=proxy, max_pages=max_pages, max_articles=max_articles)
+    run_one(_therecord(), "therecord", proxy=proxy, max_pages=max_pages, max_articles=max_articles)
+    run_one(_infosecuritymagazine(), "infosecuritymagazine", proxy=proxy, max_pages=max_pages, max_articles=max_articles)
     log.info("=== Done ===")
 
 

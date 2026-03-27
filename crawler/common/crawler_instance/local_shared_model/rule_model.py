@@ -4,6 +4,10 @@ from enum import Enum, auto
 class ThreatType(Enum):
     NEWS = auto()
     LEAK = auto()
+    DEFACEMENT = auto()
+    SOCIAL = auto()
+    API = auto()
+    EXPLOIT = auto()
 
 class FetchProxy(Enum):
     NONE = auto()
@@ -12,6 +16,7 @@ class FetchProxy(Enum):
 class FetchConfig(Enum):
     REQUESTS = auto()
     PLAYWRIGHT = auto()
+    PLAYRIGHT = auto()      # common typo alias — treat same as PLAYWRIGHT
 
 @dataclass
 class RuleModel:

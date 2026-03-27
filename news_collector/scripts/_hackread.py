@@ -60,8 +60,8 @@ class _hackread(leak_extractor_interface, ABC):
         self._raw_index_key = "HACKREAD:raw_index"
         self._processed_index_key = "HACKREAD:processed_index"
 
-        # optional: path to local Chromium (Windows)
-        self._chromium_exe = r"C:\Users\DELL\darkpulse\chromium-win64\chrome-win\chrome.exe"
+        # optional: path to local Chromium (None = use Playwright managed browser)
+        self._chromium_exe = None
 
         print("[HACKREAD] Initialized ✅ (pure Redis, no JSON)")
 
@@ -334,7 +334,7 @@ class _hackread(leak_extractor_interface, ABC):
 
     # ------- Playwright helpers -------------
     def _launch_browser(self, p, use_proxy: bool) -> Tuple[object, object]:
-        launch_kwargs = {"headless": False}
+        launch_kwargs = {"headless": True}
         if self._chromium_exe:
             launch_kwargs["executable_path"] = self._chromium_exe
         if use_proxy and (self._proxy or {}).get("server"):
@@ -398,28 +398,12 @@ class _hackread(leak_extractor_interface, ABC):
         all_links: Set[str] = set()
 
         with sync_playwright() as p:
-            # open first page
-            try:
-                browser, context = self._launch_browser(p, use_proxy=True)
-                page = context.new_page()
-                first_url = self._page_url(1)
-                print(f"[HACKREAD] Opening seed (proxy): {first_url}")
-                page.goto(first_url, timeout=60000, wait_until="load")
-            except Exception as ex:
-                print(f"[HACKREAD] Proxy navigation failed: {ex}. Retrying without proxy …")
-                try:
-                    context.close()
-                except Exception:
-                    pass
-                try:
-                    browser.close()
-                except Exception:
-                    pass
-                browser, context = self._launch_browser(p, use_proxy=False)
-                page = context.new_page()
-                first_url = self._page_url(1)
-                print(f"[HACKREAD] Opening seed (no proxy): {first_url}")
-                page.goto(first_url, timeout=60000, wait_until="load")
+            # Playwright doesn't support socks5h:// (needed for Tor DNS), so skip proxy
+            browser, context = self._launch_browser(p, use_proxy=False)
+            page = context.new_page()
+            first_url = self._page_url(1)
+            print(f"[HACKREAD] Opening seed: {first_url}")
+            page.goto(first_url, timeout=60000, wait_until="load")
 
             # iterate category pages deterministically
             for page_no in range(1, self._max_pages + 1):

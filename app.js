@@ -1,7 +1,7 @@
 /* ── CONFIG ─────────────────────────────────────────────────────── */
 const API_BASE = localStorage.getItem('darkpulse_base') || 'http://localhost:8000';
 const STORAGE_KEY = 'darkpulse_api_key';
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 100;
 const REFRESH_MS = 5 * 60 * 1000; // 5 minutes
 
 /* ── CATEGORY COLOURS ────────────────────────────────────────────── */
@@ -15,14 +15,23 @@ const CAT_COLOR = {
   'policy': '#3b82f6',
   'research': '#10b981',
   'scam': '#6366f1',
+  'exploit': '#e11d48',
+  'social': '#8b5cf6',
+  'leak': '#f43f5e',
+  'defacement': '#dc2626',
+  'threat': '#f97316',
   'other': '#64748b',
 };
 function catColor(label) { return CAT_COLOR[label?.toLowerCase()] || '#64748b'; }
 
 /* ── STATE ───────────────────────────────────────────────────────── */
-let allArticles = [];
+let allArticles = [];    // news articles
+let allThreats = [];     // exploit/social/leak/etc
 let offset = 0;
+let threatOffset = 0;
 let totalItems = 0;
+let totalThreats = 0;
+let activeTab = 'all';   // all | news | exploit | social | leak | defacement
 let activeFilters = { categories: new Set(), sources: new Set(), search: '', dateFrom: '', dateTo: '' };
 let refreshTimer = null;
 
@@ -113,13 +122,19 @@ function formatDate(iso) {
 }
 
 function buildCard(article) {
-  const { aid, url, seed_url, title, author, date, top_tag, categories = [], entities = [], summary, description } = article;
-  const color = catColor(top_tag);
-  const topCats = categories.slice(0, 2);
-  const orgPills = entities.filter(e => e.label === 'ORG').slice(0, 4);
-  const locPills = entities.filter(e => e.label === 'LOC').slice(0, 3);
+  const { aid, url, seed_url, title, author, date, scraped_at, top_tag, source_type, categories = [], entities = [], summary, description, source, network } = article;
+  const displayTag = top_tag || source_type || '';
+  const color = catColor(displayTag);
+  const topCats = (Array.isArray(categories) ? categories : []).slice(0, 2);
+  const entArr = Array.isArray(entities) ? entities : Object.entries(entities || {}).flatMap(([lbl, items]) => (items || []).map(i => ({ label: lbl, text: typeof i === 'string' ? i : i.text })));
+  const orgPills = entArr.filter(e => e.label === 'ORG').slice(0, 4);
+  const locPills = entArr.filter(e => e.label === 'LOC').slice(0, 3);
   const favicon = faviconUrl(seed_url || url);
-  const domain = domainFrom(seed_url || url);
+  const domain = source || domainFrom(seed_url || url);
+  const displayDate = date || scraped_at || '';
+
+  // Network badge for dark web items
+  const networkBadge = network && network !== 'clearnet' ? `<span class="tag-badge" style="color:#e11d48;border-color:#e11d48;font-size:.65rem">🧅 ${network}</span>` : '';
 
   const barsHtml = topCats.map(c => `
     <div class="conf-row">
@@ -144,17 +159,20 @@ function buildCard(article) {
         ${favicon ? `<img class="source-favicon" src="${favicon}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
         <span class="source-domain mono">${domain}</span>
       </div>
-      ${top_tag ? `<span class="tag-badge" style="color:${color};border-color:${color}">${top_tag}</span>` : ''}
+      <div style="display:flex;gap:.4rem;align-items:center">
+        ${networkBadge}
+        ${displayTag ? `<span class="tag-badge" style="color:${color};border-color:${color}">${displayTag}</span>` : ''}
+      </div>
     </div>
     <div class="card-title">${title || '(no title)'}</div>
     ${(summary || description) ? `
       <div class="card-summary-wrap">
-        <button class="ai-toggle" aria-expanded="false" aria-label="Toggle AI summary">⚡ AI Summary</button>
+        <button class="ai-toggle" aria-expanded="false" aria-label="Toggle summary">⚡ Summary</button>
         <p class="card-summary">${summary || description}</p>
       </div>` : ''}
     <div class="card-meta">
       ${author ? `<span class="card-meta-item">✍ ${author}</span>` : ''}
-      ${date ? `<span class="card-meta-item">📅 ${formatDate(date)}</span>` : ''}
+      ${displayDate ? `<span class="card-meta-item">📅 ${formatDate(displayDate)}</span>` : ''}
     </div>
     ${pillsHtml ? `<div class="entity-pills">${pillsHtml}</div>` : ''}
     ${barsHtml ? `<div class="conf-bars">${barsHtml}</div>` : ''}
@@ -276,16 +294,35 @@ $('saveSettingsBtn').addEventListener('click', () => {
 });
 
 /* ── STATS BAR ───────────────────────────────────────────────────── */
-function updateStats(articles) {
+async function updateStats(articles) {
+  // Fetch stats from backend
+  try {
+    const stats = await apiFetch('/stats', true);
+    statTotal.textContent = stats.total || articles.length;
+
+    // Update tab counts
+    const nc = document.getElementById('tabNewsCount');
+    const ec = document.getElementById('tabExploitCount');
+    const sc = document.getElementById('tabSocialCount');
+    const lc = document.getElementById('tabLeakCount');
+    const dc = document.getElementById('tabDefaceCount');
+    if (nc) nc.textContent = stats.news ? `(${stats.news})` : '';
+    if (ec) ec.textContent = stats.exploit ? `(${stats.exploit})` : '';
+    if (sc) sc.textContent = stats.social ? `(${stats.social})` : '';
+    if (lc) lc.textContent = stats.leak ? `(${stats.leak})` : '';
+    if (dc) dc.textContent = stats.defacement ? `(${stats.defacement})` : '';
+  } catch {
+    statTotal.textContent = articles.length;
+  }
+
   const today = new Date().toISOString().slice(0, 10);
-  const todayCount = articles.filter(a => a.date === today).length;
-  statTotal.textContent = totalItems || articles.length;
+  const todayCount = articles.filter(a => a.date === today || a.scraped_at === today).length;
   statToday.textContent = todayCount;
 
   // Count by category
   const counts = {};
   articles.forEach(a => {
-    const tag = a.top_tag;
+    const tag = a.top_tag || a.source_type;
     if (tag) counts[tag] = (counts[tag] || 0) + 1;
   });
   statTags.innerHTML = Object.entries(counts)
@@ -302,7 +339,10 @@ function updateStats(articles) {
 function buildSidebarFilters(articles) {
   // Categories
   const catCounts = {};
-  articles.forEach(a => { const t = a.top_tag; if (t) catCounts[t] = (catCounts[t] || 0) + 1; });
+  articles.forEach(a => {
+    const t = a.top_tag || a.source_type;
+    if (t) catCounts[t] = (catCounts[t] || 0) + 1;
+  });
   categoryFilters.innerHTML = Object.entries(catCounts)
     .sort((a, b) => b[1] - a[1])
     .map(([tag, n]) => `
@@ -322,7 +362,10 @@ function buildSidebarFilters(articles) {
 
   // Sources
   const srcCounts = {};
-  articles.forEach(a => { const d = domainFrom(a.seed_url || a.url); if (d) srcCounts[d] = (srcCounts[d] || 0) + 1; });
+  articles.forEach(a => {
+    const d = a.source || domainFrom(a.seed_url || a.url);
+    if (d) srcCounts[d] = (srcCounts[d] || 0) + 1;
+  });
   sourceFilters.innerHTML = Object.entries(srcCounts)
     .sort((a, b) => b[1] - a[1])
     .map(([src, n]) => `
@@ -348,13 +391,23 @@ function applyFilters() {
   const from = activeFilters.dateFrom;
   const to = activeFilters.dateTo;
 
-  const visible = allArticles.filter(a => {
-    if (cats.size && !cats.has(a.top_tag)) return false;
-    if (srcs.size && !srcs.has(domainFrom(a.seed_url || a.url))) return false;
-    if (from && a.date && a.date < from) return false;
-    if (to && a.date && a.date > to) return false;
+  // Merge data based on active tab
+  let pool;
+  if (activeTab === 'all') {
+    pool = [...allArticles, ...allThreats];
+  } else if (activeTab === 'news') {
+    pool = allArticles;
+  } else {
+    pool = allThreats.filter(t => t.source_type === activeTab);
+  }
+
+  const visible = pool.filter(a => {
+    if (cats.size && !cats.has(a.top_tag) && !cats.has(a.source_type)) return false;
+    if (srcs.size && !srcs.has(domainFrom(a.seed_url || a.url)) && !srcs.has(a.source)) return false;
+    if (from && (a.date || a.scraped_at) && (a.date || a.scraped_at) < from) return false;
+    if (to && (a.date || a.scraped_at) && (a.date || a.scraped_at) > to) return false;
     if (q) {
-      const hay = ((a.title || '') + ' ' + (a.description || '') + ' ' + (a.summary || '')).toLowerCase();
+      const hay = ((a.title || '') + ' ' + (a.description || '') + ' ' + (a.summary || '') + ' ' + (a.source || '')).toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -414,24 +467,39 @@ function showError(title, sub) {
 async function loadArticles(reset = false) {
   if (reset) {
     offset = 0;
+    threatOffset = 0;
     allArticles = [];
+    allThreats = [];
     renderSkeletons();
   }
 
   try {
-    const data = await apiFetch(`/news?limit=${PAGE_SIZE}&offset=${offset}`);
-    totalItems = data.total || 0;
-    const items = data.items || [];
-    allArticles = reset ? items : [...allArticles, ...items];
-    offset += items.length;
+    // Fetch news + threats in parallel
+    const [newsData, threatData] = await Promise.all([
+      apiFetch(`/news?limit=${PAGE_SIZE}&offset=${offset}`),
+      apiFetch(`/threats?limit=${PAGE_SIZE}&offset=${threatOffset}`).catch(() => ({ total: 0, items: [] })),
+    ]);
+
+    totalItems = newsData.total || 0;
+    totalThreats = threatData.total || 0;
+    const newsItems = newsData.items || [];
+    const threatItems = threatData.items || [];
+
+    allArticles = reset ? newsItems : [...allArticles, ...newsItems];
+    allThreats = reset ? threatItems : [...allThreats, ...threatItems];
+    offset += newsItems.length;
+    threatOffset += threatItems.length;
 
     showFeed();
-    buildSidebarFilters(allArticles);
-    updateStats(allArticles);
+    const combined = [...allArticles, ...allThreats];
+    buildSidebarFilters(combined);
+    updateStats(combined);
     applyFilters();
 
     // Load more button
-    if (offset < totalItems) {
+    const hasMoreNews = offset < totalItems;
+    const hasMoreThreats = threatOffset < totalThreats;
+    if (hasMoreNews || hasMoreThreats) {
       loadMoreBtn.classList.remove('hidden');
     } else {
       loadMoreBtn.classList.add('hidden');
@@ -449,6 +517,16 @@ async function loadArticles(reset = false) {
     }
   }
 }
+
+/* ── TAB SWITCHING ────────────────────────────────────────────────── */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeTab = btn.dataset.tab;
+    applyFilters();
+  });
+});
 
 /* ── LOAD MORE ────────────────────────────────────────────────────── */
 loadMoreBtn.addEventListener('click', () => loadArticles(false));

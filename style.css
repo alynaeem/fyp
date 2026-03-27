@@ -213,6 +213,41 @@ body {
 }
 .clear-btn:hover { border-color: var(--danger); color: var(--danger); }
 
+/* ── TAB BAR ─────────────────────────────────────────────────── */
+.tab-bar {
+  display: flex;
+  gap: .5rem;
+  padding: 0 1.5rem;
+  margin-bottom: .5rem;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  background: var(--surface);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: .45rem 1rem;
+  font-family: var(--sans);
+  font-size: .82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--trans);
+}
+.tab-btn:hover {
+  color: var(--text);
+  border-color: var(--border2);
+  background: var(--surface2);
+}
+.tab-btn.active {
+  color: var(--cyan);
+  border-color: var(--cyan);
+  background: var(--cyan-dim);
+}
+.tab-count {
+  font-size: .72rem;
+  opacity: .7;
+}
+
 /* ── FEED ─────────────────────────────────────────────────────── */
 .feed { padding: 1.25rem 1.5rem; position: relative; }
 

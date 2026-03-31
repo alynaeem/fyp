@@ -28,7 +28,7 @@ jobs:
           pip install \
             fastapi uvicorn pydantic python-dotenv \
             beautifulsoup4 requests redis \
-            apscheduler ruff
+            apscheduler ruff pymongo motor google-genai
 
       - name: Ruff lint check
         run: |

@@ -74,7 +74,10 @@ def _persist_model_data(collector_type: str, name: str, model, parsed_data=None)
     entity_prefix = f"{collector_type.upper()}_ENTITIES"
     written = 0
 
-    card_data = getattr(model, 'card_data', []) or []
+    card_data = (getattr(model, 'card_data', None)
+                 or getattr(model, 'cards_data', None)
+                 or getattr(model, 'apk_data', None)
+                 or [])
     entity_data = getattr(model, 'entity_data', []) or []
 
     # Fallback: if model didn't store in card_data but RequestParser returned data
@@ -374,6 +377,36 @@ def _run_api() -> None:
         ("pcgame_mod", _pcgame_mod),
         ("github_trivy", github_trivy_checker),
     ]
+
+    # --- SEO checker (standalone, not RequestParser-based) ---
+    try:
+        from api_collector.scripts.seo_checker import pagespeed_seo, URLS, API_KEY
+        seo_kv = _get_kv_collection()
+        seo_count = 0
+        for site_name, site_url in URLS.items():
+            try:
+                result = pagespeed_seo(site_url, API_KEY)
+                if result and not result.get("error"):
+                    d = {
+                        "m_app_name": f"SEO: {site_name}",
+                        "m_app_url": result.get("url", site_url),
+                        "m_description": f"SEO Score: {result.get('seoScore', 'N/A')}",
+                        "m_source": "seo_checker",
+                        "m_collector_type": "api",
+                        "m_network": "clearnet",
+                        "m_extra": result,
+                    }
+                    raw = json.dumps(d, ensure_ascii=False, default=str)
+                    h = hashlib.sha256(raw.encode()).hexdigest()[:16]
+                    key = f"API_ITEMS:{h}_seo_{site_name}"
+                    seo_kv.update_one({"_id": key}, {"$set": {"value": raw}}, upsert=True)
+                    seo_count += 1
+            except Exception as e:
+                log.warning(f"  [seo_checker/{site_name}] failed: {e}")
+        log.info(f"  [seo_checker] db_written={seo_count}")
+    except Exception as e:
+        log.error(f"  [seo_checker] failed: {e}", exc_info=True)
+
     for name, cls in sources:
         try:
             model = cls()

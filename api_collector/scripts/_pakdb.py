@@ -29,8 +29,8 @@ class _pakdb(api_collector_interface, ABC):
     _instance = None
 
     BASE_URL = "https://pakistandatabase.com/index.php"
-    TOR_SOCKS_PLAYWRIGHT = "socks5://127.0.0.1:9050"
-    TOR_SOCKS_REQUESTS = "socks5h://127.0.0.1:9050"
+    TOR_SOCKS_PLAYWRIGHT = "socks5://127.0.0.1:9150"
+    TOR_SOCKS_REQUESTS = "socks5h://127.0.0.1:9150"
 
     DEFAULT_TIMEOUT_SEC = 120000
 

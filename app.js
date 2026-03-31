@@ -18,6 +18,7 @@ const CAT_COLOR = {
   'exploit': '#e11d48',
   'social': '#8b5cf6',
   'leak': '#f43f5e',
+  'api': '#0ea5e9',
   'defacement': '#dc2626',
   'threat': '#f97316',
   'other': '#64748b',
@@ -134,7 +135,8 @@ function buildCard(article) {
   const displayDate = date || scraped_at || '';
 
   // Network badge for dark web items
-  const networkBadge = network && network !== 'clearnet' ? `<span class="tag-badge" style="color:#e11d48;border-color:#e11d48;font-size:.65rem">🧅 ${network}</span>` : '';
+  const networkStr = typeof network === 'object' ? (network.name || network.type || 'Tor') : network;
+  const networkBadge = networkStr && networkStr.toLowerCase() !== 'clearnet' ? `<span class="tag-badge" style="color:#e11d48;border-color:#e11d48;font-size:.65rem">🧅 ${networkStr}</span>` : '';
 
   const barsHtml = topCats.map(c => `
     <div class="conf-row">
@@ -196,7 +198,13 @@ function buildCard(article) {
 
 /* ── DETAIL MODAL ────────────────────────────────────────────────── */
 function openDetailModal(article) {
-  const { url, seed_url, title, author, date, top_tag, categories = [], entities = [], summary, description } = article;
+  const { url, seed_url, title, author, date, top_tag, categories = [], summary, description } = article;
+  const rawEntities = article.entities || {};
+  const entArr = Array.isArray(rawEntities)
+    ? rawEntities
+    : Object.entries(rawEntities).flatMap(([lbl, items]) =>
+        (items || []).map(i => ({ label: lbl, text: typeof i === 'string' ? i : i.text }))
+      );
   const color = catColor(top_tag);
   const domain = domainFrom(seed_url || url);
   const favicon = faviconUrl(seed_url || url);
@@ -216,7 +224,7 @@ function openDetailModal(article) {
 
   // Entities grouped
   const grouped = {};
-  entities.forEach(e => { (grouped[e.label] = grouped[e.label] || []).push(e); });
+  entArr.forEach(e => { if (e && e.label) { (grouped[e.label] = grouped[e.label] || []).push(e); } });
   const entityLabels = { ORG: 'Organizations', PER: 'People', LOC: 'Locations', MISC: 'Misc' };
   $('modalEntities').innerHTML = Object.entries(grouped).map(([lbl, items]) => `
     <div>
@@ -306,11 +314,13 @@ async function updateStats(articles) {
     const sc = document.getElementById('tabSocialCount');
     const lc = document.getElementById('tabLeakCount');
     const dc = document.getElementById('tabDefaceCount');
+    const ac = document.getElementById('tabApiCount');
     if (nc) nc.textContent = stats.news ? `(${stats.news})` : '';
     if (ec) ec.textContent = stats.exploit ? `(${stats.exploit})` : '';
     if (sc) sc.textContent = stats.social ? `(${stats.social})` : '';
     if (lc) lc.textContent = stats.leak ? `(${stats.leak})` : '';
     if (dc) dc.textContent = stats.defacement ? `(${stats.defacement})` : '';
+    if (ac) ac.textContent = stats.api ? `(${stats.api})` : '';
   } catch {
     statTotal.textContent = articles.length;
   }
@@ -343,14 +353,21 @@ function buildSidebarFilters(articles) {
     const t = a.top_tag || a.source_type;
     if (t) catCounts[t] = (catCounts[t] || 0) + 1;
   });
+  const maxCat = Math.max(1, ...Object.values(catCounts));
   categoryFilters.innerHTML = Object.entries(catCounts)
     .sort((a, b) => b[1] - a[1])
-    .map(([tag, n]) => `
-      <label class="filter-item">
-        <input type="checkbox" value="${tag}" ${activeFilters.categories.has(tag) ? 'checked' : ''} />
-        <span class="filter-item-label" style="color:${catColor(tag)}">${tag}</span>
-        <span class="filter-item-count">${n}</span>
-      </label>`).join('');
+    .map(([tag, n]) => {
+      const pct = (n / maxCat) * 100;
+      return `
+      <label class="filter-item" style="position:relative; z-index:1;">
+        <div style="position:absolute; left:0; top:0; bottom:0; width:${pct}%; background:${catColor(tag)}; opacity:0.15; border-radius:4px; z-index:-1; pointer-events:none;"></div>
+        <div style="display:flex; align-items:center; gap:.5rem; width:100%;">
+          <input type="checkbox" value="${tag}" ${activeFilters.categories.has(tag) ? 'checked' : ''} />
+          <span class="filter-item-label" style="color:${catColor(tag)}; font-weight:600;">${tag}</span>
+          <span class="filter-item-count">${n}</span>
+        </div>
+      </label>`;
+    }).join('');
 
   categoryFilters.querySelectorAll('input').forEach(cb => {
     cb.addEventListener('change', () => {
@@ -423,7 +440,64 @@ function applyFilters() {
 }
 
 /* ── FILTER EVENTS ───────────────────────────────────────────────── */
-searchInput.addEventListener('input', () => { activeFilters.search = searchInput.value; applyFilters(); });
+searchInput.addEventListener('keydown', async (e) => {
+  if (e.key === 'Enter') {
+    const q = searchInput.value.trim();
+    if (!q) {
+      activeFilters.search = '';
+      applyFilters();
+      return;
+    }
+
+    // Attempt NLQ if the query looks like a natural language sentence (e.g., more than 3 words)
+    // Or just always use NLQ for the command palette
+    activeFilters.search = q;
+    
+    // Show AI loading state
+    cardsGrid.innerHTML = '';
+    renderSkeletons(4);
+    
+    try {
+      const res = await fetch(getBase() + '/search/nlq', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-Key': getApiKey()
+        },
+        body: JSON.stringify({ query: q })
+      });
+      
+      if (!res.ok) {
+        // Fallback to local filter if NLQ endpoint fails
+        applyFilters();
+        return;
+      }
+      
+      const data = await res.json();
+      
+      // Clear feed and show AI results
+      cardsGrid.innerHTML = `<div style="grid-column: 1/-1; padding: 1rem; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--cyan); border-radius: var(--radius); margin-bottom: 1rem; color: var(--cyan); box-shadow: 0 0 15px var(--cyan-glow);">
+        <strong style="font-family: var(--mono); font-size: 1.1rem;">⚡ AI Analysis Complete</strong><br>
+        <span style="font-size: 0.85rem; color: var(--text);">Found ${data.count} exact matches across the intelligence feed mapping to: "${q}"</span>
+      </div>`;
+      
+      if (data.count === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        data.results.forEach((a, i) => {
+          const c = buildCard(a);
+          c.classList.add('new-item');
+          c.style.animationDelay = `${i * 0.05}s`;
+          cardsGrid.appendChild(c);
+        });
+      }
+      
+    } catch (err) {
+      applyFilters(); // fallback
+    }
+  }
+});
 dateFrom.addEventListener('change', () => { activeFilters.dateFrom = dateFrom.value; applyFilters(); });
 dateTo.addEventListener('change', () => { activeFilters.dateTo = dateTo.value; applyFilters(); });
 clearFilters.addEventListener('click', () => {
@@ -474,21 +548,23 @@ async function loadArticles(reset = false) {
   }
 
   try {
-    // Fetch news + threats in parallel
-    const [newsData, threatData] = await Promise.all([
+    // Fetch news + all threat types in parallel
+    const threatTypes = ['exploit', 'social', 'leak', 'defacement', 'api'];
+    const [newsData, ...threatResults] = await Promise.all([
       apiFetch(`/news?limit=${PAGE_SIZE}&offset=${offset}`),
-      apiFetch(`/threats?limit=${PAGE_SIZE}&offset=${threatOffset}`).catch(() => ({ total: 0, items: [] })),
+      ...threatTypes.map(t =>
+        apiFetch(`/threats?limit=${PAGE_SIZE}&offset=0&source_type=${t}`).catch(() => ({ total: 0, items: [] }))
+      ),
     ]);
 
     totalItems = newsData.total || 0;
-    totalThreats = threatData.total || 0;
     const newsItems = newsData.items || [];
-    const threatItems = threatData.items || [];
+    const threatItems = threatResults.flatMap(r => r.items || []);
+    totalThreats = threatItems.length;
 
     allArticles = reset ? newsItems : [...allArticles, ...newsItems];
     allThreats = reset ? threatItems : [...allThreats, ...threatItems];
     offset += newsItems.length;
-    threatOffset += threatItems.length;
 
     showFeed();
     const combined = [...allArticles, ...allThreats];
@@ -519,14 +595,571 @@ async function loadArticles(reset = false) {
 }
 
 /* ── TAB SWITCHING ────────────────────────────────────────────────── */
+const pakdbPanel = $('pakdbPanel');
+const githubPanel = $('githubPanel');
+const apkPanel = $('apkPanel');
+const pcgamePanel = $('pcgamePanel');
+const collectorPanels = [pakdbPanel, githubPanel, apkPanel, pcgamePanel];
+
+let _savedFeedDisplay = {};
+
+function hideAllCollectorPanels() {
+  collectorPanels.forEach(p => { if (p) p.classList.add('hidden'); });
+}
+
+function showCollectorPanel(panel, initFn) {
+  const feedEls = [cardsGrid, lockScreen, errorScreen, emptyState, $('loadMoreWrap')];
+  feedEls.forEach(el => {
+    if (!el) return;
+    _savedFeedDisplay[el.id] = el.classList.contains('hidden');
+    el.classList.add('hidden');
+  });
+  hideAllCollectorPanels();
+  panel.classList.remove('hidden');
+  if (initFn) initFn();
+}
+
+function restoreFeedView() {
+  hideAllCollectorPanels();
+  const feedEls = [cardsGrid, lockScreen, errorScreen, emptyState, $('loadMoreWrap')];
+  feedEls.forEach(el => {
+    if (!el) return;
+    if (_savedFeedDisplay[el.id] === false) el.classList.remove('hidden');
+  });
+  _savedFeedDisplay = {};
+}
+
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     activeTab = btn.dataset.tab;
-    applyFilters();
+    switch (activeTab) {
+      case 'pakdb':   showCollectorPanel(pakdbPanel, pakdbInit); break;
+      case 'github':  showCollectorPanel(githubPanel, githubInit); break;
+      case 'apk':     showCollectorPanel(apkPanel, apkInit); break;
+      case 'pcgame':  showCollectorPanel(pcgamePanel, pcgameInit); break;
+      default:
+        restoreFeedView();
+        applyFilters();
+    }
   });
 });
+
+/* ── PAKDB LOOKUP ─────────────────────────────────────────────────── */
+let pakdbInitialized = false;
+
+function pakdbInit() {
+  if (pakdbInitialized) return;
+  pakdbInitialized = true;
+
+  const input = $('pakdbInput');
+  const searchBtn = $('pakdbSearchBtn');
+  const cnicInput = $('pakdbCnicInput');
+  const cnicSearchBtn = $('pakdbCnicSearchBtn');
+  const clearAllBtn = $('pakdbClearAllBtn');
+  const status = $('pakdbStatus');
+  const results = $('pakdbResults');
+  const tbody = $('pakdbTableBody');
+  const resultsTitle = $('pakdbResultsTitle');
+  const historyList = $('pakdbHistoryList');
+
+  // Load history on first visit
+  pakdbLoadHistory(historyList);
+
+  // ── Phone search ──
+  async function doSearch() {
+    let number = input.value.trim();
+    if (!number) { input.focus(); return; }
+    if (number.startsWith('3') && number.length === 10) number = '0' + number;
+
+    searchBtn.disabled = true;
+    searchBtn.innerHTML = '<span class="pakdb-spinner"></span> Searching…';
+    status.classList.remove('hidden');
+    status.className = 'pakdb-status pakdb-status-loading';
+    status.innerHTML = '🔄 Connecting via Tor and scraping PakDB… This may take 30-120 seconds.';
+    results.classList.add('hidden');
+
+    try {
+      const base = getBase();
+      const res = await fetch(`${base}/pakdb/lookup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ number }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ detail: res.statusText }));
+        throw new Error(err.detail || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      if (data.count === 0) {
+        status.className = 'pakdb-status pakdb-status-warn';
+        status.innerHTML = `⚠️ No records found for <strong>${data.query}</strong>`;
+        results.classList.add('hidden');
+      } else {
+        status.className = 'pakdb-status pakdb-status-ok';
+        status.innerHTML = `✅ Found <strong>${data.count}</strong> record(s) for <strong>${data.query}</strong>`;
+        resultsTitle.textContent = `Results for ${data.query}`;
+        tbody.innerHTML = buildResultRows(data.results);
+        results.classList.remove('hidden');
+      }
+      pakdbLoadHistory(historyList);
+    } catch (err) {
+      status.className = 'pakdb-status pakdb-status-error';
+      status.innerHTML = `❌ Lookup failed: ${esc(err.message)}`;
+    } finally {
+      searchBtn.disabled = false;
+      searchBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search';
+    }
+  }
+
+  // ── CNIC / name search in history ──
+  async function doCnicSearch() {
+    const q = cnicInput.value.trim();
+    if (!q) { cnicInput.focus(); return; }
+    try {
+      const base = getBase();
+      const res = await fetch(`${base}/pakdb/search?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      if (!data.items || data.items.length === 0) {
+        historyList.innerHTML = `<p class="pakdb-no-history">No matches found for "<strong>${esc(q)}</strong>"</p>`;
+      } else {
+        renderHistoryItems(historyList, data.items);
+      }
+    } catch {
+      historyList.innerHTML = '<p class="pakdb-no-history">Search failed.</p>';
+    }
+  }
+
+  // ── Clear all history ──
+  async function doClearAll() {
+    if (!confirm('Clear all PakDB lookup history?')) return;
+    try {
+      const base = getBase();
+      await fetch(`${base}/pakdb/history`, { method: 'DELETE' });
+      pakdbLoadHistory(historyList);
+      status.classList.add('hidden');
+      results.classList.add('hidden');
+    } catch { /* ignore */ }
+  }
+
+  searchBtn.addEventListener('click', doSearch);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+  cnicSearchBtn.addEventListener('click', doCnicSearch);
+  cnicInput.addEventListener('keydown', e => { if (e.key === 'Enter') doCnicSearch(); });
+  clearAllBtn.addEventListener('click', doClearAll);
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+function buildResultRows(results) {
+  return results.map((r, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td><strong>${esc(r.name)}</strong></td>
+      <td><code>${esc(r.cnic)}</code></td>
+      <td>${esc(r.mobile)}</td>
+      <td>${esc(r.address)}</td>
+    </tr>
+  `).join('');
+}
+
+function renderHistoryItems(container, items) {
+  container.innerHTML = items.map(item => {
+    const ts = item.timestamp ? new Date(item.timestamp).toLocaleString() : '';
+    const hasResults = item.results && item.results.length > 0;
+    const resultsTable = hasResults ? `
+      <div class="pakdb-hist-detail hidden" data-detail="${item._id}">
+        <table class="pakdb-table pakdb-table-compact">
+          <thead><tr><th>#</th><th>Name</th><th>CNIC</th><th>Mobile</th><th>Address</th></tr></thead>
+          <tbody>${buildResultRows(item.results)}</tbody>
+        </table>
+      </div>
+    ` : '';
+    return `
+      <div class="pakdb-history-item" data-id="${item._id}">
+        <div class="pakdb-hist-main" onclick="pakdbToggleDetail('${item._id}')">
+          <div class="pakdb-history-query">
+            <span class="pakdb-history-num">📞 ${esc(item.query)}</span>
+            <span class="pakdb-history-count">${item.count} result(s)</span>
+            ${hasResults ? '<span class="pakdb-expand-icon">▶</span>' : ''}
+          </div>
+          <div class="pakdb-hist-right">
+            <span class="pakdb-history-time">${ts}</span>
+            <button class="pakdb-delete-btn" onclick="event.stopPropagation();pakdbDeleteItem('${item._id}')" title="Delete">✕</button>
+          </div>
+        </div>
+        ${resultsTable}
+      </div>
+    `;
+  }).join('');
+}
+
+// Global functions for onclick
+window.pakdbToggleDetail = function(id) {
+  const detail = document.querySelector(`[data-detail="${id}"]`);
+  const icon = document.querySelector(`[data-id="${id}"] .pakdb-expand-icon`);
+  if (!detail) return;
+  const open = !detail.classList.contains('hidden');
+  detail.classList.toggle('hidden');
+  if (icon) icon.textContent = open ? '▶' : '▼';
+};
+
+window.pakdbDeleteItem = async function(id) {
+  try {
+    const base = getBase();
+    await fetch(`${base}/pakdb/history/${id}`, { method: 'DELETE' });
+    const el = document.querySelector(`[data-id="${id}"]`);
+    if (el) el.remove();
+  } catch { /* ignore */ }
+};
+
+async function pakdbLoadHistory(container) {
+  try {
+    const base = getBase();
+    const res = await fetch(`${base}/pakdb/history?limit=50`);
+    const data = await res.json();
+    if (!data.items || data.items.length === 0) {
+      container.innerHTML = '<p class="pakdb-no-history">No lookup history yet.</p>';
+      return;
+    }
+    renderHistoryItems(container, data.items);
+  } catch {
+    container.innerHTML = '<p class="pakdb-no-history">Could not load history.</p>';
+  }
+}
+
+/* ── GITHUB TRIVY SCANNER ─────────────────────────────────────────── */
+let githubInitialized = false;
+
+function githubInit() {
+  if (githubInitialized) return;
+  githubInitialized = true;
+  const base = getBase();
+
+  $('githubScanBtn').addEventListener('click', async () => {
+    const url = $('githubInput').value.trim();
+    if (!url) return;
+    const status = $('githubStatus');
+    const results = $('githubResults');
+    status.textContent = '🔄 Scanning repository with Trivy... This may take a few minutes.';
+    status.className = 'pakdb-status';
+    results.classList.add('hidden');
+
+    try {
+      const res = await fetch(`${base}/github/scan`, {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ repo_url: url })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Scan failed');
+
+      status.textContent = `✅ Scan complete: ${data.count} findings`;
+      status.className = 'pakdb-status pakdb-status-ok';
+
+      // Render summary
+      const s = data.summary || {};
+      $('githubSummary').innerHTML = s.grade ? `
+        <div class="github-grade-row">
+          <span class="github-grade grade-${(s.grade || 'X')[0]}">${esc(s.grade)}</span>
+          <span>Risk Score: <strong>${s.risk_score || '—'}</strong></span>
+          <span>🔴 Critical: ${s.critical || 0}</span>
+          <span>🟠 High: ${s.high || 0}</span>
+          <span>🟡 Medium: ${s.medium || 0}</span>
+          <span>🟢 Low: ${s.low || 0}</span>
+          <span>🔑 Secrets: ${s.total_secrets || 0}</span>
+        </div>` : '';
+
+      // Render table
+      $('githubResultsTitle').textContent = `${data.count} Finding(s)`;
+      $('githubTableBody').innerHTML = (data.results || []).map((r, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${esc(r.name)}</td>
+          <td>${esc(r.package_id)}</td>
+          <td>${esc(r.version)}</td>
+          <td>${esc(r.description).substring(0, 100)}</td>
+        </tr>`).join('');
+      results.classList.remove('hidden');
+
+      githubLoadHistory($('githubHistoryList'));
+    } catch (e) {
+      status.textContent = `❌ ${e.message}`;
+      status.className = 'pakdb-status pakdb-status-err';
+    }
+  });
+
+  $('githubClearAllBtn').addEventListener('click', async () => {
+    // Clear all by deleting each item
+    const items = $('githubHistoryList').querySelectorAll('[data-id]');
+    for (const el of items) {
+      try { await fetch(`${base}/github/history/${el.dataset.id}`, { method: 'DELETE' }); } catch {}
+    }
+    githubLoadHistory($('githubHistoryList'));
+  });
+
+  githubLoadHistory($('githubHistoryList'));
+}
+
+async function githubLoadHistory(container) {
+  try {
+    const base = getBase();
+    const res = await fetch(`${base}/github/history?limit=50`);
+    const data = await res.json();
+    if (!data.items || data.items.length === 0) {
+      container.innerHTML = '<p class="pakdb-no-history">No scan history yet.</p>';
+      return;
+    }
+    container.innerHTML = data.items.map(item => {
+      const ts = item.timestamp ? new Date(item.timestamp).toLocaleString() : '';
+      const s = item.summary || {};
+      const grade = s.grade || '';
+      return `
+        <div class="pakdb-history-item" data-id="${item._id}">
+          <div class="pakdb-hist-main" onclick="collectorToggleDetail('${item._id}')">
+            <div class="pakdb-history-query">
+              <span class="pakdb-history-num">🔗 ${esc(item.query)}</span>
+              <span class="pakdb-history-count">${item.count} finding(s)</span>
+              ${grade ? `<span class="github-grade-sm grade-${grade[0]}">${grade}</span>` : ''}
+              ${item.count > 0 ? '<span class="pakdb-expand-icon">▶</span>' : ''}
+            </div>
+            <div class="pakdb-hist-right">
+              <span class="pakdb-history-time">${ts}</span>
+              <button class="pakdb-delete-btn" onclick="event.stopPropagation();collectorDeleteItem('github','${item._id}')" title="Delete">✕</button>
+            </div>
+          </div>
+          ${item.results && item.results.length > 0 ? `
+            <div class="pakdb-hist-detail hidden" data-detail="${item._id}">
+              <table class="pakdb-table pakdb-table-compact">
+                <thead><tr><th>#</th><th>Finding</th><th>Package</th><th>Version</th></tr></thead>
+                <tbody>${item.results.slice(0, 20).map((r, i) => `<tr><td>${i+1}</td><td>${esc(r.name)}</td><td>${esc(r.package_id)}</td><td>${esc(r.version)}</td></tr>`).join('')}</tbody>
+              </table>
+            </div>` : ''}
+        </div>`;
+    }).join('');
+  } catch {
+    container.innerHTML = '<p class="pakdb-no-history">Could not load history.</p>';
+  }
+}
+
+
+/* ── APK MOD SCANNER ──────────────────────────────────────────────── */
+let apkInitialized = false;
+
+function apkInit() {
+  if (apkInitialized) return;
+  apkInitialized = true;
+  const base = getBase();
+
+  $('apkScanBtn').addEventListener('click', async () => {
+    const url = $('apkInput').value.trim();
+    if (!url) return;
+    const status = $('apkStatus');
+    const results = $('apkResults');
+    status.textContent = '🔄 Scanning APK mirror sites... This may take a moment.';
+    status.className = 'pakdb-status';
+    results.classList.add('hidden');
+
+    try {
+      const res = await fetch(`${base}/apk/scan`, {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ playstore_url: url })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Scan failed');
+
+      status.textContent = `✅ Scan complete: ${data.count} APK sources found`;
+      status.className = 'pakdb-status pakdb-status-ok';
+
+      $('apkResultsTitle').textContent = `${data.count} APK Source(s)`;
+      $('apkTableBody').innerHTML = (data.results || []).map((r, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${esc(r.app_name)}</td>
+          <td class="mono" style="font-size:.75rem">${esc(r.package_id)}</td>
+          <td>${esc(r.version)}</td>
+          <td>${esc(r.source)}</td>
+          <td>${r.app_url ? `<a href="${esc(r.app_url)}" target="_blank" class="link-btn">Open ↗</a>` : '—'}</td>
+        </tr>`).join('');
+      results.classList.remove('hidden');
+
+      apkLoadHistory($('apkHistoryList'));
+    } catch (e) {
+      status.textContent = `❌ ${e.message}`;
+      status.className = 'pakdb-status pakdb-status-err';
+    }
+  });
+
+  $('apkClearAllBtn').addEventListener('click', async () => {
+    const items = $('apkHistoryList').querySelectorAll('[data-id]');
+    for (const el of items) {
+      try { await fetch(`${base}/apk/history/${el.dataset.id}`, { method: 'DELETE' }); } catch {}
+    }
+    apkLoadHistory($('apkHistoryList'));
+  });
+
+  apkLoadHistory($('apkHistoryList'));
+}
+
+async function apkLoadHistory(container) {
+  try {
+    const base = getBase();
+    const res = await fetch(`${base}/apk/history?limit=50`);
+    const data = await res.json();
+    if (!data.items || data.items.length === 0) {
+      container.innerHTML = '<p class="pakdb-no-history">No scan history yet.</p>';
+      return;
+    }
+    container.innerHTML = data.items.map(item => {
+      const ts = item.timestamp ? new Date(item.timestamp).toLocaleString() : '';
+      // Show abbreviated query (just the app ID)
+      const shortQ = item.query.includes('id=') ? item.query.split('id=')[1]?.split('&')[0] || item.query : item.query;
+      return `
+        <div class="pakdb-history-item" data-id="${item._id}">
+          <div class="pakdb-hist-main" onclick="collectorToggleDetail('${item._id}')">
+            <div class="pakdb-history-query">
+              <span class="pakdb-history-num">📦 ${esc(shortQ)}</span>
+              <span class="pakdb-history-count">${item.count} source(s)</span>
+              ${item.count > 0 ? '<span class="pakdb-expand-icon">▶</span>' : ''}
+            </div>
+            <div class="pakdb-hist-right">
+              <span class="pakdb-history-time">${ts}</span>
+              <button class="pakdb-delete-btn" onclick="event.stopPropagation();collectorDeleteItem('apk','${item._id}')" title="Delete">✕</button>
+            </div>
+          </div>
+          ${item.results && item.results.length > 0 ? `
+            <div class="pakdb-hist-detail hidden" data-detail="${item._id}">
+              <table class="pakdb-table pakdb-table-compact">
+                <thead><tr><th>#</th><th>App</th><th>Version</th><th>Source</th></tr></thead>
+                <tbody>${item.results.map((r, i) => `<tr><td>${i+1}</td><td>${esc(r.app_name)}</td><td>${esc(r.version)}</td><td>${esc(r.source)}</td></tr>`).join('')}</tbody>
+              </table>
+            </div>` : ''}
+        </div>`;
+    }).join('');
+  } catch {
+    container.innerHTML = '<p class="pakdb-no-history">Could not load history.</p>';
+  }
+}
+
+
+/* ── PC GAME SCANNER ──────────────────────────────────────────────── */
+let pcgameInitialized = false;
+
+function pcgameInit() {
+  if (pcgameInitialized) return;
+  pcgameInitialized = true;
+  const base = getBase();
+
+  $('pcgameScanBtn').addEventListener('click', async () => {
+    const name = $('pcgameInput').value.trim();
+    if (!name) return;
+    const status = $('pcgameStatus');
+    const results = $('pcgameResults');
+    status.textContent = '🔄 Searching Steam and PCGamingWiki...';
+    status.className = 'pakdb-status';
+    results.classList.add('hidden');
+
+    try {
+      const res = await fetch(`${base}/pcgame/scan`, {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ game_name: name })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Scan failed');
+
+      status.textContent = `✅ Search complete: ${data.count} results`;
+      status.className = 'pakdb-status pakdb-status-ok';
+
+      $('pcgameResultsTitle').textContent = `${data.count} Result(s) for "${esc(name)}"`;
+      $('pcgameTableBody').innerHTML = (data.results || []).map((r, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${esc(r.name)}</td>
+          <td>${esc(r.source)}</td>
+          <td>${r.score || '—'}</td>
+          <td>${r.pcgamingwiki ? `<a href="${esc(r.pcgamingwiki)}" target="_blank" class="link-btn">Wiki ↗</a>` : '—'}</td>
+          <td>${r.url ? `<a href="${esc(r.url)}" target="_blank" class="link-btn">Open ↗</a>` : '—'}</td>
+        </tr>`).join('');
+      results.classList.remove('hidden');
+
+      pcgameLoadHistory($('pcgameHistoryList'));
+    } catch (e) {
+      status.textContent = `❌ ${e.message}`;
+      status.className = 'pakdb-status pakdb-status-err';
+    }
+  });
+
+  $('pcgameClearAllBtn').addEventListener('click', async () => {
+    const items = $('pcgameHistoryList').querySelectorAll('[data-id]');
+    for (const el of items) {
+      try { await fetch(`${base}/pcgame/history/${el.dataset.id}`, { method: 'DELETE' }); } catch {}
+    }
+    pcgameLoadHistory($('pcgameHistoryList'));
+  });
+
+  pcgameLoadHistory($('pcgameHistoryList'));
+}
+
+async function pcgameLoadHistory(container) {
+  try {
+    const base = getBase();
+    const res = await fetch(`${base}/pcgame/history?limit=50`);
+    const data = await res.json();
+    if (!data.items || data.items.length === 0) {
+      container.innerHTML = '<p class="pakdb-no-history">No scan history yet.</p>';
+      return;
+    }
+    container.innerHTML = data.items.map(item => {
+      const ts = item.timestamp ? new Date(item.timestamp).toLocaleString() : '';
+      return `
+        <div class="pakdb-history-item" data-id="${item._id}">
+          <div class="pakdb-hist-main" onclick="collectorToggleDetail('${item._id}')">
+            <div class="pakdb-history-query">
+              <span class="pakdb-history-num">🎮 ${esc(item.query)}</span>
+              <span class="pakdb-history-count">${item.count} result(s)</span>
+              ${item.count > 0 ? '<span class="pakdb-expand-icon">▶</span>' : ''}
+            </div>
+            <div class="pakdb-hist-right">
+              <span class="pakdb-history-time">${ts}</span>
+              <button class="pakdb-delete-btn" onclick="event.stopPropagation();collectorDeleteItem('pcgame','${item._id}')" title="Delete">✕</button>
+            </div>
+          </div>
+          ${item.results && item.results.length > 0 ? `
+            <div class="pakdb-hist-detail hidden" data-detail="${item._id}">
+              <table class="pakdb-table pakdb-table-compact">
+                <thead><tr><th>#</th><th>Name</th><th>Source</th><th>Score</th></tr></thead>
+                <tbody>${item.results.map((r, i) => `<tr><td>${i+1}</td><td>${esc(r.name)}</td><td>${esc(r.source)}</td><td>${r.score || '—'}</td></tr>`).join('')}</tbody>
+              </table>
+            </div>` : ''}
+        </div>`;
+    }).join('');
+  } catch {
+    container.innerHTML = '<p class="pakdb-no-history">Could not load history.</p>';
+  }
+}
+
+/* ── SHARED COLLECTOR HELPERS ──────────────────────────────────────── */
+window.collectorToggleDetail = function(id) {
+  const detail = document.querySelector(`[data-detail="${id}"]`);
+  const icon = document.querySelector(`[data-id="${id}"] .pakdb-expand-icon`);
+  if (!detail) return;
+  const open = !detail.classList.contains('hidden');
+  detail.classList.toggle('hidden');
+  if (icon) icon.textContent = open ? '▶' : '▼';
+};
+
+window.collectorDeleteItem = async function(type, id) {
+  try {
+    const base = getBase();
+    await fetch(`${base}/${type}/history/${id}`, { method: 'DELETE' });
+    const el = document.querySelector(`[data-id="${id}"]`);
+    if (el) el.remove();
+  } catch { /* ignore */ }
+};
 
 /* ── LOAD MORE ────────────────────────────────────────────────────── */
 loadMoreBtn.addEventListener('click', () => loadArticles(false));
@@ -546,10 +1179,55 @@ document.addEventListener('keydown', e => {
   }
 });
 
+/* ── WEBSOCKET LIVE FEED ──────────────────────────────────────────── */
+let ws;
+function connectWebSocket() {
+  const key = getApiKey();
+  const wsUrl = getBase().replace(/^http/, 'ws') + '/live-feed' + (key ? `?api_key=${encodeURIComponent(key)}` : '');
+  ws = new WebSocket(wsUrl);
+  
+  ws.onmessage = (e) => {
+    try {
+      const article = JSON.parse(e.data);
+      // Ensure we don't duplicate
+      if (allThreats.some(t => t._id === article._id) || allArticles.some(a => a._id === article._id)) {
+        return;
+      }
+      
+      if (article.source_type === 'news') {
+        allArticles.unshift(article);
+        totalItems++;
+      } else {
+        allThreats.unshift(article);
+        totalThreats++;
+      }
+      
+      updateStats([...allArticles, ...allThreats]);
+      
+      // If it matches active filters/tab
+      const visible = (activeTab === 'all' || activeTab === article.source_type) && !activeFilters.search;
+      if (visible) {
+        emptyState.classList.add('hidden');
+        const card = buildCard(article);
+        card.classList.add('new-item');
+        cardsGrid.prepend(card);
+      }
+    } catch(err) {
+      console.error('WS Error parsing message', err);
+    }
+  };
+  
+  ws.onclose = () => {
+    console.log('WS disconnected. Reconnecting in 5s...');
+    setTimeout(connectWebSocket, 5000);
+  };
+}
+
 /* ── INIT ─────────────────────────────────────────────────────────── */
 async function init() {
   await checkHealth();
   await loadArticles(true);
+  connectWebSocket();
   scheduleRefresh();
 }
 

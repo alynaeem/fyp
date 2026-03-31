@@ -1,86 +1,135 @@
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/<CODACY_PROJECT_TOKEN>)](https://app.codacy.com/gh/<ORG_OR_USER>/<REPO_NAME>/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[![CodeQL Analysis](https://github.com/<ORG_OR_USER>/<REPO_NAME>/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/<ORG_OR_USER>/<REPO_NAME>/actions/workflows/github-code-scanning/codeql)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
-[![Docker](https://img.shields.io/badge/docker-ready-blue)](https://www.docker.com/)
-[![Trivy](https://img.shields.io/badge/security-trivy-success)](https://github.com/aquasecurity/trivy)
-
-![darkpulse](https://github.com/user-attachments/assets/<YOUR_IMAGE_ASSET_ID>)
+[![MongoDB](https://img.shields.io/badge/storage-MongoDB-green)](https://www.mongodb.com/)
 
 # DarkPulse
 
-**DOCUMENTATION:** https://<your-docs-link>.readthedocs.io  
-**Project:** DarkPulse is a modular OSINT / security automation platform that combines **collectors**, **crawlers**, **scanners (Trivy)**, and **data normalization** into a single workflow to collect, enrich, and assess security posture of targets.
-
-DarkPulse is designed for:
-- Automated collection from multiple sources (GitHub repos, Play Store -> APK sites, etc.)
-- Vulnerability & secret scanning (Trivy)
-- Structured export (JSON reports + UI cards)
-- Extensible plugin-style collector architecture
+**DarkPulse** is a modular OSINT / threat intelligence platform that collects, normalizes, and displays security data from multiple sources — news, exploits, leaks, defacements, social feeds, and PakDB SIM lookups.
 
 ---
 
-## 1. Repository Quality and Build Status
+## Quick Start (For Collaborators)
 
-| Component | CI / Quality | Security |
+### Prerequisites
+
+| Dependency | Required | Install |
 |---|---|---|
-| DarkPulse Core | [![CodeQL](https://github.com/<ORG_OR_USER>/<REPO_NAME>/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/<ORG_OR_USER>/<REPO_NAME>/actions/workflows/github-code-scanning/codeql) | Trivy + Custom grading |
-| Collectors | Codacy | Static scanning |
-| Crawler | - | - |
+| **Python 3.11+** | ✅ | [python.org](https://www.python.org/) or `conda create -n fyp_env python=3.11` |
+| **MongoDB 6+** | ✅ | `brew install mongodb-community` (macOS) or [mongodb.com](https://www.mongodb.com/try/download/community) |
+| **Tor Browser** | Optional | Needed for PakDB lookups — [torproject.org](https://www.torproject.org/) |
 
-> Add more rows as you expand modules.
+### Setup Steps
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/<your-username>/darkpulse.git
+cd darkpulse
+
+# 2. Create & activate Python environment
+conda create -n fyp_env python=3.11 -y
+conda activate fyp_env
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Install Playwright browsers (needed for PakDB)
+playwright install chromium
+
+# 5. Create your .env file
+cp .env.example .env
+# Edit .env — at minimum set MONGO_URI (default localhost is fine)
+
+# 6. Start MongoDB (if not already running)
+brew services start mongodb-community   # macOS
+# OR: mongod --dbpath /path/to/data      # manual
+
+# 7. Start the backend server
+python -m uvicorn ui_server:app --host 0.0.0.0 --port 8000
+
+# 8. Open http://localhost:8000 in your browser
+```
+
+### Data Population
+
+The dashboard needs data in MongoDB. To populate it:
+
+```bash
+# Run the orchestrator to collect from all sources
+conda activate fyp_env
+python orchestrator.py
+```
+
+This will scrape news, exploits, leaks, defacements, and social feeds into MongoDB.
 
 ---
 
-## 2. Technology Stack
+## Architecture
 
-DarkPulse is built using a practical security + scraping stack:
+```
+┌─────────────────────────────────────────────────┐
+│  Browser → http://localhost:8000                │
+│  (index.html + app.js + style.css)              │
+└────────────┬────────────────────────────────────┘
+             │ REST API
+┌────────────▼────────────────────────────────────┐
+│  ui_server.py (FastAPI + Uvicorn)               │
+│  - /news, /threats, /stats                      │
+│  - /pakdb/lookup, /pakdb/history, /pakdb/search │
+└────────────┬────────────────────────────────────┘
+             │
+┌────────────▼────────────────────────────────────┐
+│  MongoDB (darkpulse database)                   │
+│  - articles (news)                              │
+│  - redis_kv_store (threats/exploits/leaks)      │
+│  - pakdb_lookups (PakDB history)                │
+└─────────────────────────────────────────────────┘
+```
 
-![Python](https://badgen.net/badge/runtime/Python/blue)
-![Playwright](https://badgen.net/badge/scraping/Playwright/purple)
-![Requests](https://badgen.net/badge/http/Requests/green)
-![BeautifulSoup](https://badgen.net/badge/parser/BeautifulSoup/yellow)
-![Trivy](https://badgen.net/badge/security/Trivy/red)
-![Docker](https://badgen.net/badge/deploy/Docker/blue)
-![MongoDB](https://badgen.net/badge/storage/MongoDB/green)
-![Redis](https://badgen.net/badge/queue/Redis/red)
+## Dashboard Tabs
 
----
+| Tab | Source | Description |
+|---|---|---|
+| **News** | 8 news scrapers | Cybersecurity news articles |
+| **Exploits** | ExploitDB | CVEs and vulnerability exploits |
+| **Social** | Forums/channels | Social media threat intel |
+| **Leaks** | CERT feeds | Data leak advisories |
+| **Defacement** | Defacer.net, Zone-Xsec | Website defacement records |
+| **API** | GitHub, APK scanners | API collector results |
+| **PakDB** | pakistandatabase.com | SIM database lookups (requires Tor) |
 
-## 3. Features
+## Tech Stack
 
-### ✅ Collection
-- GitHub Repository cloning + scanning
-- Play Store → APK mirror sources lookup
-- Extensible collectors (drop-in scripts)
+- **Backend:** Python, FastAPI, Motor (async MongoDB), Playwright
+- **Frontend:** Vanilla HTML/CSS/JS (no framework)
+- **Database:** MongoDB
+- **Scraping:** BeautifulSoup, Requests, Playwright
+- **Proxy:** Tor (SOCKS5) for .onion and PakDB access
 
-### ✅ Security Scanning
-- Trivy filesystem scanning
-- Vulnerability + secret scanning
-- A→F grading & risk score summary
-- JSON reports saved per target
+## Project Structure
 
-### ✅ Output / Export
-- Structured JSON output
-- UI card metadata (`apk_model`)
-- Easy integration with your platform UI
-
----
-
-## 4. Project Structure
-
-```text
+```
 darkpulse/
-├─ api_collector/
-│  ├─ gitmain.py
-│  ├─ apkmain.py
-│  ├─ scripts/
-│  │  ├─ github_trivy_checker.py
-│  │  ├─ _apk_mod.py
-│  │  └─ ...
-│  └─ scripts/trivy_reports/
-├─ crawler/
-│  └─ common/...
-├─ .env
-├─ requirements.txt
-└─ README.md
+├── ui_server.py          # FastAPI backend (REST API)
+├── orchestrator.py       # Scheduled data collection
+├── config.py             # Centralized config (reads .env)
+├── index.html            # Dashboard UI
+├── app.js                # Frontend logic
+├── style.css             # Dashboard styling
+├── requirements.txt      # Python dependencies
+├── .env.example          # Environment variable template
+├── news_collector/       # News source scrapers
+├── leak_collector/       # Leak/CERT feed scrapers
+├── social_collector/     # Social platform scrapers
+├── api_collector/        # API-based collectors (GitHub, APK, PakDB)
+└── crawler/              # Generic web crawler
+```
+
+## Troubleshooting
+
+| Problem | Solution |
+|---|---|
+| **"Cannot reach backend"** | Make sure `python -m uvicorn ui_server:app --port 8000` is running |
+| **"Connection refused"** | Check MongoDB is running: `mongosh` or `brew services list` |
+| **Empty dashboard** | Run `python orchestrator.py` to populate data |
+| **PakDB "proxy connection failed"** | Open Tor Browser first (it runs on port 9150) |
+| **Import errors** | Activate conda env: `conda activate fyp_env` |

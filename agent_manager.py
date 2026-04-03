@@ -12,9 +12,15 @@ db = client[cfg.mongo_db]
 
 # The Janitor will move items from these collections to clean_intel
 SOURCE_COLLECTIONS = [
-    "news_items", "leak_items", "exploit_items", 
-    "defacement_items", "social_items", 
-    "github_scans", "apk_scans", "pcgame_scans"
+    "news_items",
+    "leak_items",
+    "exploit_items",
+    "defacement_items",
+    "social_items",
+    "api_items",
+    "github_scans",
+    "apk_scans",
+    "pcgame_scans",
 ]
 
 clean_intel_col = db["clean_intel"]
@@ -90,9 +96,34 @@ async def the_janitor():
                     
                     # 2. Extract standard fields safely based on source type
                     # For GitHub/APK/PCGame scans from api tab vs News/Leaks
-                    title = item.get("title") or item.get("m_title") or item.get("app_name") or item.get("repo_name") or "Untitled"
-                    url = item.get("url") or item.get("m_url") or item.get("seed_url") or item.get("html_url") or ""
-                    date = item.get("date") or item.get("scraped_at") or item.get("created_at") or time.strftime("%Y-%m-%d")
+                    title = (
+                        item.get("title")
+                        or item.get("m_title")
+                        or item.get("app_name")
+                        or item.get("m_app_name")
+                        or item.get("repo_name")
+                        or item.get("m_name")
+                        or "Untitled"
+                    )
+                    url = (
+                        item.get("url")
+                        or item.get("m_url")
+                        or item.get("m_app_url")
+                        or item.get("m_message_sharable_link")
+                        or item.get("m_channel_url")
+                        or item.get("seed_url")
+                        or item.get("html_url")
+                        or ""
+                    )
+                    date = (
+                        item.get("date")
+                        or item.get("m_leak_date")
+                        or item.get("m_message_date")
+                        or item.get("m_latest_date")
+                        or item.get("scraped_at")
+                        or item.get("created_at")
+                        or time.strftime("%Y-%m-%d")
+                    )
                     
                     source_type = col_name.replace("_items", "").replace("_scans", "")
                     

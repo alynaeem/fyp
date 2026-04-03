@@ -1,5 +1,6 @@
 numpy
 transformers
+sentence-transformers
 torch
 onnxruntime
 scikit-image

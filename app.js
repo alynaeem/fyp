@@ -1,1234 +1,774 @@
-/* ── CONFIG ─────────────────────────────────────────────────────── */
-const API_BASE = localStorage.getItem('darkpulse_base') || 'http://localhost:8000';
-const STORAGE_KEY = 'darkpulse_api_key';
-const PAGE_SIZE = 100;
-const REFRESH_MS = 5 * 60 * 1000; // 5 minutes
+const DEFAULT_API_BASE = window.location.origin && window.location.origin !== "null"
+  ? window.location.origin
+  : "http://localhost:8200";
 
-/* ── CATEGORY COLOURS ────────────────────────────────────────────── */
-const CAT_COLOR = {
-  'ransomware': '#ff4444',
-  'malware': '#f97316',
-  'phishing': '#a855f7',
-  'vulnerability': '#f59e0b',
-  'data breach': '#ef4444',
-  'exposure': '#ec4899',
-  'policy': '#3b82f6',
-  'research': '#10b981',
-  'scam': '#6366f1',
-  'exploit': '#e11d48',
-  'social': '#8b5cf6',
-  'leak': '#f43f5e',
-  'api': '#0ea5e9',
-  'defacement': '#dc2626',
-  'threat': '#f97316',
-  'other': '#64748b',
+const STORAGE_KEY = "darkpulse_api_key";
+const TOKEN_KEY = "darkpulse_token";
+const USER_ROLE_KEY = "darkpulse_role";
+const USER_NAME_KEY = "darkpulse_name";
+const API_BASE_KEY = "darkpulse_base";
+const PAGE_SIZE = 36;
+const REFRESH_MS = 2 * 60 * 1000;
+const SEARCH_DEBOUNCE_MS = 280;
+
+const TAB_SOURCE_MAP = {
+  all: "all",
+  news: "news",
+  leak: "leak",
+  defacement: "defacement",
+  social: "social",
+  exploit: "exploit",
+  api: "api",
+  forums: "social",
+  marketplaces: "leak",
+  github: "api",
+  apk: "api"
 };
-function catColor(label) { return CAT_COLOR[label?.toLowerCase()] || '#64748b'; }
 
-/* ── STATE ───────────────────────────────────────────────────────── */
-let allArticles = [];    // news articles
-let allThreats = [];     // exploit/social/leak/etc
-let offset = 0;
-let threatOffset = 0;
-let totalItems = 0;
-let totalThreats = 0;
-let activeTab = 'all';   // all | news | exploit | social | leak | defacement
-let activeFilters = { categories: new Set(), sources: new Set(), search: '', dateFrom: '', dateTo: '' };
-let refreshTimer = null;
+const VIEW_META = {
+  homepage: {
+    title: "Command Center",
+    subtitle: "Leaks and defacement activity are highlighted in red with restored MongoDB data behind the feed."
+  },
+  all: {
+    title: "Live Feed",
+    subtitle: "Every restored DarkPulse record across news, leaks, defacement, exploits, social, and API outputs."
+  },
+  news: {
+    title: "News Feed",
+    subtitle: "Security reporting and advisories with author data and raw JSON preserved."
+  },
+  leak: {
+    title: "Leak Feed",
+    subtitle: "Breach tracking, dumps, and disclosure activity with full record details."
+  },
+  defacement: {
+    title: "Defacement Feed",
+    subtitle: "Affected targets, attacker context, infrastructure hints, and raw record payloads."
+  },
+  exploit: {
+    title: "Exploit Feed",
+    subtitle: "Exploit publications, weaponization notes, and supporting metadata."
+  },
+  social: {
+    title: "Social Monitoring",
+    subtitle: "Forum and channel collection with actor, team, and linked source context."
+  },
+  api: {
+    title: "API and Scanner Output",
+    subtitle: "Collected API records and scanner artifacts from the restored database."
+  },
+  pakdb: {
+    title: "PakDB Lookup",
+    subtitle: "Search entity and phone data live from the connected backend."
+  },
+  "admin-users": {
+    title: "User Management",
+    subtitle: "Approve, reject, and review dashboard access."
+  }
+};
 
-/* ── DOM REFS ────────────────────────────────────────────────────── */
+const state = {
+  activeTab: "all",
+  currentView: "homepage",
+  offset: 0,
+  total: 0,
+  isRegistering: false,
+  refreshTimer: null,
+  mapInstance: null,
+  detailCache: new Map(),
+  countryStatsByCode: {}
+};
+
 const $ = id => document.getElementById(id);
-const cardsGrid = $('cardsGrid');
-const lockScreen = $('lockScreen');
-const errorScreen = $('errorScreen');
-const errorTitle = $('errorTitle');
-const errorSub = $('errorSub');
-const loadMoreBtn = $('loadMoreBtn');
-const loadMoreWrap = $('loadMoreWrap');
-const emptyState = $('emptyState');
-const statTotal = $('statTotal');
-const statToday = $('statToday');
-const statTags = $('statTags');
-const statusDot = $('statusDot');
-const statusText = $('statusText');
-const lastUpdated = $('lastUpdated');
-const settingsBtn = $('settingsBtn');
-const settingsBackdrop = $('settingsBackdrop');
-const detailBackdrop = $('detailBackdrop');
-const searchInput = $('searchInput');
-const dateFrom = $('dateFrom');
-const dateTo = $('dateTo');
-const categoryFilters = $('categoryFilters');
-const sourceFilters = $('sourceFilters');
-const clearFilters = $('clearFilters');
-const sidebarToggle = $('sidebarToggle');
-const sidebarBody = $('sidebarBody');
-const apiKeyInput = $('apiKeyInput');
-const apiBaseInput = $('apiBaseInput');
-const testResult = $('testResult');
 
-/* ── API HELPERS ─────────────────────────────────────────────────── */
-function getApiKey() { return localStorage.getItem(STORAGE_KEY) || ''; }
-function getBase() { return localStorage.getItem('darkpulse_base') || 'http://localhost:8000'; }
-
-async function apiFetch(path, noAuth = false) {
-  const headers = { 'Accept': 'application/json' };
-  const key = getApiKey();
-  if (!noAuth && key) headers['X-API-Key'] = key;
-  const res = await fetch(getBase() + path, { headers });
-  if (!res.ok) throw Object.assign(new Error(`HTTP ${res.status}`), { status: res.status });
-  return res.json();
+function debounce(fn, wait) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), wait);
+  };
 }
 
-/* ── HEALTH CHECK ────────────────────────────────────────────────── */
-async function checkHealth() {
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
+}
+
+function getBase() {
+  return localStorage.getItem(API_BASE_KEY) || DEFAULT_API_BASE;
+}
+
+function getToken() {
+  return localStorage.getItem(TOKEN_KEY) || "";
+}
+
+function currentSourceType() {
+  return TAB_SOURCE_MAP[state.activeTab] || state.activeTab || "all";
+}
+
+function formatDate(value) {
+  if (!value) return "Unknown";
+  const numeric = typeof value === "number" ? value : Number(value);
+  if (!Number.isNaN(numeric) && String(value).trim() !== "") {
+    const millis = numeric > 1_000_000_000_000 ? numeric : numeric * 1000;
+    const asDate = new Date(millis);
+    if (!Number.isNaN(asDate.getTime()) && asDate.getFullYear() > 2000) {
+      return asDate.toLocaleString();
+    }
+  }
+  const parsed = new Date(value);
+  if (!Number.isNaN(parsed.getTime())) return parsed.toLocaleString();
+  return String(value);
+}
+
+function humanViewName(viewName) {
+  const meta = VIEW_META[viewName];
+  return meta ? meta.title : "DarkPulse Feed";
+}
+
+function updateHeader(viewName) {
+  const meta = VIEW_META[viewName] || VIEW_META.all;
+  $("viewTitle").textContent = meta.title;
+  $("viewSubtitle").textContent = meta.subtitle;
+}
+
+function setLastUpdated() {
+  $("lastUpdated").textContent = `Updated ${new Date().toLocaleTimeString()}`;
+}
+
+async function apiFetch(path, noAuth = false, options = {}) {
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json"
+  };
+
+  const token = getToken();
+  const apiKey = localStorage.getItem(STORAGE_KEY) || "";
+  if (!noAuth && token) headers.Authorization = `Bearer ${token}`;
+  if (apiKey) headers["X-API-Key"] = apiKey;
+
+  const response = await fetch(getBase() + path, {
+    method: options.method || "GET",
+    headers,
+    body: options.body ? JSON.stringify(options.body) : undefined
+  });
+
+  if (response.status === 401 && !noAuth) {
+    handleLogout();
+    throw new Error("Session expired");
+  }
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.detail || `HTTP ${response.status}`);
+  return data;
+}
+
+async function checkAuth() {
+  const token = getToken();
+  const role = localStorage.getItem(USER_ROLE_KEY);
+  if (!token) {
+    $("loginBackdrop").classList.remove("hidden");
+    $("appWrapper").classList.add("hidden");
+    return false;
+  }
+
+  $("appWrapper").classList.remove("hidden");
+  $("loginBackdrop").classList.add("hidden");
+  $("currentUserName").textContent = localStorage.getItem(USER_NAME_KEY) || "User";
+  $("currentUserRole").textContent = role === "admin" ? "Administrator" : "Researcher";
+  $("sidebarNavItemUsers").style.display = role === "admin" ? "flex" : "none";
+  return true;
+}
+
+function handleLogout() {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_ROLE_KEY);
+  localStorage.removeItem(USER_NAME_KEY);
+  window.location.reload();
+}
+
+function toggleAuthMode() {
+  state.isRegistering = !state.isRegistering;
+  $("loginForm").classList.toggle("hidden", state.isRegistering);
+  $("registerForm").classList.toggle("hidden", !state.isRegistering);
+  $("authSubmitBtn").textContent = state.isRegistering ? "Request Access" : "Sign In";
+}
+
+function showError(id, message) {
+  const element = $(id);
+  element.textContent = message;
+  element.classList.remove("hidden");
+}
+
+function clearErrors() {
+  ["loginError", "registerError"].forEach(id => {
+    $(id).textContent = "";
+    $(id).classList.add("hidden");
+  });
+}
+
+async function handleAuthSubmit() {
+  clearErrors();
+  const button = $("authSubmitBtn");
+  const originalLabel = button.textContent;
+  button.disabled = true;
+
   try {
-    const data = await apiFetch('/health', true);
-    const ok = data.status === 'ok';
-    statusDot.className = 'status-dot ' + (ok ? 'ok' : 'error');
-    statusText.textContent = ok ? 'Connected' : 'Redis Unavailable';
-  } catch {
-    statusDot.className = 'status-dot error';
-    statusText.textContent = 'Offline';
+    if (state.isRegistering) {
+      await apiFetch("/auth/register", true, {
+        method: "POST",
+        body: {
+          username: $("regUsername").value.trim(),
+          password: $("regPassword").value,
+          email: $("regEmail").value.trim(),
+          name: $("regName").value.trim()
+        }
+      });
+      $("registerForm").innerHTML = "<div class='test-result'>Registration submitted. Wait for admin approval before signing in.</div>";
+      button.classList.add("hidden");
+      return;
+    }
+
+    const data = await apiFetch("/auth/login", true, {
+      method: "POST",
+      body: {
+        username: $("loginUsername").value.trim(),
+        password: $("loginPassword").value
+      }
+    });
+
+    localStorage.setItem(TOKEN_KEY, data.access_token);
+    localStorage.setItem(USER_ROLE_KEY, data.role);
+    localStorage.setItem(USER_NAME_KEY, $("loginUsername").value.trim());
+    window.location.reload();
+  } catch (error) {
+    showError(state.isRegistering ? "registerError" : "loginError", error.message);
+  } finally {
+    button.disabled = false;
+    button.textContent = originalLabel;
   }
 }
 
-/* ── SKELETON ────────────────────────────────────────────────────── */
-function renderSkeletons(n = 6) {
-  cardsGrid.innerHTML = Array.from({ length: n }, () => `
-    <div class="skeleton-card" aria-hidden="true">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div class="skel skel-sm" style="width:110px"></div>
-        <div class="skel skel-sm" style="width:70px"></div>
+function setActiveNavigation(target) {
+  document.querySelectorAll(".nav-item").forEach(item => {
+    const itemTarget = item.dataset.view || item.dataset.tab;
+    item.classList.toggle("active", itemTarget === target);
+  });
+}
+
+function buildFeedPath(limit = PAGE_SIZE, offset = state.offset, includeRaw = false) {
+  const params = new URLSearchParams({
+    limit: String(limit),
+    offset: String(offset)
+  });
+
+  const sourceType = currentSourceType();
+  if (sourceType && sourceType !== "all") params.set("source_type", sourceType);
+
+  const query = $("searchInput").value.trim();
+  if (query) params.set("q", query);
+  if (includeRaw) params.set("include_raw", "true");
+
+  return `/feed?${params.toString()}`;
+}
+
+function normalizeEntities(entities) {
+  if (Array.isArray(entities)) return entities;
+  if (!entities || typeof entities !== "object") return [];
+  return Object.entries(entities).flatMap(([label, value]) => {
+    if (Array.isArray(value)) return value.map(text => ({ label, text: String(text) }));
+    return [{ label, text: String(value) }];
+  });
+}
+
+function renderCountryImpactList(countries) {
+  const list = $("countryImpactList");
+  list.innerHTML = "";
+  if (!countries || countries.length === 0) {
+    list.innerHTML = "<div class='compact-item'><div class='compact-title'>No mapped countries found yet.</div></div>";
+    return;
+  }
+
+  countries.slice(0, 18).forEach(country => {
+    const row = document.createElement("div");
+    row.className = "country-row";
+    row.innerHTML = `
+      <div class="country-topline">
+        <span class="country-name">${escapeHtml(country.name)}</span>
+        <span class="country-total">${country.total}</span>
       </div>
-      <div class="skel skel-lg" style="width:90%"></div>
-      <div class="skel skel-md" style="width:75%"></div>
-      <div class="skel skel-sm" style="width:55%"></div>
+      <div class="country-breakdown">
+        <span class="count-chip">Leak <strong>${country.leak_count}</strong></span>
+        <span class="count-chip">Defacement <strong>${country.defacement_count}</strong></span>
+      </div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+async function initHeatmap() {
+  const payload = await apiFetch("/stats/map");
+  const countries = payload.countries || [];
+
+  $("impactCountriesCount").textContent = String(payload.summary?.affected_countries || countries.length || 0);
+  $("impactLeakCoverage").textContent = String(payload.summary?.leak_items_with_country || 0);
+  $("impactDefaceCoverage").textContent = String(payload.summary?.defacement_items_with_country || 0);
+
+  renderCountryImpactList(countries);
+  state.countryStatsByCode = Object.fromEntries(countries.map(country => [country.code, country]));
+
+  const mapValues = payload.map_data || {};
+  const container = $("worldMap");
+  container.innerHTML = "";
+
+  if (state.mapInstance && typeof state.mapInstance.destroy === "function") {
+    state.mapInstance.destroy();
+  }
+
+  state.mapInstance = new jsVectorMap({
+    selector: "#worldMap",
+    map: "world",
+    backgroundColor: "transparent",
+    regionStyle: {
+      initial: {
+        fill: "#18202f",
+        stroke: "#242f44",
+        strokeWidth: 0.5
+      },
+      hover: {
+        fill: "#ff6b57",
+        cursor: "pointer"
+      }
+    },
+    series: {
+      regions: [{
+        values: mapValues,
+        scale: ["#2b1115", "#7f1d1d", "#ef4444"],
+        normalizeFunction: "polynomial"
+      }]
+    },
+    onRegionTooltipShow(event, tooltip, code) {
+      const stats = state.countryStatsByCode[code];
+      if (!stats) {
+        tooltip.text(`${tooltip.text()} - no mapped leak or defacement count`);
+        return;
+      }
+      tooltip.html(`
+        <div>
+          <strong>${escapeHtml(stats.name)}</strong><br>
+          Leak count: ${stats.leak_count}<br>
+          Defacement count: ${stats.defacement_count}<br>
+          Total impact: ${stats.total}
+        </div>
+      `);
+    }
+  });
+}
+
+function createCompactItem(item) {
+  const element = document.createElement("div");
+  element.className = "compact-item";
+  element.addEventListener("click", () => showDetail(item.aid));
+  element.innerHTML = `
+    <div class="compact-item-header">
+      <span class="compact-badge">${escapeHtml(item.source_type || "intel")}</span>
+      <span class="compact-meta">${escapeHtml(formatDate(item.scraped_at || item.date))}</span>
     </div>
-  `).join('');
+    <div class="compact-title">${escapeHtml(item.title || "Untitled")}</div>
+    <div class="compact-item-footer">
+      <span class="compact-meta">${escapeHtml(item.source || "Unknown source")}</span>
+      <span class="compact-meta">${escapeHtml((item.country_names || []).join(", ") || item.ip_addresses || "")}</span>
+    </div>
+  `;
+  return element;
 }
 
-/* ── CARD RENDER ─────────────────────────────────────────────────── */
-function domainFrom(url) {
-  try { return new URL(url).hostname.replace('www.', ''); } catch { return url || '—'; }
-}
-function faviconUrl(url) {
-  try { const u = new URL(url); return `https://www.google.com/s2/favicons?domain=${u.hostname}&sz=32`; } catch { return ''; }
-}
-function formatDate(iso) {
-  if (!iso) return '';
-  try {
-    return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(iso));
-  } catch { return iso; }
+async function fetchRecentIntel() {
+  const data = await apiFetch("/feed?limit=8&offset=0");
+  const items = data.items || [];
+  const list = $("recentIntelList");
+  list.innerHTML = "";
+
+  items.forEach(item => {
+    state.detailCache.set(item.aid, item);
+    list.appendChild(createCompactItem(item));
+  });
 }
 
-function buildCard(article) {
-  const { aid, url, seed_url, title, author, date, scraped_at, top_tag, source_type, categories = [], entities = [], summary, description, source, network } = article;
-  const displayTag = top_tag || source_type || '';
-  const color = catColor(displayTag);
-  const topCats = (Array.isArray(categories) ? categories : []).slice(0, 2);
-  const entArr = Array.isArray(entities) ? entities : Object.entries(entities || {}).flatMap(([lbl, items]) => (items || []).map(i => ({ label: lbl, text: typeof i === 'string' ? i : i.text })));
-  const orgPills = entArr.filter(e => e.label === 'ORG').slice(0, 4);
-  const locPills = entArr.filter(e => e.label === 'LOC').slice(0, 3);
-  const favicon = faviconUrl(seed_url || url);
-  const domain = source || domainFrom(seed_url || url);
-  const displayDate = date || scraped_at || '';
+function buildCardChip(label, value) {
+  if (!value) return "";
+  return `<span class="card-chip">${escapeHtml(label)} <strong>${escapeHtml(value)}</strong></span>`;
+}
 
-  // Network badge for dark web items
-  const networkStr = typeof network === 'object' ? (network.name || network.type || 'Tor') : network;
-  const networkBadge = networkStr && networkStr.toLowerCase() !== 'clearnet' ? `<span class="tag-badge" style="color:#e11d48;border-color:#e11d48;font-size:.65rem">🧅 ${networkStr}</span>` : '';
+function renderCard(item) {
+  const card = document.createElement("article");
+  card.className = "intel-card";
+  card.addEventListener("click", () => showDetail(item.aid));
 
-  const barsHtml = topCats.map(c => `
-    <div class="conf-row">
-      <span class="conf-label">${c.label}</span>
-      <div class="conf-track"><div class="conf-fill" style="width:${Math.round(c.score * 100)}%;background:${catColor(c.label)}"></div></div>
-      <span class="conf-pct">${Math.round(c.score * 100)}%</span>
-    </div>`).join('');
+  const countryText = (item.country_names || []).join(", ");
+  const metaChips = [
+    buildCardChip("Author", item.author),
+    buildCardChip("Country", countryText),
+    buildCardChip("IPs", item.ip_addresses),
+    buildCardChip("Attacker", item.attacker),
+    buildCardChip("Team", item.team),
+    buildCardChip("Server", item.web_server)
+  ].filter(Boolean).join("");
 
-  const pillsHtml = [
-    ...orgPills.map(e => `<span class="pill pill-ORG">${e.text}</span>`),
-    ...locPills.map(e => `<span class="pill pill-LOC">${e.text}</span>`),
-  ].join('');
+  const categories = Array.isArray(item.categories)
+    ? item.categories.slice(0, 3).map(category => escapeHtml(category.label || "intel")).join(", ")
+    : "";
 
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.setAttribute('role', 'article');
-  card.setAttribute('aria-label', title);
-  card.dataset.aid = aid;
   card.innerHTML = `
     <div class="card-header">
-      <div class="card-source">
-        ${favicon ? `<img class="source-favicon" src="${favicon}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
-        <span class="source-domain mono">${domain}</span>
-      </div>
-      <div style="display:flex;gap:.4rem;align-items:center">
-        ${networkBadge}
-        ${displayTag ? `<span class="tag-badge" style="color:${color};border-color:${color}">${displayTag}</span>` : ''}
-      </div>
+      <span class="card-source">${escapeHtml(item.source_type || "intel")}</span>
+      <span class="card-status">${escapeHtml(categories || "active")}</span>
     </div>
-    <div class="card-title">${title || '(no title)'}</div>
-    ${(summary || description) ? `
-      <div class="card-summary-wrap">
-        <button class="ai-toggle" aria-expanded="false" aria-label="Toggle summary">⚡ Summary</button>
-        <p class="card-summary">${summary || description}</p>
-      </div>` : ''}
-    <div class="card-meta">
-      ${author ? `<span class="card-meta-item">✍ ${author}</span>` : ''}
-      ${displayDate ? `<span class="card-meta-item">📅 ${formatDate(displayDate)}</span>` : ''}
+    <h3 class="card-title">${escapeHtml(item.title || "Untitled")}</h3>
+    <p class="card-desc">${escapeHtml(item.description || item.summary || "No description available.")}</p>
+    <div class="card-chip-row">${metaChips || "<span class='card-chip'>Details <strong>Open full record</strong></span>"}</div>
+    <div class="card-footer">
+      <span>${escapeHtml(item.source || "Unknown source")}</span>
+      <span>${escapeHtml(formatDate(item.scraped_at || item.date))}</span>
     </div>
-    ${pillsHtml ? `<div class="entity-pills">${pillsHtml}</div>` : ''}
-    ${barsHtml ? `<div class="conf-bars">${barsHtml}</div>` : ''}
   `;
-
-  // AI toggle
-  const toggle = card.querySelector('.ai-toggle');
-  const summaryEl = card.querySelector('.card-summary');
-  if (toggle && summaryEl) {
-    toggle.addEventListener('click', e => {
-      e.stopPropagation();
-      const open = summaryEl.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', open);
-    });
-  }
-
-  // Open modal
-  card.addEventListener('click', () => openDetailModal(article));
   return card;
 }
 
-/* ── DETAIL MODAL ────────────────────────────────────────────────── */
-function openDetailModal(article) {
-  const { url, seed_url, title, author, date, top_tag, categories = [], summary, description } = article;
-  const rawEntities = article.entities || {};
-  const entArr = Array.isArray(rawEntities)
-    ? rawEntities
-    : Object.entries(rawEntities).flatMap(([lbl, items]) =>
-        (items || []).map(i => ({ label: lbl, text: typeof i === 'string' ? i : i.text }))
-      );
-  const color = catColor(top_tag);
-  const domain = domainFrom(seed_url || url);
-  const favicon = faviconUrl(seed_url || url);
-
-  $('modalSource').innerHTML = `
-    ${favicon ? `<img class="source-favicon" src="${favicon}" alt="" onerror="this.style.display='none'">` : ''}
-    <span>${domain}</span>`;
-  $('modalTopTag').innerHTML = top_tag
-    ? `<span class="tag-badge" style="color:${color};border-color:${color};font-size:.78rem">${top_tag}</span>` : '';
-  $('modalTitle').textContent = title || '(no title)';
-  $('modalMeta').innerHTML = [
-    author && `<span>✍ ${author}</span>`,
-    date && `<span>📅 ${formatDate(date)}</span>`,
-  ].filter(Boolean).join('');
-  $('modalSummary').textContent = summary || description || '(no summary available)';
-  $('modalReadBtn').href = url || '#';
-
-  // Entities grouped
-  const grouped = {};
-  entArr.forEach(e => { if (e && e.label) { (grouped[e.label] = grouped[e.label] || []).push(e); } });
-  const entityLabels = { ORG: 'Organizations', PER: 'People', LOC: 'Locations', MISC: 'Misc' };
-  $('modalEntities').innerHTML = Object.entries(grouped).map(([lbl, items]) => `
-    <div>
-      <div class="entity-group-label">${entityLabels[lbl] || lbl}</div>
-      <div class="entity-pills">${items.slice(0, 12).map(e => `<span class="pill pill-${lbl}">${e.text}</span>`).join('')}</div>
-    </div>`).join('');
-
-  // Categories
-  $('modalCategories').innerHTML = categories.map(c => `
-    <div class="conf-row" style="margin-bottom:.4rem">
-      <span class="conf-label">${c.label}</span>
-      <div class="conf-track"><div class="conf-fill" style="width:${Math.round(c.score * 100)}%;background:${catColor(c.label)}"></div></div>
-      <span class="conf-pct">${Math.round(c.score * 100)}%</span>
-    </div>`).join('');
-
-  detailBackdrop.classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-}
-function closeDetailModal() {
-  detailBackdrop.classList.add('hidden');
-  document.body.style.overflow = '';
-}
-$('detailClose').addEventListener('click', closeDetailModal);
-detailBackdrop.addEventListener('click', e => { if (e.target === detailBackdrop) closeDetailModal(); });
-
-/* ── SETTINGS MODAL ──────────────────────────────────────────────── */
-function openSettings() {
-  apiKeyInput.value = getApiKey();
-  apiBaseInput.value = getBase();
-  testResult.className = 'test-result';
-  testResult.textContent = '';
-  settingsBackdrop.classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-  apiKeyInput.focus();
-}
-function closeSettings() {
-  settingsBackdrop.classList.add('hidden');
-  document.body.style.overflow = '';
-}
-settingsBtn.addEventListener('click', openSettings);
-$('lockSettingsBtn').addEventListener('click', openSettings);
-$('settingsClose').addEventListener('click', closeSettings);
-settingsBackdrop.addEventListener('click', e => { if (e.target === settingsBackdrop) closeSettings(); });
-
-$('testConnBtn').addEventListener('click', async () => {
-  const key = apiKeyInput.value.trim();
-  const base = apiBaseInput.value.trim() || 'http://localhost:8000';
-  testResult.className = 'test-result';
-  testResult.textContent = 'Testing…';
-  try {
-    const res = await fetch(`${base}/news?limit=1`, { headers: { 'X-API-Key': key, 'Accept': 'application/json' } });
-    if (res.ok) {
-      testResult.className = 'test-result ok';
-      testResult.textContent = '✓ Connection successful';
-    } else if (res.status === 403) {
-      testResult.className = 'test-result err';
-      testResult.textContent = '✗ Invalid API key (403 Forbidden)';
-    } else {
-      testResult.className = 'test-result err';
-      testResult.textContent = `✗ Server returned ${res.status}`;
-    }
-  } catch (err) {
-    testResult.className = 'test-result err';
-    testResult.textContent = `✗ Cannot reach ${base}`;
-  }
-});
-
-$('saveSettingsBtn').addEventListener('click', () => {
-  const key = apiKeyInput.value.trim();
-  const base = apiBaseInput.value.trim() || 'http://localhost:8000';
-  localStorage.setItem(STORAGE_KEY, key);
-  localStorage.setItem('darkpulse_base', base);
-  closeSettings();
-  init();
-});
-
-/* ── STATS BAR ───────────────────────────────────────────────────── */
-async function updateStats(articles) {
-  // Fetch stats from backend
-  try {
-    const stats = await apiFetch('/stats', true);
-    statTotal.textContent = stats.total || articles.length;
-
-    // Update tab counts
-    const nc = document.getElementById('tabNewsCount');
-    const ec = document.getElementById('tabExploitCount');
-    const sc = document.getElementById('tabSocialCount');
-    const lc = document.getElementById('tabLeakCount');
-    const dc = document.getElementById('tabDefaceCount');
-    const ac = document.getElementById('tabApiCount');
-    if (nc) nc.textContent = stats.news ? `(${stats.news})` : '';
-    if (ec) ec.textContent = stats.exploit ? `(${stats.exploit})` : '';
-    if (sc) sc.textContent = stats.social ? `(${stats.social})` : '';
-    if (lc) lc.textContent = stats.leak ? `(${stats.leak})` : '';
-    if (dc) dc.textContent = stats.defacement ? `(${stats.defacement})` : '';
-    if (ac) ac.textContent = stats.api ? `(${stats.api})` : '';
-  } catch {
-    statTotal.textContent = articles.length;
-  }
-
-  const today = new Date().toISOString().slice(0, 10);
-  const todayCount = articles.filter(a => a.date === today || a.scraped_at === today).length;
-  statToday.textContent = todayCount;
-
-  // Count by category
-  const counts = {};
-  articles.forEach(a => {
-    const tag = a.top_tag || a.source_type;
-    if (tag) counts[tag] = (counts[tag] || 0) + 1;
-  });
-  statTags.innerHTML = Object.entries(counts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 8)
-    .map(([tag, n]) => `
-      <span class="stat-tag">
-        <span class="stat-tag-dot" style="background:${catColor(tag)}"></span>
-        ${tag} <strong>${n}</strong>
-      </span>`).join('');
-}
-
-/* ── FILTERS ─────────────────────────────────────────────────────── */
-function buildSidebarFilters(articles) {
-  // Categories
-  const catCounts = {};
-  articles.forEach(a => {
-    const t = a.top_tag || a.source_type;
-    if (t) catCounts[t] = (catCounts[t] || 0) + 1;
-  });
-  const maxCat = Math.max(1, ...Object.values(catCounts));
-  categoryFilters.innerHTML = Object.entries(catCounts)
-    .sort((a, b) => b[1] - a[1])
-    .map(([tag, n]) => {
-      const pct = (n / maxCat) * 100;
-      return `
-      <label class="filter-item" style="position:relative; z-index:1;">
-        <div style="position:absolute; left:0; top:0; bottom:0; width:${pct}%; background:${catColor(tag)}; opacity:0.15; border-radius:4px; z-index:-1; pointer-events:none;"></div>
-        <div style="display:flex; align-items:center; gap:.5rem; width:100%;">
-          <input type="checkbox" value="${tag}" ${activeFilters.categories.has(tag) ? 'checked' : ''} />
-          <span class="filter-item-label" style="color:${catColor(tag)}; font-weight:600;">${tag}</span>
-          <span class="filter-item-count">${n}</span>
-        </div>
-      </label>`;
-    }).join('');
-
-  categoryFilters.querySelectorAll('input').forEach(cb => {
-    cb.addEventListener('change', () => {
-      if (cb.checked) activeFilters.categories.add(cb.value);
-      else activeFilters.categories.delete(cb.value);
-      applyFilters();
-    });
-  });
-
-  // Sources
-  const srcCounts = {};
-  articles.forEach(a => {
-    const d = a.source || domainFrom(a.seed_url || a.url);
-    if (d) srcCounts[d] = (srcCounts[d] || 0) + 1;
-  });
-  sourceFilters.innerHTML = Object.entries(srcCounts)
-    .sort((a, b) => b[1] - a[1])
-    .map(([src, n]) => `
-      <label class="filter-item">
-        <input type="checkbox" value="${src}" ${activeFilters.sources.has(src) ? 'checked' : ''} />
-        <span class="filter-item-label mono" style="font-size:.78rem">${src}</span>
-        <span class="filter-item-count">${n}</span>
-      </label>`).join('');
-
-  sourceFilters.querySelectorAll('input').forEach(cb => {
-    cb.addEventListener('change', () => {
-      if (cb.checked) activeFilters.sources.add(cb.value);
-      else activeFilters.sources.delete(cb.value);
-      applyFilters();
-    });
-  });
-}
-
-function applyFilters() {
-  const q = activeFilters.search.toLowerCase();
-  const cats = activeFilters.categories;
-  const srcs = activeFilters.sources;
-  const from = activeFilters.dateFrom;
-  const to = activeFilters.dateTo;
-
-  // Merge data based on active tab
-  let pool;
-  if (activeTab === 'all') {
-    pool = [...allArticles, ...allThreats];
-  } else if (activeTab === 'news') {
-    pool = allArticles;
-  } else {
-    pool = allThreats.filter(t => t.source_type === activeTab);
-  }
-
-  const visible = pool.filter(a => {
-    if (cats.size && !cats.has(a.top_tag) && !cats.has(a.source_type)) return false;
-    if (srcs.size && !srcs.has(domainFrom(a.seed_url || a.url)) && !srcs.has(a.source)) return false;
-    if (from && (a.date || a.scraped_at) && (a.date || a.scraped_at) < from) return false;
-    if (to && (a.date || a.scraped_at) && (a.date || a.scraped_at) > to) return false;
-    if (q) {
-      const hay = ((a.title || '') + ' ' + (a.description || '') + ' ' + (a.summary || '') + ' ' + (a.source || '')).toLowerCase();
-      if (!hay.includes(q)) return false;
-    }
-    return true;
-  });
-
-  cardsGrid.innerHTML = '';
-  if (visible.length === 0) {
-    emptyState.classList.remove('hidden');
-  } else {
-    emptyState.classList.add('hidden');
-    visible.forEach(a => cardsGrid.appendChild(buildCard(a)));
-  }
-}
-
-/* ── FILTER EVENTS ───────────────────────────────────────────────── */
-searchInput.addEventListener('keydown', async (e) => {
-  if (e.key === 'Enter') {
-    const q = searchInput.value.trim();
-    if (!q) {
-      activeFilters.search = '';
-      applyFilters();
-      return;
-    }
-
-    // Attempt NLQ if the query looks like a natural language sentence (e.g., more than 3 words)
-    // Or just always use NLQ for the command palette
-    activeFilters.search = q;
-    
-    // Show AI loading state
-    cardsGrid.innerHTML = '';
-    renderSkeletons(4);
-    
-    try {
-      const res = await fetch(getBase() + '/search/nlq', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-Key': getApiKey()
-        },
-        body: JSON.stringify({ query: q })
-      });
-      
-      if (!res.ok) {
-        // Fallback to local filter if NLQ endpoint fails
-        applyFilters();
-        return;
-      }
-      
-      const data = await res.json();
-      
-      // Clear feed and show AI results
-      cardsGrid.innerHTML = `<div style="grid-column: 1/-1; padding: 1rem; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--cyan); border-radius: var(--radius); margin-bottom: 1rem; color: var(--cyan); box-shadow: 0 0 15px var(--cyan-glow);">
-        <strong style="font-family: var(--mono); font-size: 1.1rem;">⚡ AI Analysis Complete</strong><br>
-        <span style="font-size: 0.85rem; color: var(--text);">Found ${data.count} exact matches across the intelligence feed mapping to: "${q}"</span>
-      </div>`;
-      
-      if (data.count === 0) {
-        emptyState.classList.remove('hidden');
-      } else {
-        emptyState.classList.add('hidden');
-        data.results.forEach((a, i) => {
-          const c = buildCard(a);
-          c.classList.add('new-item');
-          c.style.animationDelay = `${i * 0.05}s`;
-          cardsGrid.appendChild(c);
-        });
-      }
-      
-    } catch (err) {
-      applyFilters(); // fallback
-    }
-  }
-});
-dateFrom.addEventListener('change', () => { activeFilters.dateFrom = dateFrom.value; applyFilters(); });
-dateTo.addEventListener('change', () => { activeFilters.dateTo = dateTo.value; applyFilters(); });
-clearFilters.addEventListener('click', () => {
-  activeFilters = { categories: new Set(), sources: new Set(), search: '', dateFrom: '', dateTo: '' };
-  searchInput.value = '';
-  dateFrom.value = '';
-  dateTo.value = '';
-  buildSidebarFilters(allArticles);
-  applyFilters();
-});
-
-/* ── SIDEBAR TOGGLE (mobile) ─────────────────────────────────────── */
-sidebarToggle.addEventListener('click', () => {
-  sidebarBody.classList.toggle('open');
-});
-
-/* ── SHOW / HIDE SCREENS ──────────────────────────────────────────── */
-function showFeed() {
-  lockScreen.classList.add('hidden');
-  errorScreen.classList.add('hidden');
-  cardsGrid.classList.remove('hidden');
-}
-function showLock() {
-  lockScreen.classList.remove('hidden');
-  errorScreen.classList.add('hidden');
-  cardsGrid.classList.add('hidden');
-  loadMoreBtn.classList.add('hidden');
-  emptyState.classList.add('hidden');
-}
-function showError(title, sub) {
-  errorTitle.textContent = title;
-  errorSub.textContent = sub;
-  errorScreen.classList.remove('hidden');
-  lockScreen.classList.add('hidden');
-  cardsGrid.classList.add('hidden');
-  loadMoreBtn.classList.add('hidden');
-  emptyState.classList.add('hidden');
-}
-
-/* ── LOAD ARTICLES ───────────────────────────────────────────────── */
 async function loadArticles(reset = false) {
   if (reset) {
-    offset = 0;
-    threatOffset = 0;
-    allArticles = [];
-    allThreats = [];
-    renderSkeletons();
+    state.offset = 0;
+    state.total = 0;
+    $("cardsGrid").innerHTML = "";
   }
+
+  const data = await apiFetch(buildFeedPath(PAGE_SIZE, state.offset));
+  const items = data.items || [];
+  const grid = $("cardsGrid");
+
+  if (reset && items.length === 0) {
+    $("emptyState").classList.remove("hidden");
+    $("loadMoreWrap").classList.add("hidden");
+    $("feedSummary").textContent = "0 results loaded";
+    return;
+  }
+
+  $("emptyState").classList.add("hidden");
+  items.forEach(item => {
+    state.detailCache.set(item.aid, item);
+    grid.appendChild(renderCard(item));
+  });
+
+  state.offset += items.length;
+  state.total = data.total || state.offset;
+  $("feedSummary").textContent = `${Math.min(state.offset, state.total)} of ${state.total} records loaded for ${humanViewName(state.activeTab)}`;
+  $("loadMoreWrap").classList.toggle("hidden", state.offset >= state.total);
+  setLastUpdated();
+}
+
+async function fetchStats() {
+  const data = await apiFetch("/stats");
+  const counts = data.counts || data;
+
+  $("statTotalCount").textContent = String(counts.total || 0);
+  $("statNewsCount").textContent = String(counts.news || 0);
+  $("statLeakCount").textContent = String(counts.leak || 0);
+  $("statDefaceCount").textContent = String(counts.defacement || 0);
+  $("statExploitCount").textContent = String(counts.exploit || 0);
+  $("statSocialCount").textContent = String(counts.social || 0);
+  $("statVulnCount").textContent = String(counts.api || 0);
+}
+
+function renderFacts(item) {
+  const facts = [
+    ["Author", item.author || "Unavailable"],
+    ["Source", item.source || "Unknown"],
+    ["Country", (item.country_names || []).join(", ") || "Unmapped"],
+    ["Network", item.network || "Unknown"],
+    ["IPs", item.ip_addresses || "None"],
+    ["Attacker", item.attacker || "Unknown"],
+    ["Team", item.team || "Unknown"],
+    ["Web Server", item.web_server || "Unknown"],
+    ["Published", formatDate(item.date || item.scraped_at)],
+    ["Seed URL", item.seed_url || "Unavailable"]
+  ];
+
+  $("modalFactGrid").innerHTML = facts.map(([label, value]) => `
+    <div class="fact-item">
+      <span class="fact-label">${escapeHtml(label)}</span>
+      <span class="fact-value">${escapeHtml(value)}</span>
+    </div>
+  `).join("");
+}
+
+function renderDetail(item) {
+  $("modalSource").textContent = (item.source_type || "intel").toUpperCase();
+  $("modalTopTag").textContent = item.top_tag || (item.country_names || []).join(", ") || "Live Record";
+  $("modalTitle").textContent = item.title || "Untitled";
+  $("modalMeta").innerHTML = `
+    <span>AID: ${escapeHtml(item.aid || "")}</span>
+    <span>Date: ${escapeHtml(formatDate(item.scraped_at || item.date))}</span>
+    <span>Source URL: ${escapeHtml(item.url || item.seed_url || "Unavailable")}</span>
+  `;
+
+  renderFacts(item);
+  $("modalSummary").textContent = item.description || item.summary || "No description available.";
+
+  const entities = normalizeEntities(item.entities);
+  $("modalEntitiesSection").classList.toggle("hidden", entities.length === 0);
+  $("modalEntities").innerHTML = entities.map(entity => `
+    <span class="entity-tag">${escapeHtml(entity.label || "entity")}: ${escapeHtml(entity.text || "")}</span>
+  `).join("");
+
+  const categories = Array.isArray(item.categories) ? item.categories : [];
+  $("modalCategories").innerHTML = categories.map(category => {
+    const score = typeof category.score === "number" ? ` (${Math.round(category.score * 100)}%)` : "";
+    return `<span class="entity-tag">${escapeHtml(category.label || "intel")}${escapeHtml(score)}</span>`;
+  }).join("");
+
+  $("modalRawJson").textContent = JSON.stringify(item.raw || item, null, 2);
+
+  const readButton = $("modalReadBtn");
+  readButton.href = item.url || "#";
+  readButton.style.pointerEvents = item.url ? "auto" : "none";
+  readButton.style.opacity = item.url ? "1" : "0.55";
+
+  $("modalJsonLink").href = `${getBase()}/feed/${encodeURIComponent(item.aid)}`;
+  $("detailBackdrop").classList.remove("hidden");
+}
+
+async function showDetail(aid) {
+  try {
+    let item = state.detailCache.get(aid);
+    if (!item || !item.raw) {
+      item = await apiFetch(`/feed/${encodeURIComponent(aid)}`);
+    }
+    state.detailCache.set(aid, item);
+    renderDetail(item);
+  } catch (error) {
+    window.alert(`Failed to load detail: ${error.message}`);
+  }
+}
+
+function closeDetailModal() {
+  $("detailBackdrop").classList.add("hidden");
+}
+
+async function refreshUserList() {
+  try {
+    const data = await apiFetch("/admin/users");
+    $("userTableBody").innerHTML = data.users.map(user => `
+      <tr>
+        <td>${escapeHtml(user.name || user.username)}</td>
+        <td>${escapeHtml(user.username)}</td>
+        <td>${escapeHtml(user.email || "")}</td>
+        <td>${escapeHtml(user.role || "user")}</td>
+        <td><span class="status-badge status-${escapeHtml(user.status)}">${escapeHtml(user.status)}</span></td>
+        <td>
+          ${user.status === "pending" ? `<button class="btn-secondary" onclick="approveUser('${escapeHtml(user.username)}')">Approve</button>` : ""}
+          <button class="btn-secondary" onclick="deleteUser('${escapeHtml(user.username)}')">Reject</button>
+        </td>
+      </tr>
+    `).join("");
+  } catch (error) {
+    $("userTableBody").innerHTML = `<tr><td colspan="6">${escapeHtml(error.message)}</td></tr>`;
+  }
+}
+
+window.approveUser = async username => {
+  await apiFetch(`/admin/users/${username}/approve`, false, { method: "POST" });
+  refreshUserList();
+};
+
+window.deleteUser = async username => {
+  await apiFetch(`/admin/users/${username}/reject`, false, { method: "POST" });
+  refreshUserList();
+};
+
+async function runPakdbLookup() {
+  const number = $("pakdbInput").value.trim();
+  if (!number) return;
+
+  $("pakdbStatus").textContent = "Searching PakDB...";
+  $("pakdbHistoryList").innerHTML = "";
 
   try {
-    // Fetch news + all threat types in parallel
-    const threatTypes = ['exploit', 'social', 'leak', 'defacement', 'api'];
-    const [newsData, ...threatResults] = await Promise.all([
-      apiFetch(`/news?limit=${PAGE_SIZE}&offset=${offset}`),
-      ...threatTypes.map(t =>
-        apiFetch(`/threats?limit=${PAGE_SIZE}&offset=0&source_type=${t}`).catch(() => ({ total: 0, items: [] }))
-      ),
-    ]);
+    const data = await apiFetch("/pakdb/lookup", false, {
+      method: "POST",
+      body: { number }
+    });
 
-    totalItems = newsData.total || 0;
-    const newsItems = newsData.items || [];
-    const threatItems = threatResults.flatMap(r => r.items || []);
-    totalThreats = threatItems.length;
-
-    allArticles = reset ? newsItems : [...allArticles, ...newsItems];
-    allThreats = reset ? threatItems : [...allThreats, ...threatItems];
-    offset += newsItems.length;
-
-    showFeed();
-    const combined = [...allArticles, ...allThreats];
-    buildSidebarFilters(combined);
-    updateStats(combined);
-    applyFilters();
-
-    // Load more button
-    const hasMoreNews = offset < totalItems;
-    const hasMoreThreats = threatOffset < totalThreats;
-    if (hasMoreNews || hasMoreThreats) {
-      loadMoreBtn.classList.remove('hidden');
-    } else {
-      loadMoreBtn.classList.add('hidden');
-    }
-
-    lastUpdated.textContent = 'Updated ' + new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' }).format(new Date());
-
-  } catch (err) {
-    if (err.status === 403) {
-      showLock();
-    } else if (err.message?.includes('Failed to fetch') || err.message?.includes('NetworkError')) {
-      showError('Cannot reach backend', `Check that the API is running at ${getBase()}.`);
-    } else {
-      showError('Something went wrong', err.message);
-    }
-  }
-}
-
-/* ── TAB SWITCHING ────────────────────────────────────────────────── */
-const pakdbPanel = $('pakdbPanel');
-const githubPanel = $('githubPanel');
-const apkPanel = $('apkPanel');
-const pcgamePanel = $('pcgamePanel');
-const collectorPanels = [pakdbPanel, githubPanel, apkPanel, pcgamePanel];
-
-let _savedFeedDisplay = {};
-
-function hideAllCollectorPanels() {
-  collectorPanels.forEach(p => { if (p) p.classList.add('hidden'); });
-}
-
-function showCollectorPanel(panel, initFn) {
-  const feedEls = [cardsGrid, lockScreen, errorScreen, emptyState, $('loadMoreWrap')];
-  feedEls.forEach(el => {
-    if (!el) return;
-    _savedFeedDisplay[el.id] = el.classList.contains('hidden');
-    el.classList.add('hidden');
-  });
-  hideAllCollectorPanels();
-  panel.classList.remove('hidden');
-  if (initFn) initFn();
-}
-
-function restoreFeedView() {
-  hideAllCollectorPanels();
-  const feedEls = [cardsGrid, lockScreen, errorScreen, emptyState, $('loadMoreWrap')];
-  feedEls.forEach(el => {
-    if (!el) return;
-    if (_savedFeedDisplay[el.id] === false) el.classList.remove('hidden');
-  });
-  _savedFeedDisplay = {};
-}
-
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeTab = btn.dataset.tab;
-    switch (activeTab) {
-      case 'pakdb':   showCollectorPanel(pakdbPanel, pakdbInit); break;
-      case 'github':  showCollectorPanel(githubPanel, githubInit); break;
-      case 'apk':     showCollectorPanel(apkPanel, apkInit); break;
-      case 'pcgame':  showCollectorPanel(pcgamePanel, pcgameInit); break;
-      default:
-        restoreFeedView();
-        applyFilters();
-    }
-  });
-});
-
-/* ── PAKDB LOOKUP ─────────────────────────────────────────────────── */
-let pakdbInitialized = false;
-
-function pakdbInit() {
-  if (pakdbInitialized) return;
-  pakdbInitialized = true;
-
-  const input = $('pakdbInput');
-  const searchBtn = $('pakdbSearchBtn');
-  const cnicInput = $('pakdbCnicInput');
-  const cnicSearchBtn = $('pakdbCnicSearchBtn');
-  const clearAllBtn = $('pakdbClearAllBtn');
-  const status = $('pakdbStatus');
-  const results = $('pakdbResults');
-  const tbody = $('pakdbTableBody');
-  const resultsTitle = $('pakdbResultsTitle');
-  const historyList = $('pakdbHistoryList');
-
-  // Load history on first visit
-  pakdbLoadHistory(historyList);
-
-  // ── Phone search ──
-  async function doSearch() {
-    let number = input.value.trim();
-    if (!number) { input.focus(); return; }
-    if (number.startsWith('3') && number.length === 10) number = '0' + number;
-
-    searchBtn.disabled = true;
-    searchBtn.innerHTML = '<span class="pakdb-spinner"></span> Searching…';
-    status.classList.remove('hidden');
-    status.className = 'pakdb-status pakdb-status-loading';
-    status.innerHTML = '🔄 Connecting via Tor and scraping PakDB… This may take 30-120 seconds.';
-    results.classList.add('hidden');
-
-    try {
-      const base = getBase();
-      const res = await fetch(`${base}/pakdb/lookup`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ number }),
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ detail: res.statusText }));
-        throw new Error(err.detail || `HTTP ${res.status}`);
-      }
-      const data = await res.json();
-      if (data.count === 0) {
-        status.className = 'pakdb-status pakdb-status-warn';
-        status.innerHTML = `⚠️ No records found for <strong>${data.query}</strong>`;
-        results.classList.add('hidden');
-      } else {
-        status.className = 'pakdb-status pakdb-status-ok';
-        status.innerHTML = `✅ Found <strong>${data.count}</strong> record(s) for <strong>${data.query}</strong>`;
-        resultsTitle.textContent = `Results for ${data.query}`;
-        tbody.innerHTML = buildResultRows(data.results);
-        results.classList.remove('hidden');
-      }
-      pakdbLoadHistory(historyList);
-    } catch (err) {
-      status.className = 'pakdb-status pakdb-status-error';
-      status.innerHTML = `❌ Lookup failed: ${esc(err.message)}`;
-    } finally {
-      searchBtn.disabled = false;
-      searchBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search';
-    }
-  }
-
-  // ── CNIC / name search in history ──
-  async function doCnicSearch() {
-    const q = cnicInput.value.trim();
-    if (!q) { cnicInput.focus(); return; }
-    try {
-      const base = getBase();
-      const res = await fetch(`${base}/pakdb/search?q=${encodeURIComponent(q)}`);
-      const data = await res.json();
-      if (!data.items || data.items.length === 0) {
-        historyList.innerHTML = `<p class="pakdb-no-history">No matches found for "<strong>${esc(q)}</strong>"</p>`;
-      } else {
-        renderHistoryItems(historyList, data.items);
-      }
-    } catch {
-      historyList.innerHTML = '<p class="pakdb-no-history">Search failed.</p>';
-    }
-  }
-
-  // ── Clear all history ──
-  async function doClearAll() {
-    if (!confirm('Clear all PakDB lookup history?')) return;
-    try {
-      const base = getBase();
-      await fetch(`${base}/pakdb/history`, { method: 'DELETE' });
-      pakdbLoadHistory(historyList);
-      status.classList.add('hidden');
-      results.classList.add('hidden');
-    } catch { /* ignore */ }
-  }
-
-  searchBtn.addEventListener('click', doSearch);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
-  cnicSearchBtn.addEventListener('click', doCnicSearch);
-  cnicInput.addEventListener('keydown', e => { if (e.key === 'Enter') doCnicSearch(); });
-  clearAllBtn.addEventListener('click', doClearAll);
-}
-
-function esc(s) {
-  const d = document.createElement('div');
-  d.textContent = s || '';
-  return d.innerHTML;
-}
-
-function buildResultRows(results) {
-  return results.map((r, i) => `
-    <tr>
-      <td>${i + 1}</td>
-      <td><strong>${esc(r.name)}</strong></td>
-      <td><code>${esc(r.cnic)}</code></td>
-      <td>${esc(r.mobile)}</td>
-      <td>${esc(r.address)}</td>
-    </tr>
-  `).join('');
-}
-
-function renderHistoryItems(container, items) {
-  container.innerHTML = items.map(item => {
-    const ts = item.timestamp ? new Date(item.timestamp).toLocaleString() : '';
-    const hasResults = item.results && item.results.length > 0;
-    const resultsTable = hasResults ? `
-      <div class="pakdb-hist-detail hidden" data-detail="${item._id}">
-        <table class="pakdb-table pakdb-table-compact">
-          <thead><tr><th>#</th><th>Name</th><th>CNIC</th><th>Mobile</th><th>Address</th></tr></thead>
-          <tbody>${buildResultRows(item.results)}</tbody>
-        </table>
-      </div>
-    ` : '';
-    return `
-      <div class="pakdb-history-item" data-id="${item._id}">
-        <div class="pakdb-hist-main" onclick="pakdbToggleDetail('${item._id}')">
-          <div class="pakdb-history-query">
-            <span class="pakdb-history-num">📞 ${esc(item.query)}</span>
-            <span class="pakdb-history-count">${item.count} result(s)</span>
-            ${hasResults ? '<span class="pakdb-expand-icon">▶</span>' : ''}
-          </div>
-          <div class="pakdb-hist-right">
-            <span class="pakdb-history-time">${ts}</span>
-            <button class="pakdb-delete-btn" onclick="event.stopPropagation();pakdbDeleteItem('${item._id}')" title="Delete">✕</button>
-          </div>
+    const items = data.items || [];
+    $("pakdbStatus").textContent = items.length ? `${items.length} result(s) returned.` : "No PakDB results found.";
+    $("pakdbHistoryList").innerHTML = items.map(item => `
+      <div class="compact-item">
+        <div class="compact-title">${escapeHtml(item.name || "Unknown")}</div>
+        <div class="compact-item-footer">
+          <span class="compact-meta">CNIC: ${escapeHtml(item.cnic || "-")}</span>
+          <span class="compact-meta">Mobile: ${escapeHtml(item.mobile || "-")}</span>
         </div>
-        ${resultsTable}
+        <div class="compact-meta">${escapeHtml(item.address || "")}</div>
       </div>
-    `;
-  }).join('');
-}
-
-// Global functions for onclick
-window.pakdbToggleDetail = function(id) {
-  const detail = document.querySelector(`[data-detail="${id}"]`);
-  const icon = document.querySelector(`[data-id="${id}"] .pakdb-expand-icon`);
-  if (!detail) return;
-  const open = !detail.classList.contains('hidden');
-  detail.classList.toggle('hidden');
-  if (icon) icon.textContent = open ? '▶' : '▼';
-};
-
-window.pakdbDeleteItem = async function(id) {
-  try {
-    const base = getBase();
-    await fetch(`${base}/pakdb/history/${id}`, { method: 'DELETE' });
-    const el = document.querySelector(`[data-id="${id}"]`);
-    if (el) el.remove();
-  } catch { /* ignore */ }
-};
-
-async function pakdbLoadHistory(container) {
-  try {
-    const base = getBase();
-    const res = await fetch(`${base}/pakdb/history?limit=50`);
-    const data = await res.json();
-    if (!data.items || data.items.length === 0) {
-      container.innerHTML = '<p class="pakdb-no-history">No lookup history yet.</p>';
-      return;
-    }
-    renderHistoryItems(container, data.items);
-  } catch {
-    container.innerHTML = '<p class="pakdb-no-history">Could not load history.</p>';
+    `).join("");
+  } catch (error) {
+    $("pakdbStatus").textContent = error.message;
   }
 }
 
-/* ── GITHUB TRIVY SCANNER ─────────────────────────────────────────── */
-let githubInitialized = false;
-
-function githubInit() {
-  if (githubInitialized) return;
-  githubInitialized = true;
-  const base = getBase();
-
-  $('githubScanBtn').addEventListener('click', async () => {
-    const url = $('githubInput').value.trim();
-    if (!url) return;
-    const status = $('githubStatus');
-    const results = $('githubResults');
-    status.textContent = '🔄 Scanning repository with Trivy... This may take a few minutes.';
-    status.className = 'pakdb-status';
-    results.classList.add('hidden');
-
-    try {
-      const res = await fetch(`${base}/github/scan`, {
-        method: 'POST', headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ repo_url: url })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || 'Scan failed');
-
-      status.textContent = `✅ Scan complete: ${data.count} findings`;
-      status.className = 'pakdb-status pakdb-status-ok';
-
-      // Render summary
-      const s = data.summary || {};
-      $('githubSummary').innerHTML = s.grade ? `
-        <div class="github-grade-row">
-          <span class="github-grade grade-${(s.grade || 'X')[0]}">${esc(s.grade)}</span>
-          <span>Risk Score: <strong>${s.risk_score || '—'}</strong></span>
-          <span>🔴 Critical: ${s.critical || 0}</span>
-          <span>🟠 High: ${s.high || 0}</span>
-          <span>🟡 Medium: ${s.medium || 0}</span>
-          <span>🟢 Low: ${s.low || 0}</span>
-          <span>🔑 Secrets: ${s.total_secrets || 0}</span>
-        </div>` : '';
-
-      // Render table
-      $('githubResultsTitle').textContent = `${data.count} Finding(s)`;
-      $('githubTableBody').innerHTML = (data.results || []).map((r, i) => `
-        <tr>
-          <td>${i + 1}</td>
-          <td>${esc(r.name)}</td>
-          <td>${esc(r.package_id)}</td>
-          <td>${esc(r.version)}</td>
-          <td>${esc(r.description).substring(0, 100)}</td>
-        </tr>`).join('');
-      results.classList.remove('hidden');
-
-      githubLoadHistory($('githubHistoryList'));
-    } catch (e) {
-      status.textContent = `❌ ${e.message}`;
-      status.className = 'pakdb-status pakdb-status-err';
-    }
-  });
-
-  $('githubClearAllBtn').addEventListener('click', async () => {
-    // Clear all by deleting each item
-    const items = $('githubHistoryList').querySelectorAll('[data-id]');
-    for (const el of items) {
-      try { await fetch(`${base}/github/history/${el.dataset.id}`, { method: 'DELETE' }); } catch {}
-    }
-    githubLoadHistory($('githubHistoryList'));
-  });
-
-  githubLoadHistory($('githubHistoryList'));
-}
-
-async function githubLoadHistory(container) {
+async function checkHealth() {
   try {
-    const base = getBase();
-    const res = await fetch(`${base}/github/history?limit=50`);
-    const data = await res.json();
-    if (!data.items || data.items.length === 0) {
-      container.innerHTML = '<p class="pakdb-no-history">No scan history yet.</p>';
-      return;
-    }
-    container.innerHTML = data.items.map(item => {
-      const ts = item.timestamp ? new Date(item.timestamp).toLocaleString() : '';
-      const s = item.summary || {};
-      const grade = s.grade || '';
-      return `
-        <div class="pakdb-history-item" data-id="${item._id}">
-          <div class="pakdb-hist-main" onclick="collectorToggleDetail('${item._id}')">
-            <div class="pakdb-history-query">
-              <span class="pakdb-history-num">🔗 ${esc(item.query)}</span>
-              <span class="pakdb-history-count">${item.count} finding(s)</span>
-              ${grade ? `<span class="github-grade-sm grade-${grade[0]}">${grade}</span>` : ''}
-              ${item.count > 0 ? '<span class="pakdb-expand-icon">▶</span>' : ''}
-            </div>
-            <div class="pakdb-hist-right">
-              <span class="pakdb-history-time">${ts}</span>
-              <button class="pakdb-delete-btn" onclick="event.stopPropagation();collectorDeleteItem('github','${item._id}')" title="Delete">✕</button>
-            </div>
-          </div>
-          ${item.results && item.results.length > 0 ? `
-            <div class="pakdb-hist-detail hidden" data-detail="${item._id}">
-              <table class="pakdb-table pakdb-table-compact">
-                <thead><tr><th>#</th><th>Finding</th><th>Package</th><th>Version</th></tr></thead>
-                <tbody>${item.results.slice(0, 20).map((r, i) => `<tr><td>${i+1}</td><td>${esc(r.name)}</td><td>${esc(r.package_id)}</td><td>${esc(r.version)}</td></tr>`).join('')}</tbody>
-              </table>
-            </div>` : ''}
-        </div>`;
-    }).join('');
-  } catch {
-    container.innerHTML = '<p class="pakdb-no-history">Could not load history.</p>';
+    const data = await apiFetch("/health", true);
+    $("statusDot").className = `status-dot ${data.status === "ok" ? "ok" : "error"}`;
+    $("statusText").textContent = data.status === "ok" ? "Connected" : "Degraded";
+  } catch (error) {
+    $("statusDot").className = "status-dot error";
+    $("statusText").textContent = "Offline";
   }
 }
 
+async function switchView(target) {
+  state.currentView = target;
+  updateHeader(target);
+  setActiveNavigation(target);
 
-/* ── APK MOD SCANNER ──────────────────────────────────────────────── */
-let apkInitialized = false;
+  document.querySelectorAll(".view-panel").forEach(panel => panel.classList.add("hidden"));
 
-function apkInit() {
-  if (apkInitialized) return;
-  apkInitialized = true;
-  const base = getBase();
-
-  $('apkScanBtn').addEventListener('click', async () => {
-    const url = $('apkInput').value.trim();
-    if (!url) return;
-    const status = $('apkStatus');
-    const results = $('apkResults');
-    status.textContent = '🔄 Scanning APK mirror sites... This may take a moment.';
-    status.className = 'pakdb-status';
-    results.classList.add('hidden');
-
-    try {
-      const res = await fetch(`${base}/apk/scan`, {
-        method: 'POST', headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ playstore_url: url })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || 'Scan failed');
-
-      status.textContent = `✅ Scan complete: ${data.count} APK sources found`;
-      status.className = 'pakdb-status pakdb-status-ok';
-
-      $('apkResultsTitle').textContent = `${data.count} APK Source(s)`;
-      $('apkTableBody').innerHTML = (data.results || []).map((r, i) => `
-        <tr>
-          <td>${i + 1}</td>
-          <td>${esc(r.app_name)}</td>
-          <td class="mono" style="font-size:.75rem">${esc(r.package_id)}</td>
-          <td>${esc(r.version)}</td>
-          <td>${esc(r.source)}</td>
-          <td>${r.app_url ? `<a href="${esc(r.app_url)}" target="_blank" class="link-btn">Open ↗</a>` : '—'}</td>
-        </tr>`).join('');
-      results.classList.remove('hidden');
-
-      apkLoadHistory($('apkHistoryList'));
-    } catch (e) {
-      status.textContent = `❌ ${e.message}`;
-      status.className = 'pakdb-status pakdb-status-err';
-    }
-  });
-
-  $('apkClearAllBtn').addEventListener('click', async () => {
-    const items = $('apkHistoryList').querySelectorAll('[data-id]');
-    for (const el of items) {
-      try { await fetch(`${base}/apk/history/${el.dataset.id}`, { method: 'DELETE' }); } catch {}
-    }
-    apkLoadHistory($('apkHistoryList'));
-  });
-
-  apkLoadHistory($('apkHistoryList'));
-}
-
-async function apkLoadHistory(container) {
-  try {
-    const base = getBase();
-    const res = await fetch(`${base}/apk/history?limit=50`);
-    const data = await res.json();
-    if (!data.items || data.items.length === 0) {
-      container.innerHTML = '<p class="pakdb-no-history">No scan history yet.</p>';
-      return;
-    }
-    container.innerHTML = data.items.map(item => {
-      const ts = item.timestamp ? new Date(item.timestamp).toLocaleString() : '';
-      // Show abbreviated query (just the app ID)
-      const shortQ = item.query.includes('id=') ? item.query.split('id=')[1]?.split('&')[0] || item.query : item.query;
-      return `
-        <div class="pakdb-history-item" data-id="${item._id}">
-          <div class="pakdb-hist-main" onclick="collectorToggleDetail('${item._id}')">
-            <div class="pakdb-history-query">
-              <span class="pakdb-history-num">📦 ${esc(shortQ)}</span>
-              <span class="pakdb-history-count">${item.count} source(s)</span>
-              ${item.count > 0 ? '<span class="pakdb-expand-icon">▶</span>' : ''}
-            </div>
-            <div class="pakdb-hist-right">
-              <span class="pakdb-history-time">${ts}</span>
-              <button class="pakdb-delete-btn" onclick="event.stopPropagation();collectorDeleteItem('apk','${item._id}')" title="Delete">✕</button>
-            </div>
-          </div>
-          ${item.results && item.results.length > 0 ? `
-            <div class="pakdb-hist-detail hidden" data-detail="${item._id}">
-              <table class="pakdb-table pakdb-table-compact">
-                <thead><tr><th>#</th><th>App</th><th>Version</th><th>Source</th></tr></thead>
-                <tbody>${item.results.map((r, i) => `<tr><td>${i+1}</td><td>${esc(r.app_name)}</td><td>${esc(r.version)}</td><td>${esc(r.source)}</td></tr>`).join('')}</tbody>
-              </table>
-            </div>` : ''}
-        </div>`;
-    }).join('');
-  } catch {
-    container.innerHTML = '<p class="pakdb-no-history">Could not load history.</p>';
+  if (target === "homepage") {
+    $("viewHomepage").classList.remove("hidden");
+    await fetchStats();
+    await initHeatmap();
+    await fetchRecentIntel();
+    return;
   }
-}
 
-
-/* ── PC GAME SCANNER ──────────────────────────────────────────────── */
-let pcgameInitialized = false;
-
-function pcgameInit() {
-  if (pcgameInitialized) return;
-  pcgameInitialized = true;
-  const base = getBase();
-
-  $('pcgameScanBtn').addEventListener('click', async () => {
-    const name = $('pcgameInput').value.trim();
-    if (!name) return;
-    const status = $('pcgameStatus');
-    const results = $('pcgameResults');
-    status.textContent = '🔄 Searching Steam and PCGamingWiki...';
-    status.className = 'pakdb-status';
-    results.classList.add('hidden');
-
-    try {
-      const res = await fetch(`${base}/pcgame/scan`, {
-        method: 'POST', headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ game_name: name })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || 'Scan failed');
-
-      status.textContent = `✅ Search complete: ${data.count} results`;
-      status.className = 'pakdb-status pakdb-status-ok';
-
-      $('pcgameResultsTitle').textContent = `${data.count} Result(s) for "${esc(name)}"`;
-      $('pcgameTableBody').innerHTML = (data.results || []).map((r, i) => `
-        <tr>
-          <td>${i + 1}</td>
-          <td>${esc(r.name)}</td>
-          <td>${esc(r.source)}</td>
-          <td>${r.score || '—'}</td>
-          <td>${r.pcgamingwiki ? `<a href="${esc(r.pcgamingwiki)}" target="_blank" class="link-btn">Wiki ↗</a>` : '—'}</td>
-          <td>${r.url ? `<a href="${esc(r.url)}" target="_blank" class="link-btn">Open ↗</a>` : '—'}</td>
-        </tr>`).join('');
-      results.classList.remove('hidden');
-
-      pcgameLoadHistory($('pcgameHistoryList'));
-    } catch (e) {
-      status.textContent = `❌ ${e.message}`;
-      status.className = 'pakdb-status pakdb-status-err';
-    }
-  });
-
-  $('pcgameClearAllBtn').addEventListener('click', async () => {
-    const items = $('pcgameHistoryList').querySelectorAll('[data-id]');
-    for (const el of items) {
-      try { await fetch(`${base}/pcgame/history/${el.dataset.id}`, { method: 'DELETE' }); } catch {}
-    }
-    pcgameLoadHistory($('pcgameHistoryList'));
-  });
-
-  pcgameLoadHistory($('pcgameHistoryList'));
-}
-
-async function pcgameLoadHistory(container) {
-  try {
-    const base = getBase();
-    const res = await fetch(`${base}/pcgame/history?limit=50`);
-    const data = await res.json();
-    if (!data.items || data.items.length === 0) {
-      container.innerHTML = '<p class="pakdb-no-history">No scan history yet.</p>';
-      return;
-    }
-    container.innerHTML = data.items.map(item => {
-      const ts = item.timestamp ? new Date(item.timestamp).toLocaleString() : '';
-      return `
-        <div class="pakdb-history-item" data-id="${item._id}">
-          <div class="pakdb-hist-main" onclick="collectorToggleDetail('${item._id}')">
-            <div class="pakdb-history-query">
-              <span class="pakdb-history-num">🎮 ${esc(item.query)}</span>
-              <span class="pakdb-history-count">${item.count} result(s)</span>
-              ${item.count > 0 ? '<span class="pakdb-expand-icon">▶</span>' : ''}
-            </div>
-            <div class="pakdb-hist-right">
-              <span class="pakdb-history-time">${ts}</span>
-              <button class="pakdb-delete-btn" onclick="event.stopPropagation();collectorDeleteItem('pcgame','${item._id}')" title="Delete">✕</button>
-            </div>
-          </div>
-          ${item.results && item.results.length > 0 ? `
-            <div class="pakdb-hist-detail hidden" data-detail="${item._id}">
-              <table class="pakdb-table pakdb-table-compact">
-                <thead><tr><th>#</th><th>Name</th><th>Source</th><th>Score</th></tr></thead>
-                <tbody>${item.results.map((r, i) => `<tr><td>${i+1}</td><td>${esc(r.name)}</td><td>${esc(r.source)}</td><td>${r.score || '—'}</td></tr>`).join('')}</tbody>
-              </table>
-            </div>` : ''}
-        </div>`;
-    }).join('');
-  } catch {
-    container.innerHTML = '<p class="pakdb-no-history">Could not load history.</p>';
+  if (target === "admin-users") {
+    $("viewAdminUsers").classList.remove("hidden");
+    refreshUserList();
+    return;
   }
-}
 
-/* ── SHARED COLLECTOR HELPERS ──────────────────────────────────────── */
-window.collectorToggleDetail = function(id) {
-  const detail = document.querySelector(`[data-detail="${id}"]`);
-  const icon = document.querySelector(`[data-id="${id}"] .pakdb-expand-icon`);
-  if (!detail) return;
-  const open = !detail.classList.contains('hidden');
-  detail.classList.toggle('hidden');
-  if (icon) icon.textContent = open ? '▶' : '▼';
-};
-
-window.collectorDeleteItem = async function(type, id) {
-  try {
-    const base = getBase();
-    await fetch(`${base}/${type}/history/${id}`, { method: 'DELETE' });
-    const el = document.querySelector(`[data-id="${id}"]`);
-    if (el) el.remove();
-  } catch { /* ignore */ }
-};
-
-/* ── LOAD MORE ────────────────────────────────────────────────────── */
-loadMoreBtn.addEventListener('click', () => loadArticles(false));
-$('retryBtn').addEventListener('click', () => loadArticles(true));
-
-/* ── AUTO REFRESH ─────────────────────────────────────────────────── */
-function scheduleRefresh() {
-  clearTimeout(refreshTimer);
-  refreshTimer = setTimeout(() => { loadArticles(true); scheduleRefresh(); }, REFRESH_MS);
-}
-
-/* ── KEYBOARD ─────────────────────────────────────────────────────── */
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeDetailModal();
-    closeSettings();
+  if (target === "pakdb") {
+    $("viewPakdb").classList.remove("hidden");
+    return;
   }
-});
 
-/* ── WEBSOCKET LIVE FEED ──────────────────────────────────────────── */
-let ws;
-function connectWebSocket() {
-  const key = getApiKey();
-  const wsUrl = getBase().replace(/^http/, 'ws') + '/live-feed' + (key ? `?api_key=${encodeURIComponent(key)}` : '');
-  ws = new WebSocket(wsUrl);
-  
-  ws.onmessage = (e) => {
-    try {
-      const article = JSON.parse(e.data);
-      // Ensure we don't duplicate
-      if (allThreats.some(t => t._id === article._id) || allArticles.some(a => a._id === article._id)) {
-        return;
-      }
-      
-      if (article.source_type === 'news') {
-        allArticles.unshift(article);
-        totalItems++;
-      } else {
-        allThreats.unshift(article);
-        totalThreats++;
-      }
-      
-      updateStats([...allArticles, ...allThreats]);
-      
-      // If it matches active filters/tab
-      const visible = (activeTab === 'all' || activeTab === article.source_type) && !activeFilters.search;
-      if (visible) {
-        emptyState.classList.add('hidden');
-        const card = buildCard(article);
-        card.classList.add('new-item');
-        cardsGrid.prepend(card);
-      }
-    } catch(err) {
-      console.error('WS Error parsing message', err);
-    }
-  };
-  
-  ws.onclose = () => {
-    console.log('WS disconnected. Reconnecting in 5s...');
-    setTimeout(connectWebSocket, 5000);
-  };
-}
-
-/* ── INIT ─────────────────────────────────────────────────────────── */
-async function init() {
-  await checkHealth();
+  state.activeTab = target;
+  $("viewFeed").classList.remove("hidden");
   await loadArticles(true);
-  connectWebSocket();
+}
+
+function scheduleRefresh() {
+  clearTimeout(state.refreshTimer);
+  state.refreshTimer = setTimeout(async () => {
+    try {
+      await checkHealth();
+      await fetchStats();
+      if (state.currentView === "homepage") {
+        await initHeatmap();
+        await fetchRecentIntel();
+      } else if (state.currentView === "admin-users") {
+        await refreshUserList();
+      } else if (state.currentView !== "pakdb") {
+        await loadArticles(true);
+      }
+      setLastUpdated();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      scheduleRefresh();
+    }
+  }, REFRESH_MS);
+}
+
+function setupEventListeners() {
+  document.querySelectorAll(".nav-item").forEach(item => {
+    item.addEventListener("click", () => {
+      const target = item.dataset.view || item.dataset.tab;
+      if (target) switchView(target);
+    });
+  });
+
+  document.querySelectorAll(".stat-pill[data-tab]").forEach(item => {
+    item.addEventListener("click", () => {
+      const target = item.dataset.tab;
+      if (target) switchView(target);
+    });
+  });
+
+  $("logoutBtn").addEventListener("click", handleLogout);
+  $("detailClose").addEventListener("click", closeDetailModal);
+  $("detailBackdrop").addEventListener("click", event => {
+    if (event.target === $("detailBackdrop")) closeDetailModal();
+  });
+
+  $("settingsBtn").addEventListener("click", () => {
+    $("apiBaseInput").value = getBase();
+    $("apiKeyInput").value = localStorage.getItem(STORAGE_KEY) || "";
+    $("settingsBackdrop").classList.remove("hidden");
+  });
+
+  $("settingsClose").addEventListener("click", () => $("settingsBackdrop").classList.add("hidden"));
+  $("settingsBackdrop").addEventListener("click", event => {
+    if (event.target === $("settingsBackdrop")) $("settingsBackdrop").classList.add("hidden");
+  });
+
+  $("saveSettingsBtn").addEventListener("click", () => {
+    localStorage.setItem(API_BASE_KEY, $("apiBaseInput").value.trim() || DEFAULT_API_BASE);
+    localStorage.setItem(STORAGE_KEY, $("apiKeyInput").value.trim());
+    window.location.reload();
+  });
+
+  $("testConnBtn").addEventListener("click", async () => {
+    const base = $("apiBaseInput").value.trim() || DEFAULT_API_BASE;
+    const result = $("testResult");
+    result.textContent = "Testing connection...";
+    try {
+      const response = await fetch(`${base}/health`);
+      const data = await response.json();
+      result.textContent = data.status === "ok" ? "Connection successful." : "Connection reachable but degraded.";
+    } catch {
+      result.textContent = "Connection failed.";
+    }
+  });
+
+  $("authSubmitBtn").addEventListener("click", handleAuthSubmit);
+  $("showRegisterLink").addEventListener("click", event => {
+    event.preventDefault();
+    toggleAuthMode();
+  });
+  $("showLoginLink").addEventListener("click", event => {
+    event.preventDefault();
+    toggleAuthMode();
+  });
+
+  $("searchInput").addEventListener("input", debounce(() => {
+    if (state.currentView !== "homepage" && state.currentView !== "admin-users" && state.currentView !== "pakdb") {
+      loadArticles(true);
+    }
+  }, SEARCH_DEBOUNCE_MS));
+
+  $("loadMoreBtn").addEventListener("click", () => loadArticles(false));
+  $("pakdbSearchBtn").addEventListener("click", runPakdbLookup);
+  $("pakdbInput").addEventListener("keydown", event => {
+    if (event.key === "Enter") runPakdbLookup();
+  });
+}
+
+async function initApp() {
+  setupEventListeners();
+  if (!await checkAuth()) return;
+  await checkHealth();
+  await switchView("homepage");
+  setLastUpdated();
   scheduleRefresh();
 }
 
-init();
+initApp().catch(error => {
+  console.error(error);
+});

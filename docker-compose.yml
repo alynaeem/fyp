@@ -1,5 +1,5 @@
 # ── DarkPulse — docker-compose.yml ────────────────────────────────────────────
-# Brings up: Redis + FastAPI API server
+# Brings up: MongoDB + Tor + FastAPI API server + collector scheduler
 #
 # Usage:
 #   docker-compose up -d          # start in background
@@ -9,8 +9,6 @@
 # Prerequisites:
 #   1. Copy .env.example to .env and fill in your values
 #   2. docker compose up --build  (first time)
-
-version: "3.9"
 
 services:
 
@@ -23,6 +21,27 @@ services:
     volumes:
       - mongo_data:/data/db
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+
+  tor:
+    build:
+      context: .
+      dockerfile: docker/tor/Dockerfile
+    container_name: darkpulse_tor
+    ports:
+      - "19050:9050"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "9050"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
 
   # ── FastAPI UI Server ──────────────────────────────────────────────────────
   api:
@@ -35,11 +54,15 @@ services:
       - .env
     environment:
       MONGO_URI: "mongodb://mongodb:27017" # override .env — use service name inside Docker network
+      MONGO_DB: "${MONGO_DB:-darkpulse}"
+      TOR_PROXY_URL: "${DOCKER_TOR_PROXY_URL:-socks5://tor:9050}"
     ports:
       - "${API_PORT:-8000}:8000"
     depends_on:
       mongodb:
-        condition: service_started
+        condition: service_healthy
+      tor:
+        condition: service_healthy
     volumes:
       - ./api_collector/scripts/trivy_reports:/app/api_collector/scripts/trivy_reports
       - ./logs:/app/logs
@@ -49,6 +72,28 @@ services:
       timeout: 10s
       retries: 3
       start_period: 15s
+
+  collector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: darkpulse_collector
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MONGO_URI: "mongodb://mongodb:27017"
+      MONGO_DB: "${MONGO_DB:-darkpulse}"
+      TOR_PROXY_URL: "${DOCKER_TOR_PROXY_URL:-socks5://tor:9050}"
+    command: ["python", "orchestrator.py", "--schedule"]
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      tor:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+      - ./api_collector/scripts/trivy_reports:/app/api_collector/scripts/trivy_reports
 
 volumes:
   mongo_data:

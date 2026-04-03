@@ -24,6 +24,11 @@ from typing import Callable, Optional
 import pymongo
 from config import cfg
 from logger import get_logger
+from mongo_persistence import (
+    extract_model_documents,
+    persist_raw_documents,
+    serialise_document,
+)
 
 log = get_logger("orchestrator")
 
@@ -64,34 +69,21 @@ def _get_kv_collection():
 
 
 def _persist_model_data(collector_type: str, name: str, model, parsed_data=None):
-    """Write model.card_data items to redis_kv_store so the UI can display them.
-    Keys: {TYPE}_ITEMS:{hash}_{name}
-    Values: JSON-encoded dict of the card data.
-    Falls back to parsed_data (from RequestParser result['data']) if model.card_data is empty.
-    """
+    """Persist collector output into raw MongoDB collections and legacy KV docs."""
     kv = _get_kv_collection()
     prefix = f"{collector_type.upper()}_ITEMS"
     entity_prefix = f"{collector_type.upper()}_ENTITIES"
     written = 0
 
-    card_data = (getattr(model, 'card_data', None)
-                 or getattr(model, 'cards_data', None)
-                 or getattr(model, 'apk_data', None)
-                 or [])
-    entity_data = getattr(model, 'entity_data', []) or []
+    card_data, entity_data = extract_model_documents(model, parsed_data)
+    raw_stats = persist_raw_documents(collector_type, name, card_data, entity_data)
 
-    # Fallback: if model didn't store in card_data but RequestParser returned data
-    if not card_data and parsed_data:
-        card_data = parsed_data
+    if collector_type == "news":
+        return {**raw_stats, "legacy_kv": 0}
 
     for i, card in enumerate(card_data):
-        if hasattr(card, 'to_dict'):
-            d = card.to_dict()
-        elif hasattr(card, '__dict__'):
-            d = {k: v for k, v in card.__dict__.items() if not k.startswith('_')}
-        elif isinstance(card, dict):
-            d = card
-        else:
+        d = serialise_document(card)
+        if not isinstance(d, dict):
             continue
 
         d['m_source'] = name
@@ -105,18 +97,15 @@ def _persist_model_data(collector_type: str, name: str, model, parsed_data=None)
         # Also persist entity data if available
         if i < len(entity_data):
             ent = entity_data[i]
-            if hasattr(ent, '__dict__'):
-                ed = {k: v for k, v in ent.__dict__.items() if not k.startswith('_')}
-            elif isinstance(ent, dict):
-                ed = ent
-            else:
+            ed = serialise_document(ent)
+            if not isinstance(ed, dict):
                 continue
             ed['m_source'] = name
             eraw = json.dumps(ed, ensure_ascii=False, default=str)
             ekey = f"{entity_prefix}:{h}_{name}"
             kv.update_one({"_id": ekey}, {"$set": {"value": eraw}}, upsert=True)
 
-    return written
+    return {**raw_stats, "legacy_kv": written}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -154,7 +143,11 @@ def _run_news() -> None:
             model = cls()
             model.set_limits(max_pages=cfg.max_pages, max_articles=cfg.max_articles)
             result = RequestParser(proxy=proxy, model=model, reset_cache=True).parse()
-            log.info(f"  [{name}] {result.get('meta', {})}")
+            db_stats = _persist_model_data("news", name, model, parsed_data=result.get("data"))
+            log.info(
+                f"  [{name}] meta={result.get('meta', {})} "
+                f"raw_items={db_stats['raw_items']} raw_entities={db_stats['raw_entities']}"
+            )
         except Exception as e:
             log.error(f"  [{name}] failed: {e}", exc_info=True)
         finally:
@@ -254,8 +247,11 @@ def _run_leaks() -> None:
                 model.set_proxy(proxy or {})
             result = RequestParser(proxy=proxy, model=model, reset_cache=True).parse()
             count = result.get('meta', {}).get('count', 0)
-            db_count = _persist_model_data("leak", name, model, parsed_data=result.get('data'))
-            log.info(f"  [{name}] parse_count={count} db_written={db_count}")
+            db_stats = _persist_model_data("leak", name, model, parsed_data=result.get('data'))
+            log.info(
+                f"  [{name}] parse_count={count} raw_items={db_stats['raw_items']} "
+                f"raw_entities={db_stats['raw_entities']} kv_written={db_stats['legacy_kv']}"
+            )
         except Exception as e:
             log.error(f"  [{name}] failed: {e}", exc_info=True)
         finally:
@@ -263,8 +259,34 @@ def _run_leaks() -> None:
 
 
 def _run_exploits() -> None:
-    from exploit_collector.main import run_all
-    run_all()
+    from crawler.request_manager import init_services
+    from crawler.request_parser import RequestParser
+    from exploit_collector.main import COLLECTORS
+
+    init_services()
+    proxy = cfg.proxy
+
+    for name, cls in COLLECTORS:
+        try:
+            model = cls()
+            if hasattr(model, "set_proxy"):
+                model.set_proxy(proxy or {})
+            result = RequestParser(
+                proxy=proxy,
+                model=model,
+                reset_cache=True,
+                seed_fetch=True,
+            ).parse()
+            count = result.get("meta", {}).get("count", 0)
+            db_stats = _persist_model_data("exploit", name, model, parsed_data=result.get("data"))
+            log.info(
+                f"  [{name}] parse_count={count} raw_items={db_stats['raw_items']} "
+                f"raw_entities={db_stats['raw_entities']} kv_written={db_stats['legacy_kv']}"
+            )
+        except Exception as e:
+            log.error(f"  [{name}] failed: {e}", exc_info=True)
+        finally:
+            _cleanup_browsers()
 
 
 def _run_defacement() -> None:
@@ -300,8 +322,11 @@ def _run_defacement() -> None:
                 proxy=proxy, model=model, reset_cache=True, seed_fetch=True
             ).parse()
             count = result.get('meta', {}).get('count', 0)
-            db_count = _persist_model_data("defacement", name, model, parsed_data=result.get('data'))
-            log.info(f"  [{name}] parse_count={count} db_written={db_count}")
+            db_stats = _persist_model_data("defacement", name, model, parsed_data=result.get('data'))
+            log.info(
+                f"  [{name}] parse_count={count} raw_items={db_stats['raw_items']} "
+                f"raw_entities={db_stats['raw_entities']} kv_written={db_stats['legacy_kv']}"
+            )
         except Exception as e:
             log.error(f"  [{name}] failed: {e}", exc_info=True)
         finally:
@@ -353,8 +378,11 @@ def _run_social() -> None:
                 model.set_proxy(proxy or {})
             result = RequestParser(proxy=proxy, model=model, reset_cache=True, seed_fetch=True).parse()
             count = result.get('meta', {}).get('count', 0)
-            db_count = _persist_model_data("social", name, model, parsed_data=result.get('data'))
-            log.info(f"  [{name}] parse_count={count} db_written={db_count}")
+            db_stats = _persist_model_data("social", name, model, parsed_data=result.get('data'))
+            log.info(
+                f"  [{name}] parse_count={count} raw_items={db_stats['raw_items']} "
+                f"raw_entities={db_stats['raw_entities']} kv_written={db_stats['legacy_kv']}"
+            )
         except Exception as e:
             log.error(f"  [{name}] failed: {e}", exc_info=True)
         finally:
@@ -383,6 +411,7 @@ def _run_api() -> None:
         from api_collector.scripts.seo_checker import pagespeed_seo, URLS, API_KEY
         seo_kv = _get_kv_collection()
         seo_count = 0
+        seo_items = []
         for site_name, site_url in URLS.items():
             try:
                 result = pagespeed_seo(site_url, API_KEY)
@@ -396,6 +425,7 @@ def _run_api() -> None:
                         "m_network": "clearnet",
                         "m_extra": result,
                     }
+                    seo_items.append(d)
                     raw = json.dumps(d, ensure_ascii=False, default=str)
                     h = hashlib.sha256(raw.encode()).hexdigest()[:16]
                     key = f"API_ITEMS:{h}_seo_{site_name}"
@@ -403,7 +433,11 @@ def _run_api() -> None:
                     seo_count += 1
             except Exception as e:
                 log.warning(f"  [seo_checker/{site_name}] failed: {e}")
-        log.info(f"  [seo_checker] db_written={seo_count}")
+        seo_raw_stats = persist_raw_documents("api", "seo_checker", seo_items, [])
+        log.info(
+            f"  [seo_checker] raw_items={seo_raw_stats['raw_items']} "
+            f"raw_entities={seo_raw_stats['raw_entities']} kv_written={seo_count}"
+        )
     except Exception as e:
         log.error(f"  [seo_checker] failed: {e}", exc_info=True)
 
@@ -414,8 +448,11 @@ def _run_api() -> None:
                 model.set_proxy(proxy or {})
             result = RequestParser(proxy=proxy, model=model, reset_cache=True).parse()
             count = result.get('meta', {}).get('count', 0)
-            db_count = _persist_model_data("api", name, model, parsed_data=result.get('data'))
-            log.info(f"  [{name}] parse_count={count} db_written={db_count}")
+            db_stats = _persist_model_data("api", name, model, parsed_data=result.get('data'))
+            log.info(
+                f"  [{name}] parse_count={count} raw_items={db_stats['raw_items']} "
+                f"raw_entities={db_stats['raw_entities']} kv_written={db_stats['legacy_kv']}"
+            )
         except Exception as e:
             log.error(f"  [{name}] failed: {e}", exc_info=True)
         finally:

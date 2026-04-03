@@ -3,371 +3,432 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DarkPulse — Threat Intelligence Dashboard</title>
-  <meta name="description" content="Real-time cybersecurity threat intelligence feed powered by DarkPulse collectors." />
+  <title>Dark Pulse - OSINT Dashboard</title>
+  <meta name="description" content="Live DarkPulse intelligence dashboard for leaks, defacement, exploits, and threat reporting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=2" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/world.js"></script>
 </head>
 <body>
+  <div class="bg-grid" aria-hidden="true"></div>
 
-<!-- ── BACKGROUND GRID OVERLAY ─────────────────────────────────── -->
-<div class="bg-grid" aria-hidden="true"></div>
-
-<!-- ── HEADER ──────────────────────────────────────────────────── -->
-<header class="header" role="banner">
-  <div class="header-inner">
-    <div class="logo" aria-label="DarkPulse">
-      <span class="logo-pulse" aria-hidden="true"></span>
-      <span class="logo-text">Dark<span class="logo-accent">Pulse</span></span>
-    </div>
-    
-    <!-- Centered Command Palette Style Search -->
-    <div class="header-center" style="flex: 2; margin: 0 2rem;">
-      <div class="search-wrap" style="width: 100%; max-width: 600px;">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="left: 1rem;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search intel (e.g. CVE-2025)..." aria-label="Search threat intelligence" style="padding-left: 3rem; font-size: 1rem; padding-top: 0.75rem; padding-bottom: 0.75rem;" />
-      </div>
-    </div>
-
-    <div class="header-right">
-      <div class="status-pill" id="statusPill" aria-live="polite">
-        <span class="status-dot" id="statusDot"></span>
-        <span id="statusText">Connecting…</span>
-      </div>
-      <span class="last-updated" id="lastUpdated" aria-live="polite"></span>
-      <button class="icon-btn" id="settingsBtn" aria-label="API Key Settings" title="Settings">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- ── STATS BAR ────────────────────────────────────────────────── -->
-<section class="stats-bar" aria-label="Statistics">
-  <div class="stats-inner" id="statsBar">
-    <div class="stat-card">
-      <span class="stat-value" id="statTotal">—</span>
-      <span class="stat-label">Total Intel</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-value" id="statToday">—</span>
-      <span class="stat-label">Today</span>
-    </div>
-    <div class="stat-divider" aria-hidden="true"></div>
-    <div class="stat-tags" id="statTags" aria-label="Category breakdown"></div>
-  </div>
-</section>
-
-<!-- ── MAIN LAYOUT ──────────────────────────────────────────────── -->
-<main class="layout" id="mainLayout">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar" aria-label="Filters">
-    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle filters">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
-      Show Filters
-    </button>
-
-    <div class="sidebar-body" id="sidebarBody">
-      <!-- Categories -->
-      <div class="filter-section">
-        <span class="filter-label">Categories</span>
-        <div id="categoryFilters" class="filter-list" role="group" aria-label="Category filters"></div>
-      </div>
-
-      <!-- Date Range -->
-      <div class="filter-section">
-        <span class="filter-label">Date Range</span>
-        <label class="date-label" for="dateFrom">From</label>
-        <input type="date" id="dateFrom" class="date-input" aria-label="From date" />
-        <label class="date-label" for="dateTo">To</label>
-        <input type="date" id="dateTo" class="date-input" aria-label="To date" />
-      </div>
-
-      <!-- Sources -->
-      <div class="filter-section">
-        <span class="filter-label">Sources</span>
-        <div id="sourceFilters" class="filter-list" role="group" aria-label="Source filters"></div>
-      </div>
-
-      <button class="clear-btn" id="clearFilters" aria-label="Clear all filters">Clear Filters</button>
-    </div>
-  </aside>
-
-  <!-- FEED -->
-  <section class="feed" aria-label="Threat Intelligence Feed">
-
-    <!-- Tab Bar -->
-    <nav class="tab-bar" id="tabBar" aria-label="Data view tabs">
-      <button class="tab-btn active" data-tab="all">All</button>
-      <button class="tab-btn" data-tab="news">News <span class="tab-count" id="tabNewsCount"></span></button>
-      <button class="tab-btn" data-tab="exploit">Exploits <span class="tab-count" id="tabExploitCount"></span></button>
-      <button class="tab-btn" data-tab="social">Social <span class="tab-count" id="tabSocialCount"></span></button>
-      <button class="tab-btn" data-tab="leak">Leaks <span class="tab-count" id="tabLeakCount"></span></button>
-      <button class="tab-btn" data-tab="defacement">Defacement <span class="tab-count" id="tabDefaceCount"></span></button>
-      <button class="tab-btn" data-tab="github">🔍 GitHub</button>
-      <button class="tab-btn" data-tab="apk">📱 APK</button>
-      <button class="tab-btn" data-tab="pcgame">🎮 PC Game</button>
-      <button class="tab-btn" data-tab="pakdb">📲 PakDB</button>
-    </nav>
-
-    <!-- PakDB Lookup Panel -->
-    <div class="pakdb-panel hidden" id="pakdbPanel">
-      <div class="pakdb-header">
-        <div class="pakdb-title-row">
-          <span class="pakdb-icon">📲</span>
-          <div>
-            <h2 class="pakdb-title">PakDB — SIM Database Lookup</h2>
-            <p class="pakdb-sub">Search by phone number or CNIC to fetch associated identity records via Tor.</p>
+  <div class="app-wrapper hidden" id="appWrapper">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-pulse"></span>
+          <div class="logo-stack">
+            <span class="logo-text">Dark<span class="logo-accent">Pulse</span></span>
+            <span class="logo-subtext">Live Intelligence Console</span>
           </div>
         </div>
       </div>
 
-      <!-- Phone Number Search -->
-      <div class="pakdb-search-row">
-        <div class="pakdb-input-wrap">
-          <span class="pakdb-prefix">+92</span>
-          <input type="tel" id="pakdbInput" class="pakdb-input" placeholder="3001234567" maxlength="15" aria-label="Phone number" />
+      <div class="sidebar-user" id="sidebarUser">
+        <div class="user-avatar">DP</div>
+        <div class="user-info">
+          <span class="user-name" id="currentUserName">admin</span>
+          <span class="user-role" id="currentUserRole">Administrator</span>
         </div>
-        <button class="btn-primary pakdb-search-btn" id="pakdbSearchBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          Search
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-separator">Overview</div>
+          <div class="nav-item active" data-view="homepage">
+            <span class="nav-icon">01</span>
+            <div class="nav-copy">
+              <span class="nav-label">Command Center</span>
+              <span class="nav-meta">Impact map and live hotspots</span>
+            </div>
+          </div>
+          <div class="nav-item" data-tab="all">
+            <span class="nav-icon">02</span>
+            <div class="nav-copy">
+              <span class="nav-label">Live Feed</span>
+              <span class="nav-meta">All restored intelligence items</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-separator">Intel Streams</div>
+          <div class="nav-item" data-tab="news">
+            <span class="nav-icon">N</span>
+            <div class="nav-copy">
+              <span class="nav-label">News</span>
+              <span class="nav-meta">Security reporting and advisories</span>
+            </div>
+          </div>
+          <div class="nav-item" data-tab="leak">
+            <span class="nav-icon">L</span>
+            <div class="nav-copy">
+              <span class="nav-label">Leaks</span>
+              <span class="nav-meta">Breach tracking, disclosures, dumps</span>
+            </div>
+          </div>
+          <div class="nav-item" data-tab="defacement">
+            <span class="nav-icon">D</span>
+            <div class="nav-copy">
+              <span class="nav-label">Defacement</span>
+              <span class="nav-meta">Targeted website defacement activity</span>
+            </div>
+          </div>
+          <div class="nav-item" data-tab="exploit">
+            <span class="nav-icon">E</span>
+            <div class="nav-copy">
+              <span class="nav-label">Exploits</span>
+              <span class="nav-meta">Weaponized exploits and PoCs</span>
+            </div>
+          </div>
+          <div class="nav-item" data-tab="social">
+            <span class="nav-icon">S</span>
+            <div class="nav-copy">
+              <span class="nav-label">Social</span>
+              <span class="nav-meta">Forum and channel monitoring</span>
+            </div>
+          </div>
+          <div class="nav-item" data-tab="api">
+            <span class="nav-icon">A</span>
+            <div class="nav-copy">
+              <span class="nav-label">API / Tools</span>
+              <span class="nav-meta">Collected API outputs and scanners</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-separator">Operations</div>
+          <div class="nav-item" data-view="pakdb">
+            <span class="nav-icon">PK</span>
+            <div class="nav-copy">
+              <span class="nav-label">PakDB Lookup</span>
+              <span class="nav-meta">Entity and phone lookup workflow</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="admin-users" id="sidebarNavItemUsers" style="display:none;">
+            <span class="nav-icon">U</span>
+            <div class="nav-copy">
+              <span class="nav-label">Users</span>
+              <span class="nav-meta">Approval and access management</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="logout-btn" id="logoutBtn">
+          <span class="nav-icon">X</span>
+          <span class="nav-label">Logout</span>
         </button>
       </div>
+    </aside>
 
-      <!-- CNIC / Name Search -->
-      <div class="pakdb-search-row">
-        <div class="pakdb-input-wrap pakdb-input-full">
-          <span class="pakdb-prefix">🔍</span>
-          <input type="text" id="pakdbCnicInput" class="pakdb-input" placeholder="Search by CNIC, name, or phone in history..." aria-label="CNIC search" />
+    <main class="app-content">
+      <header class="content-header">
+        <div class="header-left">
+          <p class="header-kicker">DarkPulse Live</p>
+          <h1 class="view-title" id="viewTitle">Command Center</h1>
+          <p class="view-subtitle" id="viewSubtitle">Leaks and defacement activity are highlighted in red with restored MongoDB data behind the feed.</p>
         </div>
-        <button class="btn-secondary pakdb-search-btn" id="pakdbCnicSearchBtn">
-          Search History
-        </button>
-      </div>
 
-      <div class="pakdb-status hidden" id="pakdbStatus" aria-live="polite"></div>
-
-      <!-- Live Results -->
-      <div class="pakdb-results hidden" id="pakdbResults">
-        <h3 class="pakdb-results-title" id="pakdbResultsTitle"></h3>
-        <div class="pakdb-table-wrap">
-          <table class="pakdb-table" id="pakdbTable">
-            <thead>
-              <tr><th>#</th><th>Name</th><th>CNIC</th><th>Mobile</th><th>Address</th></tr>
-            </thead>
-            <tbody id="pakdbTableBody"></tbody>
-          </table>
+        <div class="header-center">
+          <div class="search-bar">
+            <span class="search-icon">/</span>
+            <input type="text" id="searchInput" placeholder="Search title, author, IP, actor, country, or raw JSON..." />
+          </div>
         </div>
-      </div>
 
-      <!-- History -->
-      <div class="pakdb-history" id="pakdbHistory">
-        <div class="pakdb-history-header">
-          <h3 class="pakdb-results-title">Search History</h3>
-          <button class="pakdb-clear-all-btn" id="pakdbClearAllBtn" title="Clear all history">🗑 Clear All</button>
+        <div class="header-right">
+          <div class="status-indicator">
+            <span class="status-dot ok" id="statusDot"></span>
+            <div class="status-copy">
+              <span id="statusText">Connected</span>
+              <span class="status-note" id="lastUpdated">Updated just now</span>
+            </div>
+          </div>
+          <button class="icon-btn" id="settingsBtn" title="Settings">Settings</button>
         </div>
-        <div id="pakdbHistoryList" class="pakdb-history-list"></div>
-      </div>
-    </div>
+      </header>
 
-    <!-- GitHub Trivy Scanner Panel -->
-    <div class="collector-panel hidden" id="githubPanel">
-      <div class="pakdb-header">
-        <div class="pakdb-title-row">
-          <span class="pakdb-icon">🔍</span>
-          <div>
-            <h2 class="pakdb-title">GitHub Trivy Scanner</h2>
-            <p class="pakdb-sub">Scan any GitHub repository for vulnerabilities and secrets using Trivy.</p>
+      <div class="content-body" id="contentBody">
+        <section class="stats-strip" id="statsStrip">
+          <div class="stat-pill">
+            <span class="stat-label">Total</span>
+            <span class="stat-value" id="statTotalCount">0</span>
+          </div>
+          <div class="stat-pill" data-tab="news">
+            <span class="stat-label">News</span>
+            <span class="stat-value" id="statNewsCount">0</span>
+          </div>
+          <div class="stat-pill" data-tab="leak">
+            <span class="stat-label">Leaks</span>
+            <span class="stat-value" id="statLeakCount">0</span>
+          </div>
+          <div class="stat-pill" data-tab="defacement">
+            <span class="stat-label">Defacement</span>
+            <span class="stat-value" id="statDefaceCount">0</span>
+          </div>
+          <div class="stat-pill" data-tab="exploit">
+            <span class="stat-label">Exploit</span>
+            <span class="stat-value" id="statExploitCount">0</span>
+          </div>
+          <div class="stat-pill" data-tab="social">
+            <span class="stat-label">Social</span>
+            <span class="stat-value" id="statSocialCount">0</span>
+          </div>
+          <div class="stat-pill" data-tab="api">
+            <span class="stat-label">API</span>
+            <span class="stat-value" id="statVulnCount">0</span>
+          </div>
+        </section>
+
+        <div class="view-panel" id="viewHomepage">
+          <section class="impact-hero">
+            <div class="impact-header">
+              <div>
+                <p class="section-kicker">Global Impact Map</p>
+                <h2 class="section-title">Countries hit by leak and defacement activity</h2>
+                <p class="section-copy">Affected regions are highlighted in red. Hover any country to see its leak and defacement counts from the restored live dataset.</p>
+              </div>
+              <div class="impact-summary-grid">
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Affected Countries</span>
+                  <span class="mini-stat-value" id="impactCountriesCount">0</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Leak Coverage</span>
+                  <span class="mini-stat-value" id="impactLeakCoverage">0</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Defacement Coverage</span>
+                  <span class="mini-stat-value" id="impactDefaceCoverage">0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="impact-layout">
+              <div class="map-shell">
+                <div id="worldMap" class="heatmap-container"></div>
+              </div>
+
+              <aside class="impact-rail">
+                <div class="rail-card">
+                  <div class="rail-card-header">
+                    <span class="section-kicker">Affected Countries</span>
+                    <span class="rail-card-note">Leak / Defacement</span>
+                  </div>
+                  <div id="countryImpactList" class="country-impact-list"></div>
+                </div>
+
+                <div class="rail-card">
+                  <div class="rail-card-header">
+                    <span class="section-kicker">Latest Activity</span>
+                    <span class="rail-card-note">Click to inspect full JSON</span>
+                  </div>
+                  <div id="recentIntelList" class="compact-list"></div>
+                </div>
+              </aside>
+            </div>
+          </section>
+        </div>
+
+        <div class="view-panel hidden" id="viewFeed">
+          <div class="feed-toolbar">
+            <div>
+              <p class="section-kicker">Feed</p>
+              <h2 class="section-title">Restored intelligence feed</h2>
+            </div>
+            <div class="feed-summary" id="feedSummary">0 results loaded</div>
+          </div>
+
+          <div class="cards-grid" id="cardsGrid"></div>
+
+          <div class="load-more-wrap" id="loadMoreWrap">
+            <button class="btn-secondary" id="loadMoreBtn">Load More</button>
+          </div>
+
+          <div class="empty-state hidden" id="emptyState">
+            <span class="empty-state-title">No matching records</span>
+            <p>Try a different search term or switch to another intelligence stream.</p>
+          </div>
+        </div>
+
+        <div class="view-panel hidden" id="viewAdminUsers">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Administration</p>
+              <h2 class="section-title">User Management</h2>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="userTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="view-panel hidden" id="viewPakdb">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Lookup</p>
+              <h2 class="section-title">PakDB Entity Search</h2>
+            </div>
+          </div>
+          <div class="lookup-shell">
+            <div class="pakdb-search-row">
+              <input type="tel" id="pakdbInput" class="search-input" placeholder="Phone +92..." />
+              <button class="btn-primary" id="pakdbSearchBtn">Search</button>
+            </div>
+            <div id="pakdbStatus" class="pakdb-status"></div>
+            <div id="pakdbHistoryList" class="compact-list"></div>
           </div>
         </div>
       </div>
-      <div class="pakdb-search-row">
-        <div class="pakdb-input-wrap pakdb-input-full">
-          <span class="pakdb-prefix">🔗</span>
-          <input type="url" id="githubInput" class="pakdb-input" placeholder="https://github.com/owner/repo" aria-label="GitHub repo URL" />
-        </div>
-        <button class="btn-primary pakdb-search-btn" id="githubScanBtn">🛡️ Scan</button>
-      </div>
-      <div class="pakdb-status hidden" id="githubStatus" aria-live="polite"></div>
-      <div class="pakdb-results hidden" id="githubResults">
-        <h3 class="pakdb-results-title" id="githubResultsTitle"></h3>
-        <div class="github-summary" id="githubSummary"></div>
-        <div class="pakdb-table-wrap">
-          <table class="pakdb-table" id="githubTable">
-            <thead><tr><th>#</th><th>Finding</th><th>Package</th><th>Version</th><th>Details</th></tr></thead>
-            <tbody id="githubTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="pakdb-history" id="githubHistory">
-        <div class="pakdb-history-header">
-          <h3 class="pakdb-results-title">Scan History</h3>
-          <button class="pakdb-clear-all-btn" id="githubClearAllBtn" title="Clear all history">🗑 Clear All</button>
-        </div>
-        <div id="githubHistoryList" class="pakdb-history-list"></div>
-      </div>
-    </div>
+    </main>
+  </div>
 
-    <!-- APK Scanner Panel -->
-    <div class="collector-panel hidden" id="apkPanel">
-      <div class="pakdb-header">
-        <div class="pakdb-title-row">
-          <span class="pakdb-icon">📱</span>
-          <div>
-            <h2 class="pakdb-title">APK Mod Scanner</h2>
-            <p class="pakdb-sub">Search APK mirror sites for a Play Store app to find modified/repackaged versions.</p>
+  <div class="modal-backdrop" id="loginBackdrop">
+    <div class="modal modal-login">
+      <div class="modal-header">
+        <div class="logo modal-logo">
+          <span class="logo-pulse"></span>
+          <div class="logo-stack">
+            <span class="logo-text">Dark<span class="logo-accent">Pulse</span></span>
+            <span class="logo-subtext">Authenticate to the live console</span>
           </div>
         </div>
       </div>
-      <div class="pakdb-search-row">
-        <div class="pakdb-input-wrap pakdb-input-full">
-          <span class="pakdb-prefix">🔗</span>
-          <input type="url" id="apkInput" class="pakdb-input" placeholder="https://play.google.com/store/apps/details?id=com.example.app" aria-label="Play Store URL" />
-        </div>
-        <button class="btn-primary pakdb-search-btn" id="apkScanBtn">📦 Scan</button>
-      </div>
-      <div class="pakdb-status hidden" id="apkStatus" aria-live="polite"></div>
-      <div class="pakdb-results hidden" id="apkResults">
-        <h3 class="pakdb-results-title" id="apkResultsTitle"></h3>
-        <div class="pakdb-table-wrap">
-          <table class="pakdb-table" id="apkTable">
-            <thead><tr><th>#</th><th>App Name</th><th>Package</th><th>Version</th><th>Source</th><th>Link</th></tr></thead>
-            <tbody id="apkTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="pakdb-history" id="apkHistory">
-        <div class="pakdb-history-header">
-          <h3 class="pakdb-results-title">Scan History</h3>
-          <button class="pakdb-clear-all-btn" id="apkClearAllBtn" title="Clear all history">🗑 Clear All</button>
-        </div>
-        <div id="apkHistoryList" class="pakdb-history-list"></div>
-      </div>
-    </div>
 
-    <!-- PC Game Scanner Panel -->
-    <div class="collector-panel hidden" id="pcgamePanel">
-      <div class="pakdb-header">
-        <div class="pakdb-title-row">
-          <span class="pakdb-icon">🎮</span>
-          <div>
-            <h2 class="pakdb-title">PC Game Scanner</h2>
-            <p class="pakdb-sub">Search Steam and PCGamingWiki for game information and mod sites.</p>
-          </div>
+      <div class="modal-body" id="loginForm">
+        <h2 class="modal-title" id="loginTitle">Access the restored dashboard</h2>
+        <div class="input-group">
+          <label>Username</label>
+          <input type="text" id="loginUsername" placeholder="admin" autofocus />
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" />
+        </div>
+        <div id="loginError" class="error-msg hidden"></div>
+        <div class="auth-links">
+          <a href="#" id="showRegisterLink">Create account</a>
+          <span>|</span>
+          <a href="#" id="forgotPasswordLink">Need approval?</a>
         </div>
       </div>
-      <div class="pakdb-search-row">
-        <div class="pakdb-input-wrap pakdb-input-full">
-          <span class="pakdb-prefix">🎮</span>
-          <input type="text" id="pcgameInput" class="pakdb-input" placeholder="Enter game name, e.g. GTA V" aria-label="Game name" />
+
+      <div class="modal-body hidden" id="registerForm">
+        <h2 class="modal-title">Request access</h2>
+        <div class="input-group">
+          <label>Full Name</label>
+          <input type="text" id="regName" placeholder="John Doe" />
         </div>
-        <button class="btn-primary pakdb-search-btn" id="pcgameScanBtn">🔎 Search</button>
-      </div>
-      <div class="pakdb-status hidden" id="pcgameStatus" aria-live="polite"></div>
-      <div class="pakdb-results hidden" id="pcgameResults">
-        <h3 class="pakdb-results-title" id="pcgameResultsTitle"></h3>
-        <div class="pakdb-table-wrap">
-          <table class="pakdb-table" id="pcgameTable">
-            <thead><tr><th>#</th><th>Name</th><th>Source</th><th>Score</th><th>Wiki</th><th>Link</th></tr></thead>
-            <tbody id="pcgameTableBody"></tbody>
-          </table>
+        <div class="input-group">
+          <label>Email Address</label>
+          <input type="email" id="regEmail" placeholder="john@example.com" />
+        </div>
+        <div class="input-group">
+          <label>Username</label>
+          <input type="text" id="regUsername" placeholder="johndoe" />
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="regPassword" placeholder="Minimum 8 characters" />
+        </div>
+        <div id="registerError" class="error-msg hidden"></div>
+        <div class="auth-links">
+          <a href="#" id="showLoginLink">Back to login</a>
         </div>
       </div>
-      <div class="pakdb-history" id="pcgameHistory">
-        <div class="pakdb-history-header">
-          <h3 class="pakdb-results-title">Scan History</h3>
-          <button class="pakdb-clear-all-btn" id="pcgameClearAllBtn" title="Clear all history">🗑 Clear All</button>
-        </div>
-        <div id="pcgameHistoryList" class="pakdb-history-list"></div>
+
+      <div class="modal-footer">
+        <button class="btn-primary auth-submit" id="authSubmitBtn">Sign In</button>
       </div>
-    </div>
-
-    <!-- Lock screen (when no API key) -->
-    <div class="lock-screen hidden" id="lockScreen">
-      <div class="lock-icon" aria-hidden="true">🔒</div>
-      <h2 class="lock-title">API Key Required</h2>
-      <p class="lock-sub">Click the settings icon to enter your DarkPulse API key.</p>
-      <button class="btn-primary" id="lockSettingsBtn">Enter API Key</button>
-    </div>
-
-    <!-- Error screen -->
-    <div class="error-screen hidden" id="errorScreen">
-      <div class="error-icon" aria-hidden="true">⚠️</div>
-      <h2 class="error-title" id="errorTitle">Something went wrong</h2>
-      <p class="error-sub" id="errorSub"></p>
-      <button class="btn-primary" id="retryBtn">Retry</button>
-    </div>
-
-    <!-- Article cards grid -->
-    <div class="cards-grid" id="cardsGrid" aria-live="polite" aria-label="Articles"></div>
-
-    <!-- Load more -->
-    <div class="load-more-wrap" id="loadMoreWrap">
-      <button class="btn-load-more hidden" id="loadMoreBtn">Load More</button>
-    </div>
-
-    <!-- Empty state -->
-    <div class="empty-state hidden" id="emptyState">
-      <span aria-hidden="true">📡</span>
-      <p>No articles match your filters.</p>
-    </div>
-
-  </section>
-</main>
-
-<!-- ── ARTICLE DETAIL MODAL ─────────────────────────────────────── -->
-<div class="modal-backdrop hidden" id="detailBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal modal-detail">
-    <div class="modal-header">
-      <div class="modal-source" id="modalSource"></div>
-      <button class="modal-close" id="detailClose" aria-label="Close modal">✕</button>
-    </div>
-    <div class="modal-body">
-      <div id="modalTopTag"></div>
-      <h2 class="modal-title" id="modalTitle"></h2>
-      <div class="modal-meta" id="modalMeta"></div>
-      <div class="modal-section">
-        <div class="section-label">⚡ AI Summary</div>
-        <p class="modal-summary" id="modalSummary"></p>
-      </div>
-      <div class="modal-section" id="modalEntitiesSection">
-        <div class="section-label">🏷 Entities</div>
-        <div class="entity-groups" id="modalEntities"></div>
-      </div>
-      <div class="modal-section">
-        <div class="section-label">📊 Category Confidence</div>
-        <div id="modalCategories"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <a class="btn-primary" id="modalReadBtn" href="#" target="_blank" rel="noopener noreferrer">Read Full Article →</a>
     </div>
   </div>
-</div>
 
-<!-- ── API KEY MODAL ─────────────────────────────────────────────── -->
-<div class="modal-backdrop hidden" id="settingsBackdrop" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
-  <div class="modal modal-settings">
-    <div class="modal-header">
-      <h2 class="modal-title" id="settingsModalTitle">⚙ API Settings</h2>
-      <button class="modal-close" id="settingsClose" aria-label="Close settings">✕</button>
-    </div>
-    <div class="modal-body">
-      <label class="filter-label" for="apiKeyInput">API Key (X-API-Key)</label>
-      <input type="password" id="apiKeyInput" class="search-input" placeholder="your-api-key" aria-label="API Key" />
-      <label class="filter-label" for="apiBaseInput" style="margin-top:1rem">Backend URL</label>
-      <input type="text" id="apiBaseInput" class="search-input" placeholder="http://localhost:8000" aria-label="Backend URL" />
-      <div id="testResult" class="test-result" aria-live="polite"></div>
-    </div>
-    <div class="modal-footer" style="gap:.75rem">
-      <button class="btn-secondary" id="testConnBtn">Test Connection</button>
-      <button class="btn-primary" id="saveSettingsBtn">Save & Reload</button>
+  <div class="modal-backdrop hidden" id="detailBackdrop">
+    <div class="modal modal-detail">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div id="modalSource" class="modal-source"></div>
+          <div id="modalTopTag" class="modal-top-tag"></div>
+        </div>
+        <button class="modal-close" id="detailClose">x</button>
+      </div>
+
+      <div class="modal-body modal-detail-body">
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-meta" id="modalMeta"></div>
+
+        <div class="fact-grid" id="modalFactGrid"></div>
+
+        <div class="modal-section">
+          <label>Description</label>
+          <p id="modalSummary" class="modal-summary"></p>
+        </div>
+
+        <div id="modalEntitiesSection" class="modal-section">
+          <label>Entities</label>
+          <div id="modalEntities" class="entity-groups"></div>
+        </div>
+
+        <div class="modal-section">
+          <label>Categories</label>
+          <div id="modalCategories" class="entity-groups"></div>
+        </div>
+
+        <div class="modal-section">
+          <label>Raw JSON</label>
+          <pre id="modalRawJson" class="json-viewer"></pre>
+        </div>
+      </div>
+
+      <div class="modal-footer detail-footer">
+        <a class="btn-secondary" id="modalJsonLink" href="#" target="_blank">JSON Endpoint</a>
+        <a class="btn-primary" id="modalReadBtn" href="#" target="_blank">Open Source</a>
+      </div>
     </div>
   </div>
-</div>
 
-<script src="app.js?v=2"></script>
+  <div class="modal-backdrop hidden" id="settingsBackdrop">
+    <div class="modal modal-settings">
+      <div class="modal-header">
+        <h2 class="modal-title">Connection Settings</h2>
+        <button class="modal-close" id="settingsClose">x</button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+          <label>API KEY (X-API-KEY)</label>
+          <input type="password" id="apiKeyInput" placeholder="your-api-key" />
+        </div>
+        <div class="input-group">
+          <label>BACKEND URL</label>
+          <input type="text" id="apiBaseInput" placeholder="http://localhost:8200" />
+        </div>
+        <div id="testResult" class="test-result"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="testConnBtn">Test Connection</button>
+        <button class="btn-primary" id="saveSettingsBtn">Save and Reload</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=3"></script>
 </body>
 </html>

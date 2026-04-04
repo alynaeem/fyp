@@ -1,0 +1,15 @@
+.env
+.codex
+.ruff_cache/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+myenv/
+mongo_data/
+mongodb-*/
+darkpulse_dump/
+logs/
+mongod.log
+'

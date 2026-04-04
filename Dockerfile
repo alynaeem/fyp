@@ -3,7 +3,11 @@
 # Build:  docker build -t darkpulse-api .
 # Run:    docker-compose up
 
-FROM python:3.11-slim
+FROM python:3.11-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
 # System deps (for Playwright, lxml, etc.)
 RUN apt-get update && \
@@ -16,9 +20,10 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-# Install Python dependencies first (leverages Docker layer cache)
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install crawler/API runtime dependencies first (leverages Docker layer cache)
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt && \
+    playwright install --with-deps chromium
 
 # Copy the full project
 COPY . .

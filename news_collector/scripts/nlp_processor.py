@@ -7,8 +7,15 @@ import time
 from typing import List, Dict, Any, Optional
 from bs4 import BeautifulSoup
 
-from transformers import pipeline
-from sentence_transformers import SentenceTransformer
+try:
+    from transformers import pipeline
+except Exception:
+    pipeline = None
+
+try:
+    from sentence_transformers import SentenceTransformer
+except Exception:
+    SentenceTransformer = None
 
 # import your redis controller (same one the crawler uses)
 from crawler.common.crawler_instance.crawler_services.redis_manager.redis_controller import redis_controller
@@ -34,6 +41,20 @@ ZERO_SHOT_THRESHOLD = 0.60
 
 RAW_INDEX_KEY = "THN:raw_index"
 PROCESSED_INDEX_KEY = "THN:processed_index"
+
+NLP_BACKEND = "ml" if pipeline is not None and SentenceTransformer is not None else "heuristic"
+
+KEYWORD_CATEGORY_MAP = {
+    "ransomware": ["ransomware", "ransom", "lockbit", "extortion"],
+    "vulnerability": ["cve-", "vulnerability", "vulnerabilities", "0day", "zero-day", "exploit"],
+    "data breach": ["breach", "leak", "database", "dump", "exposed records"],
+    "phishing": ["phishing", "credential harvesting", "spoofed login", "email lure"],
+    "malware": ["malware", "trojan", "stealer", "worm", "botnet", "loader"],
+    "scam": ["scam", "fraud", "impersonation", "fake support", "romance scam"],
+    "policy": ["regulation", "policy", "compliance", "guidance", "law"],
+    "research": ["research", "analysis", "report", "whitepaper", "study"],
+    "exposure": ["misconfiguration", "exposed", "open bucket", "publicly accessible"],
+}
 
 # --------- Utilities (text cleaning) ----------
 def clean_html_text(html_text: str) -> str:
@@ -70,6 +91,51 @@ def fix_bert_tokens(text: str) -> str:
     t = text.replace(" ##", "").replace("##", "")
     t = re.sub(r"\s+", " ", t)
     return t.strip()
+
+
+def _basic_summary(text: str, max_words: int = 60) -> str:
+    words = text.split()
+    if len(words) <= max_words:
+        return text.strip()
+    return " ".join(words[:max_words]).strip() + "..."
+
+
+def _keyword_score(text: str, keywords: List[str]) -> float:
+    haystack = text.lower()
+    hits = sum(1 for keyword in keywords if keyword in haystack)
+    if not hits:
+        return 0.0
+    return min(0.95, 0.45 + hits * 0.15)
+
+
+def _basic_categories(text: str) -> List[Dict[str, Any]]:
+    scored = []
+    for label, keywords in KEYWORD_CATEGORY_MAP.items():
+        score = _keyword_score(text, keywords)
+        if score >= ZERO_SHOT_THRESHOLD:
+            scored.append({"label": label, "score": score})
+    if scored:
+        return sorted(scored, key=lambda item: item["score"], reverse=True)[:3]
+    return [{"label": "other", "score": 0.5}]
+
+
+def _basic_entities(text: str) -> List[Dict[str, Any]]:
+    patterns = [
+        ("CVE", r"\bCVE-\d{4}-\d{4,7}\b"),
+        ("EMAIL", r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b"),
+        ("IP", r"\b(?:\d{1,3}\.){3}\d{1,3}\b"),
+        ("URL", r"https?://[^\s]+"),
+    ]
+    seen = set()
+    entities = []
+    for label, pattern in patterns:
+        for match in re.findall(pattern, text, flags=re.IGNORECASE):
+            normalized = match.strip().rstrip(".,);")
+            if not normalized or normalized in seen:
+                continue
+            seen.add(normalized)
+            entities.append({"text": normalized, "label": label, "score": 0.7})
+    return entities[:25]
 
 # --------- Date parsing (robust, preserves raw) ----------
 MONTHS = {
@@ -157,6 +223,8 @@ def _load_models() -> None:
     global _models_loaded, summarizer, classifier, ner, embedder
     if _models_loaded:
         return
+    if pipeline is None or SentenceTransformer is None:
+        return
 
     print("[NLP] Loading models (first run may take a minute and ~4 GB RAM)...")
 
@@ -193,7 +261,8 @@ def process_record(rec: dict) -> dict | None:
     Returns: processed dict (caller may persist to Redis).
     Models are loaded on first call (lazy).
     """
-    _load_models()  # no-op after first call
+    if NLP_BACKEND == "ml":
+        _load_models()  # no-op after first call
     # ---- Required fields (cleaned) ----
     title = clean_plain_text(rec.get("title", ""))
     author = clean_plain_text(rec.get("author", ""))
@@ -215,78 +284,90 @@ def process_record(rec: dict) -> dict | None:
         return None
 
     # ---- Summarization (bounded) ----
-    try:
-        words = text_for_nlp.split()
-        snippet_words = words[:400]  # Reduced from 900 to limit heavy compute
-        approx_tokens = int(len(snippet_words) * 1.3)
-        max_len, min_len = _auto_summary_lengths(approx_tokens)
-        snippet = " ".join(snippet_words)
-        summary_out = summarizer(snippet, max_length=max_len, min_length=min_len, truncation=True)
-        summary = summary_out[0]["summary_text"].strip()
-    except Exception:
-        summary = (text_for_nlp[:250] + ("..." if len(text_for_nlp) > 250 else ""))
+    if NLP_BACKEND == "ml" and summarizer is not None:
+        try:
+            words = text_for_nlp.split()
+            snippet_words = words[:400]  # Reduced from 900 to limit heavy compute
+            approx_tokens = int(len(snippet_words) * 1.3)
+            max_len, min_len = _auto_summary_lengths(approx_tokens)
+            snippet = " ".join(snippet_words)
+            summary_out = summarizer(snippet, max_length=max_len, min_length=min_len, truncation=True)
+            summary = summary_out[0]["summary_text"].strip()
+        except Exception:
+            summary = _basic_summary(text_for_nlp)
+    else:
+        summary = _basic_summary(text_for_nlp)
 
     # ---- NER (cleaned) ----
-    try:
-        ner_input = text_for_nlp[:1500]
-        ner_out = ner(ner_input)
-        entities = []
-        for e in ner_out:
-            word = fix_bert_tokens(e.get("word") or e.get("entity") or "")
-            if not word:
-                continue
-            entities.append({
-                "text": word,
-                "label": e.get("entity_group") or e.get("entity"),
-                "score": float(e.get("score", 0.0))
-            })
-    except Exception:
-        entities = []
+    if NLP_BACKEND == "ml" and ner is not None:
+        try:
+            ner_input = text_for_nlp[:1500]
+            ner_out = ner(ner_input)
+            entities = []
+            for e in ner_out:
+                word = fix_bert_tokens(e.get("word") or e.get("entity") or "")
+                if not word:
+                    continue
+                entities.append({
+                    "text": word,
+                    "label": e.get("entity_group") or e.get("entity"),
+                    "score": float(e.get("score", 0.0))
+                })
+        except Exception:
+            entities = _basic_entities(text_for_nlp)
+    else:
+        entities = _basic_entities(text_for_nlp)
 
     # ---- Zero-shot classification ----
-    try:
-        cls = classifier(
-            text_for_nlp[:1200],
-            candidate_labels=CANDIDATE_LABELS,
-            multi_label=True,
-            hypothesis_template="This text is about {}."
-        )
+    if NLP_BACKEND == "ml" and classifier is not None:
+        try:
+            cls = classifier(
+                text_for_nlp[:1200],
+                candidate_labels=CANDIDATE_LABELS,
+                multi_label=True,
+                hypothesis_template="This text is about {}."
+            )
 
-        # build scored list
-        scored = [
-            {"label": lab, "score": float(score)}
-            for lab, score in zip(cls["labels"], cls["scores"])
-        ]
+            # build scored list
+            scored = [
+                {"label": lab, "score": float(score)}
+                for lab, score in zip(cls["labels"], cls["scores"])
+            ]
 
-        # sort high → low
-        scored.sort(key=lambda x: x["score"], reverse=True)
+            # sort high → low
+            scored.sort(key=lambda x: x["score"], reverse=True)
 
-        TOP_K = 3
-        THRESH = ZERO_SHOT_THRESHOLD  # recommend 0.60+
+            TOP_K = 3
+            THRESH = ZERO_SHOT_THRESHOLD  # recommend 0.60+
 
-        # threshold + top-k
-        labels = [x for x in scored if x["score"] >= THRESH][:TOP_K]
+            # threshold + top-k
+            labels = [x for x in scored if x["score"] >= THRESH][:TOP_K]
 
-        # fallback: at least one label
-        if not labels and scored:
-            labels = [scored[0]]
+            # fallback: at least one label
+            if not labels and scored:
+                labels = [scored[0]]
 
-        # drop "other" if meaningful label exists
-        if len(labels) > 1:
-            non_other = [x for x in labels if x["label"] != "other"]
-            labels = non_other or labels
+            # drop "other" if meaningful label exists
+            if len(labels) > 1:
+                non_other = [x for x in labels if x["label"] != "other"]
+                labels = non_other or labels
 
-    except Exception:
-        labels = []
+        except Exception:
+            labels = _basic_categories(text_for_nlp)
+    else:
+        labels = _basic_categories(text_for_nlp)
 
     # ---- Embedding ----
     # NOTE: Embeddings are NOT stored in Redis to avoid 384 keys per article.
     # They are computed here and returned in the dict for optional downstream
     # use (e.g. writing to a vector DB), but write_processed() skips them.
-    try:
-        emb = embedder.encode(text_for_nlp, show_progress_bar=False)
-        embedding = emb.tolist() if hasattr(emb, "tolist") else list(emb)
-    except Exception:
+    if NLP_BACKEND == "ml" and embedder is not None:
+        try:
+            emb = embedder.encode(text_for_nlp, show_progress_bar=False)
+            embedding = emb.tolist() if hasattr(emb, "tolist") else list(emb)
+        except Exception:
+            embedding = []
+    else:
         embedding = []
 
     out = {
@@ -315,6 +396,7 @@ def process_record(rec: dict) -> dict | None:
         "entities": entities,
         "categories": labels,
         "embedding": embedding,
+        "nlp_backend": NLP_BACKEND,
 
         # small raw slice for QA
         "raw_text_snippet": text_for_nlp[:4000]
@@ -439,4 +521,3 @@ def process_all_from_redis(limit: int | None = None, sleep_ms: int = 0):
     print(f"[NLP] ✅ Done. Processed: {len(ids) - skipped}, Skipped (already done): {skipped}")
 
 # --------- Optional: allow running directly (no JSON) ----------
-

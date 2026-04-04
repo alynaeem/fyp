@@ -1,10 +1,15 @@
 import asyncio
 import pathlib
 import json
+import re
 from typing import Any, Dict, List
+from urllib.parse import urlparse
 from fastapi import FastAPI, Query, Request, HTTPException, Depends, WebSocket, WebSocketDisconnect
+import bcrypt
+from datetime import datetime, timedelta
+from jose import JWTError, jwt
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import APIKeyHeader
+from fastapi.security import APIKeyHeader, HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -19,10 +24,57 @@ client = AsyncIOMotorClient(cfg.mongo_uri, serverSelectionTimeoutMS=5000)
 db = client[cfg.mongo_db]
 articles_col = db["articles"]
 
+# Users collection and auth setup
+users_col = db["users"]
+
+
+SECRET_KEY = "a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    try:
+        return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+    except Exception:
+        return False
+
+def get_password_hash(password: str) -> str:
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+def create_access_token(data: dict, expires_delta: int = ACCESS_TOKEN_EXPIRE_MINUTES):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(minutes=expires_delta)
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+# Auth security scheme
+security = HTTPBearer()
+
+async def get_current_user(auth: HTTPAuthorizationCredentials = Depends(security)):
+    credentials_exception = HTTPException(status_code=401, detail="Could not validate credentials")
+    token = auth.credentials
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    user = await users_col.find_one({"username": username})
+    if user is None:
+        raise credentials_exception
+    return user
+
+async def admin_required(current_user: dict = Depends(get_current_user)):
+    if current_user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin privileges required")
+    return current_user
+
+
+
+
 # ── Security Middleware ─────────────────────────────────────────────────────────
 from fastapi import Header
-
-PUBLIC_PATHS = {"/", "/health", "/docs", "/openapi.json"}
 
 async def verify_api_key(
     request: Request = None,
@@ -43,6 +95,8 @@ async def verify_api_key(
         api_key_query = websocket.query_params.get("api_key")
         x_api_key = None # WebSockets don't natively send custom headers
         
+    PUBLIC_PATHS = {"/", "/health", "/docs", "/openapi.json", "/auth/login", "/auth/register"}
+    
     if path in PUBLIC_PATHS:
         return
         
@@ -56,7 +110,7 @@ async def verify_api_key(
         raise HTTPException(status_code=403, detail="Invalid or missing API key")
 
 app = FastAPI(
-    title="DarkPulse Local API",
+    title="Dark Pulse Local API",
     version="1.0",
     dependencies=[Depends(verify_api_key)],
 )
@@ -68,6 +122,23 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Ensure default admin exists on startup
+@app.on_event("startup")
+async def create_default_admin():
+    admin = await users_col.find_one({"username": "admin"})
+    if not admin:
+        hashed = get_password_hash("1qaz!QAZ")
+        await users_col.insert_one({
+            "username": "admin",
+            "password": hashed,
+            "email": "admin@example.com",
+            "name": "Administrator",
+            "status": "approved",
+            "role": "admin",
+        })
+        log.info("Default admin user created.")
 
 
 # ---------- Static file serving ----------
@@ -103,33 +174,698 @@ async def health():
         "database": "mongodb connected" if mongo_ok else "unreachable",
     }
 
-@app.get("/news")
-async def list_news(limit: int = Query(50, ge=1, le=500), offset: int = Query(0, ge=0)):
-    # Standard MongoDB pagination
-    cursor = articles_col.find({}).sort("scraped_at", -1).skip(offset).limit(limit)
-    items = await cursor.to_list(length=limit)
-    
-    total = await articles_col.count_documents({})
-    
-    # ensure top_tag is included for UI compatibility
-    for it in items:
-        if "_id" in it:
-            it["aid"] = str(it["_id"])
-            del it["_id"]
-            
-        categories = it.get("categories", [])
-        if categories:
-            categories_sorted = sorted(categories, key=lambda x: x.get("score", 0), reverse=True)
-            it["top_tag"] = categories_sorted[0].get("label", "")
-        else:
-            it["top_tag"] = ""
 
+# ── Authentication Endpoints ────────────────────────────────────────────────
+@app.post("/auth/login")
+async def login(request: Request):
+    body = await request.json()
+    username = body.get("username")
+    password = body.get("password")
+    
+    user = await users_col.find_one({"username": username})
+    if not user or not verify_password(password, user["password"]):
+        raise HTTPException(status_code=401, detail="Invalid username or password")
+    
+    if user.get("status") != "approved":
+        raise HTTPException(status_code=403, detail="Account pending approval")
+    
+    access_token = create_access_token(data={"sub": user["username"], "role": user.get("role", "user")})
+    return {"access_token": access_token, "token_type": "bearer", "role": user.get("role", "user")}
+
+
+@app.post("/auth/register")
+async def register(request: Request):
+    body = await request.json()
+    username = body.get("username", "").strip()
+    password = body.get("password", "")
+    email = body.get("email", "").strip()
+    name = body.get("name", "").strip()
+    
+    if not username or not password or not email:
+        raise HTTPException(status_code=400, detail="Username, password, and email are required")
+        
+    if " " in username:
+        raise HTTPException(status_code=400, detail="Username cannot contain spaces")
+        
+    if len(password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters long")
+        
+    if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
+        raise HTTPException(status_code=400, detail="Invalid email format")
+        
+    existing = await users_col.find_one({"$or": [{"username": username}, {"email": email}]})
+    if existing:
+        raise HTTPException(status_code=400, detail="Username or Email already registered")
+        
+    hashed = get_password_hash(password)
+    user_doc = {
+        "username": username,
+        "password": hashed,
+        "email": email,
+        "name": name or username,
+        "status": "pending",
+        "role": "user",
+        "created_at": datetime.utcnow().isoformat()
+    }
+    await users_col.insert_one(user_doc)
+    return {"status": "ok", "message": "Registration successful. Please wait for admin approval."}
+
+
+# ── Admin User Management ──────────────────────────────────────────────────
+@app.get("/admin/users", dependencies=[Depends(admin_required)])
+async def list_users():
+    cursor = users_col.find({}, {"password": 0})
+    users = await cursor.to_list(length=100)
+    for user in users:
+        if "_id" in user:
+            user["_id"] = str(user["_id"])
+    return {"users": users}
+
+
+@app.post("/admin/users/{username}/approve", dependencies=[Depends(admin_required)])
+async def approve_user(username: str):
+    result = await users_col.update_one({"username": username}, {"$set": {"status": "approved"}})
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"status": "ok", "message": f"User {username} approved"}
+
+
+@app.post("/admin/users/{username}/reject", dependencies=[Depends(admin_required)])
+async def reject_user(username: str):
+    result = await users_col.delete_one({"username": username})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"status": "ok", "message": f"User {username} rejected/deleted"}
+
+
+@app.post("/admin/users", dependencies=[Depends(admin_required)])
+async def admin_create_user(request: Request):
+    body = await request.json()
+    username = body.get("username", "").strip()
+    password = body.get("password", "")
+    email = body.get("email", "").strip()
+    name = body.get("name", "").strip()
+    role = body.get("role", "user")
+    
+    if not username or not password or not email:
+        raise HTTPException(status_code=400, detail="Username, password, and email are required")
+        
+    if " " in username:
+        raise HTTPException(status_code=400, detail="Username cannot contain spaces")
+        
+    if len(password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters long")
+        
+    if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
+        raise HTTPException(status_code=400, detail="Invalid email format")
+        
+    existing = await users_col.find_one({"$or": [{"username": username}, {"email": email}]})
+    if existing:
+        raise HTTPException(status_code=400, detail="Username or Email already exists")
+        
+    hashed = get_password_hash(password)
+    user_doc = {
+        "username": username,
+        "password": hashed,
+        "email": email,
+        "name": name or username,
+        "status": "approved",
+        "role": role,
+        "created_at": datetime.utcnow().isoformat()
+    }
+    await users_col.insert_one(user_doc)
+    return {"status": "ok", "message": "User created successfully"}
+
+@app.get("/stats/map")
+async def get_map_stats():
+    """Return country impact data for leaks and defacement items."""
+    leak_items = await _fetch_threat_items("leak")
+    defacement_items = await _fetch_threat_items("defacement")
+
+    bucket: Dict[str, Dict[str, Any]] = {}
+
+    def _touch(code: str) -> Dict[str, Any]:
+        if code not in bucket:
+            bucket[code] = {
+                "code": code,
+                "name": _COUNTRY_CODE_TO_NAME.get(code, code),
+                "leak_count": 0,
+                "defacement_count": 0,
+                "total": 0,
+                "examples": [],
+            }
+        return bucket[code]
+
+    for item in leak_items:
+        for code in item.get("country_codes", []) or []:
+            entry = _touch(code)
+            entry["leak_count"] += 1
+            entry["total"] += 1
+            if len(entry["examples"]) < 4:
+                entry["examples"].append({
+                    "aid": item["aid"],
+                    "title": item["title"],
+                    "source_type": item["source_type"],
+                })
+
+    for item in defacement_items:
+        for code in item.get("country_codes", []) or []:
+            entry = _touch(code)
+            entry["defacement_count"] += 1
+            entry["total"] += 1
+            if len(entry["examples"]) < 4:
+                entry["examples"].append({
+                    "aid": item["aid"],
+                    "title": item["title"],
+                    "source_type": item["source_type"],
+                })
+
+    countries = sorted(bucket.values(), key=lambda item: (-item["total"], item["name"]))
     return {
-        "total": total,
+        "map_data": {item["code"]: item["total"] for item in countries},
+        "countries": countries,
+        "summary": {
+            "affected_countries": len(countries),
+            "leak_items_with_country": sum(1 for item in leak_items if item.get("country_codes")),
+            "defacement_items_with_country": sum(1 for item in defacement_items if item.get("country_codes")),
+        },
+    }
+
+
+# ── Collection holding raw crawl data (Redis-style KV) ──────────────────────
+kv_col = db["redis_kv_store"]
+
+_THREAT_PREFIXES = {
+    "EXPLOIT_ITEMS": "exploit",
+    "EXPLOIT_ENTITIES": None,
+    "LEAK_ITEMS": "leak",
+    "LEAK_ENTITIES": None,
+    "DEFACEMENT_ITEMS": "defacement",
+    "DEFACEMENT_ENTITIES": None,
+    "SOCIAL_ITEMS": "social",
+    "SOCIAL_ENTITIES": None,
+    "API_ITEMS": "api",
+    "API_ENTITIES": None,
+}
+
+_FEED_SOURCE_ALIASES = {
+    "all": "all",
+    "news": "news",
+    "exploit": "exploit",
+    "leak": "leak",
+    "defacement": "defacement",
+    "social": "social",
+    "api": "api",
+    "forums": "social",
+    "marketplaces": "leak",
+    "github": "api",
+    "apk": "api",
+}
+
+_COUNTRY_CODE_TO_NAME = {
+    "AE": "United Arab Emirates",
+    "AR": "Argentina",
+    "AT": "Austria",
+    "AU": "Australia",
+    "BD": "Bangladesh",
+    "BE": "Belgium",
+    "BR": "Brazil",
+    "CA": "Canada",
+    "CH": "Switzerland",
+    "CL": "Chile",
+    "CN": "China",
+    "CO": "Colombia",
+    "CZ": "Czech Republic",
+    "DE": "Germany",
+    "DK": "Denmark",
+    "EG": "Egypt",
+    "ES": "Spain",
+    "FI": "Finland",
+    "FR": "France",
+    "GB": "United Kingdom",
+    "GR": "Greece",
+    "HU": "Hungary",
+    "ID": "Indonesia",
+    "IE": "Ireland",
+    "IL": "Israel",
+    "IN": "India",
+    "IQ": "Iraq",
+    "IR": "Iran",
+    "IT": "Italy",
+    "JP": "Japan",
+    "KE": "Kenya",
+    "KR": "South Korea",
+    "LK": "Sri Lanka",
+    "MX": "Mexico",
+    "MY": "Malaysia",
+    "NG": "Nigeria",
+    "NL": "Netherlands",
+    "NO": "Norway",
+    "NZ": "New Zealand",
+    "PH": "Philippines",
+    "PK": "Pakistan",
+    "PL": "Poland",
+    "PT": "Portugal",
+    "RO": "Romania",
+    "RU": "Russia",
+    "SA": "Saudi Arabia",
+    "SE": "Sweden",
+    "SG": "Singapore",
+    "TH": "Thailand",
+    "TR": "Turkey",
+    "UA": "Ukraine",
+    "US": "United States",
+    "VN": "Vietnam",
+    "ZA": "South Africa",
+}
+
+_COUNTRY_ALIASES = {
+    "united states": "US",
+    "u s": "US",
+    "usa": "US",
+    "united kingdom": "GB",
+    "great britain": "GB",
+    "uk": "GB",
+    "england": "GB",
+    "australia": "AU",
+    "austria": "AT",
+    "bangladesh": "BD",
+    "belgium": "BE",
+    "brazil": "BR",
+    "canada": "CA",
+    "switzerland": "CH",
+    "chile": "CL",
+    "china": "CN",
+    "colombia": "CO",
+    "czech republic": "CZ",
+    "germany": "DE",
+    "denmark": "DK",
+    "egypt": "EG",
+    "spain": "ES",
+    "finland": "FI",
+    "france": "FR",
+    "greece": "GR",
+    "hungary": "HU",
+    "indonesia": "ID",
+    "ireland": "IE",
+    "israel": "IL",
+    "india": "IN",
+    "iraq": "IQ",
+    "iran": "IR",
+    "italy": "IT",
+    "japan": "JP",
+    "kenya": "KE",
+    "south korea": "KR",
+    "korea": "KR",
+    "sri lanka": "LK",
+    "mexico": "MX",
+    "malaysia": "MY",
+    "nigeria": "NG",
+    "netherlands": "NL",
+    "norway": "NO",
+    "new zealand": "NZ",
+    "philippines": "PH",
+    "pakistan": "PK",
+    "poland": "PL",
+    "portugal": "PT",
+    "romania": "RO",
+    "russia": "RU",
+    "saudi arabia": "SA",
+    "sweden": "SE",
+    "singapore": "SG",
+    "thailand": "TH",
+    "turkey": "TR",
+    "ukraine": "UA",
+    "vietnam": "VN",
+    "south africa": "ZA",
+}
+
+
+def _canonical_source_type(source_type: str) -> str:
+    normalized = (source_type or "all").strip().lower()
+    return _FEED_SOURCE_ALIASES.get(normalized, normalized)
+
+
+def _coerce_datetime_string(value: Any) -> str:
+    if value in (None, "", []):
+        return ""
+    if isinstance(value, datetime):
+        return value.isoformat()
+    if isinstance(value, (int, float)):
+        timestamp = float(value)
+        if timestamp > 1_000_000_000_000:
+            timestamp /= 1000.0
+        try:
+            return datetime.utcfromtimestamp(timestamp).isoformat() + "Z"
+        except Exception:
+            return str(value)
+    if isinstance(value, str):
+        cleaned = value.strip()
+        if cleaned.isdigit():
+            return _coerce_datetime_string(int(cleaned))
+        return cleaned
+    return str(value)
+
+
+def _coerce_scalar(value: Any) -> str:
+    if value in (None, ""):
+        return ""
+    if isinstance(value, list):
+        values = [str(item) for item in value if item not in (None, "", [])]
+        return ", ".join(values)
+    if isinstance(value, dict):
+        return str(value.get("type") or value.get("value") or "")
+    return str(value)
+
+
+def _coerce_list(value: Any) -> list[str]:
+    if value in (None, ""):
+        return []
+    if isinstance(value, list):
+        return [str(item) for item in value if item not in (None, "", [])]
+    return [str(value)]
+
+
+def _normalize_entities(value: Any) -> list[dict]:
+    if not value:
+        return []
+    if isinstance(value, list):
+        normalized = []
+        for item in value:
+            if isinstance(item, dict):
+                normalized.append({
+                    "label": str(item.get("label", "entity")),
+                    "text": str(item.get("text", "")),
+                    "score": item.get("score"),
+                })
+            else:
+                normalized.append({"label": "entity", "text": str(item)})
+        return normalized
+    return []
+
+
+def _extract_field(data: dict, *fields: str) -> str:
+    for field in fields:
+        if field not in data:
+            continue
+        value = data.get(field)
+        scalar = _coerce_scalar(value)
+        if scalar:
+            return scalar
+    return ""
+
+
+def _extract_network(data: dict) -> str:
+    network = data.get("m_network", data.get("network"))
+    if isinstance(network, dict):
+        return _coerce_scalar(network.get("type")) or "clearnet"
+    return _coerce_scalar(network) or "clearnet"
+
+
+def _normalize_country_code(code: str) -> str:
+    normalized = (code or "").strip().upper()
+    if normalized == "UK":
+        return "GB"
+    return normalized if normalized in _COUNTRY_CODE_TO_NAME else ""
+
+
+def _country_codes_from_hostname(hostname: str) -> list[str]:
+    if not hostname:
+        return []
+    parts = [part for part in hostname.lower().split(".") if part]
+    for part in reversed(parts):
+        if len(part) == 2 and part.isalpha():
+            code = _normalize_country_code(part)
+            if code:
+                return [code]
+    return []
+
+
+def _country_codes_from_text(text: str) -> list[str]:
+    if not text:
+        return []
+    normalized = re.sub(r"[^a-z0-9]+", " ", text.lower())
+    haystack = f" {normalized} "
+    codes = []
+    for alias, code in _COUNTRY_ALIASES.items():
+        if f" {alias} " in haystack:
+            codes.append(code)
+    return sorted(set(codes))
+
+
+def _infer_country_codes(item: dict, raw_data: dict) -> list[str]:
+    codes: set[str] = set()
+
+    explicit = [
+        _extract_field(raw_data, "country", "m_country", "location", "m_location"),
+        _extract_field(item, "source_country", "country", "country_name"),
+    ]
+    for value in explicit:
+        if not value:
+            continue
+        code = _normalize_country_code(value)
+        if code:
+            codes.add(code)
+        else:
+            for inferred in _country_codes_from_text(value):
+                codes.add(inferred)
+
+    for candidate in [
+        item.get("url"),
+        item.get("seed_url"),
+        _extract_field(raw_data, "url", "m_url", "base_url", "m_base_url"),
+    ]:
+        if not candidate:
+            continue
+        try:
+            host = urlparse(candidate).hostname or ""
+        except Exception:
+            host = ""
+        for inferred in _country_codes_from_hostname(host):
+            codes.add(inferred)
+
+    text_blob = " ".join([
+        _extract_field(raw_data, "title", "m_title", "description", "m_description"),
+        _extract_field(raw_data, "content", "m_content", "important_content", "m_important_content"),
+        item.get("title", ""),
+        item.get("description", ""),
+        item.get("summary", ""),
+    ])
+    for inferred in _country_codes_from_text(text_blob):
+        codes.add(inferred)
+
+    return sorted(codes)
+
+
+def _feed_sort_key(item: dict) -> str:
+    return (
+        item.get("scraped_at")
+        or item.get("date")
+        or item.get("published_at")
+        or item.get("created_at")
+        or ""
+    )
+
+
+def _filter_feed_items(items: list[dict], query: str) -> list[dict]:
+    needle = (query or "").strip().lower()
+    if not needle:
+        return items
+
+    filtered = []
+    for item in items:
+        haystack = " ".join([
+            str(item.get("title", "")),
+            str(item.get("description", "")),
+            str(item.get("summary", "")),
+            str(item.get("source", "")),
+            str(item.get("source_type", "")),
+            str(item.get("author", "")),
+            str(item.get("ip_addresses", "")),
+            str(item.get("attacker", "")),
+            str(item.get("team", "")),
+            str(item.get("web_server", "")),
+            " ".join(item.get("country_names", []) or []),
+            json.dumps(item.get("raw", {}), ensure_ascii=False, default=str),
+        ]).lower()
+        if needle in haystack:
+            filtered.append(item)
+    return filtered
+
+
+def _build_article_item(doc: dict, include_raw: bool = False) -> dict:
+    raw_doc = dict(doc)
+    item = dict(doc)
+    item["aid"] = str(item.get("_id", item.get("aid", "")))
+    item.pop("_id", None)
+
+    categories = item.get("categories", [])
+    if categories:
+        categories_sorted = sorted(categories, key=lambda x: x.get("score", 0), reverse=True)
+        item["top_tag"] = categories_sorted[0].get("label", "")
+    else:
+        item["top_tag"] = ""
+
+    item["source_type"] = (item.get("source_type") or "news").lower()
+    item["author"] = item.get("author") or item.get("writer") or ""
+    item["scraped_at"] = _coerce_datetime_string(item.get("scraped_at") or item.get("date"))
+    item["date"] = _coerce_datetime_string(item.get("date") or item.get("scraped_at"))
+    item["entities"] = _normalize_entities(item.get("entities"))
+    item["network"] = item.get("network", {}).get("type") if isinstance(item.get("network"), dict) else item.get("network", "clearnet")
+    item["ip_addresses"] = ""
+    item["attacker"] = ""
+    item["team"] = ""
+    item["web_server"] = ""
+    item["country_codes"] = _infer_country_codes(item, raw_doc)
+    item["country_names"] = [_COUNTRY_CODE_TO_NAME[code] for code in item["country_codes"]]
+    if include_raw:
+        if "_id" in raw_doc:
+            raw_doc["_id"] = str(raw_doc["_id"])
+        item["raw"] = raw_doc
+    return item
+
+
+def _build_threat_item(key: str, data: dict, include_raw: bool = False) -> dict | None:
+    source_cat = "threat"
+    for prefix, category in _THREAT_PREFIXES.items():
+        if key.startswith(prefix):
+            if category is None:
+                return None
+            source_cat = category
+            break
+
+    title = _extract_field(data, "m_title", "title", "m_important_content", "important_content", "m_name", "m_app_name")
+    raw_url = _extract_field(data, "m_url", "url", "m_app_url", "m_message_sharable_link", "m_channel_url")
+    if not raw_url:
+        links = (
+            data.get("m_weblink")
+            or data.get("weblink")
+            or data.get("links")
+            or data.get("m_links")
+            or []
+        )
+        raw_url = _coerce_list(links)[0] if _coerce_list(links) else ""
+
+    if not title and raw_url:
+        try:
+            title = urlparse(raw_url).hostname or raw_url
+        except Exception:
+            title = raw_url
+    if not title:
+        title = "Untitled"
+
+    content = _extract_field(data, "m_content", "content", "m_description", "description", "m_important_content", "important_content")
+    source_name = _extract_field(data, "m_source", "m_scrap_file", "m_team", "m_actor", "m_platform", "m_sender_name") or source_cat
+    network = _extract_network(data)
+    date_value = _coerce_datetime_string(_extract_field(data, "m_leak_date", "leak_date", "m_message_date", "m_exploit_year", "m_latest_date", "m_date"))
+    seed_url = _extract_field(data, "m_base_url", "base_url", "m_source_url")
+    author = _extract_field(data, "m_actor", "m_sender_name", "m_author", "author")
+    ip_addresses = _extract_field(data, "m_ip", "ip_address", "ip")
+    attacker = _extract_field(data, "m_attacker", "attacker")
+    team = _extract_field(data, "m_team", "team")
+    web_server = _coerce_scalar(data.get("m_web_server") or data.get("web_server"))
+
+    content_types = _coerce_list(data.get("m_ioc_type") or data.get("content_type"))
+    categories = [{"label": source_cat, "score": 1.0}]
+    for label in content_types:
+        if label and label != source_cat:
+            categories.append({"label": label, "score": 0.75})
+
+    description_parts = [content[:400]] if content else []
+    if ip_addresses:
+        description_parts.append(f"IP: {ip_addresses}")
+    if attacker:
+        description_parts.append(f"Attacker: {attacker}")
+    if team:
+        description_parts.append(f"Team: {team}")
+    if web_server:
+        description_parts.append(f"Server: {web_server}")
+    if content_types:
+        description_parts.append(f"Type: {', '.join(content_types)}")
+    description = " | ".join(part for part in description_parts if part) or title
+
+    item = {
+        "aid": key,
+        "title": title,
+        "description": description[:800],
+        "url": raw_url,
+        "seed_url": seed_url,
+        "source": source_name,
+        "source_type": source_cat,
+        "author": author or attacker,
+        "date": date_value,
+        "scraped_at": date_value,
+        "network": network,
+        "top_tag": source_cat,
+        "categories": categories,
+        "summary": (content or description)[:400],
+        "entities": _normalize_entities(data.get("entities") or data.get("m_entities")),
+        "ip_addresses": ip_addresses,
+        "attacker": attacker,
+        "team": team,
+        "web_server": web_server,
+    }
+    item["country_codes"] = _infer_country_codes(item, data)
+    item["country_names"] = [_COUNTRY_CODE_TO_NAME[code] for code in item["country_codes"]]
+    if include_raw:
+        item["raw"] = data
+    return item
+
+
+def _parse_kv_item(doc: dict, include_raw: bool = False) -> dict | None:
+    raw = doc.get("value", "")
+    if not raw or not isinstance(raw, str):
+        return None
+    try:
+        data = json.loads(raw)
+    except Exception:
+        return None
+    if not isinstance(data, dict):
+        return None
+    return _build_threat_item(str(doc.get("_id", "")), data, include_raw=include_raw)
+
+
+async def _fetch_news_items(include_raw: bool = False) -> list[dict]:
+    docs = await articles_col.find({}).to_list(length=None)
+    return [_build_article_item(doc, include_raw=include_raw) for doc in docs]
+
+
+async def _fetch_threat_items(source_type: str = "", include_raw: bool = False) -> list[dict]:
+    prefixes = [prefix for prefix, category in _THREAT_PREFIXES.items() if category is not None]
+    if source_type:
+        prefixes = [prefix for prefix, category in _THREAT_PREFIXES.items() if category == source_type]
+        if not prefixes:
+            return []
+
+    regex_pattern = "^(" + "|".join(prefixes) + "):"
+    docs = await kv_col.find({"_id": {"$regex": regex_pattern}}).to_list(length=None)
+    items = []
+    for doc in docs:
+        parsed = _parse_kv_item(doc, include_raw=include_raw)
+        if parsed:
+            items.append(parsed)
+    return items
+
+
+@app.get("/news")
+async def list_news(
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    q: str = Query(""),
+    include_raw: bool = Query(False),
+):
+    items = await _fetch_news_items(include_raw=include_raw)
+    items = sorted(items, key=_feed_sort_key, reverse=True)
+    items = _filter_feed_items(items, q)
+    payload = {
+        "total": len(items),
         "offset": offset,
         "limit": limit,
-        "items": items,
+        "items": items[offset:offset + limit],
     }
+    payload["news"] = payload["items"]
+    return payload
+
 
 @app.get("/news/{aid}")
 async def get_news(aid: str):
@@ -138,155 +874,54 @@ async def get_news(aid: str):
         doc = await articles_col.find_one({"aid": aid})
         if not doc:
             raise HTTPException(status_code=404, detail="Article not found")
-            
-    doc["aid"] = str(doc.get("_id", aid))
-    if "_id" in doc:
-        del doc["_id"]
-        
-    categories = doc.get("categories", [])
-    if categories:
-        categories_sorted = sorted(categories, key=lambda x: x.get("score", 0), reverse=True)
-        doc["top_tag"] = categories_sorted[0].get("label", "")
+    item = _build_article_item(doc, include_raw=True)
+    return {"article": item, **item}
+
+
+@app.get("/feed")
+async def list_feed(
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    source_type: str = Query("all"),
+    q: str = Query(""),
+    include_raw: bool = Query(False),
+):
+    canonical = _canonical_source_type(source_type)
+
+    if canonical == "news":
+        items = await _fetch_news_items(include_raw=include_raw)
+    elif canonical in {"exploit", "leak", "defacement", "social", "api"}:
+        items = await _fetch_threat_items(canonical, include_raw=include_raw)
     else:
-        doc["top_tag"] = ""
-        
-    return doc
+        news_items = await _fetch_news_items(include_raw=include_raw)
+        threat_items = await _fetch_threat_items(include_raw=include_raw)
+        items = news_items + threat_items
 
-
-# ── Collection holding raw crawl data (Redis-style KV) ──────────────────────
-kv_col = db["redis_kv_store"]
-
-# Prefixes that hold JSON item data (not news, not indexes/hashes)
-_NEWS_PREFIXES = {"THN", "BLEEPING", "CSO", "HACKREAD", "INFOSEC", "KREBS", "PORTSWIGGER", "THERECORD"}
-
-_THREAT_PREFIXES = {
-    "EXPLOIT_ITEMS":      "exploit",
-    "EXPLOIT_ENTITIES":   None,       # skip entity docs (duplicates)
-    "LEAK_ITEMS":         "leak",
-    "LEAK_ENTITIES":      None,
-    "DEFACEMENT_ITEMS":   "defacement",
-    "DEFACEMENT_ENTITIES": None,
-    "SOCIAL_ITEMS":       "social",
-    "SOCIAL_ENTITIES":    None,
-    "API_ITEMS":          "api",
-    "API_ENTITIES":       None,
-}
-
-
-def _parse_kv_item(doc) -> dict | None:
-    """Turn a redis_kv_store document whose value is a JSON-encoded dict into a
-    card-friendly article-like dict the frontend can render."""
-    import json as _json
-    raw = doc.get("value", "")
-    if not raw or not isinstance(raw, str):
-        return None
-    try:
-        data = _json.loads(raw)
-    except Exception:
-        return None
-    if not isinstance(data, dict):
-        return None
-
-    key = str(doc.get("_id", ""))
-
-    # Determine source category from key prefix
-    source_cat = "threat"
-    for pfx, cat in _THREAT_PREFIXES.items():
-        if key.startswith(pfx):
-            if cat is None:  # skip entity-only prefixes
-                return None
-            source_cat = cat
-            break
-
-    # ── Helper: try multiple field names, return first non-empty ──────────
-    def _first(*fields):
-        for f in fields:
-            v = data.get(f)
-            if v:
-                return str(v) if not isinstance(v, str) else v
-        return ""
-
-    # ── Title ─────────────────────────────────────────────────────────────
-    title = _first("m_title", "title", "m_important_content", "important_content",
-                    "m_name", "m_app_name")
-    # Defacement fallback: use the target URL as the title
-    if not title:
-        raw_url = _first("m_url", "url")
-        if raw_url:
-            try:
-                from urllib.parse import urlparse
-                title = urlparse(raw_url).hostname or raw_url
-            except Exception:
-                title = raw_url
-    if not title:
-        title = "Untitled"
-
-    # ── URL / link ────────────────────────────────────────────────────────
-    url = _first("m_url", "url", "m_app_url", "m_message_sharable_link", "m_channel_url")
-    if not url:
-        links = data.get("m_weblink") or data.get("weblink") or []
-        if links and isinstance(links, list):
-            url = links[0]
-
-    # ── Content / description ─────────────────────────────────────────────
-    content = _first("m_content", "content", "m_description", "description",
-                      "m_important_content", "important_content")
-
-    # ── Source name ───────────────────────────────────────────────────────
-    source_name = _first("m_source", "m_scrap_file", "m_team", "m_actor",
-                         "m_platform", "m_sender_name")
-    if not source_name:
-        source_name = source_cat
-
-    # ── Network ───────────────────────────────────────────────────────────
-    network = _first("m_network", "network") or "clearnet"
-
-    # ── Date ──────────────────────────────────────────────────────────────
-    date_str = _first("m_leak_date", "leak_date", "m_message_date",
-                       "m_exploit_year", "m_latest_date", "m_date")
-
-    # ── Build description from multiple fields ────────────────────────────
-    desc_parts = []
-    if content:
-        desc_parts.append(content[:400])
-    pkg = data.get("m_package_id", "")
-    if pkg:
-        desc_parts.append(f"Package: {pkg}")
-    ver = data.get("m_version", "")
-    if ver:
-        desc_parts.append(f"Version: {ver}")
-    mod = data.get("m_mod_features", "")
-    if mod:
-        desc_parts.append(f"Mod: {mod}")
-    # Defacement extras
-    web_server = data.get("m_web_server")
-    if web_server and isinstance(web_server, list):
-        desc_parts.append(f"Server: {', '.join(web_server)}")
-    ioc_type = data.get("m_ioc_type") or data.get("content_type")
-    if ioc_type and isinstance(ioc_type, list):
-        desc_parts.append(f"Type: {', '.join(ioc_type)}")
-    description = " | ".join(desc_parts) if desc_parts else title
-
-    # ── Author (for social, exploits) ─────────────────────────────────────
-    author = _first("m_actor", "m_sender_name", "m_author", "author")
-
+    items = sorted(items, key=_feed_sort_key, reverse=True)
+    items = _filter_feed_items(items, q)
     return {
-        "aid": key,
-        "title": title,
-        "description": description[:500],
-        "url": url,
-        "seed_url": _first("m_base_url", "base_url", "m_source_url"),
-        "source": source_name,
-        "source_type": source_cat,
-        "author": author,
-        "date": date_str,
-        "scraped_at": date_str,
-        "network": network,
-        "top_tag": source_cat,
-        "categories": [{"label": source_cat, "score": 1.0}],
-        "summary": description[:300],
-        "entities": {},
+        "total": len(items),
+        "offset": offset,
+        "limit": limit,
+        "items": items[offset:offset + limit],
     }
+
+
+@app.get("/feed/{aid}")
+async def get_feed_item(aid: str):
+    if any(aid.startswith(f"{prefix}:") for prefix in _THREAT_PREFIXES):
+        doc = await kv_col.find_one({"_id": aid})
+        parsed = _parse_kv_item(doc, include_raw=True) if doc else None
+        if not parsed:
+            raise HTTPException(status_code=404, detail="Threat item not found")
+        return parsed
+
+    doc = await articles_col.find_one({"_id": aid})
+    if not doc:
+        doc = await articles_col.find_one({"aid": aid})
+        if not doc:
+            raise HTTPException(status_code=404, detail="Feed item not found")
+    return _build_article_item(doc, include_raw=True)
 
 
 @app.get("/threats")
@@ -298,26 +933,10 @@ async def list_threats(
     """Return non-news threat intel entries (exploits, leaks, social, etc.)
     from the redis_kv_store collection, formatted like articles for the frontend."""
 
-    # Build list of prefixes to scan
-    prefixes = [p for p, cat in _THREAT_PREFIXES.items() if cat is not None]
-    if source_type:
-        prefixes = [p for p, cat in _THREAT_PREFIXES.items() if cat == source_type]
-        if not prefixes:
-            return {"total": 0, "offset": offset, "limit": limit, "items": []}
-
-    regex_pattern = "^(" + "|".join(prefixes) + "):"
-    query = {"_id": {"$regex": regex_pattern}}
-    total = await kv_col.count_documents(query)
-    cursor = kv_col.find(query).skip(offset).limit(limit)
-    docs = await cursor.to_list(length=limit)
-
-    items = []
-    for doc in docs:
-        parsed = _parse_kv_item(doc)
-        if parsed:
-            items.append(parsed)
-
-    return {"total": total, "offset": offset, "limit": limit, "items": items}
+    items = await _fetch_threat_items(_canonical_source_type(source_type))
+    items = sorted(items, key=_feed_sort_key, reverse=True)
+    total = len(items)
+    return {"total": total, "offset": offset, "limit": limit, "items": items[offset:offset + limit]}
 
 
 @app.get("/stats")
@@ -333,7 +952,7 @@ async def stats():
         count = await kv_col.count_documents({"_id": {"$regex": regex}})
         result[cat] = result.get(cat, 0) + count
     result["total"] = sum(result.values())
-    return result
+    return {"counts": result, **result}
 
 
 # ── PakDB Phone Lookup ──────────────────────────────────────────────────────
@@ -781,7 +1400,7 @@ class NLQRequest(BaseModel):
 async def search_nlq(req: NLQRequest, request: Request):
     """
     Natural Language Query endpoint. Translates human text into a MongoDB
-    aggregation pipeline using Gemini 3 Flash, executes it against intel_feed,
+    aggregation pipeline using Gemini 1.5 Flash, executes it against intel_feed,
     and returns the resulting documents.
     """
     try:
@@ -795,13 +1414,17 @@ async def search_nlq(req: NLQRequest, request: Request):
             log.warning("GEMINI_API_KEY not configured. Returning mock pipeline for NLQ.")
             # Extract basic keyword from query for crude mock filtering
             keyword = req.query.split()[-1] if req.query else "breach"
+            # Improved mock to check more fields
             pipeline = [
                 {"$match": {"$or": [
                     {"title": {"$regex": f"(?i){keyword}"}},
-                    {"ai_summary": {"$regex": f"(?i){keyword}"}}
+                    {"ai_summary": {"$regex": f"(?i){keyword}"}},
+                    {"content": {"$regex": f"(?i){keyword}"}},
+                    {"description": {"$regex": f"(?i){keyword}"}},
+                    {"entities.text": {"$regex": f"(?i){keyword}"}}
                 ]}},
                 {"$sort": {"_id": -1}},
-                {"$limit": 20}
+                {"$limit": 50}
             ]
         else:
             client = genai.Client(api_key=api_key)
@@ -813,32 +1436,35 @@ async def search_nlq(req: NLQRequest, request: Request):
             The collection is named `intel_feed`. 
             Schema fields:
             - _id (ObjectId)
-            - source_type (string, e.g., 'news', 'exploit', 'leak', 'defacement', 'social', 'api')
+            - source_type (string: 'news', 'exploit', 'leak', 'defacement', 'social', 'api')
             - title (string)
             - url (string)
-            - date (string YYYY-MM-DD or ISO)
+            - date (string YYYY-MM-DD)
             - impact_score (int 0-100)
-            - is_fake (bool)
             - threat_actors (list of strings)
             - ai_summary (string)
+            - content (string)
+            - description (string)
+            - entities (list of objects with 'label' and 'text', e.g. {{'label': 'ORG', 'text': 'Microsoft'}})
+            - network (string: 'clearnet', 'tor', 'i2p')
             
             User Query: "{req.query}"
             
-            Return ONLY a JSON array representing the aggregation pipeline. No markdown formatting, no explanations. Just valid JSON like:
-            [{{"$match": {{"title": {{"$regex": "(?i)rockstar"}}}}}}, {{"$sort": {{"impact_score": -1}}}}, {{"$limit": 20}}]
+            Return ONLY a JSON array representing the aggregation pipeline. No markdown, no explanations. 
+            Example result: 
+            [{{"$match": {{"$or": [{{"title": {{"$regex": "(?i)rockstar"}}}}, {{"content": {{"$regex": "(?i)rockstar"}}}} ]}}}}, {{"$sort": {{"impact_score": -1}}}}, {{"$limit": 20}}]
             """
             
             loop = asyncio.get_running_loop()
             def call_gemini():
-                response = client.models.generate_content(
-                    model='gemini-2.5-flash',
+                return client.models.generate_content(
+                    model='gemini-1.5-flash',
                     contents=prompt,
                     config=types.GenerateContentConfig(
                         temperature=0.0,
                         response_mime_type="application/json"
                     )
-                )
-                return response.text
+                ).text
                 
             pipeline_json = await loop.run_in_executor(None, call_gemini)
             
@@ -938,4 +1564,4 @@ async def get_mission_graph(leak_id: str):
             edges.append({"data": {"source": actor_id, "target": breach_id, "label": "Present In"}})
             
     return {"nodes": nodes, "edges": edges}
-
+

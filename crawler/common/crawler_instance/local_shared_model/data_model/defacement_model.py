@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import date
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 
 @dataclass
@@ -44,6 +44,9 @@ class defacement_model:
     # Screenshot URLs (future use)
     m_screenshot_links: List[str] = field(default_factory=list)
 
+    # Inline/base64 screenshot evidence
+    m_screenshot: str = ""
+
     # Raw title / headline if site provides
     m_title: str = ""
 
@@ -52,3 +55,6 @@ class defacement_model:
 
     # Criticality / score (if any)
     m_severity: str = ""
+
+    # Flexible metadata bucket for collector-specific fields
+    m_extra: Dict[str, Any] = field(default_factory=dict)

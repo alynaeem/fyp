@@ -374,6 +374,8 @@ def process_record(rec: dict) -> dict | None:
         # source/meta (mirrors crawler dict; nothing JSON)
         "url": rec.get("url"),
         "seed_url": rec.get("seed_url"),
+        "source_name": rec.get("source_name"),
+        "screenshot": rec.get("screenshot"),
         "rendered": bool(rec.get("rendered", True)),
         "scraped_at": rec.get("scraped_at"),
 
@@ -451,6 +453,7 @@ class _RedisIO:
             "description": g("description"),
             "location": g("location"),
             "content": g("content"),
+            "screenshot": g("screenshot"),
             "links": read_list("links"),
             "network": {"type": g("network:type")}
         }

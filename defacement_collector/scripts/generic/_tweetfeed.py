@@ -5,6 +5,7 @@ import requests
 from abc import ABC
 from datetime import datetime, timezone
 from typing import List, Optional, Tuple
+from urllib.parse import urlparse
 
 from playwright.sync_api import sync_playwright
 
@@ -209,6 +210,18 @@ class _tweetfeed(leak_extractor_interface, ABC):
         except Exception:
             return "UNREACHABLE"
 
+    @staticmethod
+    def _title_from_value(value: str) -> str:
+        candidate = (value or "").strip()
+        if not candidate:
+            return "Untitled"
+        if candidate.startswith(("http://", "https://")):
+            try:
+                return urlparse(candidate).hostname or candidate
+            except Exception:
+                return candidate
+        return candidate
+
     # ✅ stable AID
     def _make_aid(self, card: defacement_model, ent: entity_model) -> str:
         seed = "|".join(
@@ -231,6 +244,8 @@ class _tweetfeed(leak_extractor_interface, ABC):
         self._redis_set(f"{base}:network:type", card.m_network or "")
         self._redis_set(f"{base}:leak_date", self._date_to_string(card.m_leak_date))
         self._redis_set(f"{base}:content", card.m_content or "")
+        self._redis_set(f"{base}:title", card.m_title or "")
+        self._redis_set(f"{base}:description", card.m_description or "")
         self._redis_set(f"{base}:scraped_at", int(datetime.now(timezone.utc).timestamp()))
         self._redis_set(f"{base}:seed_url", self.seed_url)
         self._redis_set(f"{base}:rendered", "1")
@@ -393,20 +408,44 @@ class _tweetfeed(leak_extractor_interface, ABC):
                                 page,
                             )
 
+                        source_urls = [link for link in [original_tweet_link, search_in_virus_tool_link] if link]
+                        title = self._title_from_value(val)
+                        description_parts = []
+                        if user_text:
+                            description_parts.append(f"Reporter: {(user_text or '').strip()}")
+                        if ip_val:
+                            description_parts.append(f"IP: {ip_val}")
+                        elif val:
+                            description_parts.append(f"IOC: {val}")
+                        if filtered:
+                            description_parts.append(f"Tags: {', '.join(filtered)}")
+                        if content:
+                            description_parts.append(content[:320])
+                        description = " | ".join(part for part in description_parts if part)[:900]
+
                         card = defacement_model(
+                            m_title=title,
+                            m_description=description,
                             m_url=val,
                             m_content=content,
                             m_base_url=self.base_url,
-                            m_source_url=[original_tweet_link] if original_tweet_link else [],
+                            m_source_url=source_urls,
                             m_ioc_type=filtered,
                             m_network=helper_method.get_network_type(self.base_url),
                             m_leak_date=leak_date,
+                            m_extra={
+                                "reporter_profile": user_url or "",
+                                "scanner_link": search_in_virus_tool_link or "",
+                                "tweet_link": original_tweet_link or "",
+                            },
                         )
 
                         # entity_model (works with extended model; minimal model still ok if you remove optional fields)
                         ent = entity_model(
                             m_scrap_file=self.__class__.__name__,
                             m_team=(user_text or "").strip(),
+                            m_author=[(user_text or "").strip()] if user_text else [],
+                            m_username=[(user_text or "").strip()] if user_text else [],
                             m_ip=[ip_val] if ip_val else [],
                             m_weblink=[val] if (not ip_val and self.is_domain_or_url(val)) else [],
                             m_social_media_profiles=[user_url] if user_url else [],

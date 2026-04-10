@@ -42,11 +42,11 @@ class _ddosecrets(leak_extractor_interface, ABC):
 
     @property
     def seed_url(self) -> str:
-        return "https://ddosecrets.com/all_articles/a-z"
+        return "https://ddosecrets.org/all_articles/a-z"
 
     @property
     def base_url(self) -> str:
-        return "https://ddosecrets.com"
+        return "https://ddosecrets.org"
 
     @property
     def rule_config(self) -> RuleModel:

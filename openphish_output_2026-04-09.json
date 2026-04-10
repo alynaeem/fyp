@@ -1,0 +1,1902 @@
+{
+  "generated_on": "2026-04-09",
+  "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+  "count": 50,
+  "items": [
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://docu-share-direct-lnk-5378edjksjhdb.vercel.app/docu-share-download98yhjkfdyidy8idyi.html",
+      "final_url": "https://docu-share-direct-lnk-5378edjksjhdb.vercel.app/docu-share-download98yhjkfdyidy8idyi.html",
+      "host": "docu-share-direct-lnk-5378edjksjhdb.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://docu-share-direct-lnk-5378edjksjhdb.vercel.app/docu-share-download98yhjkfdyidy8idyi.html",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "9a69f585afba48912ac59cfffe8e92cfdcb923c5",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 10,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://pawandholia.in/uiitra2/front/live/new%20hotmail.html",
+      "final_url": "https://pawandholia.in/uiitra2/front/live/new%20hotmail.html",
+      "host": "pawandholia.in",
+      "category": "login_branding",
+      "brands": [
+        "microsoft"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://pawandholia.in/uiitra2/front/live/new%20hotmail.html",
+        "content_len": 413482,
+        "content_type": "text/html",
+        "server": "Apache"
+      },
+      "analysis": {
+        "title": "Outlook",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "1afeb781ea458dc85696cda1fe0cad26b6687980",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Outlook</title> <link id=\"favicon\" rel=\"icon\" href=\"https://aadcdn.msftauth.net/shared/1.0/content/images/favicon_a_eupayfgghqiai7k9sol6lg2.ico\" type=\"image/svg+xml\"> <style> * { padding: 0; margin",
+        "raw_html_len": 413482
+      },
+      "score": 90,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "brand_keywords:microsoft"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://shopee6799.blogspot.com/",
+      "final_url": "https://shopee6799.blogspot.com/",
+      "host": "shopee6799.blogspot.com",
+      "category": "redirector",
+      "brands": [
+        "microsoft",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://shopee6799.blogspot.com/",
+        "content_len": 936196,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "GSE"
+      },
+      "analysis": {
+        "title": "shopee",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 7,
+        "iframes": 2,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "73de978745eb62bc2577a6302f21de9284cff3ce",
+        "snippet": "<!DOCTYPE html> <html class='v2' dir='ltr' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'> <head> <link href='https://www.blogger.com/static/v1/widgets/335934321-css_bundle_v2.css' rel='stylesheet' type='text/css'/> <meta content='width=1100' name='viewport'/> <meta co",
+        "raw_html_len": 936196
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "url_shortener_redirector",
+        "brand_keywords:microsoft,banking"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.5mp.eu/fajlok2/tiaew/owa_www.5mp.eu_.html",
+      "final_url": "http://www.5mp.eu/fajlok2/tiaew/owa_www.5mp.eu_.html",
+      "host": "www.5mp.eu",
+      "category": "login_branding",
+      "brands": [
+        "microsoft"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://www.5mp.eu/fajlok2/tiaew/owa_www.5mp.eu_.html",
+        "content_len": 58804,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "Outlook Web App",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 6,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "972cf1ce4b6f829f7c747a7314bf3246d4623f48",
+        "snippet": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"> <!-- Copyright <c> 2011 Microsoft Corporation. All rights reserved. --> <!-- OwaPage = ASP.auth_logon_aspx --> <!-- {57A118C6-2DA9-419d-BE9A-F92B0F9A418B} --> <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"> <html> <head> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=10\" /> <link rel=\"shortcut icon\" href=\"/o",
+        "raw_html_len": 58804
+      },
+      "score": 50,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "login_keywords_detected",
+        "brand_keywords:microsoft"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://chantaygiavietnam.com/lang/wap/",
+      "final_url": "https://chantaygiavietnam.com/lang/wap/",
+      "host": "chantaygiavietnam.com",
+      "category": "login_branding",
+      "brands": [
+        "google",
+        "meta",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://chantaygiavietnam.com/lang/wap/",
+        "content_len": 1638863,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "Apache/2"
+      },
+      "analysis": {
+        "title": "Anmeldung zum Digital Banking - Commerzbank",
+        "forms": 0,
+        "password_inputs": 1,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "c92d31ac79aaa7049a1bbbbad9b5372d8289cdb4",
+        "snippet": "<html dir=\"ltr\" lang=\"de\" class=\"no-js\" data-whatinput=\"touch\" data-whatintent=\"touch\" style=\"filter: hue-rotate(4deg);\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <script type=\"text/javascript\" src=\"./css/jquery.min.js\"></script> <link rel=\"stylesheet\" href=\"./css/font-awesome.min.css\"> <link rel=\"stylesheet\" href=\"./css/core_form.css?re\"> <link rel=\"ic",
+        "raw_html_len": 1638863
+      },
+      "score": 70,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "password_input_detected",
+        "login_keywords_detected",
+        "brand_keywords:google,meta,banking"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://chantaygiavietnam.com/lang/",
+      "final_url": "https://chantaygiavietnam.com/lang/wap/",
+      "host": "chantaygiavietnam.com",
+      "category": "login_branding",
+      "brands": [
+        "google",
+        "meta",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://chantaygiavietnam.com/lang/wap/",
+        "content_len": 1638863,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "Apache/2"
+      },
+      "analysis": {
+        "title": "Anmeldung zum Digital Banking - Commerzbank",
+        "forms": 0,
+        "password_inputs": 1,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "c92d31ac79aaa7049a1bbbbad9b5372d8289cdb4",
+        "snippet": "<html dir=\"ltr\" lang=\"de\" class=\"no-js\" data-whatinput=\"touch\" data-whatintent=\"touch\" style=\"filter: hue-rotate(4deg);\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <script type=\"text/javascript\" src=\"./css/jquery.min.js\"></script> <link rel=\"stylesheet\" href=\"./css/font-awesome.min.css\"> <link rel=\"stylesheet\" href=\"./css/core_form.css?re\"> <link rel=\"ic",
+        "raw_html_len": 1638863
+      },
+      "score": 70,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "password_input_detected",
+        "login_keywords_detected",
+        "brand_keywords:google,meta,banking"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://roblox.com.bn/communities/350138577753/Pandesal",
+      "final_url": "https://roblox.com.bn/communities/350138577753/Pandesal",
+      "host": "roblox.com.bn",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://roblox.com.bn/communities/350138577753/Pandesal",
+        "content_len": 80202,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Pandesal - Roblox",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 135,
+        "iframes": 1,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "339436dd9ced772816efda4485ecfcd0d8663cc9",
+        "snippet": "<!DOCTYPE html> <!--[if IE 8]><html class=\"ie8\" ng-app=\"robloxApp\"><![endif]--> <!--[if gt IE 8]><!--> <html lang=\"en\"> <!--<![endif]--> <head data-machine-id=\"a1b3271f-c357-cb48-45c6-48466c75404e\"> <!-- MachineID: a1b3271f-c357-cb48-45c6-48466c75404e --> <title>Pandesal - Roblox</title> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,requiresActiveX=true\"> <meta charset=\"UTF-8",
+        "raw_html_len": 80202
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://onur156.github.io/instagram-phishing-tool",
+      "final_url": "https://onur156.github.io/instagram-phishing-tool/",
+      "host": "onur156.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://onur156.github.io/instagram-phishing-tool/",
+        "content_len": 5272,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Giriş Yap • Instagram",
+        "forms": 0,
+        "password_inputs": 1,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "144038915ef32468b47ed5ec4b44e22e70522d85",
+        "snippet": "<!DOCTYPE html> <html lang=\"tr\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Giriş Yap • Instagram</title> <link rel=\"icon\" href=\"https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png\"> <style> body { background-color: #fafafa; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI",
+        "raw_html_len": 5272
+      },
+      "score": 65,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "password_input_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:meta"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://linkurl.pk/UMP-HEXI",
+      "final_url": "https://linkurl.pk/UMP-HEXI",
+      "host": "linkurl.pk",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://linkurl.pk/UMP-HEXI",
+        "content_len": 4,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "Apache/2.4.52 (Ubuntu)"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "80501aa5bce06fc0b4b528afae61818455eb7c79",
+        "snippet": "404.",
+        "raw_html_len": 4
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://bormaxcorreias.com.br/web/mnx/",
+      "final_url": "http://bormaxcorreias.com.br/web/mnx/",
+      "host": "bormaxcorreias.com.br",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://bormaxcorreias.com.br/web/mnx/",
+        "content_len": 8413,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "Apache"
+      },
+      "analysis": {
+        "title": "网易企业邮箱 - 登录入口",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 10,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe9b816cff3f477f00b3473eeec54e2b5a787e03",
+        "snippet": "﻿<!doctype html> <html lang=\"en\"> <head> <script src=\"js/jquery.min.js\"></script> <script src=\"js/jquery-3.1.1.min.js\"></script> <script src=\"js/jquery-3.3.1.js\" integrity=\"sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=\" crossorigin=\"anonymous\"></script> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-",
+        "raw_html_len": 8413
+      },
+      "score": 65,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://netflix-clone-rust-five.vercel.app/",
+      "final_url": "https://netflix-clone-rust-five.vercel.app/",
+      "host": "netflix-clone-rust-five.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflix-clone-rust-five.vercel.app/",
+        "content_len": 8716,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "NetFlix",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "223637be4b81024fa42d54ee30231bd6f34ed8cb",
+        "snippet": "<!DOCTYPE html> <html> <head> <title>NetFlix</title> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"> <link rel=\"stylesheet\" type=\"text/css\" href=\"./styles.css\" > </head> <body> <section class=\"container\"> <div class=\"header\"> <img src=\"./images/logo.png\" alt=\"Logo\">",
+        "raw_html_len": 8716
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.adobeexperience.com.br/training/farmacias-del-ahorro/",
+      "final_url": "http://www.adobeexperience.com.br/training/farmacias-del-ahorro/",
+      "host": "www.adobeexperience.com.br",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://www.adobeexperience.com.br/training/farmacias-del-ahorro/",
+        "content_len": 9126,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "Adobe Experience",
+        "forms": 2,
+        "password_inputs": 0,
+        "scripts": 8,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "c10ab4ea6c77263ddd29ec3629b14b0446dfecb3",
+        "snippet": "<!DOCTYPE html> <html lang=\"es\"> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <!-- Meta, title, CSS, favicons, etc. --> <meta charset=\"utf-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <link rel=\"icon\" href=\"/assets/imgs/favicon.ico\" type=\"image/ico\"/> <title>Adobe Experience </tit",
+        "raw_html_len": 9126
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://receiver-blockfi.webflow.io/",
+      "final_url": "https://receiver-blockfi.webflow.io/",
+      "host": "receiver-blockfi.webflow.io",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://receiver-blockfi.webflow.io/",
+        "content_len": 2373,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "BlockFi | Login",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "35f40481144dee19445c7447dbfeb16f943d9493",
+        "snippet": "<!DOCTYPE html><!-- This site was created in Webflow. https://webflow.com --><!-- Last Published: Fri Mar 29 2024 03:34:47 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain=\"receiver-blockfi.webflow.io\" data-wf-page=\"6606367e19d287dd928b3c43\" data-wf-site=\"6606367e19d287dd928b3c12\"><head><meta charset=\"utf-8\"/><title>BlockFi | Login</title><meta content=\"BlockFi | Login. Access your Bl",
+        "raw_html_len": 2373
+      },
+      "score": 30,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://9-205-88-230.cprapid.com/ch/update.php?ed4iy8haz6ks6ah03k1b",
+      "final_url": "https://9-205-88-230.cprapid.com/ch/update.php?ed4iy8haz6ks6ah03k1b",
+      "host": "9-205-88-230.cprapid.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://9-205-88-230.cprapid.com/ch/update.php?ed4iy8haz6ks6ah03k1b",
+        "content_len": 35224,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "Apache"
+      },
+      "analysis": {
+        "title": "DPD (en) |",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "652df9624cae2f3479bdf016dafcc03024177941",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head> <meta name=\"viewport\" content=\"width=device-width, user-scalable=no, initial-scale=1.0\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"/> <meta charset=\"utf-8\"> <meta name='robots' content='max-image-preview:large'/> <link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"assets/css/styles.min.css?ver=6.5.5\">",
+        "raw_html_len": 35224
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://roblox.gf/games/77747658251236/Moon-Update-Sailor-Piece?privateServerLinkCode=37426261988849586560906392108953",
+      "final_url": "https://roblox.gf/games/77747658251236/Moon-Update-Sailor-Piece?privateServerLinkCode=37426261988849586560906392108953",
+      "host": "roblox.gf",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://roblox.gf/games/77747658251236/Moon-Update-Sailor-Piece?privateServerLinkCode=37426261988849586560906392108953",
+        "content_len": 94118,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "Apache/2.4.52 (Ubuntu)"
+      },
+      "analysis": {
+        "title": "[❄️Ice Update🧊] Sailor Piece- Roblox",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 140,
+        "iframes": 1,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "e86d5961c15f95414b38b07158c32d01906a5a93",
+        "snippet": "<!DOCTYPE html> <!--[if IE 8]> <html class=\"ie8\" ng-app=\"robloxApp\"> <![endif]--> <!--[if gt IE 8]> <!--> <html lang=\"en\"> <!-- <![endif]--> <head data-machine-id=\"5a8698ea-02b1-4516-e5b9-355166b6d182\"> <!-- MachineID: 5a8698ea-02b1-4516-e5b9-355166b6d182 --> <title>[❄️Ice Update🧊] Sailor Piece- Roblox</title> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,requiresActiveX=true",
+        "raw_html_len": 94118
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://5365bet888.com:443/",
+      "final_url": "https://5365bet888.com:443/",
+      "host": "5365bet888.com:443",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://5365bet888.com:443/",
+        "content_len": 50384,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "Webdotdot"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 2,
+        "password_inputs": 2,
+        "scripts": 40,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "889406c144c46364e943d938187efa696a0a48d8",
+        "snippet": "<!DOCTYPE html><html lang=\"cn\"><head><meta charset=\"utf-8\"><meta http-equiv=\"Content-Security-Policy\" content=\"upgrade-insecure-requests\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title></title><link rel=\"shortcut icon\" href=\"https://cejhu.imgcn2.com/image/web/favicon.ico?ver=1598240076\"><script type=\"module\">var type",
+        "raw_html_len": 50384
+      },
+      "score": 65,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://brandonsandrabra.wixsite.com/my-site-1",
+      "final_url": "https://brandonsandrabra.wixsite.com/my-site-1",
+      "host": "brandonsandrabra.wixsite.com",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://brandonsandrabra.wixsite.com/my-site-1",
+        "content_len": 788340,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "Pepyaka"
+      },
+      "analysis": {
+        "title": "Home | My Site 1",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 65,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "1ba9527ba6df6e4cd93ca8188aed9e6392f4f407",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset='utf-8'> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" id=\"wixDesktopViewport\" /> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> <meta name=\"generator\" content=\"Wix.com Website Builder\"/> <link rel=\"icon\" sizes=\"192x192\" href=\"https://www.wix.com/favicon.ico\" type=\"image/x-icon\"/> <link rel=\"shortcut",
+        "raw_html_len": 788340
+      },
+      "score": 35,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://eurostaryurtdisiegitim.net/instagram",
+      "final_url": "http://eurostaryurtdisiegitim.net/instagram/",
+      "host": "eurostaryurtdisiegitim.net",
+      "category": "unknown",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://eurostaryurtdisiegitim.net/instagram/",
+        "content_len": 350518,
+        "content_type": "text/html",
+        "server": "Apache"
+      },
+      "analysis": {
+        "title": "Instagram",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "679f26269fcb4dc7a1d0a18b258d3219cdd6d4f9",
+        "snippet": "<!DOCTYPE html><html lang=\"tr\"><head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Instagram</title> <meta name=\"robots\" content=\"noindex\" /> <style> @font-face{font-family:'Freight-sans'; src: url(data:application/font-ttf;charset=utf-8;base64,T1RUTwAKAIAAAwAgQ0ZGIEjAKUEAAFoQAAAmikdQT1OIoa6KAACERAAAFzxPUy8yFwdEWAAAARAAAABgY21hcIWdBtwAAFa8AAA",
+        "raw_html_len": 350518
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "brand_keywords:meta"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://www.robiox.com.py/games/2753915549/Event-Blox-Fruits?privateServerLinkCode=046377656740235485721738694344",
+      "final_url": "https://www.robiox.com.py/games/2753915549/Event-Blox-Fruits?privateServerLinkCode=046377656740235485721738694344",
+      "host": "www.robiox.com.py",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://www.robiox.com.py/games/2753915549/Event-Blox-Fruits?privateServerLinkCode=046377656740235485721738694344",
+        "content_len": 84767,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Blox Fruits | Play on Roblox",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 146,
+        "iframes": 1,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "67409a118dba5ff8a44bc4b794c21988c731c917",
+        "snippet": "<!DOCTYPE html><!--[if IE 8]><html class=\"ie8\" ng-app=\"robloxApp\"><![endif]--><!--[if gt IE 8]><!--><html lang=\"en\"><!--<![endif]--><head data-machine-id=\"ee408a0f-be28-1dbd-e2d3-7261110688d7\"> <!-- MachineID: ee408a0f-be28-1dbd-e2d3-7261110688d7 --> <title>Blox Fruits | Play on Roblox</title> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,requiresActiveX=true\"> <meta charset=\"UTF-8\"",
+        "raw_html_len": 84767
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://ptshopee2777.blogspot.com/",
+      "final_url": "https://ptshopee2777.blogspot.com/",
+      "host": "ptshopee2777.blogspot.com",
+      "category": "redirector",
+      "brands": [
+        "microsoft",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://ptshopee2777.blogspot.com/",
+        "content_len": 934362,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "GSE"
+      },
+      "analysis": {
+        "title": "SHOPEE",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 4,
+        "iframes": 2,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "f187debd203c35ad048afe6485a655432917ba2c",
+        "snippet": "<!DOCTYPE html> <html class='v2' dir='ltr' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'> <head> <link href='https://www.blogger.com/static/v1/widgets/335934321-css_bundle_v2.css' rel='stylesheet' type='text/css'/> <meta content='width=1100' name='viewport'/> <meta co",
+        "raw_html_len": 934362
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "url_shortener_redirector",
+        "brand_keywords:microsoft,banking"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://uvr28.github.io/Netflix-Clone",
+      "final_url": "https://uvr28.github.io/Netflix-Clone/",
+      "host": "uvr28.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://uvr28.github.io/Netflix-Clone/",
+        "content_len": 7221,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "UVRflix India",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "660d6b4068749c2e4cc5b954dad7891e4c8adce9",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>UVRflix India</title> <link rel=\"icon\" type=\"image/x-icon\" href=\"Assets/images/favicon.ico\"> <link rel=\"stylesheet\" href=\"style.css\"> <meta name=\"google-site-verification\" content=\"A7X251ULmsj0dRgdvqOjV3DSxxx8RDQY37FQHmgD3qE\"/> </head",
+        "raw_html_len": 7221
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.o-shop.com/pl/menu/przeciwsloneczne-7351.html",
+      "final_url": "http://www.o-shop.com/pl/menu/przeciwsloneczne-7351.html",
+      "host": "www.o-shop.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "error": "SOCKSHTTPConnectionPool(host='www.o-shop.com', port=80): Max retries exceeded with url: /pl/menu/przeciwsloneczne-7351.html (Caused by ConnectTimeoutError(<SOCKSConnection(host='www.o-shop.com', port=80) at 0x76b16c154560>, 'Connection to www.o-shop.com timed out. (connect timeout=25)'))",
+        "status_code": 0,
+        "final_url": "http://www.o-shop.com/pl/menu/przeciwsloneczne-7351.html",
+        "content_len": 0,
+        "content_type": "",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": []
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://owa.premiumisp.net/s/63BZGFSVBWSFCDX7Y9/584dd8/90eab167-7429-489f-99f6-ce86e8d0d81a",
+      "final_url": "https://owa.premiumisp.net/s/63BZGFSVBWSFCDX7Y9/584dd8/90eab167-7429-489f-99f6-ce86e8d0d81a",
+      "host": "owa.premiumisp.net",
+      "category": "login_branding",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://owa.premiumisp.net/s/63BZGFSVBWSFCDX7Y9/584dd8/90eab167-7429-489f-99f6-ce86e8d0d81a",
+        "content_len": 5294,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Adobe-PDF Online",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 4,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "71a368890bd508068e7589fd0de5af44644009a1",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <script type=\"text/javascript\"> function username_handler(event) { // This scenario is configured to collect the actual value entered. const valueToCollect = event.target.value.trim(); // We're not sure _which_ form is going to be submitted, so update all of them. document.querySelectorAll(\"input[type='hidden'][name='username']\")",
+        "raw_html_len": 5294
+      },
+      "score": 80,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://exquisite-startup-192000.framer.app/",
+      "final_url": "https://exquisite-startup-192000.framer.app/",
+      "host": "exquisite-startup-192000.framer.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://exquisite-startup-192000.framer.app/",
+        "content_len": 102960,
+        "content_type": "text/html",
+        "server": "Framer/154a7c5"
+      },
+      "analysis": {
+        "title": "Saisir de vos identifiant Orange",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 7,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "c16046175d63511f8a5727713c28f087886b9a25",
+        "snippet": "<!doctype html> <!-- Made in Framer Â· framer.com â¨ --> <!-- Published Apr 8, 2026, 8:50 PM UTC --> <html dir=\"ltr\"> <head> <meta charset=\"utf-8\"> <script>try{if(localStorage.get(\"__framer_force_showing_editorbar_since\")){const n=document.createElement(\"link\");n.rel = \"modulepreload\";n.href=\"https://framer.com/edit/init.mjs\";document.head.appendChild(n)}}catch(e){}</script> <!--",
+        "raw_html_len": 102960
+      },
+      "score": 35,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://www.de.aktivseite.info.precisionfinancialmgt.com/",
+      "final_url": "https://www.de.aktivseite.info.precisionfinancialmgt.com/",
+      "host": "www.de.aktivseite.info.precisionfinancialmgt.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "error": "SOCKSHTTPSConnectionPool(host='www.de.aktivseite.info.precisionfinancialmgt.com', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<SOCKSHTTPSConnection(host='www.de.aktivseite.info.precisionfinancialmgt.com', port=443) at 0x76b16c16e480>, 'Connection to www.de.aktivseite.info.precisionfinancialmgt.com timed out. (connect timeout=25)'))",
+        "status_code": 0,
+        "final_url": "https://www.de.aktivseite.info.precisionfinancialmgt.com/",
+        "content_len": 0,
+        "content_type": "",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 10,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "url_shortener_redirector"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://net-nangongsports.com/",
+      "final_url": "https://net-nangongsports.com/",
+      "host": "net-nangongsports.com",
+      "category": "unknown",
+      "brands": [
+        "microsoft"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://net-nangongsports.com/",
+        "content_len": 54977,
+        "content_type": "text/html",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "åå®«ä½è²(ä¸­å½)å®æ¹ç½ç«",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 18,
+        "iframes": 2,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "266ad546aa9169ed47372402064a6091a8ad8769",
+        "snippet": "<html> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <title>åå®«ä½è²(ä¸­å½)å®æ¹ç½ç«</title> <meta name=\"description\" content=\"åå®«ä½è²ãææ³¨ç½å:pp990.comãç¨æ·åé¦å¨å¹³å°ä¼åè¿ç¨ä¸­æ®æ¼çéè¦è§è²ãéè¿æ¶éä½¿ç¨æè§ä¸è¡ä¸ºæ°æ®ï¼è¿è¥å¢éè½å¤æ´åç¡®å°è¯å«é®é¢ï¼å¹¶æ®æ­¤è°æ´åè½è®¾è®¡ä¸æå¡æµç¨ã",
+        "raw_html_len": 54977
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "brand_keywords:microsoft"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://suhana1849.github.io/Netflix_Interface_Clone",
+      "final_url": "https://suhana1849.github.io/Netflix_Interface_Clone/",
+      "host": "suhana1849.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://suhana1849.github.io/Netflix_Interface_Clone/",
+        "content_len": 6900,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Netflix Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "d0c30433646d0caed0abef4f6d25faa86a31c8ac",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>Netflix Clone</title> <link rel=\"stylesheet\" href=\"style.css\" /> </head> <body> <div class=\"main\"> <nav> <img src=\"assets/images/logo.svg\" /> <div class=\"button\"> <button class=\"btn lang\">English<",
+        "raw_html_len": 6900
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://realshayanahmed.github.io/netflix/",
+      "final_url": "https://realshayanahmed.github.io/netflix/",
+      "host": "realshayanahmed.github.io",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://realshayanahmed.github.io/netflix/",
+        "content_len": 3027,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Netflix Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "b38b12f052c6f0d68f42219408b4a1b7a7621abe",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Netflix Clone</title> <link rel=\"stylesheet\" href=\"style.css\"> <style> * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; } body { color: white; } .hero { height: 10",
+        "raw_html_len": 3027
+      },
+      "score": 30,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://gestion.cofensetraining.com/s/63BZGFSVBWSFCDX7Y9/584dd8/90eab167-7429-489f-99f6-ce86e8d0d81a",
+      "final_url": "https://gestion.cofensetraining.com/s/63BZGFSVBWSFCDX7Y9/584dd8/90eab167-7429-489f-99f6-ce86e8d0d81a",
+      "host": "gestion.cofensetraining.com",
+      "category": "login_branding",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://gestion.cofensetraining.com/s/63BZGFSVBWSFCDX7Y9/584dd8/90eab167-7429-489f-99f6-ce86e8d0d81a",
+        "content_len": 5294,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Adobe-PDF Online",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 4,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "71a368890bd508068e7589fd0de5af44644009a1",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <script type=\"text/javascript\"> function username_handler(event) { // This scenario is configured to collect the actual value entered. const valueToCollect = event.target.value.trim(); // We're not sure _which_ form is going to be submitted, so update all of them. document.querySelectorAll(\"input[type='hidden'][name='username']\")",
+        "raw_html_len": 5294
+      },
+      "score": 80,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://bafkreihpec5h3lagmctlyyobawh3wffvtpk44srberrpyspxntqteq53qq.ipfs.dweb.link/",
+      "final_url": "https://bafkreihpec5h3lagmctlyyobawh3wffvtpk44srberrpyspxntqteq53qq.ipfs.dweb.link/",
+      "host": "bafkreihpec5h3lagmctlyyobawh3wffvtpk44srberrpyspxntqteq53qq.ipfs.dweb.link",
+      "category": "ipfs",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://bafkreihpec5h3lagmctlyyobawh3wffvtpk44srberrpyspxntqteq53qq.ipfs.dweb.link/",
+        "content_len": 41142,
+        "content_type": "text/html",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Sign in - Professional Email",
+        "forms": 1,
+        "password_inputs": 2,
+        "scripts": 4,
+        "iframes": 1,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "494879b405bf72f966c3226cc006c10d53909be1",
+        "snippet": "<!DOCTYPE html> <!-- saved from url=(0075)https://webmail-oxcs.networksolutionsemail.com/appsuite/#login_type=useForm --> <html lang=\"en\" class=\"windows\"> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\"> <meta name=\"msapplication-tap-highlight\" content=\"no\"> <meta name=\"google\" value=\"notranslate\">",
+        "raw_html_len": 41142
+      },
+      "score": 80,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://cukoienlogeuin.webflow.io/",
+      "final_url": "https://cukoienlogeuin.webflow.io/",
+      "host": "cukoienlogeuin.webflow.io",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://cukoienlogeuin.webflow.io/",
+        "content_len": 2534,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "KuCōin® % Login - Bitcoin 💎 Crypto Exchange",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "0d6de47e739eaedea15bffdae592a25d18c50faf",
+        "snippet": "<!DOCTYPE html><!-- This site was created in Webflow. https://webflow.com --><!-- Last Published: Sat Jun 24 2023 04:25:38 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain=\"cukoienlogeuin.webflow.io\" data-wf-page=\"64966f2360567a7836eabfb3\" data-wf-site=\"64966f2360567a7836eabfb0\"><head><meta charset=\"utf-8\"/><title>KuCōin® % Login - Bitcoin 💎 Crypto Exchange</title><meta content=\"KuCoi",
+        "raw_html_len": 2534
+      },
+      "score": 30,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://shrutishere.github.io/amazon-clone/",
+      "final_url": "https://shrutishere.github.io/amazon-clone/",
+      "host": "shrutishere.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://shrutishere.github.io/amazon-clone/",
+        "content_len": 6564,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "3210170500c6a0120a42fffae26154aa4469a13d",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css\" integrity=\"sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==\" crossorigi",
+        "raw_html_len": 6564
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.responsive-facebooklayout.vercel.app/",
+      "final_url": "http://www.responsive-facebooklayout.vercel.app/",
+      "host": "www.responsive-facebooklayout.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "error": "SOCKSHTTPSConnectionPool(host='www.responsive-facebooklayout.vercel.app', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.responsive-facebooklayout.vercel.app'. (_ssl.c:1000)\")))",
+        "status_code": 0,
+        "final_url": "http://www.responsive-facebooklayout.vercel.app/",
+        "content_len": 0,
+        "content_type": "",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 10,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://prabhanshunoc.github.io/amazonClone/",
+      "final_url": "https://prabhanshunoc.github.io/amazonClone/",
+      "host": "prabhanshunoc.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://prabhanshunoc.github.io/amazonClone/",
+        "content_len": 7152,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Amazon Clone | HTML CSS",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "a7d1ea0a02cb0adad6abfad0608412121f4ad435",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon Clone | HTML CSS</title> <link rel=\"stylesheet\" href=\"style.css\"> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css\" integrity=\"sha512-2SwdPD6INVrV/lHTZbO2nodKhr",
+        "raw_html_len": 7152
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://ohmybargains.com/s/63BZGFSVBWSFCDX7Y9/584dd8/90eab167-7429-489f-99f6-ce86e8d0d81a/",
+      "final_url": "https://ohmybargains.com/s/63BZGFSVBWSFCDX7Y9/584dd8/90eab167-7429-489f-99f6-ce86e8d0d81a/",
+      "host": "ohmybargains.com",
+      "category": "login_branding",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://ohmybargains.com/s/63BZGFSVBWSFCDX7Y9/584dd8/90eab167-7429-489f-99f6-ce86e8d0d81a/",
+        "content_len": 5294,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Adobe-PDF Online",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 4,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "71a368890bd508068e7589fd0de5af44644009a1",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <script type=\"text/javascript\"> function username_handler(event) { // This scenario is configured to collect the actual value entered. const valueToCollect = event.target.value.trim(); // We're not sure _which_ form is going to be submitted, so update all of them. document.querySelectorAll(\"input[type='hidden'][name='username']\")",
+        "raw_html_len": 5294
+      },
+      "score": 80,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://pub-b03a69ad30ee4739a0deca2eabea959e.r2.dev/index.html",
+      "final_url": "https://pub-b03a69ad30ee4739a0deca2eabea959e.r2.dev/index.html",
+      "host": "pub-b03a69ad30ee4739a0deca2eabea959e.r2.dev",
+      "category": "login_branding",
+      "brands": [
+        "microsoft"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://pub-b03a69ad30ee4739a0deca2eabea959e.r2.dev/index.html",
+        "content_len": 17752,
+        "content_type": "text/html",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Microsoft Sign-in Redirect",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 1,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "61fdee911c96dbce8d032969be04b2dff72ab3ea",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Microsoft Sign-in Redirect</title> <!-- Tailwind CSS --> <script src=\"https://cdn.tailwindcss.com\"></script> <!-- Lottie Player --> <script src=\"https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js\"></script>",
+        "raw_html_len": 17752
+      },
+      "score": 30,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "brand_keywords:microsoft"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://gauddurgesh.github.io/Netflix-clone/",
+      "final_url": "https://gauddurgesh.github.io/Netflix-clone/",
+      "host": "gauddurgesh.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://gauddurgesh.github.io/Netflix-clone/",
+        "content_len": 7997,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Netflix India – Watch TV Shows Online, Watch Movies Online",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "948cda77932fe6daa7940436269db85cf6e7a10e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Netflix India – Watch TV Shows Online, Watch Movies Online</title> <link rel=\"stylesheet\" href=\"style.css\"> </head> <body> <div class=\"main\"> <nav> <span><img width=\"53\" src=\"assets/images/logo.svg\" alt=\"",
+        "raw_html_len": 7997
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://bikugithub.github.io/MY-1ST-UI-CLONE/",
+      "final_url": "https://bikugithub.github.io/MY-1ST-UI-CLONE/",
+      "host": "bikugithub.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://bikugithub.github.io/MY-1ST-UI-CLONE/",
+        "content_len": 7248,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "AMAZON",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "5083941251893a045eaa6a095f84c515928b80f4",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>AMAZON</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css\" integrity=\"sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==\" crossorigi",
+        "raw_html_len": 7248
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://accounts.bmwweb.biz/en/login",
+      "final_url": "https://accounts.bmwweb.biz/en/login",
+      "host": "accounts.bmwweb.biz",
+      "category": "unknown",
+      "brands": [
+        "crypto"
+      ],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://accounts.bmwweb.biz/en/login",
+        "content_len": 2308,
+        "content_type": "text/html",
+        "server": "awselb/2.0"
+      },
+      "analysis": {
+        "title": "Buy/Sell Bitcoin, Ether and Altcoins | Cryptocurrency Exchange | Binance",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "c180382391add347c06ba3eee38b7374af51ee82",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title> Buy/Sell Bitcoin, Ether and Altcoins | Cryptocurrency Exchange | Binance </title> <style> html body { font-family: BinancePlex, Arial, sans-serif !impor",
+        "raw_html_len": 2308
+      },
+      "score": 10,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "brand_keywords:crypto"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://mhk00123.zeabur.app/",
+      "final_url": "https://mhk00123.zeabur.app/",
+      "host": "mhk00123.zeabur.app",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://mhk00123.zeabur.app/",
+        "content_len": 30863,
+        "content_type": "text/html; charset=utf-8",
+        "server": "uvicorn"
+      },
+      "analysis": {
+        "title": "验证页面 - Gemini Balance",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 4,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "b8fc2dbcf7b1e4b3721da6efd95d87a87d02beae",
+        "snippet": "<!DOCTYPE html> <html lang=\"zh-CN\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>验证页面 - Gemini Balance</title> <link rel=\"manifest\" href=\"/static/manifest.json?v=46903ac9\" /> <meta name=\"theme-color\" content=\"#4F46E5\" /> <meta name=\"apple-mobile-web-app-capable\" content=\"yes\" /> <meta name=\"apple-mobil",
+        "raw_html_len": 30863
+      },
+      "score": 65,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://shopee2239.blogspot.com/",
+      "final_url": "https://shopee2239.blogspot.com/",
+      "host": "shopee2239.blogspot.com",
+      "category": "redirector",
+      "brands": [
+        "microsoft",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://shopee2239.blogspot.com/",
+        "content_len": 936163,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "GSE"
+      },
+      "analysis": {
+        "title": "shopee",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 7,
+        "iframes": 2,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "5bc582713569178965ad23842ff294a2f2dcbf15",
+        "snippet": "<!DOCTYPE html> <html class='v2' dir='ltr' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'> <head> <link href='https://www.blogger.com/static/v1/widgets/335934321-css_bundle_v2.css' rel='stylesheet' type='text/css'/> <meta content='width=1100' name='viewport'/> <meta co",
+        "raw_html_len": 936163
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "url_shortener_redirector",
+        "brand_keywords:microsoft,banking"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://saumyakhobragade.github.io/spotify-clone",
+      "final_url": "https://saumyakhobragade.github.io/spotify-clone/",
+      "host": "saumyakhobragade.github.io",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://saumyakhobragade.github.io/spotify-clone/",
+        "content_len": 13093,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Spotify - Web Player: Music for everyone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "274ec9b40e524e7308c1ceaa062396a2eb6ec4b4",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css\" integrity=\"sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxl",
+        "raw_html_len": 13093
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://bhanu-coder514.github.io/Netflix-clone/",
+      "final_url": "https://bhanu-coder514.github.io/Netflix-clone/",
+      "host": "bhanu-coder514.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://bhanu-coder514.github.io/Netflix-clone/",
+        "content_len": 5889,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Netflix India – Watch TV Shows Online, Watch Movies Online",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "59a5c178c22670218f0a88df1d6ae82238ff3cb4",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Netflix India – Watch TV Shows Online, Watch Movies Online</title> <link rel=\"stylesheet\" href=\"style.css\"> <link rel=\"icon\" type=\"image/x-icon\" href=\"Assets/Images/favicon.ico\"> </head> <body> <div class=\"main\"> <nav>",
+        "raw_html_len": 5889
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://airbnb-clone-final.vercel.app/",
+      "final_url": "https://airbnb-clone-final.vercel.app/",
+      "host": "airbnb-clone-final.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://airbnb-clone-final.vercel.app/",
+        "content_len": 24138,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Airbnb",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 10,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "9d1f47784146657fcfc97c60c87d8f54fd6d8046",
+        "snippet": "<!DOCTYPE html><html><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width\"/><title>Airbnb</title><meta name=\"next-head-count\" content=\"3\"/><link rel=\"preload\" href=\"/_next/static/css/8b20d7d8cfd7eb8c.css\" as=\"style\"/><link rel=\"stylesheet\" href=\"/_next/static/css/8b20d7d8cfd7eb8c.css\" data-n-g=\"\"/><link rel=\"preload\" href=\"/_next/static/css/e9b5c8e9ee5edd34.css\" as=\"style",
+        "raw_html_len": 24138
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:banking"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://roblox.cd/users/8752147351/profile",
+      "final_url": "https://roblox.cd/users/8752147351/profile",
+      "host": "roblox.cd",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "error": "SOCKSHTTPSConnectionPool(host='roblox.cd', port=443): Max retries exceeded with url: /users/8752147351/profile (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1000)')))",
+        "status_code": 0,
+        "final_url": "https://roblox.cd/users/8752147351/profile",
+        "content_len": 0,
+        "content_type": "",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": []
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://zarshan-zahid.github.io/facebk/",
+      "final_url": "https://zarshan-zahid.github.io/facebk/",
+      "host": "zarshan-zahid.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "microsoft",
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://zarshan-zahid.github.io/facebk/",
+        "content_len": 47973,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Facebook",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "f33af3aa485e589f4101205423620b557fb73ca0",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Facebook</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css\"> <link rel=\"stylesheet\" href=\"style.css\"> </head> <body> <nav class=\"navbar\"> <div class=\"navbar-lef",
+        "raw_html_len": 47973
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:microsoft,meta"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.echo-blush.vercel.app/",
+      "final_url": "http://www.echo-blush.vercel.app/",
+      "host": "www.echo-blush.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "error": "SOCKSHTTPSConnectionPool(host='www.echo-blush.vercel.app', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.echo-blush.vercel.app'. (_ssl.c:1000)\")))",
+        "status_code": 0,
+        "final_url": "http://www.echo-blush.vercel.app/",
+        "content_len": 0,
+        "content_type": "",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 10,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://roblox.com.ge/games/70809699535456/Untitled-Experience-Sussy-Neku-Girl?privateServerLinkCode=29499294128210761040731839221966",
+      "final_url": "https://roblox.com.ge/games/70809699535456/Untitled-Experience-Sussy-Neku-Girl?privateServerLinkCode=29499294128210761040731839221966",
+      "host": "roblox.com.ge",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://roblox.com.ge/games/70809699535456/Untitled-Experience-Sussy-Neku-Girl?privateServerLinkCode=29499294128210761040731839221966",
+        "content_len": 92369,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "Apache/2.4.52 (Ubuntu)"
+      },
+      "analysis": {
+        "title": "- Roblox",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 140,
+        "iframes": 1,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "325422f0e32af857123c7c029e8d6703441ea55c",
+        "snippet": "<!DOCTYPE html> <!--[if IE 8]> <html class=\"ie8\" ng-app=\"robloxApp\"> <![endif]--> <!--[if gt IE 8]> <!--> <html lang=\"en\"> <!-- <![endif]--> <head data-machine-id=\"5a8698ea-02b1-4516-e5b9-355166b6d182\"> <!-- MachineID: 5a8698ea-02b1-4516-e5b9-355166b6d182 --> <title>- Roblox</title> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,requiresActiveX=true\" /> <meta charset=\"UTF-8\">",
+        "raw_html_len": 92369
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://snehakumari005.github.io/Amazon-Clone-/",
+      "final_url": "https://snehakumari005.github.io/Amazon-Clone-/",
+      "host": "snehakumari005.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "meta",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://snehakumari005.github.io/Amazon-Clone-/",
+        "content_len": 6451,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "dbaca22ac4ad57cf732427a07a3dde0a81386a3b",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css\" integrity=\"sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==\" crossorigin=\"ano",
+        "raw_html_len": 6451
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,meta,banking"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://login.securelogin.microsoft-id.security-alert.fr/common/oauth2/v2.0/authorize?client_id=4765445b-32c6-49b0-83e6-1d93765276ca&redirect_uri=https%3A%2F%2Fwww.office.com%2Flandingv2&response_type=code%20id_token&scope=openid%20profile%20https%3A%2F%2Fwww.office.com%2Fv2%2FOfficeHome.All&response_mode=form_post&nonce=639113271634016938.MTZiNDJkOTAtNGFkYS00YjAzLTllZjAtYjNkYTNjZDBhMDk0ZTM3ZjQ5YzMtMTQ1Ni00MTE3LTljMjMtMDY4YjNlMWVjODM3&ui_locales=en-US&mkt=en-US&client-request-id=df55ea69-c98b-4785-ba58-287caef3a792&state=05zHyTI3QSpHRqfY6UjLRQuPb9ieieND3f4gIY01N3TQhCMvEc0C_uvPA9Qypst9PsT5s25BeWuvyHpmmrmzLfkktwrXRKVLQY7KtIG_vtvh5JhG5MKm3d4dRRsOQ9W_3O7qF04eN34oJNqr16B2F_l9ojDJlOECecm8E5K4_1Vw5YSMyhHEWOXioTFZffy19ERJkfcEOYwPNa_-8oyrBfstr9J08X247OJ-FGFB5v_bqk2Y7e6RbWplhof3CglWd8H_VgEaElLBskhfKHJaixfhhvGmVJrWM8tPEibHLPWw0w-oCe6BzaIQj5-vTM-KfpAbsBtDQC0AgQZmx_i2RSHUSe2buCtxJwH-Lph6qwbed8JH5NouHdxkW4Slk-w6rPFaF1OZWKixt10l0dXRr9Lgc-gFSvf6rmieQfDyMtE&x-client-SKU=ID_NET8_0&x-client-ver=8.14.0.0",
+      "final_url": "https://login.securelogin.microsoft-id.security-alert.fr/common/oauth2/v2.0/authorize?client_id=4765445b-32c6-49b0-83e6-1d93765276ca&redirect_uri=https%3A%2F%2Fwww.office.com%2Flandingv2&response_type=code%20id_token&scope=openid%20profile%20https%3A%2F%2Fwww.office.com%2Fv2%2FOfficeHome.All&response_mode=form_post&nonce=639113271634016938.MTZiNDJkOTAtNGFkYS00YjAzLTllZjAtYjNkYTNjZDBhMDk0ZTM3ZjQ5YzMtMTQ1Ni00MTE3LTljMjMtMDY4YjNlMWVjODM3&ui_locales=en-US&mkt=en-US&client-request-id=df55ea69-c98b-4785-ba58-287caef3a792&state=05zHyTI3QSpHRqfY6UjLRQuPb9ieieND3f4gIY01N3TQhCMvEc0C_uvPA9Qypst9PsT5s25BeWuvyHpmmrmzLfkktwrXRKVLQY7KtIG_vtvh5JhG5MKm3d4dRRsOQ9W_3O7qF04eN34oJNqr16B2F_l9ojDJlOECecm8E5K4_1Vw5YSMyhHEWOXioTFZffy19ERJkfcEOYwPNa_-8oyrBfstr9J08X247OJ-FGFB5v_bqk2Y7e6RbWplhof3CglWd8H_VgEaElLBskhfKHJaixfhhvGmVJrWM8tPEibHLPWw0w-oCe6BzaIQj5-vTM-KfpAbsBtDQC0AgQZmx_i2RSHUSe2buCtxJwH-Lph6qwbed8JH5NouHdxkW4Slk-w6rPFaF1OZWKixt10l0dXRr9Lgc-gFSvf6rmieQfDyMtE&x-client-SKU=ID_NET8_0&x-client-ver=8.14.0.0",
+      "host": "login.securelogin.microsoft-id.security-alert.fr",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "error": "SOCKSHTTPSConnectionPool(host='login.securelogin.microsoft-id.security-alert.fr', port=443): Max retries exceeded with url: /common/oauth2/v2.0/authorize?client_id=4765445b-32c6-49b0-83e6-1d93765276ca&redirect_uri=https%3A%2F%2Fwww.office.com%2Flandingv2&response_type=code%20id_token&scope=openid%20profile%20https%3A%2F%2Fwww.office.com%2Fv2%2FOfficeHome.All&response_mode=form_post&nonce=639113271634016938.MTZiNDJkOTAtNGFkYS00YjAzLTllZjAtYjNkYTNjZDBhMDk0ZTM3ZjQ5YzMtMTQ1Ni00MTE3LTljMjMtMDY4YjNlMWVjODM3&ui_locales=en-US&mkt=en-US&client-request-id=df55ea69-c98b-4785-ba58-287caef3a792&state=05zHyTI3QSpHRqfY6UjLRQuPb9ieieND3f4gIY01N3TQhCMvEc0C_uvPA9Qypst9PsT5s25BeWuvyHpmmrmzLfkktwrXRKVLQY7KtIG_vtvh5JhG5MKm3d4dRRsOQ9W_3O7qF04eN34oJNqr16B2F_l9ojDJlOECecm8E5K4_1Vw5YSMyhHEWOXioTFZffy19ERJkfcEOYwPNa_-8oyrBfstr9J08X247OJ-FGFB5v_bqk2Y7e6RbWplhof3CglWd8H_VgEaElLBskhfKHJaixfhhvGmVJrWM8tPEibHLPWw0w-oCe6BzaIQj5-vTM-KfpAbsBtDQC0AgQZmx_i2RSHUSe2buCtxJwH-Lph6qwbed8JH5NouHdxkW4Slk-w6rPFaF1OZWKixt10l0dXRr9Lgc-gFSvf6rmieQfDyMtE&x-client-SKU=ID_NET8_0&x-client-ver=8.14.0.0 (Caused by ConnectTimeoutError(<SOCKSHTTPSConnection(host='login.securelogin.microsoft-id.security-alert.fr', port=443) at 0x76b148649fd0>, 'Connection to login.securelogin.microsoft-id.security-alert.fr timed out. (connect timeout=25)'))",
+        "status_code": 0,
+        "final_url": "https://login.securelogin.microsoft-id.security-alert.fr/common/oauth2/v2.0/authorize?client_id=4765445b-32c6-49b0-83e6-1d93765276ca&redirect_uri=https%3A%2F%2Fwww.office.com%2Flandingv2&response_type=code%20id_token&scope=openid%20profile%20https%3A%2F%2Fwww.office.com%2Fv2%2FOfficeHome.All&response_mode=form_post&nonce=639113271634016938.MTZiNDJkOTAtNGFkYS00YjAzLTllZjAtYjNkYTNjZDBhMDk0ZTM3ZjQ5YzMtMTQ1Ni00MTE3LTljMjMtMDY4YjNlMWVjODM3&ui_locales=en-US&mkt=en-US&client-request-id=df55ea69-c98b-4785-ba58-287caef3a792&state=05zHyTI3QSpHRqfY6UjLRQuPb9ieieND3f4gIY01N3TQhCMvEc0C_uvPA9Qypst9PsT5s25BeWuvyHpmmrmzLfkktwrXRKVLQY7KtIG_vtvh5JhG5MKm3d4dRRsOQ9W_3O7qF04eN34oJNqr16B2F_l9ojDJlOECecm8E5K4_1Vw5YSMyhHEWOXioTFZffy19ERJkfcEOYwPNa_-8oyrBfstr9J08X247OJ-FGFB5v_bqk2Y7e6RbWplhof3CglWd8H_VgEaElLBskhfKHJaixfhhvGmVJrWM8tPEibHLPWw0w-oCe6BzaIQj5-vTM-KfpAbsBtDQC0AgQZmx_i2RSHUSe2buCtxJwH-Lph6qwbed8JH5NouHdxkW4Slk-w6rPFaF1OZWKixt10l0dXRr9Lgc-gFSvf6rmieQfDyMtE&x-client-SKU=ID_NET8_0&x-client-ver=8.14.0.0",
+        "content_len": 0,
+        "content_type": "",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": []
+    }
+  ]
+}

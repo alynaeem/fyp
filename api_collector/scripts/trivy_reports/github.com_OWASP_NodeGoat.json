@@ -3,10 +3,10 @@
   "Trivy": {
     "Version": "0.69.1"
   },
-  "ReportID": "019c3920-e2e5-79c5-a3a8-88f85c9769e2",
-  "CreatedAt": "2026-02-07T22:23:02.501641689+05:00",
+  "ReportID": "019d6b3e-db07-75ee-9204-3e0cdd47e5ee",
+  "CreatedAt": "2026-04-08T08:59:34.663391596+05:00",
   "ArtifactID": "sha256:c18d564916d77203ac5d5202e66a788976158d6a5e0eb9acc7cdb6ab8defd8c9",
-  "ArtifactName": "/home/muhmmad-abdullah/.cache/darkpulse/trivy_repos/repo_trivy_usj9e2te",
+  "ArtifactName": "/home/muhmmad-abdullah/.cache/darkpulse/trivy_repos/repo_trivy_koksslpt",
   "ArtifactType": "repository",
   "Metadata": {
     "RepoURL": "https://github.com/OWASP/NodeGoat.git",
@@ -4228,7 +4228,7 @@
           "Name": "cliui",
           "Identifier": {
             "PURL": "pkg:npm/cliui@3.2.0",
-            "UID": "367734f455e977c3"
+            "UID": "427f6f5e905325a3"
           },
           "Version": "3.2.0",
           "Licenses": [
@@ -4237,9 +4237,9 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "string-width@1.0.2",
+            "string-width@1.0.1",
             "strip-ansi@3.0.1",
-            "wrap-ansi@2.1.0"
+            "wrap-ansi@2.0.0"
           ],
           "Locations": [
             {
@@ -6512,7 +6512,7 @@
           "Name": "dezalgo",
           "Identifier": {
             "PURL": "pkg:npm/dezalgo@1.0.3",
-            "UID": "f76b8d4b12551584"
+            "UID": "a01759f3f7fe9d9c"
           },
           "Version": "1.0.3",
           "Dev": true,
@@ -6522,7 +6522,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "asap@2.0.5",
+            "asap@2.0.6",
             "wrappy@1.0.2"
           ],
           "Locations": [
@@ -10823,7 +10823,7 @@
           "Name": "http-signature",
           "Identifier": {
             "PURL": "pkg:npm/http-signature@1.1.1",
-            "UID": "d3b665e5be3c1140"
+            "UID": "c0e6ba074b01dde0"
           },
           "Version": "1.1.1",
           "Dev": true,
@@ -10834,8 +10834,8 @@
           "Relationship": "indirect",
           "DependsOn": [
             "assert-plus@0.2.0",
-            "jsprim@1.4.1",
-            "sshpk@1.16.0"
+            "jsprim@1.3.1",
+            "sshpk@1.10.1"
           ],
           "Locations": [
             {
@@ -14210,7 +14210,7 @@
           "Name": "load-json-file",
           "Identifier": {
             "PURL": "pkg:npm/load-json-file@1.1.0",
-            "UID": "6fe16ba9149fcbc8"
+            "UID": "9c75626619c4326b"
           },
           "Version": "1.1.0",
           "Dev": true,
@@ -14220,7 +14220,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "graceful-fs@4.1.15",
+            "graceful-fs@4.1.4",
             "parse-json@2.2.0",
             "pify@2.3.0",
             "pinkie-promise@2.0.1",
@@ -17670,7 +17670,7 @@
           "Name": "optimist",
           "Identifier": {
             "PURL": "pkg:npm/optimist@0.6.1",
-            "UID": "14caa949b43933"
+            "UID": "d8dd41366908db49"
           },
           "Version": "0.6.1",
           "Licenses": [
@@ -17679,7 +17679,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "minimist@0.0.10",
+            "minimist@0.0.8",
             "wordwrap@0.0.3"
           ],
           "Locations": [
@@ -18069,7 +18069,7 @@
           "Name": "parse-json",
           "Identifier": {
             "PURL": "pkg:npm/parse-json@2.2.0",
-            "UID": "6606e5a9903dd3a4"
+            "UID": "4a441a440daeaa01"
           },
           "Version": "2.2.0",
           "Dev": true,
@@ -18079,7 +18079,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "error-ex@1.3.0"
+            "error-ex@1.3.2"
           ],
           "Locations": [
             {
@@ -19487,7 +19487,7 @@
           "Name": "read-installed",
           "Identifier": {
             "PURL": "pkg:npm/read-installed@4.0.3",
-            "UID": "6f017c7584fa7376"
+            "UID": "5339a6034636ecbc"
           },
           "Version": "4.0.3",
           "Dev": true,
@@ -19498,10 +19498,10 @@
           "Relationship": "indirect",
           "DependsOn": [
             "debuglog@1.0.1",
-            "graceful-fs@4.1.9",
-            "read-package-json@2.0.4",
+            "graceful-fs@4.1.15",
+            "read-package-json@2.0.13",
             "readdir-scoped-modules@1.0.2",
-            "semver@5.3.0",
+            "semver@5.6.0",
             "slide@1.1.6",
             "util-extend@1.0.3"
           ],
@@ -19605,7 +19605,7 @@
           "Name": "read-pkg",
           "Identifier": {
             "PURL": "pkg:npm/read-pkg@1.1.0",
-            "UID": "20babb9cb9553be2"
+            "UID": "fc3640b0b0bf05d9"
           },
           "Version": "1.1.0",
           "Dev": true,
@@ -19616,7 +19616,7 @@
           "Relationship": "indirect",
           "DependsOn": [
             "load-json-file@1.1.0",
-            "normalize-package-data@2.3.5",
+            "normalize-package-data@2.4.0",
             "path-type@1.1.0"
           ],
           "Locations": [
@@ -20779,7 +20779,7 @@
           "Name": "rimraf",
           "Identifier": {
             "PURL": "pkg:npm/rimraf@2.5.4",
-            "UID": "77871a754b21a5f4"
+            "UID": "b9e70b9c4fb27579"
           },
           "Version": "2.5.4",
           "Dev": true,
@@ -20789,7 +20789,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "glob@7.1.0"
+            "glob@7.0.5"
           ],
           "Locations": [
             {
@@ -22129,7 +22129,7 @@
           "Name": "spdx-expression-parse",
           "Identifier": {
             "PURL": "pkg:npm/spdx-expression-parse@1.0.2",
-            "UID": "e9a6c1bb932eceda"
+            "UID": "854c5b88267d780d"
           },
           "Version": "1.0.2",
           "Dev": true,
@@ -22139,8 +22139,8 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "spdx-exceptions@1.0.4",
-            "spdx-license-ids@1.2.0"
+            "spdx-exceptions@1.0.5",
+            "spdx-license-ids@1.2.1"
           ],
           "Locations": [
             {
@@ -26237,6 +26237,67 @@
           "LastModifiedDate": "2024-11-21T05:05:25.327Z"
         },
         {
+          "VulnerabilityID": "CVE-2025-69873",
+          "VendorIDs": [
+            "GHSA-2g4f-4pwh-qvx6"
+          ],
+          "PkgID": "ajv@6.10.0",
+          "PkgName": "ajv",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/ajv@6.10.0",
+            "UID": "cdaf5ef1845cbb55"
+          },
+          "InstalledVersion": "6.10.0",
+          "FixedVersion": "8.18.0, 6.14.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-69873",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:8b7f5dc066188936efa2e4b4e306bc66e9944f5668004bd55031d23b3a48ee94",
+          "Title": "ajv: ReDoS via $data reference",
+          "Description": "ajv (Another JSON Schema Validator) before 8.18.0 is vulnerable to Regular Expression Denial of Service (ReDoS) when the $data option is enabled. The pattern keyword accepts runtime data via JSON Pointer syntax ($data reference), which is passed directly to the JavaScript RegExp() constructor without validation. An attacker can inject a malicious regex pattern (e.g., \"^(a|a)*$\") combined with crafted input to cause catastrophic backtracking. A 31-character payload causes approximately 44 seconds of CPU blocking, with each additional character doubling execution time. This enables complete denial of service with a single HTTP request against any API using ajv with $data: true for dynamic schema validation. This issue is also fixed in version 6.14.0.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-1333",
+            "CWE-400"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:P",
+              "V40Score": 5.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2025-69873",
+            "https://github.com/EthanKim88/ethan-cve-disclosures/blob/main/CVE-2025-69873-ajv-ReDoS.md",
+            "https://github.com/advisories/GHSA-2g4f-4pwh-qvx6",
+            "https://github.com/ajv-validator/ajv",
+            "https://github.com/ajv-validator/ajv/commit/720a23fa453ffae8340e92c9b0fe886c54cfe0d5",
+            "https://github.com/ajv-validator/ajv/pull/2586",
+            "https://github.com/ajv-validator/ajv/pull/2588",
+            "https://github.com/ajv-validator/ajv/pull/2590",
+            "https://github.com/ajv-validator/ajv/releases/tag/v6.14.0",
+            "https://github.com/ajv-validator/ajv/releases/tag/v8.18.0",
+            "https://github.com/github/advisory-database/pull/6991",
+            "https://nvd.nist.gov/vuln/detail/CVE-2025-69873",
+            "https://www.cve.org/CVERecord?id=CVE-2025-69873"
+          ],
+          "PublishedDate": "2026-02-11T19:15:50.467Z",
+          "LastModifiedDate": "2026-03-02T21:16:24.213Z"
+        },
+        {
           "VulnerabilityID": "CVE-2021-3807",
           "VendorIDs": [
             "GHSA-93q8-gq69-wqmw"
@@ -26657,7 +26718,9 @@
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 7.5,
+              "V40Score": 8.7
             },
             "nvd": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
@@ -26678,6 +26741,67 @@
           ],
           "PublishedDate": "2024-09-10T16:15:21.083Z",
           "LastModifiedDate": "2024-09-20T16:26:44.977Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-33750",
+          "VendorIDs": [
+            "GHSA-f886-m6hf-6m8v"
+          ],
+          "PkgID": "brace-expansion@1.1.11",
+          "PkgName": "brace-expansion",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/brace-expansion@1.1.11",
+            "UID": "2e96c947d10e22b5"
+          },
+          "InstalledVersion": "1.1.11",
+          "FixedVersion": "5.0.5, 3.0.2, 2.0.3, 1.1.13",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-33750",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:0b99e85b45759e00810bcfbfd7d192a86eed59d93e1bdd81d3c4ac661b7d25ca",
+          "Title": "brace-expansion: brace-expansion: Denial of Service via zero step value in brace pattern",
+          "Description": "The brace-expansion library generates arbitrary strings containing a common prefix and suffix. Prior to versions 5.0.5, 3.0.2, 2.0.3, and 1.1.13, a brace pattern with a zero step value (e.g., `{1..2..0}`) causes the sequence generation loop to run indefinitely, making the process hang for seconds and allocate heaps of memory. Versions 5.0.5, 3.0.2, 2.0.3, and 1.1.13 fix the issue. As a workaround, sanitize strings passed to `expand()` to ensure a step value of `0` is not used.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-400"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-33750",
+            "https://github.com/juliangruber/brace-expansion",
+            "https://github.com/juliangruber/brace-expansion/blob/daa71bcb4a30a2df9bcb7f7b8daaf2ab30e5794a/src/index.ts#L107-L113",
+            "https://github.com/juliangruber/brace-expansion/blob/daa71bcb4a30a2df9bcb7f7b8daaf2ab30e5794a/src/index.ts#L184",
+            "https://github.com/juliangruber/brace-expansion/commit/311ac0d54994158c0a384e286a7d6cbb17ee8ed5",
+            "https://github.com/juliangruber/brace-expansion/commit/7fd684f89fdde3549563d0a6522226a9189472a2",
+            "https://github.com/juliangruber/brace-expansion/commit/b9cacd9e55e7a1fa588fe4b7bb1159d52f1d902a",
+            "https://github.com/juliangruber/brace-expansion/issues/98",
+            "https://github.com/juliangruber/brace-expansion/pull/95",
+            "https://github.com/juliangruber/brace-expansion/pull/96",
+            "https://github.com/juliangruber/brace-expansion/pull/97",
+            "https://github.com/juliangruber/brace-expansion/security/advisories/GHSA-f886-m6hf-6m8v",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-33750",
+            "https://www.cve.org/CVERecord?id=CVE-2026-33750"
+          ],
+          "PublishedDate": "2026-03-27T15:16:57.297Z",
+          "LastModifiedDate": "2026-03-30T13:26:29.793Z"
         },
         {
           "VulnerabilityID": "CVE-2017-18077",
@@ -26743,6 +26867,67 @@
           ],
           "PublishedDate": "2018-01-27T12:29:00.217Z",
           "LastModifiedDate": "2024-11-21T03:19:18.69Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-33750",
+          "VendorIDs": [
+            "GHSA-f886-m6hf-6m8v"
+          ],
+          "PkgID": "brace-expansion@1.1.6",
+          "PkgName": "brace-expansion",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/brace-expansion@1.1.6",
+            "UID": "e64f62c022e88e21"
+          },
+          "InstalledVersion": "1.1.6",
+          "FixedVersion": "5.0.5, 3.0.2, 2.0.3, 1.1.13",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-33750",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:99d01d2781da28f72988fa2eef32add38cb8410c6727d42ac25f8e4e27c0f123",
+          "Title": "brace-expansion: brace-expansion: Denial of Service via zero step value in brace pattern",
+          "Description": "The brace-expansion library generates arbitrary strings containing a common prefix and suffix. Prior to versions 5.0.5, 3.0.2, 2.0.3, and 1.1.13, a brace pattern with a zero step value (e.g., `{1..2..0}`) causes the sequence generation loop to run indefinitely, making the process hang for seconds and allocate heaps of memory. Versions 5.0.5, 3.0.2, 2.0.3, and 1.1.13 fix the issue. As a workaround, sanitize strings passed to `expand()` to ensure a step value of `0` is not used.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-400"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-33750",
+            "https://github.com/juliangruber/brace-expansion",
+            "https://github.com/juliangruber/brace-expansion/blob/daa71bcb4a30a2df9bcb7f7b8daaf2ab30e5794a/src/index.ts#L107-L113",
+            "https://github.com/juliangruber/brace-expansion/blob/daa71bcb4a30a2df9bcb7f7b8daaf2ab30e5794a/src/index.ts#L184",
+            "https://github.com/juliangruber/brace-expansion/commit/311ac0d54994158c0a384e286a7d6cbb17ee8ed5",
+            "https://github.com/juliangruber/brace-expansion/commit/7fd684f89fdde3549563d0a6522226a9189472a2",
+            "https://github.com/juliangruber/brace-expansion/commit/b9cacd9e55e7a1fa588fe4b7bb1159d52f1d902a",
+            "https://github.com/juliangruber/brace-expansion/issues/98",
+            "https://github.com/juliangruber/brace-expansion/pull/95",
+            "https://github.com/juliangruber/brace-expansion/pull/96",
+            "https://github.com/juliangruber/brace-expansion/pull/97",
+            "https://github.com/juliangruber/brace-expansion/security/advisories/GHSA-f886-m6hf-6m8v",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-33750",
+            "https://www.cve.org/CVERecord?id=CVE-2026-33750"
+          ],
+          "PublishedDate": "2026-03-27T15:16:57.297Z",
+          "LastModifiedDate": "2026-03-30T13:26:29.793Z"
         },
         {
           "VulnerabilityID": "NSWG-ECO-338",
@@ -26976,7 +27161,7 @@
           },
           "Fingerprint": "sha256:ecd79c7d5313fd0160c8c0cecaa7e0276cbbc0132a3990f666816b05965c5df1",
           "Title": "Incorrect parsing of certain JSON input may result in js-bson not corr ...",
-          "Description": "Incorrect parsing of certain JSON input may result in js-bson not correctly serializing BSON. This may cause unexpected application behaviour including data disclosure. This issue affects: MongoDB Inc. js-bson library version 1.1.3 and prior to.\n\n",
+          "Description": "Incorrect parsing of certain JSON input may result in js-bson not correctly serializing BSON. This may cause unexpected application behaviour including data disclosure. This issue affects: MongoDB Inc. js-bson library version 1.1.3 and prior to.",
           "Severity": "MEDIUM",
           "CweIDs": [
             "CWE-502"
@@ -27003,7 +27188,7 @@
             "https://nvd.nist.gov/vuln/detail/CVE-2019-2391"
           ],
           "PublishedDate": "2020-03-31T14:15:14.173Z",
-          "LastModifiedDate": "2024-11-21T04:40:46.85Z"
+          "LastModifiedDate": "2026-02-23T16:20:42.267Z"
         },
         {
           "VulnerabilityID": "CVE-2024-21538",
@@ -27043,7 +27228,9 @@
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:P",
+              "V3Score": 7.5,
+              "V40Score": 7.7
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:N/I:N/A:H",
@@ -27104,7 +27291,9 @@
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:P",
+              "V3Score": 7.5,
+              "V40Score": 7.7
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:N/I:N/A:H",
@@ -27165,7 +27354,9 @@
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:P",
+              "V3Score": 7.5,
+              "V40Score": 7.7
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:N/I:N/A:H",
@@ -27226,7 +27417,9 @@
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:P",
+              "V3Score": 7.5,
+              "V40Score": 7.7
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:N/I:N/A:H",
@@ -27287,7 +27480,9 @@
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:P",
+              "V3Score": 7.5,
+              "V40Score": 7.7
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:N/I:N/A:H",
@@ -27531,7 +27726,8 @@
             "nvd": 3,
             "oracle-oval": 2,
             "redhat": 2,
-            "rocky": 2
+            "rocky": 2,
+            "ubuntu": 2
           },
           "CVSS": {
             "ghsa": {
@@ -27745,6 +27941,10 @@
             "ubuntu": 2
           },
           "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:H/VI:H/VA:N/SC:H/SI:H/SA:N",
+              "V40Score": 9.4
+            },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:L/I:L/A:N",
               "V3Score": 5.4
@@ -27798,6 +27998,10 @@
             "ubuntu": 2
           },
           "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:H/VI:H/VA:N/SC:H/SI:H/SA:N",
+              "V40Score": 9.4
+            },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:L/I:L/A:N",
               "V3Score": 5.4
@@ -27851,6 +28055,10 @@
             "ubuntu": 2
           },
           "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:H/VI:H/VA:N/SC:H/SI:H/SA:N",
+              "V40Score": 9.4
+            },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:L/I:L/A:N",
               "V3Score": 5.4
@@ -27904,6 +28112,10 @@
             "ubuntu": 2
           },
           "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:H/VI:H/VA:N/SC:H/SI:H/SA:N",
+              "V40Score": 9.4
+            },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:L/I:L/A:N",
               "V3Score": 5.4
@@ -27957,6 +28169,10 @@
             "ubuntu": 2
           },
           "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:H/VI:H/VA:N/SC:H/SI:H/SA:N",
+              "V40Score": 9.4
+            },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:L/I:L/A:N",
               "V3Score": 5.4
@@ -28478,7 +28694,7 @@
           "VendorSeverity": {
             "ghsa": 2,
             "nvd": 2,
-            "ubuntu": 3
+            "ubuntu": 2
           },
           "CVSS": {
             "ghsa": {
@@ -28714,6 +28930,61 @@
           "LastModifiedDate": "2024-11-21T05:51:36.913Z"
         },
         {
+          "VulnerabilityID": "CVE-2026-33937",
+          "VendorIDs": [
+            "GHSA-2w6w-674q-4c4q"
+          ],
+          "PkgID": "handlebars@4.0.5",
+          "PkgName": "handlebars",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/handlebars@4.0.5",
+            "UID": "382c486ddcb3bd9"
+          },
+          "InstalledVersion": "4.0.5",
+          "FixedVersion": "4.7.9",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-33937",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:8fe5409f4731d15d8e5e90b5e6e2a25c1b5f403c5f273add1fb6e5c13b6c2696",
+          "Title": "handlebars.js: Handlebars: Remote Code Execution via crafted Abstract Syntax Tree object in compile()",
+          "Description": "Handlebars provides the power necessary to let users build semantic templates. In versions 4.0.0 through 4.7.8, `Handlebars.compile()` accepts a pre-parsed AST object in addition to a template string. The `value` field of a `NumberLiteral` AST node is emitted directly into the generated JavaScript without quoting or sanitization. An attacker who can supply a crafted AST to `compile()` can therefore inject and execute arbitrary JavaScript, leading to Remote Code Execution on the server. Version 4.7.9 fixes the issue. Some workarounds are available. Validate input type before calling `Handlebars.compile()`; ensure the argument is always a  `string`, never a plain object or JSON-deserialized value. Use the Handlebars runtime-only build (`handlebars/runtime`) on the server if templates are pre-compiled at build time; `compile()` will be unavailable.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-94",
+            "CWE-843"
+          ],
+          "VendorSeverity": {
+            "ghsa": 4,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-33937",
+            "https://github.com/handlebars-lang/handlebars.js",
+            "https://github.com/handlebars-lang/handlebars.js/commit/68d8df5a88e0a26fe9e6084c5c6aaebe67b07da2",
+            "https://github.com/handlebars-lang/handlebars.js/releases/tag/v4.7.9",
+            "https://github.com/handlebars-lang/handlebars.js/security/advisories/GHSA-2w6w-674q-4c4q",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-33937",
+            "https://www.cve.org/CVERecord?id=CVE-2026-33937"
+          ],
+          "PublishedDate": "2026-03-27T21:17:27.417Z",
+          "LastModifiedDate": "2026-03-31T17:49:05.807Z"
+        },
+        {
           "VulnerabilityID": "CVE-2019-20920",
           "VendorIDs": [
             "GHSA-3cqr-58rm-57f8"
@@ -28836,6 +29107,231 @@
           ],
           "PublishedDate": "2020-09-30T18:15:18.1Z",
           "LastModifiedDate": "2024-11-21T04:39:41.877Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-33938",
+          "VendorIDs": [
+            "GHSA-3mfm-83xf-c92r"
+          ],
+          "PkgID": "handlebars@4.0.5",
+          "PkgName": "handlebars",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/handlebars@4.0.5",
+            "UID": "382c486ddcb3bd9"
+          },
+          "InstalledVersion": "4.0.5",
+          "FixedVersion": "4.7.9",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-33938",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:58cbe52e64198d9df5f3fc730ec095f6d8e95b2595e529db060ca82bb67f139a",
+          "Title": "handlebars: Handlebars: Arbitrary code execution via @partial-block overwrite",
+          "Description": "Handlebars provides the power necessary to let users build semantic templates. In versions 4.0.0 through 4.7.8, the `@partial-block` special variable is stored in the template data context and is reachable and mutable from within a template via helpers that accept arbitrary objects. When a helper overwrites `@partial-block` with a crafted Handlebars AST, a subsequent invocation of `{{\u003e @partial-block}}` compiles and executes that AST, enabling arbitrary JavaScript execution on the server. Version 4.7.9 fixes the issue. Some workarounds are available. First, use the runtime-only build (`require('handlebars/runtime')`). The `compile()` method is  absent, eliminating the vulnerable fallback path. Second, audit registered helpers for any that write arbitrary values to context objects. Helpers  should treat context data as read-only. Third, avoid registering helpers from third-party packages (such as `handlebars-helpers`) in  contexts where templates or context data can be influenced by untrusted input.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-94",
+            "CWE-843"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-33938",
+            "https://github.com/handlebars-lang/handlebars.js",
+            "https://github.com/handlebars-lang/handlebars.js/commit/68d8df5a88e0a26fe9e6084c5c6aaebe67b07da2",
+            "https://github.com/handlebars-lang/handlebars.js/releases/tag/v4.7.9",
+            "https://github.com/handlebars-lang/handlebars.js/security/advisories/GHSA-3mfm-83xf-c92r",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-33938",
+            "https://www.cve.org/CVERecord?id=CVE-2026-33938"
+          ],
+          "PublishedDate": "2026-03-27T21:17:27.587Z",
+          "LastModifiedDate": "2026-03-31T20:16:27.767Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-33939",
+          "VendorIDs": [
+            "GHSA-9cx6-37pm-9jff"
+          ],
+          "PkgID": "handlebars@4.0.5",
+          "PkgName": "handlebars",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/handlebars@4.0.5",
+            "UID": "382c486ddcb3bd9"
+          },
+          "InstalledVersion": "4.0.5",
+          "FixedVersion": "4.7.9",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-33939",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:bd62f6811b6d476333f7a6ba201c2f3fefdf91df7b6dc8c826295a096b1dd6a0",
+          "Title": "handlebars.js: Handlebars.js: Denial of Service via malformed decorator syntax in template compilation",
+          "Description": "Handlebars provides the power necessary to let users build semantic templates. In versions 4.0.0 through 4.7.8, when a Handlebars template contains decorator syntax referencing an unregistered decorator (e.g. `{{*n}}`), the compiled template calls `lookupProperty(decorators, \"n\")`, which returns `undefined`. The runtime then immediately invokes the result as a function, causing an unhandled `TypeError: ... is not a function` that crashes the Node.js process. Any application that compiles user-supplied templates without wrapping the call in a `try/catch` is vulnerable to a single-request Denial of Service. Version 4.7.9 fixes the issue. Some workarounds are available. Wrap compilation and rendering in `try/catch`. Validate template input before passing it to `compile()`; reject templates containing  decorator syntax (`{{*...}}`) if decorators are not used in your application. Use the pre-compilation workflow; compile templates at build time and serve only pre-compiled  templates; do not call `compile()` at request time.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-754"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-33939",
+            "https://github.com/handlebars-lang/handlebars.js",
+            "https://github.com/handlebars-lang/handlebars.js/commit/68d8df5a88e0a26fe9e6084c5c6aaebe67b07da2",
+            "https://github.com/handlebars-lang/handlebars.js/releases/tag/v4.7.9",
+            "https://github.com/handlebars-lang/handlebars.js/security/advisories/GHSA-9cx6-37pm-9jff",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-33939",
+            "https://www.cve.org/CVERecord?id=CVE-2026-33939"
+          ],
+          "PublishedDate": "2026-03-27T22:16:20.857Z",
+          "LastModifiedDate": "2026-03-31T17:50:47.52Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-33940",
+          "VendorIDs": [
+            "GHSA-xhpv-hc6g-r9c6"
+          ],
+          "PkgID": "handlebars@4.0.5",
+          "PkgName": "handlebars",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/handlebars@4.0.5",
+            "UID": "382c486ddcb3bd9"
+          },
+          "InstalledVersion": "4.0.5",
+          "FixedVersion": "4.7.9",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-33940",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:c68fa165291ad42e7e2b3040df8a6881be96542fdc88757dea69bb2eaf2e3fba",
+          "Title": "handlebars.js: Handlebars.js: Arbitrary code execution via crafted template context",
+          "Description": "Handlebars provides the power necessary to let users build semantic templates. In versions 4.0.0 through 4.7.8, a crafted object placed in the template context can bypass all conditional guards in `resolvePartial()` and cause `invokePartial()` to return `undefined`. The Handlebars runtime then treats the unresolved partial as a source that needs to be compiled, passing the crafted object to `env.compile()`. Because the object is a valid Handlebars AST containing injected code, the generated JavaScript executes arbitrary commands on the server. The attack requires the adversary to control a value that can be returned by a dynamic partial lookup. Version 4.7.9 fixes the issue. Some workarounds are available. First, use the runtime-only build (`require('handlebars/runtime')`). Without `compile()`,  the fallback compilation path in `invokePartial` is unreachable. Second, sanitize context data before rendering: Ensure no value in the context is a non-primitive  object that could be passed to a dynamic partial. Third, avoid dynamic partial lookups (`{{\u003e (lookup ...)}}`) when context data is user-controlled.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-94",
+            "CWE-843"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-33940",
+            "https://github.com/handlebars-lang/handlebars.js",
+            "https://github.com/handlebars-lang/handlebars.js/commit/68d8df5a88e0a26fe9e6084c5c6aaebe67b07da2",
+            "https://github.com/handlebars-lang/handlebars.js/releases/tag/v4.7.9",
+            "https://github.com/handlebars-lang/handlebars.js/security/advisories/GHSA-xhpv-hc6g-r9c6",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-33940",
+            "https://www.cve.org/CVERecord?id=CVE-2026-33940"
+          ],
+          "PublishedDate": "2026-03-27T22:16:21.03Z",
+          "LastModifiedDate": "2026-03-31T17:51:04.21Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-33941",
+          "VendorIDs": [
+            "GHSA-xjpj-3mr7-gcpf"
+          ],
+          "PkgID": "handlebars@4.0.5",
+          "PkgName": "handlebars",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/handlebars@4.0.5",
+            "UID": "382c486ddcb3bd9"
+          },
+          "InstalledVersion": "4.0.5",
+          "FixedVersion": "4.7.9",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-33941",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:e7c42cb1f138945080939490ad86b0dd655e5c3e8ae209d15510458eba0c4914",
+          "Title": "handlebars.js: Handlebars: Arbitrary code execution via CLI precompiler input sanitization flaw",
+          "Description": "Handlebars provides the power necessary to let users build semantic templates. In versions 4.0.0 through 4.7.8, the Handlebars CLI precompiler (`bin/handlebars` / `lib/precompiler.js`) concatenates user-controlled strings — template file names and several CLI options — directly into the JavaScript it emits, without any escaping or sanitization. An attacker who can influence template filenames or CLI arguments can inject arbitrary JavaScript that executes when the generated bundle is loaded in Node.js or a browser. Version 4.7.9 fixes the issue. Some workarounds are available. First, validate all CLI inputs before invoking the precompiler. Reject filenames and option values  that contain characters with JavaScript string-escaping significance (`\"`, `'`, `;`, etc.). Second, use a fixed, trusted namespace string passed via a configuration file rather than  command-line arguments in automated pipelines. Third, run the precompiler in a sandboxed environment (container with no write access to sensitive  paths) to limit the impact of successful exploitation. Fourth, audit template filenames in any repository or package that is consumed by an automated  build pipeline.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-79",
+            "CWE-94",
+            "CWE-116"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H",
+              "V3Score": 8.3
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H",
+              "V3Score": 8.2
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H",
+              "V3Score": 8.2
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-33941",
+            "https://github.com/handlebars-lang/handlebars.js",
+            "https://github.com/handlebars-lang/handlebars.js/commit/68d8df5a88e0a26fe9e6084c5c6aaebe67b07da2",
+            "https://github.com/handlebars-lang/handlebars.js/releases/tag/v4.7.9",
+            "https://github.com/handlebars-lang/handlebars.js/security/advisories/GHSA-xjpj-3mr7-gcpf",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-33941",
+            "https://www.cve.org/CVERecord?id=CVE-2026-33941"
+          ],
+          "PublishedDate": "2026-03-27T22:16:21.203Z",
+          "LastModifiedDate": "2026-03-31T17:53:18.77Z"
         },
         {
           "VulnerabilityID": "GHSA-2cf5-4w76-r9qv",
@@ -28978,6 +29474,68 @@
           ],
           "PublishedDate": "2019-06-05T14:07:48Z",
           "LastModifiedDate": "2021-08-04T20:54:05Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-33916",
+          "VendorIDs": [
+            "GHSA-2qvq-rjwj-gvw9"
+          ],
+          "PkgID": "handlebars@4.0.5",
+          "PkgName": "handlebars",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/handlebars@4.0.5",
+            "UID": "382c486ddcb3bd9"
+          },
+          "InstalledVersion": "4.0.5",
+          "FixedVersion": "4.7.9",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-33916",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:72b8728cf0c9410cc9d138f46990d7d0f989fc34d694dc6ad8c61f32dc0314a8",
+          "Title": "handlebars.js: Handlebars: Cross-Site Scripting (XSS) via prototype pollution in partial resolution",
+          "Description": "Handlebars provides the power necessary to let users build semantic templates. In versions 4.0.0 through 4.7.8, `resolvePartial()` in the Handlebars runtime resolves partial names via a plain property lookup on `options.partials` without guarding against prototype-chain traversal. When `Object.prototype` has been polluted with a string value whose key matches a partial reference in a template, the polluted string is used as the partial body and rendered without HTML escaping, resulting in reflected or stored XSS. Version 4.7.9 fixes the issue. Some workarounds are available. Apply `Object.freeze(Object.prototype)` early in application startup to prevent prototype  pollution. Note: this may break other libraries, and/or use the Handlebars runtime-only build (`handlebars/runtime`), which does not compile templates  and reduces the attack surface.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-79",
+            "CWE-1321"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "nvd": 2,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N",
+              "V3Score": 4.7
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N",
+              "V3Score": 4.7
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N",
+              "V3Score": 4.7
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-33916",
+            "https://github.com/handlebars-lang/handlebars.js",
+            "https://github.com/handlebars-lang/handlebars.js/commit/68d8df5a88e0a26fe9e6084c5c6aaebe67b07da2",
+            "https://github.com/handlebars-lang/handlebars.js/releases/tag/v4.7.9",
+            "https://github.com/handlebars-lang/handlebars.js/security/advisories/GHSA-2qvq-rjwj-gvw9",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-23369",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-23383",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-33916",
+            "https://www.cve.org/CVERecord?id=CVE-2026-33916"
+          ],
+          "PublishedDate": "2026-03-27T21:17:27.237Z",
+          "LastModifiedDate": "2026-03-31T17:48:27.727Z"
         },
         {
           "VulnerabilityID": "GHSA-f52g-6jhx-586p",
@@ -30386,7 +30944,8 @@
             "cbl-mariner": 3,
             "ghsa": 3,
             "nvd": 3,
-            "redhat": 2
+            "redhat": 2,
+            "ubuntu": 2
           },
           "CVSS": {
             "ghsa": {
@@ -30626,6 +31185,57 @@
           ],
           "PublishedDate": "2021-02-15T13:15:12.56Z",
           "LastModifiedDate": "2024-11-21T05:51:31.643Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-2950",
+          "VendorIDs": [
+            "GHSA-f23m-r3pf-42rh"
+          ],
+          "PkgID": "lodash@2.4.2",
+          "PkgName": "lodash",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/lodash@2.4.2",
+            "UID": "88cf54809797628c"
+          },
+          "InstalledVersion": "2.4.2",
+          "FixedVersion": "4.18.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-2950",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:a9ea7b8868cf591f08d28347b7be690c2f9c85c0b207cfb2dab98e58444440c5",
+          "Title": "Impact:  Lodash versions 4.17.23 and earlier are vulnerable to prototy ...",
+          "Description": "Impact:\n\nLodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the _.unset and _.omit functions. The fix for (CVE-2025-13465: https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as Object.prototype, Number.prototype, and String.prototype.\n\nThe issue permits deletion of prototype properties but does not allow overwriting their original behavior.\n\nPatches:\n\nThis issue is patched in 4.18.0.\n\nWorkarounds:\n\nNone. Upgrade to the patched version.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-1321"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "nvd": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L",
+              "V3Score": 6.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "https://github.com/lodash/lodash",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-f23m-r3pf-42rh",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950"
+          ],
+          "PublishedDate": "2026-03-31T20:16:26.207Z",
+          "LastModifiedDate": "2026-04-07T16:12:25.97Z"
         },
         {
           "VulnerabilityID": "CVE-2019-10744",
@@ -30916,6 +31526,66 @@
           "LastModifiedDate": "2024-11-21T05:51:31.643Z"
         },
         {
+          "VulnerabilityID": "CVE-2026-4800",
+          "VendorIDs": [
+            "GHSA-r5fr-rjxr-66jc"
+          ],
+          "PkgID": "lodash@4.13.1",
+          "PkgName": "lodash",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/lodash@4.13.1",
+            "UID": "85a5e1dca075e2ba"
+          },
+          "InstalledVersion": "4.13.1",
+          "FixedVersion": "4.18.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-4800",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:415820935d3e79e39497356d846c9afade52131329fec504ddf68adc7d027d7a",
+          "Title": "lodash: lodash: Arbitrary code execution via untrusted input in template imports",
+          "Description": "Impact:\n\nThe fix for CVE-2021-23337 (https://github.com/advisories/GHSA-35jh-r3h4-6jhm) added validation for the variable option in _.template but did not apply the same validation to options.imports key names. Both paths flow into the same Function() constructor sink.\n\nWhen an application passes untrusted input as options.imports key names, an attacker can inject default-parameter expressions that execute arbitrary code at template compilation time.\n\nAdditionally, _.template uses assignInWith to merge imports, which enumerates inherited properties via for..in. If Object.prototype has been polluted by any other vector, the polluted keys are copied into the imports object and passed to Function().\n\nPatches:\n\nUsers should upgrade to version 4.18.0.\n\nWorkarounds:\n\nDo not pass untrusted input as key names in options.imports. Only use developer-controlled, static key names.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-94"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 4,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-4800",
+            "https://cna.openjsf.org/security-advisories.html",
+            "https://github.com/advisories/GHSA-35jh-r3h4-6jhm",
+            "https://github.com/lodash/lodash",
+            "https://github.com/lodash/lodash/commit/3469357cff396a26c363f8c1b5a91dde28ba4b1c",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-r5fr-rjxr-66jc",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-4800",
+            "https://www.cve.org/CVERecord?id=CVE-2026-4800"
+          ],
+          "PublishedDate": "2026-03-31T20:16:29.66Z",
+          "LastModifiedDate": "2026-04-07T15:43:13.197Z"
+        },
+        {
           "VulnerabilityID": "CVE-2019-1010266",
           "VendorIDs": [
             "GHSA-x5rq-j2xg-h7qm"
@@ -31093,13 +31763,22 @@
             "CWE-1321"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 2,
+            "nvd": 2,
+            "oracle-oval": 3,
             "redhat": 3
           },
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L",
-              "V3Score": 6.5
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:L/VA:L/SC:H/SI:H/SA:H/E:P",
+              "V3Score": 6.5,
+              "V40Score": 6.9
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H",
@@ -31107,15 +31786,71 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:2452",
             "https://access.redhat.com/security/cve/CVE-2025-13465",
+            "https://bugzilla.redhat.com/2431740",
+            "https://errata.almalinux.org/9/ALSA-2026-2452.html",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/commit/edadd452146f7e4bad4ea684e955708931d84d81",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
+            "https://linux.oracle.com/cve/CVE-2025-13465.html",
+            "https://linux.oracle.com/errata/ELSA-2026-2452.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2025-13465",
             "https://www.cve.org/CVERecord?id=CVE-2025-13465"
           ],
           "PublishedDate": "2026-01-21T20:16:05.25Z",
-          "LastModifiedDate": "2026-01-26T15:04:59.737Z"
+          "LastModifiedDate": "2026-02-17T17:10:07.52Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-2950",
+          "VendorIDs": [
+            "GHSA-f23m-r3pf-42rh"
+          ],
+          "PkgID": "lodash@4.13.1",
+          "PkgName": "lodash",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/lodash@4.13.1",
+            "UID": "85a5e1dca075e2ba"
+          },
+          "InstalledVersion": "4.13.1",
+          "FixedVersion": "4.18.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-2950",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:72bbae0a9e6560858ab2ae99428874af9aaca54838b5e3d3017a73df4697f369",
+          "Title": "Impact:  Lodash versions 4.17.23 and earlier are vulnerable to prototy ...",
+          "Description": "Impact:\n\nLodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the _.unset and _.omit functions. The fix for (CVE-2025-13465: https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as Object.prototype, Number.prototype, and String.prototype.\n\nThe issue permits deletion of prototype properties but does not allow overwriting their original behavior.\n\nPatches:\n\nThis issue is patched in 4.18.0.\n\nWorkarounds:\n\nNone. Upgrade to the patched version.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-1321"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "nvd": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L",
+              "V3Score": 6.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "https://github.com/lodash/lodash",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-f23m-r3pf-42rh",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950"
+          ],
+          "PublishedDate": "2026-03-31T20:16:26.207Z",
+          "LastModifiedDate": "2026-04-07T16:12:25.97Z"
         },
         {
           "VulnerabilityID": "CVE-2019-10744",
@@ -31346,6 +32081,66 @@
           "LastModifiedDate": "2024-11-21T05:51:31.643Z"
         },
         {
+          "VulnerabilityID": "CVE-2026-4800",
+          "VendorIDs": [
+            "GHSA-r5fr-rjxr-66jc"
+          ],
+          "PkgID": "lodash@4.17.11",
+          "PkgName": "lodash",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/lodash@4.17.11",
+            "UID": "c887d9d22f742f5b"
+          },
+          "InstalledVersion": "4.17.11",
+          "FixedVersion": "4.18.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-4800",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:7ba39fc54a758db1f46ab67abbd86c5199366b92ffa60512aeb0a7b077862fb9",
+          "Title": "lodash: lodash: Arbitrary code execution via untrusted input in template imports",
+          "Description": "Impact:\n\nThe fix for CVE-2021-23337 (https://github.com/advisories/GHSA-35jh-r3h4-6jhm) added validation for the variable option in _.template but did not apply the same validation to options.imports key names. Both paths flow into the same Function() constructor sink.\n\nWhen an application passes untrusted input as options.imports key names, an attacker can inject default-parameter expressions that execute arbitrary code at template compilation time.\n\nAdditionally, _.template uses assignInWith to merge imports, which enumerates inherited properties via for..in. If Object.prototype has been polluted by any other vector, the polluted keys are copied into the imports object and passed to Function().\n\nPatches:\n\nUsers should upgrade to version 4.18.0.\n\nWorkarounds:\n\nDo not pass untrusted input as key names in options.imports. Only use developer-controlled, static key names.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-94"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 4,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-4800",
+            "https://cna.openjsf.org/security-advisories.html",
+            "https://github.com/advisories/GHSA-35jh-r3h4-6jhm",
+            "https://github.com/lodash/lodash",
+            "https://github.com/lodash/lodash/commit/3469357cff396a26c363f8c1b5a91dde28ba4b1c",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-r5fr-rjxr-66jc",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-4800",
+            "https://www.cve.org/CVERecord?id=CVE-2026-4800"
+          ],
+          "PublishedDate": "2026-03-31T20:16:29.66Z",
+          "LastModifiedDate": "2026-04-07T15:43:13.197Z"
+        },
+        {
           "VulnerabilityID": "CVE-2020-28500",
           "VendorIDs": [
             "GHSA-29mw-wpgm-hmr9"
@@ -31453,13 +32248,22 @@
             "CWE-1321"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 2,
+            "nvd": 2,
+            "oracle-oval": 3,
             "redhat": 3
           },
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L",
-              "V3Score": 6.5
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:L/VA:L/SC:H/SI:H/SA:H/E:P",
+              "V3Score": 6.5,
+              "V40Score": 6.9
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H",
@@ -31467,15 +32271,71 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:2452",
             "https://access.redhat.com/security/cve/CVE-2025-13465",
+            "https://bugzilla.redhat.com/2431740",
+            "https://errata.almalinux.org/9/ALSA-2026-2452.html",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/commit/edadd452146f7e4bad4ea684e955708931d84d81",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
+            "https://linux.oracle.com/cve/CVE-2025-13465.html",
+            "https://linux.oracle.com/errata/ELSA-2026-2452.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2025-13465",
             "https://www.cve.org/CVERecord?id=CVE-2025-13465"
           ],
           "PublishedDate": "2026-01-21T20:16:05.25Z",
-          "LastModifiedDate": "2026-01-26T15:04:59.737Z"
+          "LastModifiedDate": "2026-02-17T17:10:07.52Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-2950",
+          "VendorIDs": [
+            "GHSA-f23m-r3pf-42rh"
+          ],
+          "PkgID": "lodash@4.17.11",
+          "PkgName": "lodash",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/lodash@4.17.11",
+            "UID": "c887d9d22f742f5b"
+          },
+          "InstalledVersion": "4.17.11",
+          "FixedVersion": "4.18.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-2950",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:977f539403885adba3b108e08e14ca366d027d0eb62c01c2d03d19aa4929acb8",
+          "Title": "Impact:  Lodash versions 4.17.23 and earlier are vulnerable to prototy ...",
+          "Description": "Impact:\n\nLodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the _.unset and _.omit functions. The fix for (CVE-2025-13465: https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as Object.prototype, Number.prototype, and String.prototype.\n\nThe issue permits deletion of prototype properties but does not allow overwriting their original behavior.\n\nPatches:\n\nThis issue is patched in 4.18.0.\n\nWorkarounds:\n\nNone. Upgrade to the patched version.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-1321"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "nvd": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L",
+              "V3Score": 6.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "https://github.com/lodash/lodash",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-f23m-r3pf-42rh",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950"
+          ],
+          "PublishedDate": "2026-03-31T20:16:26.207Z",
+          "LastModifiedDate": "2026-04-07T16:12:25.97Z"
         },
         {
           "VulnerabilityID": "CVE-2021-23337",
@@ -31555,6 +32415,66 @@
           ],
           "PublishedDate": "2021-02-15T13:15:12.56Z",
           "LastModifiedDate": "2024-11-21T05:51:31.643Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-4800",
+          "VendorIDs": [
+            "GHSA-r5fr-rjxr-66jc"
+          ],
+          "PkgID": "lodash@4.17.20",
+          "PkgName": "lodash",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/lodash@4.17.20",
+            "UID": "d9cdccb430571808"
+          },
+          "InstalledVersion": "4.17.20",
+          "FixedVersion": "4.18.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-4800",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:afcbf8735e14392b9ee76fa1a3e314ad59f67b5526f4bc5606fb4551e18a642c",
+          "Title": "lodash: lodash: Arbitrary code execution via untrusted input in template imports",
+          "Description": "Impact:\n\nThe fix for CVE-2021-23337 (https://github.com/advisories/GHSA-35jh-r3h4-6jhm) added validation for the variable option in _.template but did not apply the same validation to options.imports key names. Both paths flow into the same Function() constructor sink.\n\nWhen an application passes untrusted input as options.imports key names, an attacker can inject default-parameter expressions that execute arbitrary code at template compilation time.\n\nAdditionally, _.template uses assignInWith to merge imports, which enumerates inherited properties via for..in. If Object.prototype has been polluted by any other vector, the polluted keys are copied into the imports object and passed to Function().\n\nPatches:\n\nUsers should upgrade to version 4.18.0.\n\nWorkarounds:\n\nDo not pass untrusted input as key names in options.imports. Only use developer-controlled, static key names.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-94"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 4,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-4800",
+            "https://cna.openjsf.org/security-advisories.html",
+            "https://github.com/advisories/GHSA-35jh-r3h4-6jhm",
+            "https://github.com/lodash/lodash",
+            "https://github.com/lodash/lodash/commit/3469357cff396a26c363f8c1b5a91dde28ba4b1c",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-r5fr-rjxr-66jc",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-4800",
+            "https://www.cve.org/CVERecord?id=CVE-2026-4800"
+          ],
+          "PublishedDate": "2026-03-31T20:16:29.66Z",
+          "LastModifiedDate": "2026-04-07T15:43:13.197Z"
         },
         {
           "VulnerabilityID": "CVE-2020-28500",
@@ -31664,13 +32584,22 @@
             "CWE-1321"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 2,
+            "nvd": 2,
+            "oracle-oval": 3,
             "redhat": 3
           },
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L",
-              "V3Score": 6.5
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:L/VA:L/SC:H/SI:H/SA:H/E:P",
+              "V3Score": 6.5,
+              "V40Score": 6.9
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H",
@@ -31678,15 +32607,131 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:2452",
             "https://access.redhat.com/security/cve/CVE-2025-13465",
+            "https://bugzilla.redhat.com/2431740",
+            "https://errata.almalinux.org/9/ALSA-2026-2452.html",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/commit/edadd452146f7e4bad4ea684e955708931d84d81",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
+            "https://linux.oracle.com/cve/CVE-2025-13465.html",
+            "https://linux.oracle.com/errata/ELSA-2026-2452.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2025-13465",
             "https://www.cve.org/CVERecord?id=CVE-2025-13465"
           ],
           "PublishedDate": "2026-01-21T20:16:05.25Z",
-          "LastModifiedDate": "2026-01-26T15:04:59.737Z"
+          "LastModifiedDate": "2026-02-17T17:10:07.52Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-2950",
+          "VendorIDs": [
+            "GHSA-f23m-r3pf-42rh"
+          ],
+          "PkgID": "lodash@4.17.20",
+          "PkgName": "lodash",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/lodash@4.17.20",
+            "UID": "d9cdccb430571808"
+          },
+          "InstalledVersion": "4.17.20",
+          "FixedVersion": "4.18.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-2950",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:ea1f89dbd95fa978a8e171fb2b32526088daaee3442f0fbf6e70cbb189ecd3c7",
+          "Title": "Impact:  Lodash versions 4.17.23 and earlier are vulnerable to prototy ...",
+          "Description": "Impact:\n\nLodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the _.unset and _.omit functions. The fix for (CVE-2025-13465: https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as Object.prototype, Number.prototype, and String.prototype.\n\nThe issue permits deletion of prototype properties but does not allow overwriting their original behavior.\n\nPatches:\n\nThis issue is patched in 4.18.0.\n\nWorkarounds:\n\nNone. Upgrade to the patched version.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-1321"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "nvd": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L",
+              "V3Score": 6.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "https://github.com/lodash/lodash",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-f23m-r3pf-42rh",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950"
+          ],
+          "PublishedDate": "2026-03-31T20:16:26.207Z",
+          "LastModifiedDate": "2026-04-07T16:12:25.97Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-4800",
+          "VendorIDs": [
+            "GHSA-r5fr-rjxr-66jc"
+          ],
+          "PkgID": "lodash@4.17.21",
+          "PkgName": "lodash",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/lodash@4.17.21",
+            "UID": "39507669912cfad8"
+          },
+          "InstalledVersion": "4.17.21",
+          "FixedVersion": "4.18.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-4800",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:464c2c4c8371234a18d0228b14f65cf01c7a06afb83ec438a2c004c96dc35ae5",
+          "Title": "lodash: lodash: Arbitrary code execution via untrusted input in template imports",
+          "Description": "Impact:\n\nThe fix for CVE-2021-23337 (https://github.com/advisories/GHSA-35jh-r3h4-6jhm) added validation for the variable option in _.template but did not apply the same validation to options.imports key names. Both paths flow into the same Function() constructor sink.\n\nWhen an application passes untrusted input as options.imports key names, an attacker can inject default-parameter expressions that execute arbitrary code at template compilation time.\n\nAdditionally, _.template uses assignInWith to merge imports, which enumerates inherited properties via for..in. If Object.prototype has been polluted by any other vector, the polluted keys are copied into the imports object and passed to Function().\n\nPatches:\n\nUsers should upgrade to version 4.18.0.\n\nWorkarounds:\n\nDo not pass untrusted input as key names in options.imports. Only use developer-controlled, static key names.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-94"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 4,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-4800",
+            "https://cna.openjsf.org/security-advisories.html",
+            "https://github.com/advisories/GHSA-35jh-r3h4-6jhm",
+            "https://github.com/lodash/lodash",
+            "https://github.com/lodash/lodash/commit/3469357cff396a26c363f8c1b5a91dde28ba4b1c",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-r5fr-rjxr-66jc",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-4800",
+            "https://www.cve.org/CVERecord?id=CVE-2026-4800"
+          ],
+          "PublishedDate": "2026-03-31T20:16:29.66Z",
+          "LastModifiedDate": "2026-04-07T15:43:13.197Z"
         },
         {
           "VulnerabilityID": "CVE-2025-13465",
@@ -31717,13 +32762,22 @@
             "CWE-1321"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 2,
+            "nvd": 2,
+            "oracle-oval": 3,
             "redhat": 3
           },
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L",
-              "V3Score": 6.5
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:L/VA:L/SC:H/SI:H/SA:H/E:P",
+              "V3Score": 6.5,
+              "V40Score": 6.9
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H",
@@ -31731,15 +32785,71 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:2452",
             "https://access.redhat.com/security/cve/CVE-2025-13465",
+            "https://bugzilla.redhat.com/2431740",
+            "https://errata.almalinux.org/9/ALSA-2026-2452.html",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/commit/edadd452146f7e4bad4ea684e955708931d84d81",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
+            "https://linux.oracle.com/cve/CVE-2025-13465.html",
+            "https://linux.oracle.com/errata/ELSA-2026-2452.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2025-13465",
             "https://www.cve.org/CVERecord?id=CVE-2025-13465"
           ],
           "PublishedDate": "2026-01-21T20:16:05.25Z",
-          "LastModifiedDate": "2026-01-26T15:04:59.737Z"
+          "LastModifiedDate": "2026-02-17T17:10:07.52Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-2950",
+          "VendorIDs": [
+            "GHSA-f23m-r3pf-42rh"
+          ],
+          "PkgID": "lodash@4.17.21",
+          "PkgName": "lodash",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/lodash@4.17.21",
+            "UID": "39507669912cfad8"
+          },
+          "InstalledVersion": "4.17.21",
+          "FixedVersion": "4.18.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-2950",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:58bc57afa889e299a3cacb4d18b71120014fd6cb528b6a59186ce8f9dd402490",
+          "Title": "Impact:  Lodash versions 4.17.23 and earlier are vulnerable to prototy ...",
+          "Description": "Impact:\n\nLodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the _.unset and _.omit functions. The fix for (CVE-2025-13465: https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as Object.prototype, Number.prototype, and String.prototype.\n\nThe issue permits deletion of prototype properties but does not allow overwriting their original behavior.\n\nPatches:\n\nThis issue is patched in 4.18.0.\n\nWorkarounds:\n\nNone. Upgrade to the patched version.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-1321"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "nvd": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L",
+              "V3Score": 6.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "https://github.com/lodash/lodash",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-f23m-r3pf-42rh",
+            "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950"
+          ],
+          "PublishedDate": "2026-03-31T20:16:26.207Z",
+          "LastModifiedDate": "2026-04-07T16:12:25.97Z"
         },
         {
           "VulnerabilityID": "CVE-2017-16114",
@@ -32074,6 +33184,10 @@
             "nvd": 3
           },
           "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+              "V40Score": 6.9
+            },
             "nvd": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
               "V3Score": 7.5
@@ -32465,6 +33579,170 @@
           "LastModifiedDate": "2025-05-13T14:15:18.11Z"
         },
         {
+          "VulnerabilityID": "CVE-2026-26996",
+          "VendorIDs": [
+            "GHSA-3ppc-4f35-3m26"
+          ],
+          "PkgID": "minimatch@0.3.0",
+          "PkgName": "minimatch",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/minimatch@0.3.0",
+            "UID": "a6af96767a03b3b0"
+          },
+          "InstalledVersion": "0.3.0",
+          "FixedVersion": "10.2.1, 9.0.6, 8.0.5, 7.4.7, 6.2.1, 5.1.7, 4.2.4, 3.1.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-26996",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:73c88066e3182d9fcac3345977125698979b6978b73e35617c542da4cd8f86bc",
+          "Title": "minimatch: minimatch: Denial of Service via specially crafted glob patterns",
+          "Description": "minimatch is a minimal matching utility for converting glob expressions into JavaScript RegExp objects. Versions 10.2.0 and below are vulnerable to Regular Expression Denial of Service (ReDoS) when a glob pattern contains many consecutive * wildcards followed by a literal character that doesn't appear in the test string. Each * compiles to a separate [^/]*? regex group, and when the match fails, V8's regex engine backtracks exponentially across all possible splits. The time complexity is O(4^N) where N is the number of * characters. With N=15, a single minimatch() call takes ~2 seconds. With N=34, it hangs effectively forever. Any application that passes user-controlled strings to minimatch() as the pattern argument is vulnerable to DoS. This issue has been fixed in version 10.2.1.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V40Score": 8.7
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-26996",
+            "https://github.com/isaacs/minimatch",
+            "https://github.com/isaacs/minimatch/commit/2e111f3a79abc00fa73110195de2c0f2351904f5",
+            "https://github.com/isaacs/minimatch/security/advisories/GHSA-3ppc-4f35-3m26",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-26996",
+            "https://www.cve.org/CVERecord?id=CVE-2026-26996"
+          ],
+          "PublishedDate": "2026-02-20T03:16:01.62Z",
+          "LastModifiedDate": "2026-03-06T21:32:10.65Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-27903",
+          "VendorIDs": [
+            "GHSA-7r86-cg39-jmmj"
+          ],
+          "PkgID": "minimatch@0.3.0",
+          "PkgName": "minimatch",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/minimatch@0.3.0",
+            "UID": "a6af96767a03b3b0"
+          },
+          "InstalledVersion": "0.3.0",
+          "FixedVersion": "10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, 3.1.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-27903",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:c8eedb0b86891b1acd8aeab5553db6885c6ffe2ce4e2d4539591a45a9b97a55a",
+          "Title": "minimatch: minimatch: Denial of Service due to unbounded recursive backtracking via crafted glob patterns",
+          "Description": "minimatch is a minimal matching utility for converting glob expressions into JavaScript RegExp objects. Prior to version 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.3, `matchOne()` performs unbounded recursive backtracking when a glob pattern contains multiple non-adjacent `**` (GLOBSTAR) segments and the input path does not match. The time complexity is O(C(n, k)) -- binomial -- where `n` is the number of path segments and `k` is the number of globstars. With k=11 and n=30, a call to the default `minimatch()` API stalls for roughly 5 seconds. With k=13, it exceeds 15 seconds. No memoization or call budget exists to bound this behavior. Any application where an attacker can influence the glob pattern passed to `minimatch()` is vulnerable. The realistic attack surface includes build tools and task runners that accept user-supplied glob arguments (ESLint, Webpack, Rollup config), multi-tenant systems where one tenant configures glob-based rules that run in a shared process, admin or developer interfaces that accept ignore-rule or filter configuration as globs, and CI/CD pipelines that evaluate user-submitted config files containing glob patterns. An attacker who can place a crafted pattern into any of these paths can stall the Node.js event loop for tens of seconds per invocation. The pattern is 56 bytes for a 5-second stall and does not require authentication in contexts where pattern input is part of the feature. Versions 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.3 fix the issue.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-407"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-27903",
+            "https://github.com/isaacs/minimatch",
+            "https://github.com/isaacs/minimatch/commit/0bf499aa45f5059b56809cc3b75ff3eafeb8d748",
+            "https://github.com/isaacs/minimatch/security/advisories/GHSA-7r86-cg39-jmmj",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-27903",
+            "https://www.cve.org/CVERecord?id=CVE-2026-27903"
+          ],
+          "PublishedDate": "2026-02-26T02:16:21.353Z",
+          "LastModifiedDate": "2026-02-27T17:21:22.37Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-27904",
+          "VendorIDs": [
+            "GHSA-23c5-xmqv-rm74"
+          ],
+          "PkgID": "minimatch@0.3.0",
+          "PkgName": "minimatch",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/minimatch@0.3.0",
+            "UID": "a6af96767a03b3b0"
+          },
+          "InstalledVersion": "0.3.0",
+          "FixedVersion": "10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, 3.1.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-27904",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:49a7418be700032e086ddc4b5cd41a645760ec6224b5be1b34df2f8bac9fa29e",
+          "Title": "minimatch: Minimatch: Denial of Service via catastrophic backtracking in glob expressions",
+          "Description": "minimatch is a minimal matching utility for converting glob expressions into JavaScript RegExp objects. Prior to version 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.4, nested `*()` extglobs produce regexps with nested unbounded quantifiers (e.g. `(?:(?:a|b)*)*`), which exhibit catastrophic backtracking in V8. With a 12-byte pattern `*(*(*(a|b)))` and an 18-byte non-matching input, `minimatch()` stalls for over 7 seconds. Adding a single nesting level or a few input characters pushes this to minutes. This is the most severe finding: it is triggered by the default `minimatch()` API with no special options, and the minimum viable pattern is only 12 bytes. The same issue affects `+()` extglobs equally. Versions 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.4 fix the issue.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-27904",
+            "https://github.com/isaacs/minimatch",
+            "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce",
+            "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-27904",
+            "https://www.cve.org/CVERecord?id=CVE-2026-27904"
+          ],
+          "PublishedDate": "2026-02-26T02:16:21.76Z",
+          "LastModifiedDate": "2026-02-27T17:16:23.773Z"
+        },
+        {
           "VulnerabilityID": "NSWG-ECO-118",
           "PkgID": "minimatch@0.3.0",
           "PkgName": "minimatch",
@@ -32582,6 +33860,170 @@
           "LastModifiedDate": "2025-05-13T14:15:18.11Z"
         },
         {
+          "VulnerabilityID": "CVE-2026-26996",
+          "VendorIDs": [
+            "GHSA-3ppc-4f35-3m26"
+          ],
+          "PkgID": "minimatch@3.0.2",
+          "PkgName": "minimatch",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/minimatch@3.0.2",
+            "UID": "f8f7eefc82559beb"
+          },
+          "InstalledVersion": "3.0.2",
+          "FixedVersion": "10.2.1, 9.0.6, 8.0.5, 7.4.7, 6.2.1, 5.1.7, 4.2.4, 3.1.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-26996",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:cd8314b1ab9ce2bdd69d8d636b6cf201aa560cb8f2d622ef0b63ed4fd99b856f",
+          "Title": "minimatch: minimatch: Denial of Service via specially crafted glob patterns",
+          "Description": "minimatch is a minimal matching utility for converting glob expressions into JavaScript RegExp objects. Versions 10.2.0 and below are vulnerable to Regular Expression Denial of Service (ReDoS) when a glob pattern contains many consecutive * wildcards followed by a literal character that doesn't appear in the test string. Each * compiles to a separate [^/]*? regex group, and when the match fails, V8's regex engine backtracks exponentially across all possible splits. The time complexity is O(4^N) where N is the number of * characters. With N=15, a single minimatch() call takes ~2 seconds. With N=34, it hangs effectively forever. Any application that passes user-controlled strings to minimatch() as the pattern argument is vulnerable to DoS. This issue has been fixed in version 10.2.1.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V40Score": 8.7
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-26996",
+            "https://github.com/isaacs/minimatch",
+            "https://github.com/isaacs/minimatch/commit/2e111f3a79abc00fa73110195de2c0f2351904f5",
+            "https://github.com/isaacs/minimatch/security/advisories/GHSA-3ppc-4f35-3m26",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-26996",
+            "https://www.cve.org/CVERecord?id=CVE-2026-26996"
+          ],
+          "PublishedDate": "2026-02-20T03:16:01.62Z",
+          "LastModifiedDate": "2026-03-06T21:32:10.65Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-27903",
+          "VendorIDs": [
+            "GHSA-7r86-cg39-jmmj"
+          ],
+          "PkgID": "minimatch@3.0.2",
+          "PkgName": "minimatch",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/minimatch@3.0.2",
+            "UID": "f8f7eefc82559beb"
+          },
+          "InstalledVersion": "3.0.2",
+          "FixedVersion": "10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, 3.1.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-27903",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:6fb91138f0fe96dd6212fb69faf2c17af12129ac8b294005853d65191406f4c3",
+          "Title": "minimatch: minimatch: Denial of Service due to unbounded recursive backtracking via crafted glob patterns",
+          "Description": "minimatch is a minimal matching utility for converting glob expressions into JavaScript RegExp objects. Prior to version 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.3, `matchOne()` performs unbounded recursive backtracking when a glob pattern contains multiple non-adjacent `**` (GLOBSTAR) segments and the input path does not match. The time complexity is O(C(n, k)) -- binomial -- where `n` is the number of path segments and `k` is the number of globstars. With k=11 and n=30, a call to the default `minimatch()` API stalls for roughly 5 seconds. With k=13, it exceeds 15 seconds. No memoization or call budget exists to bound this behavior. Any application where an attacker can influence the glob pattern passed to `minimatch()` is vulnerable. The realistic attack surface includes build tools and task runners that accept user-supplied glob arguments (ESLint, Webpack, Rollup config), multi-tenant systems where one tenant configures glob-based rules that run in a shared process, admin or developer interfaces that accept ignore-rule or filter configuration as globs, and CI/CD pipelines that evaluate user-submitted config files containing glob patterns. An attacker who can place a crafted pattern into any of these paths can stall the Node.js event loop for tens of seconds per invocation. The pattern is 56 bytes for a 5-second stall and does not require authentication in contexts where pattern input is part of the feature. Versions 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.3 fix the issue.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-407"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-27903",
+            "https://github.com/isaacs/minimatch",
+            "https://github.com/isaacs/minimatch/commit/0bf499aa45f5059b56809cc3b75ff3eafeb8d748",
+            "https://github.com/isaacs/minimatch/security/advisories/GHSA-7r86-cg39-jmmj",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-27903",
+            "https://www.cve.org/CVERecord?id=CVE-2026-27903"
+          ],
+          "PublishedDate": "2026-02-26T02:16:21.353Z",
+          "LastModifiedDate": "2026-02-27T17:21:22.37Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-27904",
+          "VendorIDs": [
+            "GHSA-23c5-xmqv-rm74"
+          ],
+          "PkgID": "minimatch@3.0.2",
+          "PkgName": "minimatch",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/minimatch@3.0.2",
+            "UID": "f8f7eefc82559beb"
+          },
+          "InstalledVersion": "3.0.2",
+          "FixedVersion": "10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, 3.1.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-27904",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:abb2685ea332b59e0582aa7a08229ad17aa61fc453cef1e3681a4f8b879aa524",
+          "Title": "minimatch: Minimatch: Denial of Service via catastrophic backtracking in glob expressions",
+          "Description": "minimatch is a minimal matching utility for converting glob expressions into JavaScript RegExp objects. Prior to version 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.4, nested `*()` extglobs produce regexps with nested unbounded quantifiers (e.g. `(?:(?:a|b)*)*`), which exhibit catastrophic backtracking in V8. With a 12-byte pattern `*(*(*(a|b)))` and an 18-byte non-matching input, `minimatch()` stalls for over 7 seconds. Adding a single nesting level or a few input characters pushes this to minutes. This is the most severe finding: it is triggered by the default `minimatch()` API with no special options, and the minimum viable pattern is only 12 bytes. The same issue affects `+()` extglobs equally. Versions 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.4 fix the issue.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-27904",
+            "https://github.com/isaacs/minimatch",
+            "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce",
+            "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-27904",
+            "https://www.cve.org/CVERecord?id=CVE-2026-27904"
+          ],
+          "PublishedDate": "2026-02-26T02:16:21.76Z",
+          "LastModifiedDate": "2026-02-27T17:16:23.773Z"
+        },
+        {
           "VulnerabilityID": "CVE-2022-3517",
           "VendorIDs": [
             "GHSA-f8q6-p94x-37v3"
@@ -32671,6 +34113,170 @@
           "LastModifiedDate": "2025-05-13T14:15:18.11Z"
         },
         {
+          "VulnerabilityID": "CVE-2026-26996",
+          "VendorIDs": [
+            "GHSA-3ppc-4f35-3m26"
+          ],
+          "PkgID": "minimatch@3.0.3",
+          "PkgName": "minimatch",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/minimatch@3.0.3",
+            "UID": "bb1fbc2807d17deb"
+          },
+          "InstalledVersion": "3.0.3",
+          "FixedVersion": "10.2.1, 9.0.6, 8.0.5, 7.4.7, 6.2.1, 5.1.7, 4.2.4, 3.1.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-26996",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:8041fe24d04ee66868d57dac51891c45e0e5da04f4bc4a20456e4af2d86b8538",
+          "Title": "minimatch: minimatch: Denial of Service via specially crafted glob patterns",
+          "Description": "minimatch is a minimal matching utility for converting glob expressions into JavaScript RegExp objects. Versions 10.2.0 and below are vulnerable to Regular Expression Denial of Service (ReDoS) when a glob pattern contains many consecutive * wildcards followed by a literal character that doesn't appear in the test string. Each * compiles to a separate [^/]*? regex group, and when the match fails, V8's regex engine backtracks exponentially across all possible splits. The time complexity is O(4^N) where N is the number of * characters. With N=15, a single minimatch() call takes ~2 seconds. With N=34, it hangs effectively forever. Any application that passes user-controlled strings to minimatch() as the pattern argument is vulnerable to DoS. This issue has been fixed in version 10.2.1.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V40Score": 8.7
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-26996",
+            "https://github.com/isaacs/minimatch",
+            "https://github.com/isaacs/minimatch/commit/2e111f3a79abc00fa73110195de2c0f2351904f5",
+            "https://github.com/isaacs/minimatch/security/advisories/GHSA-3ppc-4f35-3m26",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-26996",
+            "https://www.cve.org/CVERecord?id=CVE-2026-26996"
+          ],
+          "PublishedDate": "2026-02-20T03:16:01.62Z",
+          "LastModifiedDate": "2026-03-06T21:32:10.65Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-27903",
+          "VendorIDs": [
+            "GHSA-7r86-cg39-jmmj"
+          ],
+          "PkgID": "minimatch@3.0.3",
+          "PkgName": "minimatch",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/minimatch@3.0.3",
+            "UID": "bb1fbc2807d17deb"
+          },
+          "InstalledVersion": "3.0.3",
+          "FixedVersion": "10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, 3.1.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-27903",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:d27465c15fd1cacc3249b34fe1f5649d7bf13f5bfab172542531a7d191295a9f",
+          "Title": "minimatch: minimatch: Denial of Service due to unbounded recursive backtracking via crafted glob patterns",
+          "Description": "minimatch is a minimal matching utility for converting glob expressions into JavaScript RegExp objects. Prior to version 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.3, `matchOne()` performs unbounded recursive backtracking when a glob pattern contains multiple non-adjacent `**` (GLOBSTAR) segments and the input path does not match. The time complexity is O(C(n, k)) -- binomial -- where `n` is the number of path segments and `k` is the number of globstars. With k=11 and n=30, a call to the default `minimatch()` API stalls for roughly 5 seconds. With k=13, it exceeds 15 seconds. No memoization or call budget exists to bound this behavior. Any application where an attacker can influence the glob pattern passed to `minimatch()` is vulnerable. The realistic attack surface includes build tools and task runners that accept user-supplied glob arguments (ESLint, Webpack, Rollup config), multi-tenant systems where one tenant configures glob-based rules that run in a shared process, admin or developer interfaces that accept ignore-rule or filter configuration as globs, and CI/CD pipelines that evaluate user-submitted config files containing glob patterns. An attacker who can place a crafted pattern into any of these paths can stall the Node.js event loop for tens of seconds per invocation. The pattern is 56 bytes for a 5-second stall and does not require authentication in contexts where pattern input is part of the feature. Versions 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.3 fix the issue.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-407"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-27903",
+            "https://github.com/isaacs/minimatch",
+            "https://github.com/isaacs/minimatch/commit/0bf499aa45f5059b56809cc3b75ff3eafeb8d748",
+            "https://github.com/isaacs/minimatch/security/advisories/GHSA-7r86-cg39-jmmj",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-27903",
+            "https://www.cve.org/CVERecord?id=CVE-2026-27903"
+          ],
+          "PublishedDate": "2026-02-26T02:16:21.353Z",
+          "LastModifiedDate": "2026-02-27T17:21:22.37Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-27904",
+          "VendorIDs": [
+            "GHSA-23c5-xmqv-rm74"
+          ],
+          "PkgID": "minimatch@3.0.3",
+          "PkgName": "minimatch",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/minimatch@3.0.3",
+            "UID": "bb1fbc2807d17deb"
+          },
+          "InstalledVersion": "3.0.3",
+          "FixedVersion": "10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, 3.1.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-27904",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:0a88964d1e8727a6c0a174f51c3e39bc196a53b1c674bd6a63d85962b306aa72",
+          "Title": "minimatch: Minimatch: Denial of Service via catastrophic backtracking in glob expressions",
+          "Description": "minimatch is a minimal matching utility for converting glob expressions into JavaScript RegExp objects. Prior to version 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.4, nested `*()` extglobs produce regexps with nested unbounded quantifiers (e.g. `(?:(?:a|b)*)*`), which exhibit catastrophic backtracking in V8. With a 12-byte pattern `*(*(*(a|b)))` and an 18-byte non-matching input, `minimatch()` stalls for over 7 seconds. Adding a single nesting level or a few input characters pushes this to minutes. This is the most severe finding: it is triggered by the default `minimatch()` API with no special options, and the minimum viable pattern is only 12 bytes. The same issue affects `+()` extglobs equally. Versions 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.4 fix the issue.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-27904",
+            "https://github.com/isaacs/minimatch",
+            "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce",
+            "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-27904",
+            "https://www.cve.org/CVERecord?id=CVE-2026-27904"
+          ],
+          "PublishedDate": "2026-02-26T02:16:21.76Z",
+          "LastModifiedDate": "2026-02-27T17:16:23.773Z"
+        },
+        {
           "VulnerabilityID": "CVE-2022-3517",
           "VendorIDs": [
             "GHSA-f8q6-p94x-37v3"
@@ -32758,6 +34364,170 @@
           ],
           "PublishedDate": "2022-10-17T20:15:09.937Z",
           "LastModifiedDate": "2025-05-13T14:15:18.11Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-26996",
+          "VendorIDs": [
+            "GHSA-3ppc-4f35-3m26"
+          ],
+          "PkgID": "minimatch@3.0.4",
+          "PkgName": "minimatch",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/minimatch@3.0.4",
+            "UID": "fc8cf47a9502cd45"
+          },
+          "InstalledVersion": "3.0.4",
+          "FixedVersion": "10.2.1, 9.0.6, 8.0.5, 7.4.7, 6.2.1, 5.1.7, 4.2.4, 3.1.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-26996",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:a8fa5da9c87e2ca2fdaa80887d6343de2b735d535918b7774c2bca9cf59898b6",
+          "Title": "minimatch: minimatch: Denial of Service via specially crafted glob patterns",
+          "Description": "minimatch is a minimal matching utility for converting glob expressions into JavaScript RegExp objects. Versions 10.2.0 and below are vulnerable to Regular Expression Denial of Service (ReDoS) when a glob pattern contains many consecutive * wildcards followed by a literal character that doesn't appear in the test string. Each * compiles to a separate [^/]*? regex group, and when the match fails, V8's regex engine backtracks exponentially across all possible splits. The time complexity is O(4^N) where N is the number of * characters. With N=15, a single minimatch() call takes ~2 seconds. With N=34, it hangs effectively forever. Any application that passes user-controlled strings to minimatch() as the pattern argument is vulnerable to DoS. This issue has been fixed in version 10.2.1.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V40Score": 8.7
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-26996",
+            "https://github.com/isaacs/minimatch",
+            "https://github.com/isaacs/minimatch/commit/2e111f3a79abc00fa73110195de2c0f2351904f5",
+            "https://github.com/isaacs/minimatch/security/advisories/GHSA-3ppc-4f35-3m26",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-26996",
+            "https://www.cve.org/CVERecord?id=CVE-2026-26996"
+          ],
+          "PublishedDate": "2026-02-20T03:16:01.62Z",
+          "LastModifiedDate": "2026-03-06T21:32:10.65Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-27903",
+          "VendorIDs": [
+            "GHSA-7r86-cg39-jmmj"
+          ],
+          "PkgID": "minimatch@3.0.4",
+          "PkgName": "minimatch",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/minimatch@3.0.4",
+            "UID": "fc8cf47a9502cd45"
+          },
+          "InstalledVersion": "3.0.4",
+          "FixedVersion": "10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, 3.1.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-27903",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:5940a58f38aca47735485c1980cb5ddd8e77c99640e6041f2ba1398097a8b8a1",
+          "Title": "minimatch: minimatch: Denial of Service due to unbounded recursive backtracking via crafted glob patterns",
+          "Description": "minimatch is a minimal matching utility for converting glob expressions into JavaScript RegExp objects. Prior to version 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.3, `matchOne()` performs unbounded recursive backtracking when a glob pattern contains multiple non-adjacent `**` (GLOBSTAR) segments and the input path does not match. The time complexity is O(C(n, k)) -- binomial -- where `n` is the number of path segments and `k` is the number of globstars. With k=11 and n=30, a call to the default `minimatch()` API stalls for roughly 5 seconds. With k=13, it exceeds 15 seconds. No memoization or call budget exists to bound this behavior. Any application where an attacker can influence the glob pattern passed to `minimatch()` is vulnerable. The realistic attack surface includes build tools and task runners that accept user-supplied glob arguments (ESLint, Webpack, Rollup config), multi-tenant systems where one tenant configures glob-based rules that run in a shared process, admin or developer interfaces that accept ignore-rule or filter configuration as globs, and CI/CD pipelines that evaluate user-submitted config files containing glob patterns. An attacker who can place a crafted pattern into any of these paths can stall the Node.js event loop for tens of seconds per invocation. The pattern is 56 bytes for a 5-second stall and does not require authentication in contexts where pattern input is part of the feature. Versions 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.3 fix the issue.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-407"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-27903",
+            "https://github.com/isaacs/minimatch",
+            "https://github.com/isaacs/minimatch/commit/0bf499aa45f5059b56809cc3b75ff3eafeb8d748",
+            "https://github.com/isaacs/minimatch/security/advisories/GHSA-7r86-cg39-jmmj",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-27903",
+            "https://www.cve.org/CVERecord?id=CVE-2026-27903"
+          ],
+          "PublishedDate": "2026-02-26T02:16:21.353Z",
+          "LastModifiedDate": "2026-02-27T17:21:22.37Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-27904",
+          "VendorIDs": [
+            "GHSA-23c5-xmqv-rm74"
+          ],
+          "PkgID": "minimatch@3.0.4",
+          "PkgName": "minimatch",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/minimatch@3.0.4",
+            "UID": "fc8cf47a9502cd45"
+          },
+          "InstalledVersion": "3.0.4",
+          "FixedVersion": "10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, 3.1.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-27904",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:ebb8f715ee597524258bcc75bdb82be5689a1a6f39a136aebdd85fe255d2c5f6",
+          "Title": "minimatch: Minimatch: Denial of Service via catastrophic backtracking in glob expressions",
+          "Description": "minimatch is a minimal matching utility for converting glob expressions into JavaScript RegExp objects. Prior to version 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.4, nested `*()` extglobs produce regexps with nested unbounded quantifiers (e.g. `(?:(?:a|b)*)*`), which exhibit catastrophic backtracking in V8. With a 12-byte pattern `*(*(*(a|b)))` and an 18-byte non-matching input, `minimatch()` stalls for over 7 seconds. Adding a single nesting level or a few input characters pushes this to minutes. This is the most severe finding: it is triggered by the default `minimatch()` API with no special options, and the minimum viable pattern is only 12 bytes. The same issue affects `+()` extglobs equally. Versions 10.2.3, 9.0.7, 8.0.6, 7.4.8, 6.2.2, 5.1.8, 4.2.5, and 3.1.4 fix the issue.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-27904",
+            "https://github.com/isaacs/minimatch",
+            "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce",
+            "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-27904",
+            "https://www.cve.org/CVERecord?id=CVE-2026-27904"
+          ],
+          "PublishedDate": "2026-02-26T02:16:21.76Z",
+          "LastModifiedDate": "2026-02-27T17:16:23.773Z"
         },
         {
           "VulnerabilityID": "CVE-2021-44906",
@@ -34164,59 +35934,6 @@
           "LastModifiedDate": "2024-11-21T04:31:10.213Z"
         },
         {
-          "VulnerabilityID": "CVE-2026-0775",
-          "VendorIDs": [
-            "GHSA-3966-f6p6-2qr9"
-          ],
-          "PkgID": "npm@3.10.10",
-          "PkgName": "npm",
-          "PkgIdentifier": {
-            "PURL": "pkg:npm/npm@3.10.10",
-            "UID": "28e9b8c08a7326d9"
-          },
-          "InstalledVersion": "3.10.10",
-          "Status": "affected",
-          "SeveritySource": "ghsa",
-          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-0775",
-          "DataSource": {
-            "ID": "ghsa",
-            "Name": "GitHub Security Advisory npm",
-            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
-          },
-          "Fingerprint": "sha256:b7e244799123cbcf4de8eb0017471876255ae8c4bd894374236b979f7815bf73",
-          "Title": "npmcli: npm cli Incorrect Permission Assignment Local Privilege Escalation Vulnerability",
-          "Description": "npm cli Incorrect Permission Assignment Local Privilege Escalation Vulnerability. This vulnerability allows local attackers to escalate privileges on affected installations of npm cli. An attacker must first obtain the ability to execute low-privileged code on the target system in order to exploit this vulnerability.\n\nThe specific flaw exists within the handling of modules. The application loads modules from an unsecured location. An attacker can leverage this vulnerability to escalate privileges and execute arbitrary code in the context of a target user. Was ZDI-CAN-25430.",
-          "Severity": "HIGH",
-          "CweIDs": [
-            "CWE-732"
-          ],
-          "VendorSeverity": {
-            "ghsa": 3,
-            "redhat": 3
-          },
-          "CVSS": {
-            "ghsa": {
-              "V3Vector": "CVSS:3.0/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H",
-              "V3Score": 7
-            },
-            "redhat": {
-              "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H",
-              "V3Score": 7
-            }
-          },
-          "References": [
-            "https://access.redhat.com/security/cve/CVE-2026-0775",
-            "https://github.com/npm/cli",
-            "https://github.com/npm/cli/issues/8939",
-            "https://nvd.nist.gov/vuln/detail/CVE-2026-0775",
-            "https://www.cve.org/CVERecord?id=CVE-2026-0775",
-            "https://www.zerodayinitiative.com/advisories/ZDI-26-043",
-            "https://www.zerodayinitiative.com/advisories/ZDI-26-043/"
-          ],
-          "PublishedDate": "2026-01-23T04:16:04.793Z",
-          "LastModifiedDate": "2026-01-26T15:03:51.687Z"
-        },
-        {
           "VulnerabilityID": "CVE-2020-15095",
           "VendorIDs": [
             "GHSA-93f3-23rq-pjfp"
@@ -34508,7 +36225,9 @@
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:P",
+              "V3Score": 7.5,
+              "V40Score": 7.7
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
@@ -34569,7 +36288,9 @@
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:P",
+              "V3Score": 7.5,
+              "V40Score": 7.7
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
@@ -34589,6 +36310,62 @@
           ],
           "PublishedDate": "2024-12-05T23:15:06.31Z",
           "LastModifiedDate": "2025-01-24T20:15:33.107Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-4867",
+          "VendorIDs": [
+            "GHSA-37ch-88jc-xwx2"
+          ],
+          "PkgID": "path-to-regexp@0.1.7",
+          "PkgName": "path-to-regexp",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/path-to-regexp@0.1.7",
+            "UID": "bd21817428c8411b"
+          },
+          "InstalledVersion": "0.1.7",
+          "FixedVersion": "0.1.13",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-4867",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:ae646d610d01489d184647fa2306f79248d3412520495849698f7cc54fd90e8e",
+          "Title": "path-to-regexp: path-to-regexp: Denial of Service via catastrophic backtracking from malformed URL parameters",
+          "Description": "Impact:\n\nA bad regular expression is generated any time you have three or more parameters within a single segment, separated by something that is not a period (.). For example, /:a-:b-:c or /:a-:b-:c-:d. The backtrack protection added in path-to-regexp@0.1.12 only prevents ambiguity for two parameters. With three or more, the generated lookahead does not block single separator characters, so capture groups overlap and cause catastrophic backtracking.\n\nPatches:\n\nUpgrade to path-to-regexp@0.1.13\n\nCustom regex patterns in route definitions (e.g., /:a-:b([^-/]+)-:c([^-/]+)) are not affected because they override the default capture group.\n\nWorkarounds:\n\nAll versions can be patched by providing a custom regular expression for parameters after the first in a single segment. As long as the custom regular expression does not match the text before the parameter, you will be safe. For example, change /:a-:b-:c to /:a-:b([^-/]+)-:c([^-/]+).\n\nIf paths cannot be rewritten and versions cannot be upgraded, another alternative is to limit the URL length.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-4867",
+            "https://blakeembrey.com/posts/2024-09-web-redos",
+            "https://cna.openjsf.org/security-advisories.html",
+            "https://github.com/advisories/GHSA-9wv6-86v2-598j",
+            "https://github.com/pillarjs/path-to-regexp",
+            "https://github.com/pillarjs/path-to-regexp/releases/tag/v.0.1.13",
+            "https://github.com/pillarjs/path-to-regexp/security/advisories/GHSA-37ch-88jc-xwx2",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-4867",
+            "https://www.cve.org/CVERecord?id=CVE-2026-4867"
+          ],
+          "PublishedDate": "2026-03-26T17:16:42.983Z",
+          "LastModifiedDate": "2026-03-30T13:26:50.827Z"
         },
         {
           "VulnerabilityID": "CVE-2014-10064",
@@ -34886,19 +36663,21 @@
           },
           "Fingerprint": "sha256:3d5df4dc120f5cf9ef5d3dd0a818c1c2c7565e3170a0a7d7c245727bd6e9920c",
           "Title": "qs: qs: Denial of Service via improper input validation in array parsing",
-          "Description": "Improper Input Validation vulnerability in qs (parse modules) allows HTTP DoS.This issue affects qs: \u003c 6.14.1.\n\n\nSummaryThe arrayLimit option in qs does not enforce limits for bracket notation (a[]=1\u0026a[]=2), allowing attackers to cause denial-of-service via memory exhaustion. Applications using arrayLimit for DoS protection are vulnerable.\n\nDetailsThe arrayLimit option only checks limits for indexed notation (a[0]=1\u0026a[1]=2) but completely bypasses it for bracket notation (a[]=1\u0026a[]=2).\n\nVulnerable code (lib/parse.js:159-162):\n\nif (root === '[]' \u0026\u0026 options.parseArrays) {\n    obj = utils.combine([], leaf);  // No arrayLimit check\n}\n\n\n\n\n\nWorking code (lib/parse.js:175):\n\nelse if (index \u003c= options.arrayLimit) {  // Limit checked here\n    obj = [];\n    obj[index] = leaf;\n}\n\n\n\n\n\nThe bracket notation handler at line 159 uses utils.combine([], leaf) without validating against options.arrayLimit, while indexed notation at line 175 checks index \u003c= options.arrayLimit before creating arrays.\n\nPoCTest 1 - Basic bypass:\n\nnpm install qs\n\n\n\n\n\nconst qs = require('qs');\nconst result = qs.parse('a[]=1\u0026a[]=2\u0026a[]=3\u0026a[]=4\u0026a[]=5\u0026a[]=6', { arrayLimit: 5 });\nconsole.log(result.a.length);  // Output: 6 (should be max 5)\n\n\n\n\n\nTest 2 - DoS demonstration:\n\nconst qs = require('qs');\nconst attack = 'a[]=' + Array(10000).fill('x').join('\u0026a[]=');\nconst result = qs.parse(attack, { arrayLimit: 100 });\nconsole.log(result.a.length);  // Output: 10000 (should be max 100)\n\n\n\n\n\nConfiguration:\n\n  *  arrayLimit: 5 (test 1) or arrayLimit: 100 (test 2)\n  *  Use bracket notation: a[]=value (not indexed a[0]=value)\n\n\nImpactDenial of Service via memory exhaustion. Affects applications using qs.parse() with user-controlled input and arrayLimit for protection.\n\nAttack scenario:\n\n  *  Attacker sends HTTP request: GET /api/search?filters[]=x\u0026filters[]=x\u0026...\u0026filters[]=x (100,000+ times)\n  *  Application parses with qs.parse(query, { arrayLimit: 100 })\n  *  qs ignores limit, parses all 100,000 elements into array\n  *  Server memory exhausted → application crashes or becomes unresponsive\n  *  Service unavailable for all users\nReal-world impact:\n\n  *  Single malicious request can crash server\n  *  No authentication required\n  *  Easy to automate and scale\n  *  Affects any endpoint parsing query strings with bracket notation",
-          "Severity": "HIGH",
+          "Description": "Improper Input Validation vulnerability in qs (parse modules) allows HTTP DoS.This issue affects qs: \u003c 6.14.1.\n\n\nSummary\n\nThe arrayLimit option in qs did not enforce limits for bracket notation (a[]=1\u0026a[]=2), only for indexed notation (a[0]=1). This is a consistency bug; arrayLimit should apply uniformly across all array notations.\n\nNote: The default parameterLimit of 1000 effectively mitigates the DoS scenario originally described. With default options, bracket notation cannot produce arrays larger than parameterLimit regardless of arrayLimit, because each a[]=valueconsumes one parameter slot. The severity has been reduced accordingly.\n\nDetails\n\nThe arrayLimit option only checked limits for indexed notation (a[0]=1\u0026a[1]=2) but did not enforce it for bracket notation (a[]=1\u0026a[]=2).\n\nVulnerable code (lib/parse.js:159-162):\n\nif (root === '[]' \u0026\u0026 options.parseArrays) {\n    obj = utils.combine([], leaf);  // No arrayLimit check\n}\n\n\n\n\n\nWorking code (lib/parse.js:175):\n\nelse if (index \u003c= options.arrayLimit) {  // Limit checked here\n    obj = [];\n    obj[index] = leaf;\n}\n\n\n\n\n\nThe bracket notation handler at line 159 uses utils.combine([], leaf) without validating against options.arrayLimit, while indexed notation at line 175 checks index \u003c= options.arrayLimit before creating arrays.\n\n\n\nPoC\n\nconst qs = require('qs');\nconst result = qs.parse('a[]=1\u0026a[]=2\u0026a[]=3\u0026a[]=4\u0026a[]=5\u0026a[]=6', { arrayLimit: 5 });\nconsole.log(result.a.length);  // Output: 6 (should be max 5)\n\n\n\n\n\nNote on parameterLimit interaction: The original advisory's \"DoS demonstration\" claimed a length of 10,000, but parameterLimit (default: 1000) caps parsing to 1,000 parameters. With default options, the actual output is 1,000, not 10,000.\n\nImpact\n\nConsistency bug in arrayLimit enforcement. With default parameterLimit, the practical DoS risk is negligible since parameterLimit already caps the total number of parsed parameters (and thus array elements from bracket notation). The risk increases only when parameterLimit is explicitly set to a very high value.",
+          "Severity": "MEDIUM",
           "CweIDs": [
             "CWE-20"
           ],
           "VendorSeverity": {
-            "ghsa": 3,
+            "ghsa": 2,
             "redhat": 3
           },
           "CVSS": {
             "ghsa": {
-              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:L",
+              "V3Score": 3.7,
+              "V40Score": 6.3
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
@@ -34914,7 +36693,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-15284"
           ],
           "PublishedDate": "2025-12-29T23:15:42.703Z",
-          "LastModifiedDate": "2025-12-31T20:43:25.83Z"
+          "LastModifiedDate": "2026-02-26T19:57:11.663Z"
         },
         {
           "VulnerabilityID": "NSWG-ECO-28",
@@ -35124,19 +36903,21 @@
           },
           "Fingerprint": "sha256:c49cef0d7b3dbd16f35cb026f7673496d769ea1c20bda823cb6bfc058de1be94",
           "Title": "qs: qs: Denial of Service via improper input validation in array parsing",
-          "Description": "Improper Input Validation vulnerability in qs (parse modules) allows HTTP DoS.This issue affects qs: \u003c 6.14.1.\n\n\nSummaryThe arrayLimit option in qs does not enforce limits for bracket notation (a[]=1\u0026a[]=2), allowing attackers to cause denial-of-service via memory exhaustion. Applications using arrayLimit for DoS protection are vulnerable.\n\nDetailsThe arrayLimit option only checks limits for indexed notation (a[0]=1\u0026a[1]=2) but completely bypasses it for bracket notation (a[]=1\u0026a[]=2).\n\nVulnerable code (lib/parse.js:159-162):\n\nif (root === '[]' \u0026\u0026 options.parseArrays) {\n    obj = utils.combine([], leaf);  // No arrayLimit check\n}\n\n\n\n\n\nWorking code (lib/parse.js:175):\n\nelse if (index \u003c= options.arrayLimit) {  // Limit checked here\n    obj = [];\n    obj[index] = leaf;\n}\n\n\n\n\n\nThe bracket notation handler at line 159 uses utils.combine([], leaf) without validating against options.arrayLimit, while indexed notation at line 175 checks index \u003c= options.arrayLimit before creating arrays.\n\nPoCTest 1 - Basic bypass:\n\nnpm install qs\n\n\n\n\n\nconst qs = require('qs');\nconst result = qs.parse('a[]=1\u0026a[]=2\u0026a[]=3\u0026a[]=4\u0026a[]=5\u0026a[]=6', { arrayLimit: 5 });\nconsole.log(result.a.length);  // Output: 6 (should be max 5)\n\n\n\n\n\nTest 2 - DoS demonstration:\n\nconst qs = require('qs');\nconst attack = 'a[]=' + Array(10000).fill('x').join('\u0026a[]=');\nconst result = qs.parse(attack, { arrayLimit: 100 });\nconsole.log(result.a.length);  // Output: 10000 (should be max 100)\n\n\n\n\n\nConfiguration:\n\n  *  arrayLimit: 5 (test 1) or arrayLimit: 100 (test 2)\n  *  Use bracket notation: a[]=value (not indexed a[0]=value)\n\n\nImpactDenial of Service via memory exhaustion. Affects applications using qs.parse() with user-controlled input and arrayLimit for protection.\n\nAttack scenario:\n\n  *  Attacker sends HTTP request: GET /api/search?filters[]=x\u0026filters[]=x\u0026...\u0026filters[]=x (100,000+ times)\n  *  Application parses with qs.parse(query, { arrayLimit: 100 })\n  *  qs ignores limit, parses all 100,000 elements into array\n  *  Server memory exhausted → application crashes or becomes unresponsive\n  *  Service unavailable for all users\nReal-world impact:\n\n  *  Single malicious request can crash server\n  *  No authentication required\n  *  Easy to automate and scale\n  *  Affects any endpoint parsing query strings with bracket notation",
-          "Severity": "HIGH",
+          "Description": "Improper Input Validation vulnerability in qs (parse modules) allows HTTP DoS.This issue affects qs: \u003c 6.14.1.\n\n\nSummary\n\nThe arrayLimit option in qs did not enforce limits for bracket notation (a[]=1\u0026a[]=2), only for indexed notation (a[0]=1). This is a consistency bug; arrayLimit should apply uniformly across all array notations.\n\nNote: The default parameterLimit of 1000 effectively mitigates the DoS scenario originally described. With default options, bracket notation cannot produce arrays larger than parameterLimit regardless of arrayLimit, because each a[]=valueconsumes one parameter slot. The severity has been reduced accordingly.\n\nDetails\n\nThe arrayLimit option only checked limits for indexed notation (a[0]=1\u0026a[1]=2) but did not enforce it for bracket notation (a[]=1\u0026a[]=2).\n\nVulnerable code (lib/parse.js:159-162):\n\nif (root === '[]' \u0026\u0026 options.parseArrays) {\n    obj = utils.combine([], leaf);  // No arrayLimit check\n}\n\n\n\n\n\nWorking code (lib/parse.js:175):\n\nelse if (index \u003c= options.arrayLimit) {  // Limit checked here\n    obj = [];\n    obj[index] = leaf;\n}\n\n\n\n\n\nThe bracket notation handler at line 159 uses utils.combine([], leaf) without validating against options.arrayLimit, while indexed notation at line 175 checks index \u003c= options.arrayLimit before creating arrays.\n\n\n\nPoC\n\nconst qs = require('qs');\nconst result = qs.parse('a[]=1\u0026a[]=2\u0026a[]=3\u0026a[]=4\u0026a[]=5\u0026a[]=6', { arrayLimit: 5 });\nconsole.log(result.a.length);  // Output: 6 (should be max 5)\n\n\n\n\n\nNote on parameterLimit interaction: The original advisory's \"DoS demonstration\" claimed a length of 10,000, but parameterLimit (default: 1000) caps parsing to 1,000 parameters. With default options, the actual output is 1,000, not 10,000.\n\nImpact\n\nConsistency bug in arrayLimit enforcement. With default parameterLimit, the practical DoS risk is negligible since parameterLimit already caps the total number of parsed parameters (and thus array elements from bracket notation). The risk increases only when parameterLimit is explicitly set to a very high value.",
+          "Severity": "MEDIUM",
           "CweIDs": [
             "CWE-20"
           ],
           "VendorSeverity": {
-            "ghsa": 3,
+            "ghsa": 2,
             "redhat": 3
           },
           "CVSS": {
             "ghsa": {
-              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:L",
+              "V3Score": 3.7,
+              "V40Score": 6.3
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
@@ -35152,7 +36933,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-15284"
           ],
           "PublishedDate": "2025-12-29T23:15:42.703Z",
-          "LastModifiedDate": "2025-12-31T20:43:25.83Z"
+          "LastModifiedDate": "2026-02-26T19:57:11.663Z"
         },
         {
           "VulnerabilityID": "CVE-2017-1000048",
@@ -35337,19 +37118,21 @@
           },
           "Fingerprint": "sha256:77df6eb6a1d4d834e0b8b52e1601009c33ed960b4f4d5838055bba1d8bb40b5b",
           "Title": "qs: qs: Denial of Service via improper input validation in array parsing",
-          "Description": "Improper Input Validation vulnerability in qs (parse modules) allows HTTP DoS.This issue affects qs: \u003c 6.14.1.\n\n\nSummaryThe arrayLimit option in qs does not enforce limits for bracket notation (a[]=1\u0026a[]=2), allowing attackers to cause denial-of-service via memory exhaustion. Applications using arrayLimit for DoS protection are vulnerable.\n\nDetailsThe arrayLimit option only checks limits for indexed notation (a[0]=1\u0026a[1]=2) but completely bypasses it for bracket notation (a[]=1\u0026a[]=2).\n\nVulnerable code (lib/parse.js:159-162):\n\nif (root === '[]' \u0026\u0026 options.parseArrays) {\n    obj = utils.combine([], leaf);  // No arrayLimit check\n}\n\n\n\n\n\nWorking code (lib/parse.js:175):\n\nelse if (index \u003c= options.arrayLimit) {  // Limit checked here\n    obj = [];\n    obj[index] = leaf;\n}\n\n\n\n\n\nThe bracket notation handler at line 159 uses utils.combine([], leaf) without validating against options.arrayLimit, while indexed notation at line 175 checks index \u003c= options.arrayLimit before creating arrays.\n\nPoCTest 1 - Basic bypass:\n\nnpm install qs\n\n\n\n\n\nconst qs = require('qs');\nconst result = qs.parse('a[]=1\u0026a[]=2\u0026a[]=3\u0026a[]=4\u0026a[]=5\u0026a[]=6', { arrayLimit: 5 });\nconsole.log(result.a.length);  // Output: 6 (should be max 5)\n\n\n\n\n\nTest 2 - DoS demonstration:\n\nconst qs = require('qs');\nconst attack = 'a[]=' + Array(10000).fill('x').join('\u0026a[]=');\nconst result = qs.parse(attack, { arrayLimit: 100 });\nconsole.log(result.a.length);  // Output: 10000 (should be max 100)\n\n\n\n\n\nConfiguration:\n\n  *  arrayLimit: 5 (test 1) or arrayLimit: 100 (test 2)\n  *  Use bracket notation: a[]=value (not indexed a[0]=value)\n\n\nImpactDenial of Service via memory exhaustion. Affects applications using qs.parse() with user-controlled input and arrayLimit for protection.\n\nAttack scenario:\n\n  *  Attacker sends HTTP request: GET /api/search?filters[]=x\u0026filters[]=x\u0026...\u0026filters[]=x (100,000+ times)\n  *  Application parses with qs.parse(query, { arrayLimit: 100 })\n  *  qs ignores limit, parses all 100,000 elements into array\n  *  Server memory exhausted → application crashes or becomes unresponsive\n  *  Service unavailable for all users\nReal-world impact:\n\n  *  Single malicious request can crash server\n  *  No authentication required\n  *  Easy to automate and scale\n  *  Affects any endpoint parsing query strings with bracket notation",
-          "Severity": "HIGH",
+          "Description": "Improper Input Validation vulnerability in qs (parse modules) allows HTTP DoS.This issue affects qs: \u003c 6.14.1.\n\n\nSummary\n\nThe arrayLimit option in qs did not enforce limits for bracket notation (a[]=1\u0026a[]=2), only for indexed notation (a[0]=1). This is a consistency bug; arrayLimit should apply uniformly across all array notations.\n\nNote: The default parameterLimit of 1000 effectively mitigates the DoS scenario originally described. With default options, bracket notation cannot produce arrays larger than parameterLimit regardless of arrayLimit, because each a[]=valueconsumes one parameter slot. The severity has been reduced accordingly.\n\nDetails\n\nThe arrayLimit option only checked limits for indexed notation (a[0]=1\u0026a[1]=2) but did not enforce it for bracket notation (a[]=1\u0026a[]=2).\n\nVulnerable code (lib/parse.js:159-162):\n\nif (root === '[]' \u0026\u0026 options.parseArrays) {\n    obj = utils.combine([], leaf);  // No arrayLimit check\n}\n\n\n\n\n\nWorking code (lib/parse.js:175):\n\nelse if (index \u003c= options.arrayLimit) {  // Limit checked here\n    obj = [];\n    obj[index] = leaf;\n}\n\n\n\n\n\nThe bracket notation handler at line 159 uses utils.combine([], leaf) without validating against options.arrayLimit, while indexed notation at line 175 checks index \u003c= options.arrayLimit before creating arrays.\n\n\n\nPoC\n\nconst qs = require('qs');\nconst result = qs.parse('a[]=1\u0026a[]=2\u0026a[]=3\u0026a[]=4\u0026a[]=5\u0026a[]=6', { arrayLimit: 5 });\nconsole.log(result.a.length);  // Output: 6 (should be max 5)\n\n\n\n\n\nNote on parameterLimit interaction: The original advisory's \"DoS demonstration\" claimed a length of 10,000, but parameterLimit (default: 1000) caps parsing to 1,000 parameters. With default options, the actual output is 1,000, not 10,000.\n\nImpact\n\nConsistency bug in arrayLimit enforcement. With default parameterLimit, the practical DoS risk is negligible since parameterLimit already caps the total number of parsed parameters (and thus array elements from bracket notation). The risk increases only when parameterLimit is explicitly set to a very high value.",
+          "Severity": "MEDIUM",
           "CweIDs": [
             "CWE-20"
           ],
           "VendorSeverity": {
-            "ghsa": 3,
+            "ghsa": 2,
             "redhat": 3
           },
           "CVSS": {
             "ghsa": {
-              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:L",
+              "V3Score": 3.7,
+              "V40Score": 6.3
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
@@ -35365,7 +37148,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-15284"
           ],
           "PublishedDate": "2025-12-29T23:15:42.703Z",
-          "LastModifiedDate": "2025-12-31T20:43:25.83Z"
+          "LastModifiedDate": "2026-02-26T19:57:11.663Z"
         },
         {
           "VulnerabilityID": "CVE-2022-24999",
@@ -35487,19 +37270,21 @@
           },
           "Fingerprint": "sha256:2e1f87f31ab40811abebb4868d23a2f63d1e97b38ae98b8572fb1e4ab438ace0",
           "Title": "qs: qs: Denial of Service via improper input validation in array parsing",
-          "Description": "Improper Input Validation vulnerability in qs (parse modules) allows HTTP DoS.This issue affects qs: \u003c 6.14.1.\n\n\nSummaryThe arrayLimit option in qs does not enforce limits for bracket notation (a[]=1\u0026a[]=2), allowing attackers to cause denial-of-service via memory exhaustion. Applications using arrayLimit for DoS protection are vulnerable.\n\nDetailsThe arrayLimit option only checks limits for indexed notation (a[0]=1\u0026a[1]=2) but completely bypasses it for bracket notation (a[]=1\u0026a[]=2).\n\nVulnerable code (lib/parse.js:159-162):\n\nif (root === '[]' \u0026\u0026 options.parseArrays) {\n    obj = utils.combine([], leaf);  // No arrayLimit check\n}\n\n\n\n\n\nWorking code (lib/parse.js:175):\n\nelse if (index \u003c= options.arrayLimit) {  // Limit checked here\n    obj = [];\n    obj[index] = leaf;\n}\n\n\n\n\n\nThe bracket notation handler at line 159 uses utils.combine([], leaf) without validating against options.arrayLimit, while indexed notation at line 175 checks index \u003c= options.arrayLimit before creating arrays.\n\nPoCTest 1 - Basic bypass:\n\nnpm install qs\n\n\n\n\n\nconst qs = require('qs');\nconst result = qs.parse('a[]=1\u0026a[]=2\u0026a[]=3\u0026a[]=4\u0026a[]=5\u0026a[]=6', { arrayLimit: 5 });\nconsole.log(result.a.length);  // Output: 6 (should be max 5)\n\n\n\n\n\nTest 2 - DoS demonstration:\n\nconst qs = require('qs');\nconst attack = 'a[]=' + Array(10000).fill('x').join('\u0026a[]=');\nconst result = qs.parse(attack, { arrayLimit: 100 });\nconsole.log(result.a.length);  // Output: 10000 (should be max 100)\n\n\n\n\n\nConfiguration:\n\n  *  arrayLimit: 5 (test 1) or arrayLimit: 100 (test 2)\n  *  Use bracket notation: a[]=value (not indexed a[0]=value)\n\n\nImpactDenial of Service via memory exhaustion. Affects applications using qs.parse() with user-controlled input and arrayLimit for protection.\n\nAttack scenario:\n\n  *  Attacker sends HTTP request: GET /api/search?filters[]=x\u0026filters[]=x\u0026...\u0026filters[]=x (100,000+ times)\n  *  Application parses with qs.parse(query, { arrayLimit: 100 })\n  *  qs ignores limit, parses all 100,000 elements into array\n  *  Server memory exhausted → application crashes or becomes unresponsive\n  *  Service unavailable for all users\nReal-world impact:\n\n  *  Single malicious request can crash server\n  *  No authentication required\n  *  Easy to automate and scale\n  *  Affects any endpoint parsing query strings with bracket notation",
-          "Severity": "HIGH",
+          "Description": "Improper Input Validation vulnerability in qs (parse modules) allows HTTP DoS.This issue affects qs: \u003c 6.14.1.\n\n\nSummary\n\nThe arrayLimit option in qs did not enforce limits for bracket notation (a[]=1\u0026a[]=2), only for indexed notation (a[0]=1). This is a consistency bug; arrayLimit should apply uniformly across all array notations.\n\nNote: The default parameterLimit of 1000 effectively mitigates the DoS scenario originally described. With default options, bracket notation cannot produce arrays larger than parameterLimit regardless of arrayLimit, because each a[]=valueconsumes one parameter slot. The severity has been reduced accordingly.\n\nDetails\n\nThe arrayLimit option only checked limits for indexed notation (a[0]=1\u0026a[1]=2) but did not enforce it for bracket notation (a[]=1\u0026a[]=2).\n\nVulnerable code (lib/parse.js:159-162):\n\nif (root === '[]' \u0026\u0026 options.parseArrays) {\n    obj = utils.combine([], leaf);  // No arrayLimit check\n}\n\n\n\n\n\nWorking code (lib/parse.js:175):\n\nelse if (index \u003c= options.arrayLimit) {  // Limit checked here\n    obj = [];\n    obj[index] = leaf;\n}\n\n\n\n\n\nThe bracket notation handler at line 159 uses utils.combine([], leaf) without validating against options.arrayLimit, while indexed notation at line 175 checks index \u003c= options.arrayLimit before creating arrays.\n\n\n\nPoC\n\nconst qs = require('qs');\nconst result = qs.parse('a[]=1\u0026a[]=2\u0026a[]=3\u0026a[]=4\u0026a[]=5\u0026a[]=6', { arrayLimit: 5 });\nconsole.log(result.a.length);  // Output: 6 (should be max 5)\n\n\n\n\n\nNote on parameterLimit interaction: The original advisory's \"DoS demonstration\" claimed a length of 10,000, but parameterLimit (default: 1000) caps parsing to 1,000 parameters. With default options, the actual output is 1,000, not 10,000.\n\nImpact\n\nConsistency bug in arrayLimit enforcement. With default parameterLimit, the practical DoS risk is negligible since parameterLimit already caps the total number of parsed parameters (and thus array elements from bracket notation). The risk increases only when parameterLimit is explicitly set to a very high value.",
+          "Severity": "MEDIUM",
           "CweIDs": [
             "CWE-20"
           ],
           "VendorSeverity": {
-            "ghsa": 3,
+            "ghsa": 2,
             "redhat": 3
           },
           "CVSS": {
             "ghsa": {
-              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:L",
+              "V3Score": 3.7,
+              "V40Score": 6.3
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
@@ -35515,7 +37300,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-15284"
           ],
           "PublishedDate": "2025-12-29T23:15:42.703Z",
-          "LastModifiedDate": "2025-12-31T20:43:25.83Z"
+          "LastModifiedDate": "2026-02-26T19:57:11.663Z"
         },
         {
           "VulnerabilityID": "CVE-2022-24999",
@@ -35637,19 +37422,21 @@
           },
           "Fingerprint": "sha256:967f4cfcc574d44865c28c04677b7701693d1ea955a2e73726f51c1f2d84f4c9",
           "Title": "qs: qs: Denial of Service via improper input validation in array parsing",
-          "Description": "Improper Input Validation vulnerability in qs (parse modules) allows HTTP DoS.This issue affects qs: \u003c 6.14.1.\n\n\nSummaryThe arrayLimit option in qs does not enforce limits for bracket notation (a[]=1\u0026a[]=2), allowing attackers to cause denial-of-service via memory exhaustion. Applications using arrayLimit for DoS protection are vulnerable.\n\nDetailsThe arrayLimit option only checks limits for indexed notation (a[0]=1\u0026a[1]=2) but completely bypasses it for bracket notation (a[]=1\u0026a[]=2).\n\nVulnerable code (lib/parse.js:159-162):\n\nif (root === '[]' \u0026\u0026 options.parseArrays) {\n    obj = utils.combine([], leaf);  // No arrayLimit check\n}\n\n\n\n\n\nWorking code (lib/parse.js:175):\n\nelse if (index \u003c= options.arrayLimit) {  // Limit checked here\n    obj = [];\n    obj[index] = leaf;\n}\n\n\n\n\n\nThe bracket notation handler at line 159 uses utils.combine([], leaf) without validating against options.arrayLimit, while indexed notation at line 175 checks index \u003c= options.arrayLimit before creating arrays.\n\nPoCTest 1 - Basic bypass:\n\nnpm install qs\n\n\n\n\n\nconst qs = require('qs');\nconst result = qs.parse('a[]=1\u0026a[]=2\u0026a[]=3\u0026a[]=4\u0026a[]=5\u0026a[]=6', { arrayLimit: 5 });\nconsole.log(result.a.length);  // Output: 6 (should be max 5)\n\n\n\n\n\nTest 2 - DoS demonstration:\n\nconst qs = require('qs');\nconst attack = 'a[]=' + Array(10000).fill('x').join('\u0026a[]=');\nconst result = qs.parse(attack, { arrayLimit: 100 });\nconsole.log(result.a.length);  // Output: 10000 (should be max 100)\n\n\n\n\n\nConfiguration:\n\n  *  arrayLimit: 5 (test 1) or arrayLimit: 100 (test 2)\n  *  Use bracket notation: a[]=value (not indexed a[0]=value)\n\n\nImpactDenial of Service via memory exhaustion. Affects applications using qs.parse() with user-controlled input and arrayLimit for protection.\n\nAttack scenario:\n\n  *  Attacker sends HTTP request: GET /api/search?filters[]=x\u0026filters[]=x\u0026...\u0026filters[]=x (100,000+ times)\n  *  Application parses with qs.parse(query, { arrayLimit: 100 })\n  *  qs ignores limit, parses all 100,000 elements into array\n  *  Server memory exhausted → application crashes or becomes unresponsive\n  *  Service unavailable for all users\nReal-world impact:\n\n  *  Single malicious request can crash server\n  *  No authentication required\n  *  Easy to automate and scale\n  *  Affects any endpoint parsing query strings with bracket notation",
-          "Severity": "HIGH",
+          "Description": "Improper Input Validation vulnerability in qs (parse modules) allows HTTP DoS.This issue affects qs: \u003c 6.14.1.\n\n\nSummary\n\nThe arrayLimit option in qs did not enforce limits for bracket notation (a[]=1\u0026a[]=2), only for indexed notation (a[0]=1). This is a consistency bug; arrayLimit should apply uniformly across all array notations.\n\nNote: The default parameterLimit of 1000 effectively mitigates the DoS scenario originally described. With default options, bracket notation cannot produce arrays larger than parameterLimit regardless of arrayLimit, because each a[]=valueconsumes one parameter slot. The severity has been reduced accordingly.\n\nDetails\n\nThe arrayLimit option only checked limits for indexed notation (a[0]=1\u0026a[1]=2) but did not enforce it for bracket notation (a[]=1\u0026a[]=2).\n\nVulnerable code (lib/parse.js:159-162):\n\nif (root === '[]' \u0026\u0026 options.parseArrays) {\n    obj = utils.combine([], leaf);  // No arrayLimit check\n}\n\n\n\n\n\nWorking code (lib/parse.js:175):\n\nelse if (index \u003c= options.arrayLimit) {  // Limit checked here\n    obj = [];\n    obj[index] = leaf;\n}\n\n\n\n\n\nThe bracket notation handler at line 159 uses utils.combine([], leaf) without validating against options.arrayLimit, while indexed notation at line 175 checks index \u003c= options.arrayLimit before creating arrays.\n\n\n\nPoC\n\nconst qs = require('qs');\nconst result = qs.parse('a[]=1\u0026a[]=2\u0026a[]=3\u0026a[]=4\u0026a[]=5\u0026a[]=6', { arrayLimit: 5 });\nconsole.log(result.a.length);  // Output: 6 (should be max 5)\n\n\n\n\n\nNote on parameterLimit interaction: The original advisory's \"DoS demonstration\" claimed a length of 10,000, but parameterLimit (default: 1000) caps parsing to 1,000 parameters. With default options, the actual output is 1,000, not 10,000.\n\nImpact\n\nConsistency bug in arrayLimit enforcement. With default parameterLimit, the practical DoS risk is negligible since parameterLimit already caps the total number of parsed parameters (and thus array elements from bracket notation). The risk increases only when parameterLimit is explicitly set to a very high value.",
+          "Severity": "MEDIUM",
           "CweIDs": [
             "CWE-20"
           ],
           "VendorSeverity": {
-            "ghsa": 3,
+            "ghsa": 2,
             "redhat": 3
           },
           "CVSS": {
             "ghsa": {
-              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:L",
+              "V3Score": 3.7,
+              "V40Score": 6.3
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
@@ -35665,7 +37452,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-15284"
           ],
           "PublishedDate": "2025-12-29T23:15:42.703Z",
-          "LastModifiedDate": "2025-12-31T20:43:25.83Z"
+          "LastModifiedDate": "2026-02-26T19:57:11.663Z"
         },
         {
           "VulnerabilityID": "CVE-2017-16028",
@@ -36964,7 +38751,8 @@
           "VendorSeverity": {
             "ghsa": 3,
             "nvd": 3,
-            "redhat": 2
+            "redhat": 2,
+            "ubuntu": 2
           },
           "CVSS": {
             "ghsa": {
@@ -36987,6 +38775,7 @@
             "https://github.com/advisories/GHSA-2m39-62fm-q8r3",
             "https://github.com/joyent/node-sshpk/blob/v1.13.1/lib/formats/ssh.js#L17",
             "https://github.com/joyent/node-sshpk/commit/46065d38a5e6d1bccf86d3efb2fb83c14e3f9957",
+            "https://github.com/joyent/node-sshpk/issues/44",
             "https://hackerone.com/reports/319593",
             "https://nvd.nist.gov/vuln/detail/CVE-2018-3737",
             "https://www.cve.org/CVERecord?id=CVE-2018-3737",
@@ -37408,10 +39197,20 @@
             "CWE-22"
           ],
           "VendorSeverity": {
+            "amazon": 3,
             "ghsa": 3,
+            "nvd": 2,
             "redhat": 3
           },
           "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:A/VC:H/VI:L/VA:N/SC:H/SI:L/SA:N",
+              "V40Score": 8.2
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:L/A:N",
+              "V3Score": 6.1
+            },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H",
               "V3Score": 8.2
@@ -37426,7 +39225,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2026-23745"
           ],
           "PublishedDate": "2026-01-16T22:16:26.83Z",
-          "LastModifiedDate": "2026-01-26T15:05:39.84Z"
+          "LastModifiedDate": "2026-02-18T16:20:07.823Z"
         },
         {
           "VulnerabilityID": "CVE-2026-23950",
@@ -37459,13 +39258,19 @@
             "CWE-367"
           ],
           "VendorSeverity": {
+            "amazon": 3,
             "ghsa": 3,
+            "nvd": 2,
             "redhat": 3
           },
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:H/A:L",
               "V3Score": 8.8
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 5.9
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:H/A:L",
@@ -37481,7 +39286,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2026-23950"
           ],
           "PublishedDate": "2026-01-20T01:15:57.87Z",
-          "LastModifiedDate": "2026-01-26T15:05:23.427Z"
+          "LastModifiedDate": "2026-02-18T15:50:29.91Z"
         },
         {
           "VulnerabilityID": "CVE-2026-24842",
@@ -37513,6 +39318,7 @@
             "CWE-59"
           ],
           "VendorSeverity": {
+            "amazon": 3,
             "ghsa": 3,
             "redhat": 3
           },
@@ -37536,6 +39342,184 @@
           ],
           "PublishedDate": "2026-01-28T01:16:14.947Z",
           "LastModifiedDate": "2026-02-02T14:30:10.89Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-26960",
+          "VendorIDs": [
+            "GHSA-83g3-92jg-28cx"
+          ],
+          "PkgID": "tar@2.2.1",
+          "PkgName": "tar",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/tar@2.2.1",
+            "UID": "b3357525a4745599"
+          },
+          "InstalledVersion": "2.2.1",
+          "FixedVersion": "7.5.8",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-26960",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:c1af60ee8211bcaee8dc66f8742079ca3ee8284dcc525b243fd04dec3ca28815",
+          "Title": "tar: node-tar: node-tar: Arbitrary file read/write via malicious archive hardlink creation",
+          "Description": "node-tar is a full-featured Tar for Node.js. When using default options in versions 7.5.7 and below, an attacker-controlled archive can create a hardlink inside the extraction directory that points to a file outside the extraction root, enabling arbitrary file read and write as the extracting user. Severity is high because the primitive bypasses path protections and turns archive extraction into a direct filesystem access primitive. This issue has been fixed in version 7.5.8.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-22"
+          ],
+          "VendorSeverity": {
+            "amazon": 3,
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+              "V3Score": 7.1
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+              "V3Score": 7.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+              "V3Score": 7.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-26960",
+            "https://github.com/isaacs/node-tar",
+            "https://github.com/isaacs/node-tar/commit/2cb1120bcefe28d7ecc719b41441ade59c52e384",
+            "https://github.com/isaacs/node-tar/commit/d18e4e1f846f4ddddc153b0f536a19c050e7499f",
+            "https://github.com/isaacs/node-tar/security/advisories/GHSA-83g3-92jg-28cx",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-26960",
+            "https://www.cve.org/CVERecord?id=CVE-2026-26960"
+          ],
+          "PublishedDate": "2026-02-20T02:16:53.883Z",
+          "LastModifiedDate": "2026-02-20T19:24:16.537Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-29786",
+          "VendorIDs": [
+            "GHSA-qffp-2rhf-9h96"
+          ],
+          "PkgID": "tar@2.2.1",
+          "PkgName": "tar",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/tar@2.2.1",
+            "UID": "b3357525a4745599"
+          },
+          "InstalledVersion": "2.2.1",
+          "FixedVersion": "7.5.10",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-29786",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:3be7a953fda5a2f81627445350037f869eab1567a3bd798bddd6154eaad22ce7",
+          "Title": "node-tar: hardlink path traversal via drive-relative linkpath",
+          "Description": "node-tar is a full-featured Tar for Node.js. Prior to version 7.5.10, tar can be tricked into creating a hardlink that points outside the extraction directory by using a drive-relative link target such as C:../target.txt, which enables file overwrite outside cwd during normal tar.x() extraction. This issue has been patched in version 7.5.10.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-22",
+            "CWE-59"
+          ],
+          "VendorSeverity": {
+            "amazon": 3,
+            "ghsa": 3,
+            "nvd": 2,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:P/VC:N/VI:H/VA:L/SC:N/SI:H/SA:L",
+              "V40Score": 8.2
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:C/C:N/I:H/A:N",
+              "V3Score": 6.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:H/A:N",
+              "V3Score": 8.6
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-29786",
+            "https://github.com/isaacs/node-tar",
+            "https://github.com/isaacs/node-tar/commit/7bc755dd85e623c0279e08eb3784909e6d7e4b9f",
+            "https://github.com/isaacs/node-tar/security/advisories/GHSA-qffp-2rhf-9h96",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-29786",
+            "https://www.cve.org/CVERecord?id=CVE-2026-29786"
+          ],
+          "PublishedDate": "2026-03-07T16:15:55.587Z",
+          "LastModifiedDate": "2026-03-11T21:50:01.91Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-31802",
+          "VendorIDs": [
+            "GHSA-9ppj-qmqm-q256"
+          ],
+          "PkgID": "tar@2.2.1",
+          "PkgName": "tar",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/tar@2.2.1",
+            "UID": "b3357525a4745599"
+          },
+          "InstalledVersion": "2.2.1",
+          "FixedVersion": "7.5.11",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-31802",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:5ebaef2bc996953de7614bb8369cd55e913d9bf4f39a4627db3e99f3e6ff2777",
+          "Title": "tar: tar: File overwrite via drive-relative symlink traversal",
+          "Description": "node-tar is a full-featured Tar for Node.js. Prior to version 7.5.11, tar (npm) can be tricked into creating a symlink that points outside the extraction directory by using a drive-relative symlink target such as C:../../../target.txt, which enables file overwrite outside cwd during normal tar.x() extraction. This vulnerability is fixed in 7.5.11.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-22"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 2,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:H/SA:N",
+              "V40Score": 8.2
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 5.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 6.2
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-31802",
+            "https://github.com/isaacs/node-tar",
+            "https://github.com/isaacs/node-tar/commit/f48b5fa3b7985ddab96dc0f2125a4ffc9911b6ad",
+            "https://github.com/isaacs/node-tar/security/advisories/GHSA-9ppj-qmqm-q256",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-31802",
+            "https://www.cve.org/CVERecord?id=CVE-2026-31802"
+          ],
+          "PublishedDate": "2026-03-10T07:44:58.02Z",
+          "LastModifiedDate": "2026-03-18T18:13:34.703Z"
         },
         {
           "VulnerabilityID": "CVE-2024-28863",
@@ -38077,10 +40061,20 @@
             "CWE-22"
           ],
           "VendorSeverity": {
+            "amazon": 3,
             "ghsa": 3,
+            "nvd": 2,
             "redhat": 3
           },
           "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:A/VC:H/VI:L/VA:N/SC:H/SI:L/SA:N",
+              "V40Score": 8.2
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:L/A:N",
+              "V3Score": 6.1
+            },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H",
               "V3Score": 8.2
@@ -38095,7 +40089,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2026-23745"
           ],
           "PublishedDate": "2026-01-16T22:16:26.83Z",
-          "LastModifiedDate": "2026-01-26T15:05:39.84Z"
+          "LastModifiedDate": "2026-02-18T16:20:07.823Z"
         },
         {
           "VulnerabilityID": "CVE-2026-23950",
@@ -38128,13 +40122,19 @@
             "CWE-367"
           ],
           "VendorSeverity": {
+            "amazon": 3,
             "ghsa": 3,
+            "nvd": 2,
             "redhat": 3
           },
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:H/A:L",
               "V3Score": 8.8
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 5.9
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:H/A:L",
@@ -38150,7 +40150,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2026-23950"
           ],
           "PublishedDate": "2026-01-20T01:15:57.87Z",
-          "LastModifiedDate": "2026-01-26T15:05:23.427Z"
+          "LastModifiedDate": "2026-02-18T15:50:29.91Z"
         },
         {
           "VulnerabilityID": "CVE-2026-24842",
@@ -38182,6 +40182,7 @@
             "CWE-59"
           ],
           "VendorSeverity": {
+            "amazon": 3,
             "ghsa": 3,
             "redhat": 3
           },
@@ -38205,6 +40206,184 @@
           ],
           "PublishedDate": "2026-01-28T01:16:14.947Z",
           "LastModifiedDate": "2026-02-02T14:30:10.89Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-26960",
+          "VendorIDs": [
+            "GHSA-83g3-92jg-28cx"
+          ],
+          "PkgID": "tar@4.4.8",
+          "PkgName": "tar",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/tar@4.4.8",
+            "UID": "b13b5822e06bd9ae"
+          },
+          "InstalledVersion": "4.4.8",
+          "FixedVersion": "7.5.8",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-26960",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:1ccda5f1b9f2e39d00c8fabf839e313c17fbdef779334ca9faa83f75f8d76530",
+          "Title": "tar: node-tar: node-tar: Arbitrary file read/write via malicious archive hardlink creation",
+          "Description": "node-tar is a full-featured Tar for Node.js. When using default options in versions 7.5.7 and below, an attacker-controlled archive can create a hardlink inside the extraction directory that points to a file outside the extraction root, enabling arbitrary file read and write as the extracting user. Severity is high because the primitive bypasses path protections and turns archive extraction into a direct filesystem access primitive. This issue has been fixed in version 7.5.8.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-22"
+          ],
+          "VendorSeverity": {
+            "amazon": 3,
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+              "V3Score": 7.1
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+              "V3Score": 7.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+              "V3Score": 7.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-26960",
+            "https://github.com/isaacs/node-tar",
+            "https://github.com/isaacs/node-tar/commit/2cb1120bcefe28d7ecc719b41441ade59c52e384",
+            "https://github.com/isaacs/node-tar/commit/d18e4e1f846f4ddddc153b0f536a19c050e7499f",
+            "https://github.com/isaacs/node-tar/security/advisories/GHSA-83g3-92jg-28cx",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-26960",
+            "https://www.cve.org/CVERecord?id=CVE-2026-26960"
+          ],
+          "PublishedDate": "2026-02-20T02:16:53.883Z",
+          "LastModifiedDate": "2026-02-20T19:24:16.537Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-29786",
+          "VendorIDs": [
+            "GHSA-qffp-2rhf-9h96"
+          ],
+          "PkgID": "tar@4.4.8",
+          "PkgName": "tar",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/tar@4.4.8",
+            "UID": "b13b5822e06bd9ae"
+          },
+          "InstalledVersion": "4.4.8",
+          "FixedVersion": "7.5.10",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-29786",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:23a86a522e99eddfd6498b04dbce71ffaad0a9a1117c4a1a4fd8db7bce7f5003",
+          "Title": "node-tar: hardlink path traversal via drive-relative linkpath",
+          "Description": "node-tar is a full-featured Tar for Node.js. Prior to version 7.5.10, tar can be tricked into creating a hardlink that points outside the extraction directory by using a drive-relative link target such as C:../target.txt, which enables file overwrite outside cwd during normal tar.x() extraction. This issue has been patched in version 7.5.10.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-22",
+            "CWE-59"
+          ],
+          "VendorSeverity": {
+            "amazon": 3,
+            "ghsa": 3,
+            "nvd": 2,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:P/VC:N/VI:H/VA:L/SC:N/SI:H/SA:L",
+              "V40Score": 8.2
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:C/C:N/I:H/A:N",
+              "V3Score": 6.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:H/A:N",
+              "V3Score": 8.6
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-29786",
+            "https://github.com/isaacs/node-tar",
+            "https://github.com/isaacs/node-tar/commit/7bc755dd85e623c0279e08eb3784909e6d7e4b9f",
+            "https://github.com/isaacs/node-tar/security/advisories/GHSA-qffp-2rhf-9h96",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-29786",
+            "https://www.cve.org/CVERecord?id=CVE-2026-29786"
+          ],
+          "PublishedDate": "2026-03-07T16:15:55.587Z",
+          "LastModifiedDate": "2026-03-11T21:50:01.91Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-31802",
+          "VendorIDs": [
+            "GHSA-9ppj-qmqm-q256"
+          ],
+          "PkgID": "tar@4.4.8",
+          "PkgName": "tar",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/tar@4.4.8",
+            "UID": "b13b5822e06bd9ae"
+          },
+          "InstalledVersion": "4.4.8",
+          "FixedVersion": "7.5.11",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-31802",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:d29250811a6ddcfa2c0e1bf9ee9ce83a188f5041f8b16a78f68f03bc1b0e4617",
+          "Title": "tar: tar: File overwrite via drive-relative symlink traversal",
+          "Description": "node-tar is a full-featured Tar for Node.js. Prior to version 7.5.11, tar (npm) can be tricked into creating a symlink that points outside the extraction directory by using a drive-relative symlink target such as C:../../../target.txt, which enables file overwrite outside cwd during normal tar.x() extraction. This vulnerability is fixed in 7.5.11.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-22"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 2,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:H/SA:N",
+              "V40Score": 8.2
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 5.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 6.2
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-31802",
+            "https://github.com/isaacs/node-tar",
+            "https://github.com/isaacs/node-tar/commit/f48b5fa3b7985ddab96dc0f2125a4ffc9911b6ad",
+            "https://github.com/isaacs/node-tar/security/advisories/GHSA-9ppj-qmqm-q256",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-31802",
+            "https://www.cve.org/CVERecord?id=CVE-2026-31802"
+          ],
+          "PublishedDate": "2026-03-10T07:44:58.02Z",
+          "LastModifiedDate": "2026-03-18T18:13:34.703Z"
         },
         {
           "VulnerabilityID": "CVE-2024-28863",
@@ -39094,6 +41273,69 @@
           "LastModifiedDate": "2025-11-03T22:15:47.57Z"
         },
         {
+          "VulnerabilityID": "CVE-2026-27601",
+          "VendorIDs": [
+            "GHSA-qpx9-hpmf-5gmw"
+          ],
+          "PkgID": "underscore@1.8.3",
+          "PkgName": "underscore",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/underscore@1.8.3",
+            "UID": "fbc7e8927e8b4c08"
+          },
+          "InstalledVersion": "1.8.3",
+          "FixedVersion": "1.13.8",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-27601",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:dab3c919e277e6e4abb40fcea355211a04098e233f7f072938babec7e6c767ba",
+          "Title": "Underscore.js: Underscore.js: Denial of Service via recursive data structures in flatten and isEqual functions",
+          "Description": "Underscore.js is a utility-belt library for JavaScript. Prior to 1.13.8, the _.flatten and _.isEqual functions use recursion without a depth limit. Under very specific conditions, detailed below, an attacker could exploit this in a Denial of Service (DoS) attack by triggering a stack overflow. Untrusted input must be used to create a recursive datastructure, for example using JSON.parse, with no enforced depth limit. The datastructure thus created must be passed to _.flatten or _.isEqual. In the case of _.flatten, the vulnerability can only be exploited if it is possible for a remote client to prepare a datastructure that consists of arrays at all levels AND if no finite depth limit is passed as the second argument to _.flatten. In the case of _.isEqual, the vulnerability can only be exploited if there exists a code path in which two distinct datastructures that were submitted by the same remote client are compared using _.isEqual. For example, if a client submits data that are stored in a database, and the same client can later submit another datastructure that is then compared to the data that were saved in the database previously, OR if a client submits a single request, but its data are parsed twice, creating two non-identical but equivalent datastructures that are then compared. Exceptions originating from the call to _.flatten or _.isEqual, as a result of a stack overflow, are not being caught. This vulnerability is fixed in 1.13.8.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-770"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V40Score": 8.2
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-27601",
+            "https://github.com/jashkenas/underscore",
+            "https://github.com/jashkenas/underscore/commit/411e222eb0ca5d570cc4f6315c02c05b830ed2b4",
+            "https://github.com/jashkenas/underscore/commit/a6e23ae9647461ec33ad9f92a2ecfc220eea0a84",
+            "https://github.com/jashkenas/underscore/issues/3011",
+            "https://github.com/jashkenas/underscore/security/advisories/GHSA-qpx9-hpmf-5gmw",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-27601",
+            "https://underscorejs.org/#1.13.8",
+            "https://underscorejs.org/#flatten",
+            "https://underscorejs.org/#isEqual",
+            "https://www.cve.org/CVERecord?id=CVE-2026-27601"
+          ],
+          "PublishedDate": "2026-03-03T23:15:55.56Z",
+          "LastModifiedDate": "2026-03-05T21:08:35.32Z"
+        },
+        {
           "VulnerabilityID": "CVE-2021-23358",
           "VendorIDs": [
             "GHSA-cf4h-3jhx-xvhq"
@@ -39186,6 +41428,69 @@
           ],
           "PublishedDate": "2021-03-29T14:15:18.047Z",
           "LastModifiedDate": "2025-11-03T22:15:47.57Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-27601",
+          "VendorIDs": [
+            "GHSA-qpx9-hpmf-5gmw"
+          ],
+          "PkgID": "underscore@1.9.1",
+          "PkgName": "underscore",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/underscore@1.9.1",
+            "UID": "681b380d98c60d06"
+          },
+          "InstalledVersion": "1.9.1",
+          "FixedVersion": "1.13.8",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-27601",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:b898cd98e639265f43d09956ed519e9a0f480ea236e18036d1fc68f08be3e199",
+          "Title": "Underscore.js: Underscore.js: Denial of Service via recursive data structures in flatten and isEqual functions",
+          "Description": "Underscore.js is a utility-belt library for JavaScript. Prior to 1.13.8, the _.flatten and _.isEqual functions use recursion without a depth limit. Under very specific conditions, detailed below, an attacker could exploit this in a Denial of Service (DoS) attack by triggering a stack overflow. Untrusted input must be used to create a recursive datastructure, for example using JSON.parse, with no enforced depth limit. The datastructure thus created must be passed to _.flatten or _.isEqual. In the case of _.flatten, the vulnerability can only be exploited if it is possible for a remote client to prepare a datastructure that consists of arrays at all levels AND if no finite depth limit is passed as the second argument to _.flatten. In the case of _.isEqual, the vulnerability can only be exploited if there exists a code path in which two distinct datastructures that were submitted by the same remote client are compared using _.isEqual. For example, if a client submits data that are stored in a database, and the same client can later submit another datastructure that is then compared to the data that were saved in the database previously, OR if a client submits a single request, but its data are parsed twice, creating two non-identical but equivalent datastructures that are then compared. Exceptions originating from the call to _.flatten or _.isEqual, as a result of a stack overflow, are not being caught. This vulnerability is fixed in 1.13.8.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-770"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V40Score": 8.2
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-27601",
+            "https://github.com/jashkenas/underscore",
+            "https://github.com/jashkenas/underscore/commit/411e222eb0ca5d570cc4f6315c02c05b830ed2b4",
+            "https://github.com/jashkenas/underscore/commit/a6e23ae9647461ec33ad9f92a2ecfc220eea0a84",
+            "https://github.com/jashkenas/underscore/issues/3011",
+            "https://github.com/jashkenas/underscore/security/advisories/GHSA-qpx9-hpmf-5gmw",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-27601",
+            "https://underscorejs.org/#1.13.8",
+            "https://underscorejs.org/#flatten",
+            "https://underscorejs.org/#isEqual",
+            "https://www.cve.org/CVERecord?id=CVE-2026-27601"
+          ],
+          "PublishedDate": "2026-03-03T23:15:55.56Z",
+          "LastModifiedDate": "2026-03-05T21:08:35.32Z"
         },
         {
           "VulnerabilityID": "CVE-2020-7662",
@@ -39431,7 +41736,8 @@
             "nvd": 2,
             "oracle-oval": 2,
             "redhat": 1,
-            "rocky": 2
+            "rocky": 2,
+            "ubuntu": 2
           },
           "CVSS": {
             "ghsa": {
@@ -39473,6 +41779,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8287",
             "https://errata.almalinux.org/8/ALSA-2021-0548.html",
             "https://errata.rockylinux.org/RLSA-2021:0548",
+            "https://gist.github.com/Kirill89/dcd8100d010896157a36624119439832",
             "https://github.com/yargs/yargs-parser",
             "https://github.com/yargs/yargs-parser/commit/1c417bd0b42b09c475ee881e36d292af4fa2cc36",
             "https://github.com/yargs/yargs-parser/commit/63810ca1ae1a24b08293a4d971e70e058c7a41e2",

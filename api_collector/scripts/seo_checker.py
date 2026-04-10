@@ -1,7 +1,14 @@
-import json, requests, time
+import json
+import os
+from pathlib import Path
+
+import requests
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).resolve().parents[2] / ".env")
 
 API = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
-API_KEY = "AIzaSyDYnYVADHyEE8lYpOTXf0f838CIDwSyRzg"
+API_KEY = os.getenv("PAGESPEED_API_KEY", "").strip()
 
 URLS = {
     "HackerNews": "https://thehackernews.com/",
@@ -12,12 +19,15 @@ URLS = {
 
 def pagespeed_seo(target_url, api_key, strategy="mobile"):
     try:
-        r = requests.get(API, params={
+        params = {
             "url": target_url,
-            "key": api_key,
             "strategy": strategy,
             "category": "seo"
-        }, timeout=60)
+        }
+        if api_key:
+            params["key"] = api_key
+
+        r = requests.get(API, params=params, timeout=60)
         if r.status_code != 200:
             return {"url": target_url, "error": f"HTTP {r.status_code}", "response": r.text[:200]}
 

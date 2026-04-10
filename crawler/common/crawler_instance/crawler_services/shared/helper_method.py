@@ -36,6 +36,21 @@ class helper_method:
             return re.sub(r"\s+", " ", html).strip()
 
     @staticmethod
+    def get_screenshot_base64(page, name: str | None, base_url: str) -> str:
+        """
+        Capture a base64-encoded screenshot of the current page.
+        """
+        if not page:
+            return ""
+        try:
+            # Take screenshot and return as base64 string
+            import base64
+            screenshot_bytes = page.screenshot(type='jpeg', quality=50)
+            return base64.b64encode(screenshot_bytes).decode('utf-8')
+        except Exception:
+            return ""
+
+    @staticmethod
     def extract_refhtml(
         value: str,
         invoke_db,

@@ -1,0 +1,1847 @@
+{
+  "generated_on": "2026-04-09",
+  "seed_url": "https://phishunt.io/feed.txt",
+  "count": 50,
+  "items": [
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://nalozhka.yandex.ozon.www.pochta.www.pochtabank.paypal-user-id3.netflix-subscription-uae.com",
+      "final_url": "https://nalozhka.yandex.ozon.www.pochta.www.pochtabank.paypal-user-id3.netflix-subscription-uae.com/",
+      "host": "nalozhka.yandex.ozon.www.pochta.www.pochtabank.paypal-user-id3.netflix-subscription-uae.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://nalozhka.yandex.ozon.www.pochta.www.pochtabank.paypal-user-id3.netflix-subscription-uae.com/",
+        "content_len": 4761,
+        "content_type": "text/html",
+        "server": "openresty"
+      },
+      "analysis": {
+        "title": "Redirecting...",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "dcc6966b527036fdaa2f3e23b5ec5696920964c2",
+        "snippet": "<html lang=\"en\"><head><title>Redirecting...</title></head><body><script>(()=>{\"use strict\";const t=\"offset\",e=\"client\",o=function(){};let n=!1,r=!1;const i={loopDelay:50,maxLoop:5,complete:o},l=[];let u=null;const s={cssClass:\"ad-overlay google-ad-bottom-outer prebid-wrapper .dfp-ad-container\"},a={nullProps:[t+\"Parent\"],zeroProps:[]};a.zeroProps=[t+\"Height\",t+\"Left\",t+\"Top\",t+\"Width\",t+\"Height\",e+",
+        "raw_html_len": 4761
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://office365-service-c38bf0.webflow.io",
+      "final_url": "https://office365-service-c38bf0.webflow.io/",
+      "host": "office365-service-c38bf0.webflow.io",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://office365-service-c38bf0.webflow.io/",
+        "content_len": 7224,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Nova X - Webflow HTML website template",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 6,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "eff7030f107c6ecb99d201adc8c327165130206c",
+        "snippet": "<!DOCTYPE html><!-- This site was created in Webflow. https://webflow.com --><!-- Last Published: Wed Mar 18 2026 09:28:16 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain=\"office365-service-c38bf0.webflow.io\" data-wf-page=\"69ba6c96231c17bc39f7c03d\" data-wf-site=\"69ba6c95231c17bc39f7bef6\" data-wf-status=\"1\" lang=\"en\"><head><meta charset=\"utf-8\"/><title>Nova X - Webflow HTML website te",
+        "raw_html_len": 7224
+      },
+      "score": 35,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon1122.com",
+      "final_url": "https://amazon1122.com/",
+      "host": "amazon1122.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon1122.com/",
+        "content_len": 743,
+        "content_type": "text/html",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "deom",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "3a67d276aa819079eebed90653a3975f807b92a4",
+        "snippet": "<!doctype html><html lang=\"\"><head><meta charset=\"utf-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,location=no\"><title>deom</title><script src=\"./config.js\"></script><script defer=\"defer\" src=\"/static/js/chunk-vendors.6f608a3e.js\"></script><script defer=\"defer\" src=\"/static",
+        "raw_html_len": 743
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://netflix-cloness.surge.sh",
+      "final_url": "http://netflix-cloness.surge.sh/",
+      "host": "netflix-cloness.surge.sh",
+      "category": "login_branding",
+      "brands": [
+        "apple",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://netflix-cloness.surge.sh/",
+        "content_len": 5981,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "Surge"
+      },
+      "analysis": {
+        "title": "NETFLIX | Watch Free Online",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "a14516bb3caaef332f17fac22dc4d77e79930900",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\"> <title>NETFLIX | Watch Free Online</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css\"> <link rel=\"stylesheet\" href=\"css/style.css\"> </hea",
+        "raw_html_len": 5981
+      },
+      "score": 30,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "brand_keywords:apple,banking"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-ruby-ten.vercel.app",
+      "final_url": "https://netflix-clone-ruby-ten.vercel.app/",
+      "host": "netflix-clone-ruby-ten.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://netflix-clone-ruby-ten.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "670bb3535cda5a514bc7197601fce71a4bf35480",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-iota-sand.vercel.app",
+      "final_url": "https://netflix-clone-iota-sand.vercel.app/",
+      "host": "netflix-clone-iota-sand.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://netflix-clone-iota-sand.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "bbe4919647cd8601fae0ac47189b56f8700c8038",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://metamaskchromeextensionn.blogspot.com",
+      "final_url": "https://metamaskchromeextensionn.blogspot.com/",
+      "host": "metamaskchromeextensionn.blogspot.com",
+      "category": "redirector",
+      "brands": [
+        "google",
+        "meta",
+        "crypto"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://metamaskchromeextensionn.blogspot.com/",
+        "content_len": 76436,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "GSE"
+      },
+      "analysis": {
+        "title": "MetaMask Chrome Extension – Your Secure Gateway to Web3",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 7,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "c20e5075a8fb560fe2c3baeffd23f2e6d2ed8c39",
+        "snippet": "<!DOCTYPE html> <html dir='ltr' lang='en'> <head> <meta content='width=device-width, initial-scale=1' name='viewport'/> <title>MetaMask Chrome Extension &#8211; Your Secure Gateway to Web3</title> <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/> <!-- Chrome, Firefox OS and Opera --> <meta content='#eeeeee' name='theme-color'/> <!-- Windows Phone --> <meta content='#eeeeee' name",
+        "raw_html_len": 76436
+      },
+      "score": 45,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "redirector_or_shortener",
+        "brand_keywords:google,meta,crypto"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone-swart-kappa.vercel.app",
+      "final_url": "https://amazon-clone-swart-kappa.vercel.app/",
+      "host": "amazon-clone-swart-kappa.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://amazon-clone-swart-kappa.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "3d8e767aa94e7cb9f877e6649df6c479f3f58d28",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://netflix-clone-two-sand.vercel.app",
+      "final_url": "https://netflix-clone-two-sand.vercel.app/",
+      "host": "netflix-clone-two-sand.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://netflix-clone-two-sand.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "5cfa0892b372cf3bae964024bab9c6eb7833c551",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://register-facebook.blogspot.com",
+      "final_url": "http://register-facebook.blogspot.com/",
+      "host": "register-facebook.blogspot.com",
+      "category": "redirector",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://register-facebook.blogspot.com/",
+        "content_len": 20109,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "GSE"
+      },
+      "analysis": {
+        "title": "facebook",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 11,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "9bf1af3e4f78c480f5ba1c4611d9f5082e20475c",
+        "snippet": "<!DOCTYPE html> <html dir='ltr'> <head> <link href='https://www.blogger.com/static/v1/widgets/2944754296-widget_css_bundle.css' rel='stylesheet' type='text/css'/> <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/> <meta content='blogger' name='generator'/> <link href='http://register-facebook.blogspot.com/favicon.ico' rel='icon' type='image/x-icon'/> <link href='http://register-f",
+        "raw_html_len": 20109
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener",
+        "brand_keywords:meta"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-gray-beta.vercel.app",
+      "final_url": "https://netflix-clone-gray-beta.vercel.app/",
+      "host": "netflix-clone-gray-beta.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://netflix-clone-gray-beta.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "4c95cd625a068f570765413912d614eb05d67911",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-nu-nine.vercel.app",
+      "final_url": "https://netflix-clone-nu-nine.vercel.app/",
+      "host": "netflix-clone-nu-nine.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://netflix-clone-nu-nine.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "33fd091eba0228008dec7e59e1799df5622fb951",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://microsoft-clone-neon.vercel.app",
+      "final_url": "https://microsoft-clone-neon.vercel.app/",
+      "host": "microsoft-clone-neon.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://microsoft-clone-neon.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "ffd40cb65ff711f5131533d4a76e876eaf55edf5",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflixbot.top",
+      "final_url": "https://netflixbot.top/",
+      "host": "netflixbot.top",
+      "category": "login_branding",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflixbot.top/",
+        "content_len": 1158,
+        "content_type": "text/html",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Welcome to Netflixbot!",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 2,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "f16895b0660531390dd94a2fb51a9c6b82c71d23",
+        "snippet": "<!DOCTYPE html> <html> <head> <title>Welcome to Netflixbot!</title> <style> body { width: 35em; margin: 0 auto; font-family: Tahoma, Verdana, Arial, sans-serif; } </style> </head> <body> <h1>Welcome to Netflixbot!</h1> <p>Netflix account email address: <a href=\"/cdn-cgi/l/email-protection\" class=\"__cf_email__\" data-cfemail=\"1f767179705f717a6b797376677d706b316b706f\">",
+        "raw_html_len": 1158
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://wap.binancehk.net",
+      "final_url": "https://wap.binancehk.net/",
+      "host": "wap.binancehk.net",
+      "category": "unknown",
+      "brands": [
+        "google",
+        "banking",
+        "crypto"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://wap.binancehk.net/",
+        "content_len": 53655,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "币安官网入口 - 官方下载通道 - 全球加密货币资讯币安区块链",
+        "forms": 13,
+        "password_inputs": 0,
+        "scripts": 7,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "450697c7e6e440e652420a1cb3a9c59f336b7955",
+        "snippet": "<!DOCTYPE html> <html lang=\"zh-CN\" class=\"cibtfoEr dark\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>币安官网入口 - 官方下载通道 - 全球加密货币资讯币安区块链</title> <meta name=\"keywords\" content=\"币安下载地址,币安安全入口,币安区块链资讯,币安交易所,币安极速下载,币安官网注册\"> <meta name=\"description\" content=\"币安官网为用户提供安全合规的交易环境，覆盖现货、合约与理财，助力投资者高效管理数字资产。\"> <meta property",
+        "raw_html_len": 53655
+      },
+      "score": 35,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "brand_keywords:google,banking,crypto"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://google-ji.com.cn",
+      "final_url": "https://google-ji.com.cn/",
+      "host": "google-ji.com.cn",
+      "category": "unknown",
+      "brands": [
+        "google"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://google-ji.com.cn/",
+        "content_len": 49441,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "谷歌浏览器 - 全球领先极速浏览器｜高效上网",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 11,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "157840ce95cfcd004f1d87bb5afd6988cea35e2c",
+        "snippet": "<!doctype html> <html lang=\"zh-hans\"> <head> <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"> <!-- 基础设置 --> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\"> <meta http-equiv=\"x-ua-compatible\" content=\"ie=edge,chrome=1\"> <!-- 网站信息 --> <!-- Search Engine Optimization by Rank Math - https://rankmath.",
+        "raw_html_len": 49441
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "brand_keywords:google"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazonvtc.com",
+      "final_url": "https://amazonvtc.com/",
+      "host": "amazonvtc.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazonvtc.com/",
+        "content_len": 1279,
+        "content_type": "text/html",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 4,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "47986a5e9ac73bbd312ee5a34e58b4040b936e5a",
+        "snippet": "<!DOCTYPE html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content=\"IE=edge\"><title> </title><script>var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') || CSS.supports('top: constant(a)')) document.write('<meta name=\"viewport\" content=\"width=device-width, user-scalable=no, initial-scale=1.0, maximum-s",
+        "raw_html_len": 1279
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-k25l.vercel.app",
+      "final_url": "https://netflix-clone-k25l.vercel.app/",
+      "host": "netflix-clone-k25l.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://netflix-clone-k25l.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "e4d9f920e70faef4d09a028a9443e91396f29043",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone-sable-rho.vercel.app",
+      "final_url": "https://amazon-clone-sable-rho.vercel.app/",
+      "host": "amazon-clone-sable-rho.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://amazon-clone-sable-rho.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "30a710c4ab1c61fb7ddc0a27178a1c4f9a26f4f9",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://facebook-authentication.secure-datalink.org/landing/form/283f05ab-9c28-417e-a8e0-331ce94d856b",
+      "final_url": "https://facebook-authentication.secure-datalink.org/landing/form/283f05ab-9c28-417e-a8e0-331ce94d856b",
+      "host": "facebook-authentication.secure-datalink.org",
+      "category": "login_branding",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://facebook-authentication.secure-datalink.org/landing/form/283f05ab-9c28-417e-a8e0-331ce94d856b",
+        "content_len": 11397,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "Facebook Login",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "993a272f8ed15c0dab8895d1da4fbb21034e9beb",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/data-entry.css\" /> <style> #submit { cursor: pointer; } </style> <title>Facebook Login</title> </head> <body style=\"margin:0;\"><div style=\"height: 83px; width: 100%; background-image: linear-gradient(#4e69a2, #3b5998 50%); border-bottom: 1px solid #133783; font-fami",
+        "raw_html_len": 11397
+      },
+      "score": 90,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "brand_keywords:meta"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://binance-red-packet.vercel.app",
+      "final_url": "https://binance-red-packet.vercel.app/",
+      "host": "binance-red-packet.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://binance-red-packet.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "d37ca9a7a702ba1d586f76eede2c34679293e1f2",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://facebook-authentication.secure-datalink.org/landing/form/3da4f9e9-b394-4cd7-a268-8375c98669d9",
+      "final_url": "https://facebook-authentication.secure-datalink.org/landing/form/3da4f9e9-b394-4cd7-a268-8375c98669d9",
+      "host": "facebook-authentication.secure-datalink.org",
+      "category": "login_branding",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://facebook-authentication.secure-datalink.org/landing/form/3da4f9e9-b394-4cd7-a268-8375c98669d9",
+        "content_len": 11397,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "Facebook Login",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "a468d760418bbef00320076abe85438712a6d9c3",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/data-entry.css\" /> <style> #submit { cursor: pointer; } </style> <title>Facebook Login</title> </head> <body style=\"margin:0;\"><div style=\"height: 83px; width: 100%; background-image: linear-gradient(#4e69a2, #3b5998 50%); border-bottom: 1px solid #133783; font-fami",
+        "raw_html_len": 11397
+      },
+      "score": 90,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "brand_keywords:meta"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://jx-instagram.com",
+      "final_url": "https://jx-instagram.com/",
+      "host": "jx-instagram.com",
+      "category": "unknown",
+      "brands": [
+        "microsoft"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://jx-instagram.com/",
+        "content_len": 51755,
+        "content_type": "text/html; charset=utf-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "金星体育",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 21,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "32c6b723fa03acefd5f4ae0fc820ba6bf1b16d0f",
+        "snippet": "<html> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <title>金星体育</title> <meta name=\"description\" content=\"金星是最受欢迎的在线博彩平台之一，提供丰富多样的赛事投注和娱乐项目。我们致力于为用户提供安全可靠、刺激有趣的游戏体验，拥有正规的许可证和优质的客户服务。立即访问bet365亚洲中文版官网，尽享精彩的博彩娱乐！\"> <meta name=\"keywords\" content=\"金星体育_金星app\"> <link media=\"all\" href=\"/files/autoptimize_7d6f4436d919a3ef753cc492abd61917.css\" rel=\"stylesheet\">",
+        "raw_html_len": 51755
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "brand_keywords:microsoft"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-nine-lovat.vercel.app",
+      "final_url": "https://netflix-nine-lovat.vercel.app/",
+      "host": "netflix-nine-lovat.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://netflix-nine-lovat.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "7a397ddf29406d2ac378cf31b5d9b26112f4bdbd",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-alpha-sand.vercel.app",
+      "final_url": "https://netflix-clone-alpha-sand.vercel.app/",
+      "host": "netflix-clone-alpha-sand.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://netflix-clone-alpha-sand.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da4916506cc3ab15843fd4a7e500067f5d944a97",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://office365.internal-alerts.com/i/d5b9af0d256f14c03ab8396a78d3687bf",
+      "final_url": "https://office365.internal-alerts.com/i/d5b9af0d256f14c03ab8396a78d3687bf",
+      "host": "office365.internal-alerts.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://office365.internal-alerts.com/i/d5b9af0d256f14c03ab8396a78d3687bf",
+        "content_len": 285,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "b48a87989c72efbf07a47c5aa9372e080f748116",
+        "snippet": "<!DOCTYPE html> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <link rel=\"icon\" href=\"data:,\" /> </head> <body> <script> window.location.replace('/home/604b0189e3014767bd7e7e3d5551b54c/d5b9af0d256f14c03ab8396a78d3687bf'); </script> </body> </html>",
+        "raw_html_len": 285
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://office365.internal-alerts.com/index/b445263c4c1f462796320ba80264bdce/d5b9af0d256f14c03ab8396a78d3687bf",
+      "final_url": "https://office365.internal-alerts.com/Admin/Home/Index",
+      "host": "office365.internal-alerts.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://office365.internal-alerts.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-signup-page.vercel.app",
+      "final_url": "https://netflix-clone-signup-page.vercel.app/",
+      "host": "netflix-clone-signup-page.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://netflix-clone-signup-page.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "5360745a6c32edcf86e5f5c78931e56963f378f3",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://instagram-clone-lime.vercel.app/signup",
+      "final_url": "https://instagram-clone-lime.vercel.app/signup",
+      "host": "instagram-clone-lime.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://instagram-clone-lime.vercel.app/signup",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "3aaa1840a5f206de2ef367659623441a44d00d40",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://instagram-clone-lime.vercel.app/passwordreset",
+      "final_url": "https://instagram-clone-lime.vercel.app/passwordreset",
+      "host": "instagram-clone-lime.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://instagram-clone-lime.vercel.app/passwordreset",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "09f01d3f8b033daeff0754222ffbb166d104ea83",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://outlookfireworking.weebly.com",
+      "final_url": "https://outlookfireworking.weebly.com/",
+      "host": "outlookfireworking.weebly.com",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://outlookfireworking.weebly.com/",
+        "content_len": 4515,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Attention Required! | Cloudflare",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "ef48aa4c0574bead141626084744b16bba7bf366",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Attention Required! | Cloudflare</title> <meta charset=\"UTF-8\" /> <meta",
+        "raw_html_len": 4515
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazonbookawards.com",
+      "final_url": "https://amazonbookawards.com/",
+      "host": "amazonbookawards.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazonbookawards.com/",
+        "content_len": 11795,
+        "content_type": "text/html",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "One moment, please...",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 2,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": true,
+        "sha1": "7cd5ddaff18ff05e89ca2d6f5ed7e441fca56af2",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf8\"> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"> <script> (function(){ setTimeout(function(){ window.location.reload(); }, 5000); }()) </script> <link rel=\"icon\" href=\"data:,\"> <title>One moment, please...</title> <style> .spinner { -webkit-animation: s",
+        "raw_html_len": 11795
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "challenge_page_detected"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://facebookpostscheduler.com",
+      "final_url": "https://facebookpostscheduler.com/",
+      "host": "facebookpostscheduler.com",
+      "category": "login_branding",
+      "brands": [
+        "google",
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://facebookpostscheduler.com/",
+        "content_len": 29556,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Automate Facebook Posts with AI | Save Time & Boost Engagement",
+        "forms": 2,
+        "password_inputs": 2,
+        "scripts": 7,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "b1dafd0d6d11d1c2c9e04ac519140c5108403563",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head> <meta charset=\"utf-8\" /> <title>Automate Facebook Posts with AI | Save Time & Boost Engagement</title> <meta name=\"description\" content=\"Automate your Facebook posts with our AI-powered scheduler. Generate content, save time, and ensure consistent daily and weekly posting. Start now!\" /> <meta name=\"viewport\" content=\"width=device-width,",
+        "raw_html_len": 29556
+      },
+      "score": 90,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "brand_keywords:google,meta"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://google-og.com.cn",
+      "final_url": "https://google-og.com.cn/",
+      "host": "google-og.com.cn",
+      "category": "unknown",
+      "brands": [
+        "google"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://google-og.com.cn/",
+        "content_len": 71546,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "谷歌浏览器下载_谷歌浏览器电脑版安装_Chrome浏览器高速稳定版",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 11,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "5ed6fbb87094a5699cc396e21f3668aa58bc7644",
+        "snippet": "<!doctype html> <html lang=\"zh-hans\"> <head> <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"> <!-- 基础设置 --> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\"> <meta http-equiv=\"x-ua-compatible\" content=\"ie=edge,chrome=1\"> <!-- 网站信息 --> <!-- Search Engine Optimization by Rank Math - https://rankmath.",
+        "raw_html_len": 71546
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "brand_keywords:google"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/i/ab041e84e499243eca3e98fb328201632",
+      "final_url": "http://support.m365-microsoft.com/i/ab041e84e499243eca3e98fb328201632",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/i/ab041e84e499243eca3e98fb328201632",
+        "content_len": 285,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "61b29ba2e382d9ae2a9b8400fe7e5417cfd29676",
+        "snippet": "<!DOCTYPE html> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <link rel=\"icon\" href=\"data:,\" /> </head> <body> <script> window.location.replace('/page/7164e179eaa544ed823c15404c5ae669/ab041e84e499243eca3e98fb328201632'); </script> </body> </html>",
+        "raw_html_len": 285
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/index/d0c0a4acb5134410a2a4222dddc5dd5a/ab041e84e499243eca3e98fb328201632",
+      "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/i/a8472e4c0bb944ac1b09948052f48dd44",
+      "final_url": "http://support.m365-microsoft.com/i/a8472e4c0bb944ac1b09948052f48dd44",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/i/a8472e4c0bb944ac1b09948052f48dd44",
+        "content_len": 286,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "f271802c2ac4e76a7633051e472a779a0ef3bf3f",
+        "snippet": "<!DOCTYPE html> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <link rel=\"icon\" href=\"data:,\" /> </head> <body> <script> window.location.replace('/index/ac65e5e73c2444b88833c0502e74f875/a8472e4c0bb944ac1b09948052f48dd44'); </script> </body> </html>",
+        "raw_html_len": 286
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://santander.bniconsulting.co.tz",
+      "final_url": "https://santander.bniconsulting.co.tz/cgi-sys/suspendedpage.cgi",
+      "host": "santander.bniconsulting.co.tz",
+      "category": "login_branding",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://santander.bniconsulting.co.tz/cgi-sys/suspendedpage.cgi",
+        "content_len": 7652,
+        "content_type": "text/html",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "Account Suspended",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "2f90d0f8de8d593564e5e3e62b3965e772cb9483",
+        "snippet": "<!DOCTYPE html> <html> <head> <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\"> <meta http-equiv=\"Cache-control\" content=\"no-cache\"> <meta http-equiv=\"Pragma\" content=\"no-cache\"> <meta http-equiv=\"Expires\" content=\"0\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1\"> <title>Account Suspended</ti",
+        "raw_html_len": 7652
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/page/cab136d8e0b44fd69ca7282432a94833/a3c830db69c7a4471885d1d2f44c22798",
+      "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/index/592bfc700e07476abb25aea03dd15abe/a8472e4c0bb944ac1b09948052f48dd44",
+      "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/page/b8b9adf6d6d74dad85d4773d4eb0b31a/a5722854c480a442880d9de7f2b5b55a9",
+      "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/i/a5722854c480a442880d9de7f2b5b55a9",
+      "final_url": "http://support.m365-microsoft.com/i/a5722854c480a442880d9de7f2b5b55a9",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/i/a5722854c480a442880d9de7f2b5b55a9",
+        "content_len": 285,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "535ed4338d3cd81d722f55afcca88492d509b7cf",
+        "snippet": "<!DOCTYPE html> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <link rel=\"icon\" href=\"data:,\" /> </head> <body> <script> window.location.replace('/home/2480cab946084046b71490ba06018614/a5722854c480a442880d9de7f2b5b55a9'); </script> </body> </html>",
+        "raw_html_len": 285
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://support.m365-microsoft.com/index/8f9582b190ae4833831f9d605ef95d49/ac044ac20288e4a7bb84dd48b3cbb0756",
+      "final_url": "https://support.m365-microsoft.com/Admin/Home/Index",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://support.m365-microsoft.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://support.m365-microsoft.com/i/ac044ac20288e4a7bb84dd48b3cbb0756",
+      "final_url": "https://support.m365-microsoft.com/i/ac044ac20288e4a7bb84dd48b3cbb0756",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://support.m365-microsoft.com/i/ac044ac20288e4a7bb84dd48b3cbb0756",
+        "content_len": 285,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "8c1d5c0c48bc5ef4879c0f573907be16b0081c0e",
+        "snippet": "<!DOCTYPE html> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <link rel=\"icon\" href=\"data:,\" /> </head> <body> <script> window.location.replace('/form/fa4f729df2854e4b8adfb526080e03f1/ac044ac20288e4a7bb84dd48b3cbb0756'); </script> </body> </html>",
+        "raw_html_len": 285
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/i/a3c830db69c7a4471885d1d2f44c22798",
+      "final_url": "http://support.m365-microsoft.com/i/a3c830db69c7a4471885d1d2f44c22798",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/i/a3c830db69c7a4471885d1d2f44c22798",
+        "content_len": 285,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "721c4c16c0388470ea2e97690ac7407fc772d631",
+        "snippet": "<!DOCTYPE html> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <link rel=\"icon\" href=\"data:,\" /> </head> <body> <script> window.location.replace('/page/6266eb7952994632934302e172df3f65/a3c830db69c7a4471885d1d2f44c22798'); </script> </body> </html>",
+        "raw_html_len": 285
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflixap.com",
+      "final_url": "https://netflixap.com/",
+      "host": "netflixap.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://netflixap.com/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "9ed7e653a4e21953cc39c000818e110b53addd5c",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 1,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://spotify.fourthwall.app",
+      "final_url": "https://spotify.fourthwall.app/",
+      "host": "spotify.fourthwall.app",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://spotify.fourthwall.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "778df4ae480ccd027b4c6739a70dd7f50a1525a1",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 1,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://icloudsupport-inc.com/expire/?5",
+      "final_url": "https://icloudsupport-inc.com/expire/?5",
+      "host": "icloudsupport-inc.com",
+      "category": "unknown",
+      "brands": [
+        "google",
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://icloudsupport-inc.com/expire/?5",
+        "content_len": 137291,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "Apache"
+      },
+      "analysis": {
+        "title": "iCloud",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 7,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "283093246f63f673996c4ebdbaddd79353bdd61f",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\" > <head> <meta charset=\"UTF-8\"> <title>iCloud</title> </head> <body> <!-- partial:index.partial.html --> <html i18n-values=\"dir:textdirection;.style.fontSize:fontsize\" dir=\"ltr\" style=\"font-size: 75%;\"><head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-",
+        "raw_html_len": 137291
+      },
+      "score": 35,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "brand_keywords:google,apple"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://facebook.popstudios.com.sv",
+      "final_url": "https://facebook.popstudios.com.sv/",
+      "host": "facebook.popstudios.com.sv",
+      "category": "login_branding",
+      "brands": [
+        "google"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://facebook.popstudios.com.sv/",
+        "content_len": 299575,
+        "content_type": "text/html",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "Google Chrome â Download the fast, secure browser from Google",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 17,
+        "iframes": 1,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "c6861d4db3992a6223283c1df59b45cad504b626",
+        "snippet": "<!DOCTYPE html> <!-- saved from url=(0041)https://www.google.com/intl/en_uk/chrome/ --> <html itemscope=\"\" itemtype=\"https://schema.org/WebPage\" class=\"no-js no-ie\" lang=\"en\" dir=\"ltr\"> <div id=\"in-page-channel-node-id\" data-channel-name=\"in_page_channel_2UzmEt\"></div> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <script type=\"text/javascript\" async=",
+        "raw_html_len": 299575
+      },
+      "score": 30,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "brand_keywords:google"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-iota-five.vercel.app",
+      "final_url": "https://netflix-clone-iota-five.vercel.app/",
+      "host": "netflix-clone-iota-five.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://netflix-clone-iota-five.vercel.app/",
+        "content_len": 5530,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "403: Forbidden",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "9d886e1bde0db5300d032c8f2f3330ceb6c61350",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <meta name=\"theme-color\" content=\"#000\"> <title>403: Forbidden</title> <style> html { font-size: 62.5%; box-sizing: border-box; height: -webkit-fill-available } *, ::after, ::before {",
+        "raw_html_len": 5530
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    }
+  ]
+}

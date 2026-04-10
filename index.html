@@ -7,7 +7,7 @@
   <meta name="description" content="Live DarkPulse intelligence dashboard for leaks, defacement, exploits, and threat reporting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=3" />
+    <link rel="stylesheet" href="/style.css?v=14" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/world.js"></script>
@@ -21,7 +21,7 @@
         <div class="logo">
           <span class="logo-pulse"></span>
           <div class="logo-stack">
-            <span class="logo-text">Dark<span class="logo-accent">Pulse</span></span>
+            <span class="logo-text" id="appBrandName">Dark<span class="logo-accent">Pulse</span></span>
             <span class="logo-subtext">Live Intelligence Console</span>
           </div>
         </div>
@@ -32,6 +32,28 @@
         <div class="user-info">
           <span class="user-name" id="currentUserName">admin</span>
           <span class="user-role" id="currentUserRole">Administrator</span>
+        </div>
+      </div>
+
+      <div class="sidebar-scan-shell">
+        <div class="sidebar-scan-card">
+          <div class="sidebar-scan-copy">
+            <span class="sidebar-scan-kicker">Automation</span>
+            <strong class="sidebar-scan-title">One-Click Intelligence Update</strong>
+            <p class="sidebar-scan-meta">Run security feeds, ransomware leaks, channel monitoring, and MongoDB sync in one action.</p>
+          </div>
+          <div class="sidebar-scan-actions">
+            <button class="scan-now-btn" id="smartUpdateBtn" title="Scan Now">Scan Now</button>
+            <button class="scan-stop-btn" id="stopSmartUpdateBtn" title="Stop Scan" disabled>Stop Scan</button>
+          </div>
+          <button class="scan-alert-btn" id="alertSummaryBtn" title="Alert Summary" disabled>Alert Summary</button>
+          <div class="sidebar-translate-shell">
+            <div class="sidebar-translate-row">
+              <button class="scan-translate-btn" id="translateViewBtn" title="Translate Current View">Translate View</button>
+              <button class="scan-language-reset" id="resetLanguageBtn" title="Reset to English" disabled>Original</button>
+            </div>
+            <p class="sidebar-translate-note" id="languageIndicator">Original intelligence text</p>
+          </div>
         </div>
       </div>
 
@@ -105,8 +127,50 @@
           <div class="nav-item" data-view="pakdb">
             <span class="nav-icon">PK</span>
             <div class="nav-copy">
-              <span class="nav-label">PakDB Lookup</span>
+              <span class="nav-label">National Identity</span>
               <span class="nav-meta">Entity and phone lookup workflow</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="seo" id="sidebarNavItemSeo">
+            <span class="nav-icon">SO</span>
+            <div class="nav-copy">
+              <span class="nav-label">SEO Checker</span>
+              <span class="nav-meta">Full report for website audits</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="playstore" id="sidebarNavItemPlaystore">
+            <span class="nav-icon">PS</span>
+            <div class="nav-copy">
+              <span class="nav-label">Playstore Scanner</span>
+              <span class="nav-meta">Search for modded APK versions</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="software" id="sidebarNavItemSoftware">
+            <span class="nav-icon">PC</span>
+            <div class="nav-copy">
+              <span class="nav-label">PC GAME SCAN</span>
+              <span class="nav-meta">Search for PC games and mods</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="repo-scan" id="sidebarNavItemRepoScan">
+            <span class="nav-icon">RS</span>
+            <div class="nav-copy">
+              <span class="nav-label">Repository Scan</span>
+              <span class="nav-meta">GitHub vulnerability analysis</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="healing" id="sidebarNavItemHealing">
+            <span class="nav-icon">HM</span>
+            <div class="nav-copy">
+              <span class="nav-label">Healing Monitor</span>
+              <span class="nav-meta">HTML drift, selector breakage, auto-fix status</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="account" id="sidebarNavItemAccount">
+            <span class="nav-icon">AC</span>
+            <div class="nav-copy">
+              <span class="nav-label">Account</span>
+              <span class="nav-meta">Profile and system settings</span>
             </div>
           </div>
           <div class="nav-item" data-view="admin-users" id="sidebarNavItemUsers" style="display:none;">
@@ -155,6 +219,18 @@
       </header>
 
       <div class="content-body" id="contentBody">
+        <section class="intel-notification-bar" id="intelNotificationBar">
+          <div class="intel-notification-main">
+            <span class="intel-notification-dot" id="intelNotificationDot"></span>
+            <div class="intel-notification-copy">
+              <span class="intel-notification-label" id="intelNotificationLabel">Automation Idle</span>
+              <h2 class="intel-notification-title" id="intelNotificationTitle">No intelligence update is running</h2>
+              <p class="intel-notification-message" id="intelNotificationMessage">Press Scan Now to refresh MongoDB and check for new intelligence across the dashboard sources.</p>
+            </div>
+          </div>
+          <div class="intel-notification-meta" id="intelNotificationMeta"></div>
+        </section>
+
         <section class="stats-strip" id="statsStrip">
           <div class="stat-pill">
             <span class="stat-label">Total</span>
@@ -192,7 +268,7 @@
               <div>
                 <p class="section-kicker">Global Impact Map</p>
                 <h2 class="section-title">Countries hit by leak and defacement activity</h2>
-                <p class="section-copy">Affected regions are highlighted in red. Hover any country to see its leak and defacement counts from the restored live dataset.</p>
+                <p class="section-copy">Affected regions are highlighted in red. Countries are spotlighted one by one with a red glow, and hover shows the country name with its live leak total from the restored dataset.</p>
               </div>
               <div class="impact-summary-grid">
                 <div class="mini-stat">
@@ -211,7 +287,18 @@
             </div>
 
             <div class="impact-layout">
+              <div class="map-focus-inline">
+                <span class="map-focus-inline-chip">
+                  <span>Country</span>
+                  <strong id="mapFocusCountry">Loading...</strong>
+                </span>
+                <span class="map-focus-inline-chip">
+                  <span>Leaks</span>
+                  <strong id="mapFocusLeaks">0</strong>
+                </span>
+              </div>
               <div class="map-shell">
+                <div id="mapSpotlightTag" class="map-spotlight-tag hidden" aria-hidden="true"></div>
                 <div id="worldMap" class="heatmap-container"></div>
               </div>
 
@@ -247,7 +334,7 @@
 
           <div class="cards-grid" id="cardsGrid"></div>
 
-          <div class="load-more-wrap" id="loadMoreWrap">
+          <div class="load-more-wrap hidden" id="loadMoreWrap">
             <button class="btn-secondary" id="loadMoreBtn">Load More</button>
           </div>
 
@@ -285,16 +372,390 @@
           <div class="panel-header">
             <div>
               <p class="section-kicker">Lookup</p>
-              <h2 class="section-title">PakDB Entity Search</h2>
+              <h2 class="section-title">National Identity Search</h2>
             </div>
           </div>
           <div class="lookup-shell">
             <div class="pakdb-search-row">
-              <input type="tel" id="pakdbInput" class="search-input" placeholder="Phone +92..." />
+              <input type="tel" id="pakdbInput" class="search-input" placeholder="CNIC or Phone..." />
               <button class="btn-primary" id="pakdbSearchBtn">Search</button>
             </div>
             <div id="pakdbStatus" class="pakdb-status"></div>
             <div id="pakdbHistoryList" class="compact-list"></div>
+          </div>
+        </div>
+        <div class="view-panel hidden" id="viewSeo">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Digital Footprint</p>
+              <h2 class="section-title">SEO Analysis Tool</h2>
+            </div>
+          </div>
+          <div class="lookup-shell">
+            <div class="pakdb-search-row">
+              <input type="text" id="seoInput" class="search-input" placeholder="Enter website URL (e.g. www.example.com)..." />
+              <button class="btn-primary" id="seoSearchBtn">Analyze</button>
+            </div>
+            <div id="seoStatus" class="pakdb-status"></div>
+
+            <div id="seoReport" class="seo-report-container hidden">
+              <!-- SEO Report Header (Matches Screenshot) -->
+              <div class="seo-report-header">
+                <div class="seo-header-main">
+                  <div class="report-meta-group">
+                    <span class="badge-outline">Security Posture</span>
+                    <h3 class="seo-report-title" id="seoReportTitle">Report for ...</h3>
+                    <p class="seo-report-subtitle">Snapshot of core endpoint metadata and scan context.</p>
+                  </div>
+                  <div class="seo-grade-box">
+                    <div class="grade-circle" id="seoGradeCircle">
+                      <span class="grade-letter" id="seoGradeLetter">-</span>
+                      <span class="grade-label" id="seoGradeLabel">Analysis</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="seo-meta-grid">
+                  <div class="mini-card">
+                    <span class="mini-card-label">Target URL</span>
+                    <span class="mini-card-value" id="seoMetaUrl">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Host</span>
+                    <span class="mini-card-value" id="seoMetaHost">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Port</span>
+                    <span class="mini-card-value">443</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">TLS Status</span>
+                    <span class="badge-status status-ok">Ssl Enabled</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Scanned On</span>
+                    <span class="mini-card-value" id="seoMetaDate">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Scanned By</span>
+                    <span class="mini-card-value">DarkPulse Intelligence</span>
+                  </div>
+                </div>
+
+                <!-- AI SEO Suggestions Box -->
+                <div id="seoAiSuggestionsBox" class="seo-suggestions-container hidden">
+                  <div class="suggestions-header">
+                    <span class="ai-pulse-mini"></span>
+                    <h4 class="suggestions-title">AI Recommendations</h4>
+                  </div>
+                  <div id="seoAiSuggestionsContent" class="suggestions-body">
+                    <!-- AI suggestions bullet points here -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- SEO Audits Findings -->
+              <div class="seo-findings-section">
+                <h4 class="findings-title">SEO Audits Findings (<span id="seoFindingsCount">0</span>)</h4>
+                <div id="seoFindingsList" class="findings-list">
+                  <!-- Audit cards go here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="view-panel hidden" id="viewPlaystore">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Digital Forensics</p>
+              <h2 class="section-title">Playstore Scanner</h2>
+            </div>
+          </div>
+          <div class="lookup-shell">
+            <div class="pakdb-search-row">
+              <input type="text" id="playstoreInput" class="search-input" placeholder="Enter Play Store URL (e.g. play.google.com/store/apps/details?id=com.example.app)" />
+              <button class="btn-primary" id="playstoreSearchBtn">Search</button>
+            </div>
+            <p class="hero-subtitle" style="margin-top: 10px; opacity: 0.7;">Checks for cracked key signals for the provided Play Store URL.</p>
+            
+            <div id="playstoreStatus" class="pakdb-status"></div>
+
+            <div id="playstoreResultsHeader" class="results-stats-row hidden">
+              <div class="stat-card">
+                <span class="stat-label">API TYPE</span>
+                <span class="stat-value">cracked</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">TOTAL RESULTS</span>
+                <span class="stat-value" id="playstoreCount">0</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">QUERY</span>
+                <span class="stat-value" id="playstoreQueryLabel">-</span>
+              </div>
+            </div>
+
+            <div id="playstoreResults" class="playstore-results-container">
+              <!-- Results go here -->
+            </div>
+          </div>
+        </div>
+
+        <div class="view-panel hidden" id="viewSoftware">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Digital Forensics</p>
+              <h2 class="section-title">PC Game Scan</h2>
+            </div>
+          </div>
+          <div class="lookup-shell">
+            <div class="pakdb-search-row">
+              <input type="text" id="softwareInput" class="search-input" placeholder="Enter any PC game name..." />
+              <button class="btn-primary" id="softwareSearchBtn">Search</button>
+            </div>
+            <p class="hero-subtitle" style="margin-top: 10px; opacity: 0.7;">Checks for cracked mirrors of known softwares.</p>
+            
+            <div id="softwareStatus" class="pakdb-status"></div>
+
+            <div id="softwareResultsHeader" class="results-stats-row hidden">
+              <div class="stat-card">
+                <span class="stat-label">API TYPE</span>
+                <span class="stat-value">software</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">TOTAL RESULTS</span>
+                <span class="stat-value" id="softwareCount">0</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">QUERY 1</span>
+                <span class="stat-value" id="softwareQueryLabel">-</span>
+              </div>
+            </div>
+
+            <div id="softwareResults" class="software-results-container">
+              <!-- Results go here -->
+            </div>
+          </div>
+        </div>
+
+        <div class="view-panel hidden" id="viewRepoScan">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Security Posture</p>
+              <h2 class="section-title">Repository Scan</h2>
+            </div>
+          </div>
+          <div class="lookup-shell">
+            <div class="pakdb-search-row">
+              <input type="text" id="repoScanInput" class="search-input" placeholder="Enter GitHub repository URL (e.g. github.com/owner/repo)..." />
+              <button class="btn-primary" id="repoScanSearchBtn">Search</button>
+            </div>
+            <div id="repoScanStatus" class="pakdb-status"></div>
+
+            <div id="repoScanReport" class="seo-report-container hidden">
+              <div class="seo-report-header">
+                <div class="seo-header-main">
+                  <div class="report-meta-group">
+                    <span class="badge-outline">Vulnerability Analysis</span>
+                    <h3 class="seo-report-title" id="repoReportTitle">Report for ...</h3>
+                    <p class="seo-report-subtitle">Trivy scan results for the provided repository.</p>
+                  </div>
+                  <div class="seo-grade-box">
+                    <div class="grade-circle" id="repoGradeCircle">
+                      <span class="grade-letter" id="repoGradeLetter">-</span>
+                      <span class="grade-label" id="repoGradeLabel">Scan</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="seo-meta-grid">
+                  <div class="mini-card">
+                    <span class="mini-card-label">Target URL</span>
+                    <span class="mini-card-value" id="repoMetaUrl">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Risk Score</span>
+                    <span class="mini-card-value" id="repoMetaScore">0</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Findings</span>
+                    <span class="mini-card-value" id="repoMetaCounts">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Status</span>
+                    <span class="badge-status status-ok" id="repoMetaStatus">Complete</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Scanned On</span>
+                    <span class="mini-card-value" id="repoMetaDate">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Scanned By</span>
+                    <span class="mini-card-value">DarkPulse / Trivy</span>
+                  </div>
+                </div>
+
+                <div id="repoRecommendationsBox" class="seo-suggestions-container hidden">
+                  <div class="suggestions-header">
+                    <span class="ai-pulse-mini"></span>
+                    <h4 class="suggestions-title" id="repoRecommendationsTitle">How to Reach A</h4>
+                  </div>
+                  <div id="repoRecommendationsContent" class="suggestions-body"></div>
+                </div>
+              </div>
+
+              <div class="seo-findings-section">
+                <h4 class="findings-title">Vulnerabilities Findings (<span id="repoFindingsCount">0</span>)</h4>
+                <div id="repoFindingsList" class="findings-list">
+                  <!-- Findings Cards go here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="view-panel hidden" id="viewHealing">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Self-Healing Scrapers</p>
+              <h2 class="section-title">Healing Monitor</h2>
+            </div>
+          </div>
+          <div class="lookup-shell healing-shell">
+            <div class="healing-toolbar">
+              <div class="healing-toolbar-copy">
+                <h3 class="healing-toolbar-title">Monitor HTML drift across collector scripts</h3>
+                <p class="healing-toolbar-note">DarkPulse stores baseline HTML, detects structure changes, tests selector health, and suggests fixes when a page drifts.</p>
+              </div>
+              <div class="healing-toolbar-actions">
+                <button class="btn-secondary" id="healingDiscoverBtn">Discover Targets</button>
+                <button class="btn-primary" id="healingRunBtn">Run Healing Scan</button>
+              </div>
+            </div>
+
+            <div id="healingStatus" class="pakdb-status">Monitor ready.</div>
+
+            <div class="healing-stats-grid" id="healingStatsGrid">
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Targets</span>
+                <span class="mini-card-value" id="healingStatTargets">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">HTML Changed</span>
+                <span class="mini-card-value" id="healingStatChanged">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Repair Ready</span>
+                <span class="mini-card-value" id="healingStatAutoFixed">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Needs Review</span>
+                <span class="mini-card-value" id="healingStatNeedsReview">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Healthy</span>
+                <span class="mini-card-value" id="healingStatHealthy">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Unreachable</span>
+                <span class="mini-card-value" id="healingStatUnreachable">0</span>
+              </div>
+            </div>
+
+            <div class="healing-grid">
+              <div class="healing-column">
+                <div class="rail-card">
+                  <div class="rail-card-header">
+                    <span class="section-kicker">Monitored Targets</span>
+                    <span class="rail-card-note" id="healingTargetsSummary">0 scripts tracked</span>
+                  </div>
+                  <div id="healingTargetsList" class="compact-list"></div>
+                </div>
+              </div>
+
+              <div class="healing-column">
+                <div class="rail-card">
+                  <div class="rail-card-header">
+                    <span class="section-kicker">Recent Events</span>
+                    <span class="rail-card-note" id="healingEventsSummary">0 recent events</span>
+                  </div>
+                  <div id="healingEventsList" class="compact-list"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="view-panel hidden" id="viewAccount">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Profile Settings</p>
+              <h2 class="section-title">Account Details</h2>
+            </div>
+          </div>
+          <div class="account-shell">
+            <div class="account-profile-header">
+              <div class="account-avatar-large">DP</div>
+              <div class="account-header-text">
+                <h3>Admin Profile</h3>
+                <p>Account details and preferences.</p>
+                <small>Version 1.0.0</small>
+              </div>
+            </div>
+
+            <div class="account-section">
+              <div class="account-section-title">
+                <h4>Profile</h4>
+                <p>Manage profile identity and assigned access.</p>
+              </div>
+              <div class="account-grid">
+                <div class="account-field">
+                  <label>USERNAME</label>
+                  <input type="text" class="account-input" id="profileDisplayUsername" value="admin" disabled />
+                </div>
+                <div class="account-field">
+                  <label>ROLE</label>
+                  <input type="text" class="account-input" id="profileDisplayRole" value="Administrator" disabled />
+                </div>
+                <div class="account-field flex-wide">
+                  <label>PROJECT NAME</label>
+                  <div class="account-input-group">
+                    <input type="text" class="account-input" id="projectBrandInput" value="DarkPulse Intelligence" />
+                    <button class="btn-primary" id="saveBrandBtn">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="account-section">
+              <div class="account-section-title">
+                <h4>Preferences</h4>
+                <p>Security and appearance settings.</p>
+              </div>
+              <div class="account-list">
+                <div class="account-list-item">
+                  <div class="account-list-text">
+                    <h5>2 Factor Authentication</h5>
+                    <p id="label2faState">Disabled</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="toggle2fa" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="account-list-item">
+                  <div class="account-list-text">
+                    <h5>Theme</h5>
+                    <p id="labelThemeState">Dark Mode</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="toggleTheme" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -315,6 +776,7 @@
 
       <div class="modal-body" id="loginForm">
         <h2 class="modal-title" id="loginTitle">Access the restored dashboard</h2>
+        <div id="loginInfo" class="test-result hidden"></div>
         <div class="input-group">
           <label>Username</label>
           <input type="text" id="loginUsername" placeholder="admin" autofocus />
@@ -355,6 +817,29 @@
         </div>
       </div>
 
+      <div class="modal-body hidden" id="mfaForm">
+        <h2 class="modal-title" id="mfaTitle">Verify your identity</h2>
+        <p class="mfa-copy" id="mfaCopy">Enter the 6-digit code from your authenticator app to finish signing in.</p>
+        <div class="mfa-qr-shell hidden" id="mfaQrSection">
+          <div class="mfa-qr-card">
+            <img id="mfaQrImage" src="" alt="2FA setup QR code" />
+          </div>
+          <div class="mfa-secret-shell">
+            <label>Manual setup key</label>
+            <code id="mfaManualSecret" class="mfa-secret-code">-</code>
+            <p id="mfaSecretHint" class="mfa-secret-hint">Scan the QR code once, or enter the secret manually in your authenticator app.</p>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>One-Time Password</label>
+          <input type="text" id="mfaOtpInput" placeholder="123456" inputmode="numeric" maxlength="6" />
+        </div>
+        <div id="mfaError" class="error-msg hidden"></div>
+        <div class="auth-links">
+          <a href="#" id="mfaBackToLogin">Back to login</a>
+        </div>
+      </div>
+
       <div class="modal-footer">
         <button class="btn-primary auth-submit" id="authSubmitBtn">Sign In</button>
       </div>
@@ -376,6 +861,16 @@
         <div class="modal-meta" id="modalMeta"></div>
 
         <div class="fact-grid" id="modalFactGrid"></div>
+
+        <div id="modalMediaSection" class="modal-section hidden">
+          <label>Screenshot Evidence</label>
+          <div id="modalMediaGallery" class="modal-media-gallery"></div>
+        </div>
+
+        <div id="modalEvidenceSection" class="modal-section hidden">
+          <label>Evidence Links</label>
+          <div id="modalEvidenceLinks" class="modal-evidence-links"></div>
+        </div>
 
         <div class="modal-section">
           <label>Description</label>
@@ -399,8 +894,27 @@
       </div>
 
       <div class="modal-footer detail-footer">
+        <button class="btn-secondary" id="detailTranslateBtn" type="button">Translate</button>
         <a class="btn-secondary" id="modalJsonLink" href="#" target="_blank">JSON Endpoint</a>
         <a class="btn-primary" id="modalReadBtn" href="#" target="_blank">Open Source</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="mediaLightboxBackdrop">
+    <div class="modal modal-media-lightbox">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div class="modal-source">DarkPulse Evidence Viewer</div>
+          <div class="modal-top-tag" id="mediaLightboxTitle">Evidence image</div>
+        </div>
+        <button class="modal-close" id="mediaLightboxClose">x</button>
+      </div>
+      <div class="modal-body modal-media-lightbox-body">
+        <img id="mediaLightboxImage" class="modal-lightbox-image" src="" alt="Evidence image" />
+      </div>
+      <div class="modal-footer detail-footer">
+        <a class="btn-primary" id="mediaLightboxOpen" href="#" target="_blank" rel="noopener noreferrer">Open Original</a>
       </div>
     </div>
   </div>
@@ -418,7 +932,7 @@
         </div>
         <div class="input-group">
           <label>BACKEND URL</label>
-          <input type="text" id="apiBaseInput" placeholder="http://localhost:8200" />
+          <input type="text" id="apiBaseInput" placeholder="http://localhost:9000" />
         </div>
         <div id="testResult" class="test-result"></div>
       </div>
@@ -429,6 +943,69 @@
     </div>
   </div>
 
-  <script src="app.js?v=3"></script>
+  <div class="modal-backdrop hidden" id="alertSummaryBackdrop">
+    <div class="modal modal-alert-summary">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div class="modal-source">Arya Notification</div>
+          <div class="modal-top-tag" id="alertSummaryStatusTag">Latest Scan Summary</div>
+        </div>
+        <button class="modal-close" id="alertSummaryClose">x</button>
+      </div>
+      <div class="modal-body modal-summary-body">
+        <h2 class="modal-title" id="alertSummaryTitle">Scan Summary</h2>
+        <div class="modal-meta" id="alertSummaryMeta"></div>
+        <div class="fact-grid" id="alertSummaryFactGrid"></div>
+        <div class="modal-section">
+          <label>Source Breakdown</label>
+          <div class="summary-source-list" id="alertSummarySources"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="alertSummaryDone">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="translateBackdrop">
+    <div class="modal modal-translate">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div class="modal-source">DarkPulse Language Relay</div>
+          <div class="modal-top-tag" id="translateScopeTag">Translate Current View</div>
+        </div>
+        <button class="modal-close" id="translateClose">x</button>
+      </div>
+      <div class="modal-body modal-summary-body">
+        <h2 class="modal-title">Choose a language</h2>
+        <p class="translate-copy">Translate the current results into another language without leaving the dashboard.</p>
+        <div class="input-group">
+          <label>Target Language</label>
+          <select id="translateLanguageSelect" class="search-input">
+            <option value="en">English</option>
+            <option value="ur">Urdu</option>
+            <option value="ar">Arabic</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="tr">Turkish</option>
+            <option value="ru">Russian</option>
+            <option value="hi">Hindi</option>
+            <option value="pt">Portuguese</option>
+            <option value="it">Italian</option>
+            <option value="ja">Japanese</option>
+            <option value="zh-CN">Chinese (Simplified)</option>
+          </select>
+        </div>
+        <div id="translateStatus" class="pakdb-status"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="translateResetModalBtn" type="button">Reset to English</button>
+        <button class="btn-primary" id="translateApplyBtn" type="button">Apply Translation</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=25"></script>
 </body>
 </html>

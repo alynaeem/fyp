@@ -3,7 +3,7 @@ import hashlib
 from abc import ABC
 from datetime import datetime, timezone
 from typing import List, Optional, Dict, Tuple, Set
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 from playwright.sync_api import Page, sync_playwright
 
@@ -426,6 +426,8 @@ class _defacer(leak_extractor_interface, ABC):
         iframe_src = ""
         if iframe:
             iframe_src = self._safe_strip(iframe.get_attribute("src") or "")
+            if any(noise in iframe_src.lower() for noise in ("googleads", "doubleclick", "googlesyndication")):
+                iframe_src = ""
 
         return {
             "header": header,
@@ -440,6 +442,16 @@ class _defacer(leak_extractor_interface, ABC):
             "isp": isp,
             "iframe_src": iframe_src,
         }
+
+    @staticmethod
+    def _title_from_target(target_url: str, fallback_url: str) -> str:
+        candidate = (target_url or fallback_url or "").strip()
+        if not candidate:
+            return "Untitled"
+        try:
+            return urlparse(candidate).hostname or candidate
+        except Exception:
+            return candidate
 
     # ---------------- main parse ----------------
     def parse_leak_data(self, page: Page):
@@ -505,18 +517,31 @@ class _defacer(leak_extractor_interface, ABC):
                 fields = self._extract_detail_fields(mirror_page)
                 dt_obj, date_obj = self._parse_defacer_datetime(fields.get("recorded_on", ""))
 
+                target_url = fields.get("target_url", "") or mirror_url
+                content_target = fields.get("iframe_src", "") or target_url or fields.get("ip", "")
                 content = helper_method.extract_refhtml(
-                    fields.get("ip", ""),
+                    content_target,
                     self.invoke_db,
                     REDIS_COMMANDS,
                     CUSTOM_SCRIPT_REDIS_KEYS,
                     RAW_PATH_CONSTANTS,
                     mirror_page,
                 )
-
-                target_url = fields.get("target_url", "") or mirror_url
+                screenshot_base64 = ""
+                try:
+                    screenshot_base64 = helper_method.get_screenshot_base64(
+                        mirror_page,
+                        self._title_from_target(target_url, mirror_url),
+                        mirror_url,
+                    )
+                except Exception:
+                    screenshot_base64 = ""
+                title = self._title_from_target(target_url, mirror_url)
+                description = (fields.get("description") or content or title)[:900]
 
                 card = defacement_model(
+                    m_title=title,
+                    m_description=description,
                     m_web_server=[fields.get("server")] if fields.get("server") else [],
                     m_source_url=[mirror_url],
                     m_content=content or "",
@@ -524,6 +549,7 @@ class _defacer(leak_extractor_interface, ABC):
                     m_url=target_url,
                     m_ioc_type=["hacked", "defacer"],
                     m_mirror_links=[fields.get("iframe_src")] if fields.get("iframe_src") else [],
+                    m_screenshot=screenshot_base64,
                     m_network=helper_method.get_network_type(self.base_url),
                     m_leak_date=date_obj,
                 )

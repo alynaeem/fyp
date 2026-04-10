@@ -1,0 +1,731 @@
+{
+  "meta": {
+    "source": "thehackernews",
+    "seed_url": "https://thehackernews.com/",
+    "articles_collected": 24,
+    "scraped_at_utc": "2026-04-04T06:47:10.916019+00:00",
+    "developer_signature": "Anonymous"
+  },
+  "data": [
+    {
+      "author": "Ravie Lakshmanan",
+      "base_url": "https://thehackernews.com/",
+      "content": "A new analysis of endpoint detection and response (EDR) killers has revealed that 54 of them leverage a technique known as bring your own vulnerable driver ( BYOVD ) by abusing a total of 35 vulnerable drivers. EDR killer programs have been a common presence in ransomware intrusions as they offer a way for affiliates to neutralize security software before deploying file-encrypting malware. This is done so in an attempt to evade detection. \"Ransomware gangs, especially those with ransomware-as-a-service (RaaS) programs, frequently produce new builds of their encryptors, and ensuring that each new build is reliably undetected can be time-consuming,\" ESET researcher Jakub Souček said in a report shared with The Hacker News. \"More importantly, encryptors are inherently very noisy (as they inherently need to modify a large number of files in a short period); making such malware undetected is rather challenging.\" EDR killers act as a specialized, external component that's run to disable security controls before executing the lockers themselves, thereby keeping the latter simple, stable, and easy to rebuild. That's not to say there have not been instances where EDR termination and ransomware modules have been fused into one single binary. Reynolds ransomware is a case in point. A majority of the EDR killers rely on legitimate yet vulnerable drivers to gain elevated privileges and achieve their goals. Among the nearly 90 EDR killer tools detected by the Slovakian cybersecurity company, more than half of them utilize the well-known BYOVD tactic simply because it's reliable. \"The goal of a BYOVD attack is to gain kernel-mode privileges, often called Ring 0,\" Bitdefender explains . \"At this level, code has unrestricted access to system memory and hardware. Since an attacker cannot load an unsigned malicious driver, they 'bring' a driver signed by a reputable vendor (such as a hardware manufacturer or an old antivirus version) that has a known vulnerability.\" Armed with the kernel access, threat actors can terminate EDR processes, disable security tools, tamper with kernel callbacks, and undermine endpoint protections. The result is an abuse of Microsoft's driver trust model to evade defenses, taking advantage of the fact that the vulnerable driver is legitimate and signed. The BYOVD-based EDR killers are primarily developed by three types of threat actors - Closed ransomware groups like DeadLock and Warlock that do not rely on affiliates Attackers forking and tweaking existing proof-of-concept code (e.g., SmilingKiller and TfSysMon-Killer) Cybercriminals marketing such tools on underground marketplaces as a service (e.g., DemoKiller aka Бафомет , ABYSSWORKER , and CardSpaceKiller ) ESET said it also identified script-based tools that make use of built-in administrative commands like taskkill, net stop, or sc delete to interfere with the regular functioning of security product processes and services. Select variants have also been found to combine scripting with Windows Safe Mode. \"Since Safe Mode loads only a minimal subset of the operating system, and security solutions typically aren’t included, malware has a higher chance of disabling protection,\" the company noted. \"At the same time, such activity is very noisy, as it requires a reboot, which is risky and unreliable in unknown environments. Therefore, it is seen only rarely in the wild.\" The third category of EDR killers are anti-rootkits, which include legitimate utilities such as GMER, HRSword, and PC Hunter, that offer an intuitive user interface to terminate protected processes or services. A fourth, emerging class is a set of driverless EDR killers like EDRSilencer and EDR-Freeze that block outbound traffic from EDR solutions and cause the programs to enter a \"coma\" like state. \"Attackers aren’t putting much effort into making their encryptors undetected,\" ESET said. \"Rather, all the sophisticated defense-evasion techniques have shifted to the user-mode components of EDR killers. This trend is most visible in commercial EDR killers, which often incorporate mature anti-analysis and anti-detection capabilities.\" To combat ransomware and EDR killers, blocking commonly misused drivers from loading is a necessary defense mechanism. However, given that EDR killers are executed only at the last stage and just before launching the encryptor, a failure at this stage means the threat actor can easily switch to another tool to accomplish the same task. The implication is that organizations need layered defenses and detection strategies in place to proactively monitor, flag, contain, and remediate the threat at each every stage of the attack lifecycle. \"EDR killers endure because they're cheap, consistent, and decoupled from the encryptor – a perfect fit for both encryptor developers, who don’t need to focus on making their encryptors undetectable, and affiliates, who possess an easy-to-use, powerful utility to disrupt defenses prior to encryption,\" ESET said. Found this article interesting?  Follow us on Google News , Twitter and LinkedIn to read more exclusive content we post.",
+      "content_type": [
+        "news"
+      ],
+      "description": "A new analysis of endpoint detection and response (EDR) killers has revealed that 54 of them leverage a technique known as bring your own vulnerable driver ( BYOVD ) by abusing a total of 35 vulnerable drivers. EDR killer programs have been a common presence in ransomware intrusions as they offer a way for affiliates to neutralize security software before deploying file-encrypting malware.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/54-edr-killers-use-byovd-to-exploit-34.html"
+      ],
+      "extra": {
+        "date_raw": "Mar 19, 2026",
+        "aid": "dd4a3e7d6e7d80bccd1af05f1a446a8a7fe9a75d"
+      },
+      "important_content": "A new analysis of endpoint detection and response (EDR) killers has revealed that 54 of them leverage a technique known as bring your own vulnerable driver ( BYOVD ) by abusing a total of 35 vulnerable drivers. EDR killer programs have been a common presence in ransomware intrusions as they offer a way for affiliates to neutralize security software before deploying file-encrypting malware.",
+      "leak_date": "2026-03-19",
+      "links": [
+        "https://thehackernews.com/2026/03/54-edr-killers-use-byovd-to-exploit-34.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "54 EDR Killers Use BYOVD to Exploit 35 Signed Vulnerable Drivers and Disable Security",
+      "url": "https://thehackernews.com/2026/03/54-edr-killers-use-byovd-to-exploit-34.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/54-edr-killers-use-byovd-to-exploit-34.html"
+      ]
+    },
+    {
+      "author": "Ravie Lakshmanan",
+      "base_url": "https://thehackernews.com/",
+      "content": "Apple is urging users who are still running an outdated version of iOS to update their iPhones to secure against web-based attacks carried out via powerful exploit kits like Coruna and DarkSword . These attacks employ malicious web content to target out-of-date versions of iOS, triggering an infection chain that leads to the theft of sensitive data. \"For example, if you're using an older version of iOS and were to click a malicious link or visit a compromised website, the data on your iPhone might be at risk of being stolen,\" Apple said in a support document. \"We thoroughly investigated these issues as they were found and released software updates as quickly as possible for the most recent operating system versions to address vulnerabilities and disrupt such attacks.\" Users who are already on the latest version of the iPhone software do not need to take any action. This includes iOS versions 15 through 26, which come with fixes for the various security flaws weaponized by the exploit kits. For others, Apple is recommending the following course of action - Update to iOS 15.8.7, iPadOS 15.8.7, iOS 16.7.15, and iPadOS 16.7.15 for older devices that cannot update to the latest version of iOS or iPadOS. Update to iOS 15 for devices with iOS 13 or iOS 14 to receive the latest protections along with a Critical Security Update that's expected to be pushed in the \"next few days.\" Consider enabling Lockdown Mode , if available, in scenarios where updating the device is not an option to reduce the attack surface and protect against malicious web content and other threats. \"Keeping your software up to date is the single most important thing you can do to maintain the security of your Apple products, and devices with updated software were not at risk from these reported attacks,\" Cupertino noted. Apple's advisory comes in the wake of recent reports about two iOS exploits that have been put to use by multiple threat actors of varied motivations to steal sensitive data from compromised devices. These kits are delivered through a watering hole attack via compromised websites. iVerify said the discoveries show that iOS vulnerabilities, which were once being abused to selectively target individuals in state-sponsored mobile spyware attacks, are being exploited on a mass-scale by other threat actors. \"The exploit's relative simplicity to deploy, along with its quick adoption by multiple threat actors in multiple countries, signals that these powerful tools are now readily available on the secondary market for less-sophisticated actors,\" Spencer Parker, chief product officer at iVerify, said , adding, \"nation-state-grade mobile exploitation is now available for mass attack.\" \"This represents a new level of scale, making widespread mobile attacks a critical and unavoidable concern for all enterprises. The evidence confirms that these exploits are easy to repurpose and redeploy, making it highly likely that modified deployments are actively infecting unpatched users.\" Found this article interesting?  Follow us on Google News , Twitter and LinkedIn to read more exclusive content we post.",
+      "content_type": [
+        "news"
+      ],
+      "description": "Apple is urging users who are still running an outdated version of iOS to update their iPhones to secure against web-based attacks carried out via powerful exploit kits like Coruna and DarkSword . These attacks employ malicious web content to target out-of-date versions of iOS, triggering an infection chain that leads to the theft of sensitive data.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/apple-warns-older-iphones-vulnerable-to.html"
+      ],
+      "extra": {
+        "date_raw": "Mar 20, 2026",
+        "aid": "7c308b58a7a9c959fa6ba969282db9e676c75d5a"
+      },
+      "important_content": "Apple is urging users who are still running an outdated version of iOS to update their iPhones to secure against web-based attacks carried out via powerful exploit kits like Coruna and DarkSword . These attacks employ malicious web content to target out-of-date versions of iOS, triggering an infection chain that leads to the theft of sensitive data.",
+      "leak_date": "2026-03-20",
+      "links": [
+        "https://thehackernews.com/2026/03/apple-warns-older-iphones-vulnerable-to.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "Apple Warns Older iPhones Vulnerable to Coruna, DarkSword Exploit Kit Attacks",
+      "url": "https://thehackernews.com/2026/03/apple-warns-older-iphones-vulnerable-to.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/apple-warns-older-iphones-vulnerable-to.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/china-linked-red-menshen-uses-stealthy.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "2ad345672299ee506366ff90a6c465c30c34614b"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/china-linked-red-menshen-uses-stealthy.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/china-linked-red-menshen-uses-stealthy.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/china-linked-red-menshen-uses-stealthy.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/cisa-adds-cve-2025-53521-to-kev-after.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "c8b90708238066e4093d803005d87245ac3a2ed8"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/cisa-adds-cve-2025-53521-to-kev-after.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/cisa-adds-cve-2025-53521-to-kev-after.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/cisa-adds-cve-2025-53521-to-kev-after.html"
+      ]
+    },
+    {
+      "author": "Ravie Lakshmanan",
+      "base_url": "https://thehackernews.com/",
+      "content": "A recently disclosed critical security flaw impacting Citrix NetScaler ADC and NetScaler Gateway is witnessing active reconnaissance activity, according to Defused Cyber and watchTowr . The vulnerability, CVE-2026-3055 (CVSS score: 9.3), refers to a case of insufficient input validation leading to memory overread, which an attacker could exploit to leak potentially sensitive information. Per Citrix, successful exploitation of the flaw hinges on the appliance being configured as a SAML Identity Provider (SAML IDP). \"We are now observing auth method fingerprinting activity against NetScaler ADC/Gateway in the wild,\" Defused Cyber said in a post on X. \"Attackers are probing /cgi/GetAuthMethods to enumerate enabled authentication flows in our Citrix honeypots.\" This is likely an attempt on the part of threat actors to determine if NetScaler ADC and NetScaler Gateway are indeed configured as a SAML IDP. In a similar warning, watchTowr said it has detected active reconnaissance against NetScaler instances in its honeypot network, raising the possibility that in-the-wild exploitation can happen anytime. \"Organizations running affected Citrix NetScaler versions in affected configurations need to drop tools and patch immediately,\" the company said. \"When attacker reconnaissance shifts to active exploitation, the window to respond will evaporate.\" The vulnerability affects NetScaler ADC and NetScaler Gateway versions before 14.1-60.58, 14.1 before 14.1-66.59, and 13.1 before 13.1-62.23, as well as NetScaler ADC 13.1-FIPS and 13.1-NDcPP before 13.1-37.262. In recent years, a number of security vulnerabilities affecting NetScaler have come under active exploitation in the wild. These include CVE-2023-4966 (Citrix Bleed), CVE-2025-5777 (Citrix Bleed 2), CVE-2025-6543, and CVE-2025-7775. It's therefore crucial that users move quickly to the latest updates as soon as possible to stay protected, as it's a matter of not if, but when. Update The vulnerability has since come under active exploitation in the wild, with Defused Cyber noting that \"attackers send crafted SAMLRequest payloads to /saml/login omitting the AssertionConsumerServiceURL field, triggering the appliance to leak memory contents via the NSC_TASS cookie.\" According to watchTowr, exploitation attempts have originated from known threat actor source IPs as of March 27, 2026. In an analysis published last week, watchTowr said the vulnerability can be exploited to return sensitive data left over from a previous request in memory via NSC_TASS when sending a request to the \"/saml/login\" endpoint. When the same request is sent to a patched instance, the response is: \"Parsing of presented Assertion failed; Please contact your administrator.\" Further investigation has revealed that CVE-2026-3055 refers to not one singular memory overread vulnerability, but distinct ones that affect the following endpoints - /saml/login /wsfed/passive?wctx For exploitation to occur, a \"wctx\" query string parameter needs to be present in the HTTP request, but without any value and lacking the \"=\" symbol. \"An unpatched/vulnerable Citrix NetScaler will mistakenly check only for its presence before accessing the buffer associated with the variable, rather than checking for the presence of associated data,\" watchTowr researcher Aliz Hammond said . \"Since there is no actual value in the request, it just points to dead memory.\" \"If the target Citrix NetScaler is vulnerable, it'll leak memory all over the place and look like a crime scene. This memory arrives, yet again, Base64-encoded in the very same NSC_TASS cookie we discussed before, but without any of the limitations of the 'other' vulnerability patched within CVE-2026-3055.\" Security Flaw Added to KEV Catalog The U.S. Cybersecurity and Infrastructure Security Agency (CISA) has added CVE-2026-3055 to its Known Exploited Vulnerabilities ( KEV ) catalog, requiring Federal Civilian Executive Branch (FCEB) agencies to apply the fixes by April 2, 2026. (The story was updated after publication on March 30, 2026, to include additional details of the flaw.) Found this article interesting?  Follow us on Google News , Twitter and LinkedIn to read more exclusive content we post.",
+      "content_type": [
+        "news"
+      ],
+      "description": "A recently disclosed critical security flaw impacting Citrix NetScaler ADC and NetScaler Gateway is witnessing active reconnaissance activity, according to Defused Cyber and watchTowr . The vulnerability, CVE-2026-3055 (CVSS score: 9.3), refers to a case of insufficient input validation leading to memory overread, which an attacker could exploit to leak potentially sensitive information.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/citrix-netscaler-under-active-recon-for.html"
+      ],
+      "extra": {
+        "date_raw": "Mar 28, 2026",
+        "aid": "322d71a1b3b11bd42539b57e532c54ffdf86ff7c"
+      },
+      "important_content": "A recently disclosed critical security flaw impacting Citrix NetScaler ADC and NetScaler Gateway is witnessing active reconnaissance activity, according to Defused Cyber and watchTowr . The vulnerability, CVE-2026-3055 (CVSS score: 9.3), refers to a case of insufficient input validation leading to memory overread, which an attacker could exploit to leak potentially sensitive information.",
+      "leak_date": "2026-03-28",
+      "links": [
+        "https://thehackernews.com/2026/03/citrix-netscaler-under-active-recon-for.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "Citrix NetScaler Under Active Recon for CVE-2026-3055 (CVSS 9.3) Memory Overread Bug",
+      "url": "https://thehackernews.com/2026/03/citrix-netscaler-under-active-recon-for.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/citrix-netscaler-under-active-recon-for.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/citrix-urges-patching-critical.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "c4fc841a7aefd95c37a0100a68ecc93ef8bfe102"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/citrix-urges-patching-critical.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/citrix-urges-patching-critical.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/citrix-urges-patching-critical.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/coruna-ios-kit-reuses-2023.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "7a2ab1f8d1ebb955a7a8ff501055475d2d8cfbf4"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/coruna-ios-kit-reuses-2023.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/coruna-ios-kit-reuses-2023.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/coruna-ios-kit-reuses-2023.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/fbi-warns-russian-hackers-target-signal.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "5bd06c058b2e52a73eecc68172c6849c94e4d697"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/fbi-warns-russian-hackers-target-signal.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/fbi-warns-russian-hackers-target-signal.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/fbi-warns-russian-hackers-target-signal.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/fcc-bans-new-foreign-made-routers-over.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "ce5c962b278a369d50fc5c08320b601f4167d781"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/fcc-bans-new-foreign-made-routers-over.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/fcc-bans-new-foreign-made-routers-over.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/fcc-bans-new-foreign-made-routers-over.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/google-adds-24-hour-wait-for-unverified.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "4f363013648a266f5515816708b29a8906e1e91b"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/google-adds-24-hour-wait-for-unverified.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/google-adds-24-hour-wait-for-unverified.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/google-adds-24-hour-wait-for-unverified.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/new-perseus-android-banking-malware.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "89aa5b0fdbb59f355e79c9a602b8788cfdd1d6a2"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/new-perseus-android-banking-malware.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/new-perseus-android-banking-malware.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/new-perseus-android-banking-malware.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/teampcp-backdoors-litellm-versions.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "c780d5ef478fef26bc27ed7efe15d54aa505899f"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/teampcp-backdoors-litellm-versions.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/teampcp-backdoors-litellm-versions.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/teampcp-backdoors-litellm-versions.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/teampcp-pushes-malicious-telnyx.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "9f66ea4b6e2d34b105905b87f5579f20f74de474"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/teampcp-pushes-malicious-telnyx.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/teampcp-pushes-malicious-telnyx.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/teampcp-pushes-malicious-telnyx.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/threatsday-bulletin-pqc-push-ai-vuln.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "1a1bb5cbacdaa9c573ca00fb45edc551eb2122eb"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/threatsday-bulletin-pqc-push-ai-vuln.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/threatsday-bulletin-pqc-push-ai-vuln.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/threatsday-bulletin-pqc-push-ai-vuln.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/trivy-security-scanner-github-actions.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "17c4277c895d8319f54bb28ac271f39547127e6d"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/trivy-security-scanner-github-actions.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/trivy-security-scanner-github-actions.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/trivy-security-scanner-github-actions.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/03/weekly-recap-cicd-backdoor-fbi-buys.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "36acbbb403efbc3699ffe5a14782b5921648b744"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/03/weekly-recap-cicd-backdoor-fbi-buys.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/03/weekly-recap-cicd-backdoor-fbi-buys.html",
+      "weblink": [
+        "https://thehackernews.com/2026/03/weekly-recap-cicd-backdoor-fbi-buys.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/04/china-linked-ta416-targets-european.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "5523793d39c5750a060a8efd69a175c4b0d51949"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/04/china-linked-ta416-targets-european.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/04/china-linked-ta416-targets-european.html",
+      "weblink": [
+        "https://thehackernews.com/2026/04/china-linked-ta416-targets-european.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/04/cisco-patches-98-cvss-imc-and-ssm-flaws.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "943198ee6773883b8ef5fc7b99853c2064531bd6"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/04/cisco-patches-98-cvss-imc-and-ssm-flaws.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/04/cisco-patches-98-cvss-imc-and-ssm-flaws.html",
+      "weblink": [
+        "https://thehackernews.com/2026/04/cisco-patches-98-cvss-imc-and-ssm-flaws.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/04/drift-loses-285-million-in-durable.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "b4dc1370d8015caf32225ef5feec4bc45d3ab7b3"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/04/drift-loses-285-million-in-durable.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/04/drift-loses-285-million-in-durable.html",
+      "weblink": [
+        "https://thehackernews.com/2026/04/drift-loses-285-million-in-durable.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/04/hackers-exploit-cve-2025-55182-to.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "5dea1e4bb2c7a6623f5bf9fc90624dfe6dc04e95"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/04/hackers-exploit-cve-2025-55182-to.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/04/hackers-exploit-cve-2025-55182-to.html",
+      "weblink": [
+        "https://thehackernews.com/2026/04/hackers-exploit-cve-2025-55182-to.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/04/microsoft-details-cookie-controlled-php.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "54d05721bf60a83923911f899e5dd2e885f1c341"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/04/microsoft-details-cookie-controlled-php.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/04/microsoft-details-cookie-controlled-php.html",
+      "weblink": [
+        "https://thehackernews.com/2026/04/microsoft-details-cookie-controlled-php.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/04/new-sparkcat-variant-in-ios-android.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "ef4f1913ba26bee8b45f98423bba0906beb9bf33"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/04/new-sparkcat-variant-in-ios-android.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/04/new-sparkcat-variant-in-ios-android.html",
+      "weblink": [
+        "https://thehackernews.com/2026/04/new-sparkcat-variant-in-ios-android.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/04/the-state-of-trusted-open-source-report.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "216e4b0eaf2d53000e75267df9b7378e7bb1b4b0"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/04/the-state-of-trusted-open-source-report.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/04/the-state-of-trusted-open-source-report.html",
+      "weblink": [
+        "https://thehackernews.com/2026/04/the-state-of-trusted-open-source-report.html"
+      ]
+    },
+    {
+      "author": "",
+      "base_url": "https://thehackernews.com/",
+      "content": "",
+      "content_type": [
+        "news"
+      ],
+      "description": "Content not found.",
+      "dumplink": [
+        "https://thehackernews.com/2026/04/threatsday-bulletin-pre-auth-chains.html"
+      ],
+      "extra": {
+        "date_raw": "",
+        "aid": "442d059e5c80be9dea86ab515e0e8ae0713f4d2a"
+      },
+      "important_content": "Content not found.",
+      "leak_date": null,
+      "links": [
+        "https://thehackernews.com/2026/04/threatsday-bulletin-pre-auth-chains.html"
+      ],
+      "location": "",
+      "network": "clearnet",
+      "screenshot": "",
+      "tag": null,
+      "title": "(No title)",
+      "url": "https://thehackernews.com/2026/04/threatsday-bulletin-pre-auth-chains.html",
+      "weblink": [
+        "https://thehackernews.com/2026/04/threatsday-bulletin-pre-auth-chains.html"
+      ]
+    }
+  ]
+}

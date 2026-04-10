@@ -26,6 +26,7 @@ from crawler.common.crawler_instance.crawler_services.shared.helper_method impor
 from crawler.common.dev_signature import developer_signature
 
 from . import nlp_processor as nlp
+from ._request_utils import create_direct_session
 from .json_saver import save_collector_json
 
 
@@ -355,20 +356,11 @@ class _bleepingcomputer(leak_extractor_interface, ABC):
     # ------- HTTP session (pure requests, no proxy) ---
     def _make_requests_session(self) -> requests.Session:
         print("[BLEEPING] Creating requests session (no proxy) …")
-        s = requests.Session()
-        s.headers.update(
-            {
-                "User-Agent": (
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/121.0.0.0 Safari/537.36"
-                ),
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                "Accept-Language": "en-US,en;q=0.9",
-                "Connection": "close",
-            }
+        return create_direct_session(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/121.0.0.0 Safari/537.36"
         )
-        return s
 
     # ------- author/date extraction ----------
     @staticmethod

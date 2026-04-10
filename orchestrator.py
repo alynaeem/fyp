@@ -173,7 +173,6 @@ def _run_leaks() -> None:
     # --- leak sites (Playwright-based, most need Tor) ---
     from leak_collector.scripts.leak._akiral2iz6a7qgd3ayp3l6yub7xx2uep76idk3u2kollpj5z3z636bad import _akiral2iz6a7qgd3ayp3l6yub7xx2uep76idk3u2kollpj5z3z636bad
     from leak_collector.scripts.leak._business_data_leaks import _business_data_leaks
-    from leak_collector.scripts.leak._darkfeed import _darkfeed
     from leak_collector.scripts.leak._darkleakyqmv62eweqwy4dnhaijg4m4dkburo73pzuqfdumcntqdokyd import _darkleakyqmv62eweqwy4dnhaijg4m4dkburo73pzuqfdumcntqdokyd
     from leak_collector.scripts.leak._dataleakypypu7uwblm5kttv726l3iripago6p336xjnbstkjwrlnlid import _dataleakypypu7uwblm5kttv726l3iripago6p336xjnbstkjwrlnlid
     from leak_collector.scripts.leak._ddosecrets import _ddosecrets
@@ -194,6 +193,13 @@ def _run_leaks() -> None:
     from leak_collector.scripts.leak._ransomware_live import _ransomware_live
     from leak_collector.scripts.leak._rnsmwareartse3m4hjsumjf222pnka6gad26cqxqmbjvevhbnym5p6ad import _rnsmwareartse3m4hjsumjf222pnka6gad26cqxqmbjvevhbnym5p6ad
     from leak_collector.scripts.leak._toufanleaks import _toufanleaks
+
+    optional_leak_sources = []
+    try:
+        from leak_collector.scripts.leak._darkfeed import _darkfeed
+        optional_leak_sources.append(("darkfeed", _darkfeed))
+    except Exception as exc:
+        log.warning(f"  [darkfeed] skipped: optional collector unavailable ({exc})")
 
     init_services()
     proxy = cfg.proxy
@@ -216,7 +222,6 @@ def _run_leaks() -> None:
     leak_sources = [
         ("akira", _akiral2iz6a7qgd3ayp3l6yub7xx2uep76idk3u2kollpj5z3z636bad),
         ("business_data_leaks", _business_data_leaks),
-        ("darkfeed", _darkfeed),
         ("darkleak", _darkleakyqmv62eweqwy4dnhaijg4m4dkburo73pzuqfdumcntqdokyd),
         ("blacklock", _dataleakypypu7uwblm5kttv726l3iripago6p336xjnbstkjwrlnlid),
         ("ddosecrets", _ddosecrets),
@@ -238,6 +243,7 @@ def _run_leaks() -> None:
         ("rnsmware", _rnsmwareartse3m4hjsumjf222pnka6gad26cqxqmbjvevhbnym5p6ad),
         ("toufanleaks", _toufanleaks),
     ]
+    leak_sources.extend(optional_leak_sources)
 
     all_sources = tracking_sources + leak_sources
     for name, cls in all_sources:
@@ -490,10 +496,15 @@ def run_collector(name: str) -> None:
 
 def run_all_collectors(selected: Optional[str] = None) -> None:
     """Run all collectors (or a single one if `selected` is given)."""
+    from concurrent.futures import ThreadPoolExecutor
+    
     targets = [selected] if selected else list(COLLECTORS)
     log.info(f"=== DarkPulse Orchestrator | collectors={targets} | proxy={cfg.tor_proxy_url or 'none'} ===")
-    for name in targets:
-        run_collector(name)
+    
+    # Run all collectors in parallel to hit the 10k target as fast as possible
+    with ThreadPoolExecutor(max_workers=len(targets)) as executor:
+        executor.map(run_collector, targets)
+        
     log.info("=== All collectors finished ===")
 
 

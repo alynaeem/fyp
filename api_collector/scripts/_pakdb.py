@@ -28,7 +28,8 @@ class _pakdb(api_collector_interface, ABC):
 
     _instance = None
 
-    BASE_URL = "https://pakistandatabase.com/index.php"
+    BASE_URL = "https://pakistandatabase.com/databases/sim.php"
+    ONION_URL = "http://pakdbwftdzn3xwslrzewbtsju63wep2xn37klmhqjuynp554vhjtdiad.onion/index.php"
     TOR_SOCKS_PLAYWRIGHT = "socks5://127.0.0.1:9150"
     TOR_SOCKS_REQUESTS = "socks5h://127.0.0.1:9150"
 
@@ -155,7 +156,7 @@ class _pakdb(api_collector_interface, ABC):
             print("[PW] Launching browser via Tor:", self.TOR_SOCKS_PLAYWRIGHT)
 
             browser = p.chromium.launch(
-                headless=False,
+                headless=True,
                 proxy={"server": self.TOR_SOCKS_PLAYWRIGHT},
                 args=[
                     "--no-sandbox",
@@ -183,6 +184,7 @@ class _pakdb(api_collector_interface, ABC):
                 print(f"[PW] Navigating to {self.BASE_URL}...")
                 page.goto(self.BASE_URL, wait_until="domcontentloaded", timeout=timeout_ms)
 
+                # Note: The user's screenshot of sim.php shows the same search structure
                 input_sel = "input[name='search_query']"
                 btn_sel = "form button[type='submit']"
 

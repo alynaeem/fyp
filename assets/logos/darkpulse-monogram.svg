@@ -1,0 +1,42 @@
+<svg width="1200" height="320" viewBox="0 0 1200 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="monoAccent" x1="40" y1="30" x2="190" y2="170" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF725D"/>
+      <stop offset="1" stop-color="#D61D55"/>
+    </linearGradient>
+    <filter id="monoGlow" x="0" y="0" width="220" height="220" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0.95 0 1 0 0 0.15 0 0 1 0 0.32 0 0 0 0.25 0"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="320" rx="36" fill="#09111C"/>
+  <rect x="16" y="16" width="1168" height="288" rx="24" stroke="#172639" stroke-width="2"/>
+
+  <g transform="translate(50 54)">
+    <rect x="8" y="8" width="172" height="172" rx="38" fill="#0C1524" stroke="#223248" stroke-width="2"/>
+    <rect x="34" y="34" width="120" height="120" rx="28" fill="#0A1420" stroke="url(#monoAccent)" stroke-width="4"/>
+    <path d="M66 55V138H98C118 138 132 125 132 107C132 93 123 83 109 80C123 76 132 64 132 50C132 31 117 18 95 18H66V55Z" transform="translate(0 18)" fill="none" stroke="#FFD9D2" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M112 78H144C162 78 176 92 176 110C176 129 161 144 142 144H112V78Z" transform="translate(-24 -6)" fill="none" stroke="url(#monoAccent)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M42 122H69L81 102L96 138L112 112L129 122" stroke="#FF866F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="26" y="26" width="136" height="136" rx="32" filter="url(#monoGlow)" fill="url(#monoAccent)" fill-opacity="0.12"/>
+  </g>
+
+  <g transform="translate(282 74)">
+    <text x="0" y="72" fill="#F4F6FB" font-family="Outfit, Arial, sans-serif" font-weight="800" font-size="72" letter-spacing="1.5">DARKPULSE</text>
+    <text x="6" y="118" fill="#9EB0C5" font-family="Outfit, Arial, sans-serif" font-weight="600" font-size="26" letter-spacing="9">INTELLIGENCE PLATFORM</text>
+    <g transform="translate(4 152)">
+      <rect width="160" height="40" rx="20" fill="#101A29" stroke="#1E3046"/>
+      <text x="26" y="26" fill="#FF6B57" font-family="JetBrains Mono, monospace" font-weight="700" font-size="17" letter-spacing="2">SIGNAL FUSION</text>
+    </g>
+    <g transform="translate(178 152)">
+      <rect width="186" height="40" rx="20" fill="#101A29" stroke="#1E3046"/>
+      <text x="23" y="26" fill="#FF8766" font-family="JetBrains Mono, monospace" font-weight="700" font-size="17" letter-spacing="2">THREAT HUNTING</text>
+    </g>
+    <g transform="translate(378 152)">
+      <rect width="210" height="40" rx="20" fill="#101A29" stroke="#1E3046"/>
+      <text x="22" y="26" fill="#FF4D73" font-family="JetBrains Mono, monospace" font-weight="700" font-size="17" letter-spacing="2">DARKNET WATCHLIST</text>
+    </g>
+    <text x="4" y="236" fill="#8EA0B4" font-family="Outfit, Arial, sans-serif" font-weight="500" font-size="23">Custom monogram concept for high-confidence cyber threat operations.</text>
+  </g>
+</svg>

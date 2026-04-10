@@ -17,6 +17,7 @@ from crawler.common.crawler_instance.crawler_services.shared.helper_method impor
 from crawler.common.dev_signature import developer_signature
 from . import nlp_processor as nlp
 from .json_saver import save_collector_json
+from ._request_utils import create_direct_session
 
 
 
@@ -254,6 +255,7 @@ class _thehackernews(leak_extractor_interface, ABC):
         self._redis_set(f"{base}:description", card.m_description)
         self._redis_set(f"{base}:location", card.m_location or "")
         self._redis_set(f"{base}:content", card.m_content or "")
+        self._redis_set(f"{base}:screenshot", card.m_screenshot or "")
         self._redis_set(f"{base}:network:type", card.m_network)
         self._redis_set(f"{base}:seed_url", self.seed_url)
         self._redis_set(f"{base}:rendered", "1")
@@ -297,15 +299,28 @@ class _thehackernews(leak_extractor_interface, ABC):
         self._append_index(self._processed_index_key, aid)
 
     # ------- HTTP session (fallback path) ---
-    def _make_requests_session(self) -> requests.Session:
+    def _make_requests_session(self, use_proxy: bool = True) -> requests.Session:
         print("[THN] Creating requests session …")
-        s = requests.Session()
-        s.headers.update({"User-Agent": "THNCollector/1.0 (+contact)"})
+        s = create_direct_session("THNCollector/1.0 (+contact)")
         server = (self._proxy or {}).get("server")
-        if server:
+        if use_proxy and server:
             s.proxies.update({"http": server, "https": server})
             print(f"[THN] requests will use proxy: {server}")
         return s
+
+    def _session_get(self, session: requests.Session, url: str, timeout: int = 60) -> requests.Response:
+        try:
+            response = session.get(url, timeout=timeout)
+            response.raise_for_status()
+            return response
+        except requests.RequestException as ex:
+            if session.proxies:
+                print(f"[THN] Proxy request failed for {url}: {ex}. Retrying without proxy …")
+                direct = self._make_requests_session(use_proxy=False)
+                response = direct.get(url, timeout=timeout)
+                response.raise_for_status()
+                return response
+            raise
 
     # ------- Playwright helpers -------------
     def _launch_browser(self, p, use_proxy: bool) -> Tuple[object, object]:
@@ -318,7 +333,15 @@ class _thehackernews(leak_extractor_interface, ABC):
         else:
             print("[THN] Launching Chromium WITHOUT proxy")
         browser = p.chromium.launch(**launch_kwargs)
-        context = browser.new_context()
+        context = browser.new_context(
+            user_agent=(
+                "Mozilla/5.0 (X11; Linux x86_64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/123.0.0.0 Safari/537.36"
+            ),
+            locale="en-US",
+            viewport={"width": 1440, "height": 1800},
+        )
         return browser, context
 
     # ------- robust author/date extraction --
@@ -392,6 +415,182 @@ class _thehackernews(leak_extractor_interface, ABC):
                 date_raw = m.group(0)
 
         return author, date_raw
+
+    @staticmethod
+    def _clean_story_text(text: str) -> str:
+        return re.sub(r"\s+", " ", (text or "").replace("\xa0", " ")).strip()
+
+    @staticmethod
+    def _dedupe_texts(values: List[str]) -> List[str]:
+        seen = set()
+        out = []
+        for value in values:
+            text = _thehackernews._clean_story_text(value)
+            if not text or text in seen:
+                continue
+            seen.add(text)
+            out.append(text)
+        return out
+
+    @staticmethod
+    def _meta_content(soup: BeautifulSoup, attr_name: str, attr_value: str) -> str:
+        tag = soup.find("meta", attrs={attr_name: attr_value})
+        if not tag:
+            return ""
+        return _thehackernews._clean_story_text(tag.get("content", ""))
+
+    def _extract_title(self, soup: BeautifulSoup, link: str) -> str:
+        selectors = [
+            "h1.post-title",
+            "h1.entry-title",
+            "h1.article-title",
+            "article h1",
+            "main h1",
+            "h1",
+        ]
+        for selector in selectors:
+            node = soup.select_one(selector)
+            if node:
+                title = self._clean_story_text(node.get_text(" ", strip=True))
+                if title:
+                    return re.sub(r"\s*\|\s*The Hacker News\s*$", "", title, flags=re.IGNORECASE)
+
+        for attr_name, attr_value in [
+            ("property", "og:title"),
+            ("name", "twitter:title"),
+            ("name", "title"),
+        ]:
+            title = self._meta_content(soup, attr_name, attr_value)
+            if title:
+                return re.sub(r"\s*\|\s*The Hacker News\s*$", "", title, flags=re.IGNORECASE)
+
+        title_tag = soup.find("title")
+        if title_tag:
+            title = self._clean_story_text(title_tag.get_text(" ", strip=True))
+            if title:
+                return re.sub(r"\s*\|\s*The Hacker News\s*$", "", title, flags=re.IGNORECASE)
+
+        slug = link.rstrip("/").rsplit("/", 1)[-1]
+        slug = re.sub(r"\.html?$", "", slug, flags=re.IGNORECASE)
+        slug = slug.replace("-", " ").strip()
+        if slug:
+            return " ".join(part.upper() if part.isupper() else part.capitalize() for part in slug.split())
+        return "(No title)"
+
+    def _extract_hero_image(self, soup: BeautifulSoup) -> str:
+        for attr_name, attr_value in [
+            ("property", "og:image"),
+            ("name", "twitter:image"),
+        ]:
+            image = self._meta_content(soup, attr_name, attr_value)
+            if image.startswith(("http://", "https://")):
+                return image
+
+        image_node = soup.select_one("article img[src], main img[src], .post-body img[src], .entry-content img[src]")
+        if image_node:
+            src = self._clean_story_text(image_node.get("src", ""))
+            if src.startswith(("http://", "https://")):
+                return src
+        return ""
+
+    def _extract_content(self, soup: BeautifulSoup) -> Tuple[str, str]:
+        selectors = [
+            "div.articlebody",
+            "div[itemprop='articleBody']",
+            "section[itemprop='articleBody']",
+            ".post-body",
+            ".entry-content",
+            ".article-content",
+            "article",
+            "main",
+        ]
+        paragraphs: List[str] = []
+        skip_markers = (
+            "follow us on",
+            "subscribe to our",
+            "read more from the hacker news",
+            "join our",
+            "sponsored",
+            "advertisement",
+        )
+
+        for selector in selectors:
+            node = soup.select_one(selector)
+            if not node:
+                continue
+            candidate = []
+            for para in node.select("p, li"):
+                text = self._clean_story_text(para.get_text(" ", strip=True))
+                lower = text.lower()
+                if len(text) < 35:
+                    continue
+                if any(marker in lower for marker in skip_markers):
+                    continue
+                candidate.append(text)
+            candidate = self._dedupe_texts(candidate)
+            full_text = " ".join(candidate).strip()
+            if len(full_text) >= 160:
+                paragraphs = candidate
+                break
+
+        if not paragraphs:
+            fallback = []
+            for para in soup.select("article p, main p, p"):
+                text = self._clean_story_text(para.get_text(" ", strip=True))
+                if len(text) >= 40:
+                    fallback.append(text)
+            paragraphs = self._dedupe_texts(fallback[:20])
+
+        full_text = " ".join(paragraphs).strip()
+        meta_description = (
+            self._meta_content(soup, "property", "og:description")
+            or self._meta_content(soup, "name", "description")
+            or self._meta_content(soup, "name", "twitter:description")
+        )
+        if not full_text and meta_description:
+            full_text = meta_description
+
+        summary_source = full_text or meta_description
+        first_two_sentences = "Content not found."
+        if summary_source:
+            parts = re.split(r"(?<=[.!?])\s+", summary_source)
+            first_two = [part for part in parts if part][:2]
+            first_two_sentences = " ".join(first_two).strip() or self._clean_story_text(summary_source[:280])
+
+        return full_text, first_two_sentences
+
+    def _extract_article_payload(self, soup: BeautifulSoup, link: str) -> dict:
+        title = self._extract_title(soup, link)
+        author, date_raw = self._extract_author_date(soup)
+        full_text, first_two_sentences = self._extract_content(soup)
+        hero_image = self._extract_hero_image(soup)
+        parsed_date = self._parse_date(date_raw)
+        return {
+            "title": title,
+            "author": author,
+            "date_raw": date_raw,
+            "parsed_date": parsed_date,
+            "full_text": full_text,
+            "summary": first_two_sentences,
+            "hero_image": hero_image,
+        }
+
+    @staticmethod
+    def _is_interstitial_payload(payload: dict) -> bool:
+        title = (payload.get("title") or "").strip().lower()
+        summary = (payload.get("summary") or "").strip().lower()
+        full_text = (payload.get("full_text") or "").strip().lower()
+        blocked_markers = (
+            "security service to protect against malicious bots",
+            "verifies you are not a bot",
+            "enable javascript and cookies to continue",
+            "checking if the site connection is secure",
+        )
+        if any(marker in " ".join((title, summary, full_text)) for marker in blocked_markers):
+            return True
+        if title in {"just a moment...", "thehackernews.com"} and not payload.get("author") and not payload.get("date_raw"):
+            return True
+        return summary == "content not found." and not payload.get("author")
 
     # ------- index page helpers (pagination) ----
     def _extract_article_links_from_index(self, soup: BeautifulSoup) -> Set[str]:
@@ -484,51 +683,39 @@ class _thehackernews(leak_extractor_interface, ABC):
             for idx, link in enumerate(visit_list, 1):
                 try:
                     print(f"[THN] Visiting [{idx}/{len(visit_list)}]: {link}")
-                    page.goto(link, timeout=60000, wait_until="load")
+                    page.goto(link, timeout=60000, wait_until="domcontentloaded")
+                    page.wait_for_timeout(2500)
                     s = BeautifulSoup(page.content(), "html.parser")
-
-                    # title
-                    title_el = s.select_one("h1, .post-title, .entry-title, .article-title")
-                    title = title_el.get_text(strip=True) if title_el else "(No title)"
-
-                    # author + date
-                    author, date_raw = self._extract_author_date(s)
-
-                    # content
-                    content_tag = None
-                    for sel in ["div.articlebody", ".post-body", ".entry-content", ".article-content"]:
-                        el = s.select_one(sel)
-                        if el:
-                            content_tag = el
-                            break
-
-                    full_text = ""
-                    first_two_sentences = "Content not found."
-                    if content_tag:
-                        full_text = content_tag.get_text(" ", strip=True).replace("\n", " ")
-                        parts = re.split(r"(?<=[.!?])\s+", full_text)
-                        first_two = parts[:2]
-                        first_two_sentences = " ".join(first_two).strip() or first_two_sentences
-
-                    parsed_date = self._parse_date(date_raw)
+                    payload = self._extract_article_payload(s, link)
+                    if self._is_interstitial_payload(payload):
+                        page.wait_for_timeout(6500)
+                        s = BeautifulSoup(page.content(), "html.parser")
+                        payload = self._extract_article_payload(s, link)
+                    if self._is_interstitial_payload(payload):
+                        print(f"[THN] ⚠ Skipping interstitial/challenge page: {link}")
+                        continue
 
                     card = news_model(
-                        m_screenshot="",
-                        m_title=title,
+                        m_screenshot=payload["hero_image"],
+                        m_title=payload["title"],
                         m_weblink=[link],
                         m_dumplink=[link],
                         m_url=link,
                         m_base_url=self.base_url,
-                        m_content=full_text,
+                        m_content=payload["full_text"],
                         m_network=helper_method.get_network_type(self.base_url),
-                        m_important_content=first_two_sentences,
+                        m_important_content=payload["summary"],
                         m_content_type=["news"],
-                        m_leak_date=parsed_date,
-                        m_author=author,
-                        m_description=first_two_sentences,
+                        m_leak_date=payload["parsed_date"],
+                        m_author=payload["author"],
+                        m_description=payload["summary"],
                         m_location="",
                         m_links=[link],
-                        m_extra={"date_raw": date_raw}
+                        m_extra={
+                            "date_raw": payload["date_raw"],
+                            "hero_image": payload["hero_image"],
+                            "source_name": "thehackernews.com",
+                        }
                     )
                     entity = entity_model(m_scrap_file=self.__class__.__name__, m_team="hackernews live")
 
@@ -537,8 +724,8 @@ class _thehackernews(leak_extractor_interface, ABC):
                     aid = self._store_raw_card(card)
 
                     collected += 1
-                    print(f"[THN] ✅ Parsed ({collected}/{len(visit_list)}): {title[:80]}")
-                    print(f"[THN]    Author: {author or '(n/a)'} | Date: {date_raw or '(n/a)'} | AID: {aid}")
+                    print(f"[THN] ✅ Parsed ({collected}/{len(visit_list)}): {payload['title'][:80]}")
+                    print(f"[THN]    Author: {payload['author'] or '(n/a)'} | Date: {payload['date_raw'] or '(n/a)'} | AID: {aid}")
 
                 except Exception as ex:
                     print(f"[THN] ❌ Error parsing article {link}: {ex}")
@@ -576,8 +763,7 @@ class _thehackernews(leak_extractor_interface, ABC):
         current_url = self.seed_url
 
         for page_no in range(1, self._max_pages + 1):
-            r = session.get(current_url, timeout=60)
-            r.raise_for_status()
+            r = self._session_get(session, current_url, timeout=60)
             soup = BeautifulSoup(r.text, "html.parser")
 
             page_links = self._extract_article_links_from_index(soup)
@@ -600,49 +786,34 @@ class _thehackernews(leak_extractor_interface, ABC):
         print(f"[THN] Visiting {len(visit_list)} articles (requests mode)")
         for idx, link in enumerate(visit_list, 1):
             try:
-                art = session.get(link, timeout=60)
-                art.raise_for_status()
+                art = self._session_get(session, link, timeout=60)
                 s = BeautifulSoup(art.text, "html.parser")
-
-                title_el = s.select_one("h1, .post-title, .entry-title, .article-title")
-                title = title_el.get_text(strip=True) if title_el else "(No title)"
-
-                author, date_raw = self._extract_author_date(s)
-
-                content_tag = None
-                for sel in ["div.articlebody", ".post-body", ".entry-content", ".article-content"]:
-                    el = s.select_one(sel)
-                    if el:
-                        content_tag = el
-                        break
-
-                full_text = ""
-                first_two_sentences = "Content not found."
-                if content_tag:
-                    full_text = content_tag.get_text(" ", strip=True).replace("\n", " ")
-                    parts = re.split(r"(?<=[.!?])\s+", full_text)
-                    first_two = parts[:2]
-                    first_two_sentences = " ".join(first_two).strip() or first_two_sentences
-
-                parsed_date = self._parse_date(date_raw)
+                payload = self._extract_article_payload(s, link)
+                if self._is_interstitial_payload(payload):
+                    print(f"[THN] ⚠ Skipping interstitial/challenge page in requests mode: {link}")
+                    continue
 
                 card = news_model(
-                    m_screenshot="",
-                    m_title=title,
+                    m_screenshot=payload["hero_image"],
+                    m_title=payload["title"],
                     m_weblink=[link],
                     m_dumplink=[link],
                     m_url=link,
                     m_base_url=self.base_url,
-                    m_content=full_text,
+                    m_content=payload["full_text"],
                     m_network=helper_method.get_network_type(self.base_url),
-                    m_important_content=first_two_sentences,
+                    m_important_content=payload["summary"],
                     m_content_type=["news"],
-                    m_leak_date=parsed_date,
-                    m_author=author,
-                    m_description=first_two_sentences,
+                    m_leak_date=payload["parsed_date"],
+                    m_author=payload["author"],
+                    m_description=payload["summary"],
                     m_location="",
                     m_links=[link],
-                    m_extra={"date_raw": date_raw}
+                    m_extra={
+                        "date_raw": payload["date_raw"],
+                        "hero_image": payload["hero_image"],
+                        "source_name": "thehackernews.com",
+                    }
                 )
                 entity = entity_model(m_scrap_file=self.__class__.__name__, m_team="hackernews live")
 
@@ -651,8 +822,8 @@ class _thehackernews(leak_extractor_interface, ABC):
                 aid = self._store_raw_card(card)
 
                 collected += 1
-                print(f"[THN] ✅ Parsed (requests) ({idx}/{len(visit_list)}): {title[:80]}")
-                print(f"[THN]    Author: {author or '(n/a)'} | Date: {date_raw or '(n/a)'} | AID: {aid}")
+                print(f"[THN] ✅ Parsed (requests) ({idx}/{len(visit_list)}): {payload['title'][:80]}")
+                print(f"[THN]    Author: {payload['author'] or '(n/a)'} | Date: {payload['date_raw'] or '(n/a)'} | AID: {aid}")
 
             except Exception as ex:
                 print(f"[THN] ❌ Error (requests) parsing {link}: {ex}")
@@ -688,6 +859,8 @@ class _thehackernews(leak_extractor_interface, ABC):
                     "content": card.m_content,
                     "network": {"type": card.m_network},
                     "seed_url": self.seed_url,
+                    "screenshot": card.m_screenshot,
+                    "source_name": "thehackernews.com",
                     "rendered": True,
                     "scraped_at": int(datetime.now(timezone.utc).timestamp())
                 }
@@ -703,6 +876,15 @@ class _thehackernews(leak_extractor_interface, ABC):
                 card.m_extra["aid"] = aid
 
                 if processed:
+                    processed["screenshot"] = card.m_screenshot or ""
+                    processed["source_name"] = "thehackernews.com"
+                    hero_image = ""
+                    try:
+                        hero_image = (card.m_extra or {}).get("hero_image", "")  # type: ignore
+                    except Exception:
+                        hero_image = ""
+                    if hero_image:
+                        processed["hero_image"] = hero_image
                     nlp._RedisIO().write_processed(aid, processed)
 
                     date_raw_out = str(processed.get("date_raw") or rec.get("date") or "")

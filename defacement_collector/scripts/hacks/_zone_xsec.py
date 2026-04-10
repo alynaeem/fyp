@@ -3,7 +3,7 @@ import hashlib
 from abc import ABC
 from datetime import datetime, timezone
 from typing import List, Optional, Dict, Tuple, Set
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 from playwright.sync_api import Page, sync_playwright
 
@@ -315,7 +315,7 @@ class _zone_xsec(leak_extractor_interface, ABC):
                     pass
 
     # ---------------- storage ----------------
-    def _store_raw_card(self, aid: str, card: defacement_model, ent: entity_model, fields: Dict[str, str]) -> str:
+    def _store_raw_card(self, aid: str, card: defacement_model, ent: entity_model, fields: Dict[str, object]) -> str:
         base = f"ZONEXSEC:raw:{aid}"
         ent_base = f"{base}:entity"
 
@@ -324,6 +324,9 @@ class _zone_xsec(leak_extractor_interface, ABC):
         self._redis_set(f"{base}:network:type", card.m_network or "")
         self._redis_set(f"{base}:leak_date", str(card.m_leak_date or ""))
         self._redis_set(f"{base}:content", card.m_content or "")
+        self._redis_set(f"{base}:title", card.m_title or "")
+        self._redis_set(f"{base}:description", card.m_description or "")
+        self._redis_set(f"{base}:screenshot", card.m_screenshot or "")
         self._redis_set(f"{base}:scraped_at", int(datetime.now(timezone.utc).timestamp()))
         self._redis_set(f"{base}:seed_url", self.seed_url)
         self._redis_set(f"{base}:rendered", "1")
@@ -342,6 +345,11 @@ class _zone_xsec(leak_extractor_interface, ABC):
         self._redis_set(f"{base}:mirror_links_count", len(mirrors))
         for i, u in enumerate(mirrors):
             self._redis_set(f"{base}:mirror_link:{i}", u)
+
+        screenshots = getattr(card, "m_screenshot_links", []) or []
+        self._redis_set(f"{base}:screenshot_links_count", len(screenshots))
+        for i, u in enumerate(screenshots):
+            self._redis_set(f"{base}:screenshot_link:{i}", u)
 
         servers = getattr(card, "m_web_server", []) or []
         self._redis_set(f"{base}:web_server_count", len(servers))
@@ -411,7 +419,7 @@ class _zone_xsec(leak_extractor_interface, ABC):
         return links
 
     # ---------------- detail helpers ----------------
-    def _extract_detail_fields(self, mirror_page: Page, fallback_url: str) -> Dict[str, str]:
+    def _extract_detail_fields(self, mirror_page: Page, fallback_url: str) -> Dict[str, object]:
         """
         Extracts important fields from a Zone-X mirror detail page.
         """
@@ -434,6 +442,18 @@ class _zone_xsec(leak_extractor_interface, ABC):
         iframe = mirror_page.query_selector("iframe")
         iframe_src = self._safe_strip(iframe.get_attribute("src") if iframe else "")
 
+        screenshot_links: List[str] = []
+        for img in mirror_page.query_selector_all("img[src]"):
+            src = self._safe_strip(img.get_attribute("src"))
+            if not src:
+                continue
+            if src.startswith("data:image/"):
+                screenshot_links.append(src)
+            else:
+                screenshot_links.append(urljoin(self.base_url, src))
+
+        screenshot_links = list(dict.fromkeys(screenshot_links))
+
         return {
             "target_url": extracted_url,
             "ip": ip,
@@ -443,7 +463,18 @@ class _zone_xsec(leak_extractor_interface, ABC):
             "saved_on": saved_on,
             "team": team,
             "iframe_src": iframe_src,
+            "screenshot_links": screenshot_links,
         }
+
+    @staticmethod
+    def _title_from_target(target_url: str, fallback_url: str) -> str:
+        candidate = (target_url or fallback_url or "").strip()
+        if not candidate:
+            return "Untitled"
+        try:
+            return urlparse(candidate).hostname or candidate
+        except Exception:
+            return candidate
 
     # ---------------- main parse ----------------
     def parse_leak_data(self, page: Page):
@@ -513,10 +544,12 @@ class _zone_xsec(leak_extractor_interface, ABC):
 
                 fields = self._extract_detail_fields(mirror_page, fallback_url=mirror_url)
                 dt_obj, date_obj = self._parse_zone_date(fields.get("saved_on", ""))
+                target_url = fields.get("target_url", "") or mirror_url
+                content_target = fields.get("iframe_src", "") or target_url or fields.get("ip", "")
 
                 # IMPORTANT: keep helper_method.extract_refhtml usage (same as your script)
                 content = helper_method.extract_refhtml(
-                    fields.get("ip", ""),
+                    content_target,
                     self.invoke_db,
                     REDIS_COMMANDS,
                     CUSTOM_SCRIPT_REDIS_KEYS,
@@ -524,9 +557,35 @@ class _zone_xsec(leak_extractor_interface, ABC):
                     mirror_page,
                 )
 
-                target_url = fields.get("target_url", "") or mirror_url
+                screenshot_base64 = ""
+                try:
+                    screenshot_base64 = helper_method.get_screenshot_base64(
+                        mirror_page,
+                        self._title_from_target(target_url, mirror_url),
+                        mirror_url,
+                    )
+                except Exception:
+                    screenshot_base64 = ""
+
+                title = self._title_from_target(target_url, mirror_url)
+                description_bits = []
+                if fields.get("defacer"):
+                    description_bits.append(f"Defacer: {fields['defacer']}")
+                if fields.get("team"):
+                    description_bits.append(f"Team: {fields['team']}")
+                if fields.get("location"):
+                    description_bits.append(f"Location: {fields['location']}")
+                if fields.get("ip"):
+                    description_bits.append(f"IP: {fields['ip']}")
+                if fields.get("web_server"):
+                    description_bits.append(f"Web Server: {fields['web_server']}")
+                if content:
+                    description_bits.append(content[:320])
+                description = " | ".join(part for part in description_bits if part)[:900]
 
                 card = defacement_model(
+                    m_title=title,
+                    m_description=description,
                     m_web_server=[fields.get("web_server")] if fields.get("web_server") else [],
                     m_source_url=[mirror_url],
                     m_content=content or "",
@@ -534,8 +593,14 @@ class _zone_xsec(leak_extractor_interface, ABC):
                     m_url=target_url,
                     m_ioc_type=["hacked"],
                     m_mirror_links=[fields.get("iframe_src")] if fields.get("iframe_src") else [],
+                    m_screenshot_links=fields.get("screenshot_links") or [],
+                    m_screenshot=screenshot_base64,
                     m_network=helper_method.get_network_type(self.base_url),
                     m_leak_date=date_obj,
+                    m_extra={
+                        "location": fields.get("location", ""),
+                        "saved_on": fields.get("saved_on", ""),
+                    },
                 )
 
                 ent = entity_model(

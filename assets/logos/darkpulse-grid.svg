@@ -1,0 +1,39 @@
+<svg width="1200" height="320" viewBox="0 0 1200 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gridAccent" x1="38" y1="24" x2="180" y2="182" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF715D"/>
+      <stop offset="1" stop-color="#E0244D"/>
+    </linearGradient>
+    <pattern id="gridPattern" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M16 0H0V16" fill="none" stroke="#152336" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="320" rx="36" fill="#08111B"/>
+  <rect x="16" y="16" width="1168" height="288" rx="24" stroke="#142438" stroke-width="2"/>
+
+  <g transform="translate(44 48)">
+    <rect x="0" y="0" width="188" height="188" rx="42" fill="#0B1522" stroke="#22344A" stroke-width="2"/>
+    <rect x="12" y="12" width="164" height="164" rx="34" fill="url(#gridPattern)"/>
+    <path d="M34 116L64 82L92 100L122 58L154 74" stroke="url(#gridAccent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="34" cy="116" r="8" fill="#FF715D"/>
+    <circle cx="64" cy="82" r="8" fill="#FF8C65"/>
+    <circle cx="92" cy="100" r="8" fill="#FF4F73"/>
+    <circle cx="122" cy="58" r="8" fill="#FFD8D1"/>
+    <circle cx="154" cy="74" r="8" fill="#FF715D"/>
+    <path d="M36 143H152" stroke="#22344A" stroke-width="2"/>
+    <path d="M36 152H118" stroke="#22344A" stroke-width="2"/>
+    <path d="M36 161H92" stroke="#22344A" stroke-width="2"/>
+    <circle cx="94" cy="94" r="72" stroke="#2A3C53" stroke-width="2" stroke-dasharray="10 12"/>
+  </g>
+
+  <g transform="translate(286 76)">
+    <text x="0" y="70" fill="#F5F6FB" font-family="Outfit, Arial, sans-serif" font-weight="800" font-size="72" letter-spacing="2">DARKPULSE</text>
+    <text x="2" y="117" fill="#FF6B57" font-family="Outfit, Arial, sans-serif" font-weight="700" font-size="28" letter-spacing="7">INTELLIGENCE</text>
+    <text x="2" y="166" fill="#92A4B8" font-family="Outfit, Arial, sans-serif" font-weight="500" font-size="23">Grid-driven monitoring identity for dark web feeds, hostile signal mapping, and analyst triage.</text>
+    <g transform="translate(2 202)">
+      <path d="M0 0H548" stroke="#1B2C40" stroke-width="2"/>
+      <text x="0" y="34" fill="#D9E3ED" font-family="JetBrains Mono, monospace" font-weight="600" font-size="18" letter-spacing="2">NODE CORRELATION / LEAK TRACKING / SHADOW INFRASTRUCTURE VISIBILITY</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,10 @@
+{
+  "SchemaVersion": 2,
+  "Trivy": {
+    "Version": "0.69.1"
+  },
+  "ReportID": "019d718b-7169-760f-ac07-1192098a71e0",
+  "CreatedAt": "2026-04-09T14:20:57.193400282+05:00",
+  "ArtifactName": "/home/muhmmad-abdullah/.cache/darkpulse/trivy_repos/repo_trivy_6x532f2g",
+  "ArtifactType": "filesystem"
+}

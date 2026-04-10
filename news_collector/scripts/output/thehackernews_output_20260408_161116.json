@@ -1,0 +1,10 @@
+{
+  "meta": {
+    "source": "thehackernews",
+    "seed_url": "https://thehackernews.com/",
+    "articles_collected": 0,
+    "scraped_at_utc": "2026-04-08T16:11:16.117252+00:00",
+    "developer_signature": "Anonymous"
+  },
+  "data": []
+}

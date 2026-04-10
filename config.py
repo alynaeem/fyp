@@ -47,6 +47,8 @@ class DarkPulseConfig:
 
     # ── GitHub ───────────────────────────────────────────────────────────────
     github_token: str = ""
+    gemini_api_key: str = ""
+    pagespeed_api_key: str = ""
 
     # ── Collector defaults ───────────────────────────────────────────────────
     max_pages: int = 5
@@ -54,10 +56,16 @@ class DarkPulseConfig:
 
     # ── Scheduler ────────────────────────────────────────────────────────────
     schedule_interval_hours: int = 6   # how often orchestrator runs all collectors
+    healing_monitor_enabled: bool = False
+    healing_monitor_interval_minutes: int = 180
+    healing_monitor_target_limit: int = 12
 
     # ── Logging ──────────────────────────────────────────────────────────────
     log_level: str = "INFO"
     log_dir: str = "logs"
+    n8n_webhook_url: str = ""      # e.g. "http://localhost:5678/webhook/..." from Arya's workflow
+    n8n_webhook_secret: str = ""   # optional shared secret header for secure n8n triggers
+    arya_notification_channel: str = "Dashboard Alert"
 
     @property
     def proxy(self) -> Optional[Dict[str, str]]:
@@ -87,8 +95,11 @@ class DarkPulseConfig:
             f"proxy={proxy_display}, "
             f"mongo={self.mongo_uri}/{self.mongo_db}, "
             f"github_token={token_display}, "
+            f"gemini_api_key={'***set***' if self.gemini_api_key else '(not set)'}, "
             f"api_key={key_display}, "
-            f"schedule={self.schedule_interval_hours}h"
+            f"schedule={self.schedule_interval_hours}h, "
+            f"healing_monitor={'on' if self.healing_monitor_enabled else 'off'}@{self.healing_monitor_interval_minutes}m, "
+            f"arya_channel={self.arya_notification_channel}"
             f")"
         )
 
@@ -105,11 +116,19 @@ def _load() -> DarkPulseConfig:
         api_host=os.getenv("API_HOST", "0.0.0.0"),
         api_port=_int(os.getenv("API_PORT", "8000"), 8000),
         github_token=os.getenv("GITHUB_TOKEN", ""),
+        gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
+        pagespeed_api_key=os.getenv("PAGESPEED_API_KEY", ""),
         max_pages=_int(os.getenv("MAX_PAGES", "5"), 5),
         max_articles=_int(os.getenv("MAX_ARTICLES", "50"), 50),
         schedule_interval_hours=_int(os.getenv("SCHEDULE_INTERVAL_HOURS", "6"), 6),
+        healing_monitor_enabled=_bool(os.getenv("HEALING_MONITOR_ENABLED", "false")),
+        healing_monitor_interval_minutes=_int(os.getenv("HEALING_MONITOR_INTERVAL_MINUTES", "180"), 180),
+        healing_monitor_target_limit=_int(os.getenv("HEALING_MONITOR_TARGET_LIMIT", "12"), 12),
         log_level=os.getenv("LOG_LEVEL", "INFO"),
         log_dir=os.getenv("LOG_DIR", "logs"),
+        n8n_webhook_url=os.getenv("N8N_WEBHOOK_URL", ""),
+        n8n_webhook_secret=os.getenv("N8N_WEBHOOK_SECRET", ""),
+        arya_notification_channel=os.getenv("ARYA_NOTIFICATION_CHANNEL", "Dashboard Alert"),
     )
 
 

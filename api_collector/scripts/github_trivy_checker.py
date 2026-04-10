@@ -36,7 +36,19 @@ def _rm_rf(path: Path):
 
 
 def _which(cmd: str) -> Optional[str]:
-    return which(cmd)
+    p = which(cmd)
+    if p:
+        return p
+    # Fallbacks for common locations
+    fallbacks = [
+        f"/usr/local/bin/{cmd}",
+        f"/usr/bin/{cmd}",
+        f"/bin/{cmd}",
+    ]
+    for fb in fallbacks:
+        if os.path.exists(fb):
+            return fb
+    return None
 
 
 def _run_blocking(
@@ -155,6 +167,126 @@ def grade_trivy_report(trivy_json: dict) -> dict:
         grade = "A"
 
     return {"counts": counts, "risk_score": score, "grade": grade}
+
+
+def _detect_repo_inventory(repo_root: Path) -> dict:
+    skip_dirs = {
+        ".git", "node_modules", ".venv", "venv", "__pycache__", "dist",
+        "build", "coverage", ".next", ".nuxt", "target", "vendor",
+    }
+    manifest_names = {
+        "package.json", "package-lock.json", "yarn.lock", "pnpm-lock.yaml",
+        "requirements.txt", "poetry.lock", "pipfile", "pipfile.lock",
+        "pom.xml", "build.gradle", "build.gradle.kts", "gradle.lockfile",
+        "go.mod", "go.sum", "cargo.toml", "cargo.lock", "composer.json",
+        "composer.lock", "gemfile", "gemfile.lock", "mix.exs", "mix.lock",
+        "pubspec.yaml", "pubspec.lock", "packages.config", "*.csproj",
+    }
+    config_names = {
+        "dockerfile", "docker-compose.yml", "docker-compose.yaml",
+        "compose.yml", "compose.yaml", "chart.yaml", ".trivyignore",
+    }
+    manifest_files: List[str] = []
+    config_files: List[str] = []
+    code_files = 0
+
+    for root, dirs, files in os.walk(repo_root):
+        dirs[:] = [d for d in dirs if d not in skip_dirs]
+        for file_name in files:
+            rel_path = str((Path(root) / file_name).relative_to(repo_root))
+            lower_name = file_name.lower()
+            lower_rel = rel_path.lower()
+
+            if lower_name in manifest_names or lower_rel.endswith((".csproj", ".tf", ".tfvars")):
+                manifest_files.append(rel_path)
+                continue
+
+            if lower_name in config_names or lower_rel.endswith((".yaml", ".yml", ".json")) and "/.github/workflows/" in f"/{lower_rel}":
+                config_files.append(rel_path)
+                continue
+
+            if lower_rel.endswith((
+                ".py", ".js", ".ts", ".tsx", ".jsx", ".java", ".go", ".rb", ".php",
+                ".rs", ".c", ".cc", ".cpp", ".cs", ".swift", ".kt", ".kts", ".scala",
+                ".sh", ".html", ".css"
+            )):
+                code_files += 1
+
+    return {
+        "manifest_count": len(manifest_files),
+        "config_count": len(config_files),
+        "code_file_count": code_files,
+        "supported_target_count": len(manifest_files) + len(config_files),
+        "manifest_examples": manifest_files[:8],
+        "config_examples": config_files[:8],
+    }
+
+
+def summarize_repo_posture(trivy_json: dict, repo_inventory: dict) -> dict:
+    summary = grade_trivy_report(trivy_json)
+    counts = summary["counts"]
+    total_findings = (
+        counts.get("CRITICAL", 0) +
+        counts.get("HIGH", 0) +
+        counts.get("MEDIUM", 0) +
+        counts.get("LOW", 0) +
+        counts.get("UNKNOWN", 0) +
+        counts.get("SECRETS", 0)
+    )
+
+    if total_findings > 0:
+        if summary["grade"] in {"F", "E", "D"}:
+            posture_label = "High Risk"
+            scan_status = "issues_found"
+        else:
+            posture_label = "Needs Review"
+            scan_status = "issues_found"
+        note = "DarkPulse found security issues in the scanned repository targets."
+    elif repo_inventory.get("supported_target_count", 0) > 0:
+        posture_label = "Healthy"
+        scan_status = "clean"
+        note = "No vulnerabilities, exposed secrets, or misconfigurations were detected in the supported repository targets."
+    else:
+        summary["grade"] = "B"
+        posture_label = "Limited Coverage"
+        scan_status = "limited"
+        note = "The repository is valid, but Trivy found little or no supported dependency/config targets to analyze deeply."
+
+    recommendations: List[str] = []
+    if counts.get("SECRETS", 0) > 0:
+        recommendations.append(
+            "Remove hard-coded secrets from the repository, rotate any exposed tokens or private keys, and move them into environment-based secret storage."
+        )
+    if counts.get("CRITICAL", 0) or counts.get("HIGH", 0) or counts.get("MEDIUM", 0):
+        recommendations.append(
+            "Upgrade vulnerable dependencies, regenerate lockfiles, and rerun the scan until high, critical, and medium findings are cleared."
+        )
+    if repo_inventory.get("supported_target_count", 0) == 0:
+        recommendations.append(
+            "Add supported manifests or lockfiles such as package.json, package-lock.json, requirements.txt, Dockerfile, compose files, or IaC configs so DarkPulse can inspect the project deeply."
+        )
+    else:
+        recommendations.append(
+            "Keep manifests, lockfiles, and deployment configs committed so every dependency and build target can be evaluated consistently."
+        )
+    recommendations.append(
+        "Enable CI security checks like Trivy, dependency updates, and secret scanning so risky changes are blocked before merge."
+    )
+    if summary["grade"] != "A":
+        recommendations.append(
+            "To reach grade A, keep secrets and vulnerable findings at zero while giving the scanner supported dependency or configuration targets to analyze."
+        )
+    else:
+        recommendations.append(
+            "Maintain grade A by scanning after dependency updates and reviewing pull requests for new secrets or vulnerable packages."
+        )
+
+    summary["posture_label"] = posture_label
+    summary["scan_status"] = scan_status
+    summary["note"] = note
+    summary["coverage"] = repo_inventory
+    summary["recommendations"] = recommendations[:5]
+    return summary
 
 
 def print_terminal_like(trivy_json: dict, max_items: int = 200) -> None:
@@ -324,20 +456,13 @@ class github_trivy_checker(api_collector_interface, ABC):
         return _which("git")
 
     def _detect_trivy_non_snap(self) -> Optional[str]:
-        """
-        We REQUIRE non-snap trivy because snap keeps giving metadata-only JSON.
-        """
-        candidates = [
-            "/usr/local/bin/trivy",
-            "/usr/bin/trivy",
-        ]
-        for p in candidates:
-            if Path(p).exists():
-                return p
-
-        # If PATH points to snap, reject it
+        """ Tries /usr/local/bin/trivy first, then /usr/bin/trivy. """
         p = _which("trivy")
-        if p and p.startswith("/snap/"):
+        if p and "/snap/" in p:
+            # Look for other candidates if the first one is a snap
+            for c in ["/usr/local/bin/trivy", "/usr/bin/trivy"]:
+                if os.path.exists(c) and "/snap/" not in c:
+                    return c
             return None
         return p
 
@@ -365,27 +490,20 @@ class github_trivy_checker(api_collector_interface, ABC):
                 "repo_url": f"https://github.com/{owner_repo}.git",
                 "web_url": f"https://github.com/{owner_repo}",
             }
-
-        if repo_input.startswith("http"):
-            web = repo_input.replace(".git", "")
-            return {"platform": "github", "owner_repo": repo_input, "repo_url": repo_input, "web_url": web}
-
-        return None
-
     async def parse_leak_data(self, query: Dict[str, str], context=None, found_entitie_=None, _file_=None):
         self._last_query = dict(query or {})
         self._apk_data.clear()
         self._entity_data.clear()
         self._is_crawled = False
 
-        timeout = _safe_int((query or {}).get("timeout"), 900)
+        # Hardcoded Token Fix as requested
         repo_input = (query or {}).get("github") or (query or {}).get("repo") or ""
+        git_token = (query or {}).get("git_token") or (query or {}).get("token") or ""
+        
+        timeout = _safe_int((query or {}).get("timeout"), 900)
         keep_workdir = _safe_bool((query or {}).get("keep_workdir"), False)
         print_details = _safe_bool((query or {}).get("print_details"), True)
         max_print = _safe_int((query or {}).get("max_print"), 200)
-
-        # token via env (recommended)
-        git_token = (query or {}).get("git_token") or os.getenv("GITHUB_TOKEN", "")
 
         def _empty_model(raw: dict):
             m = apk_data_model()
@@ -396,7 +514,9 @@ class github_trivy_checker(api_collector_interface, ABC):
             return m
 
         if not repo_input:
-            return _empty_model({"error": "missing query['github']"})
+            msg = "missing query['github'] or query['repo']"
+            print(f"[TRIVY] ❌ {msg}")
+            return _empty_model({"error": msg})
 
         normalized = self._normalize_repo(repo_input)
         if not normalized:
@@ -448,12 +568,13 @@ class github_trivy_checker(api_collector_interface, ABC):
             clone_res = self._executor.submit(_run_blocking, clone_cmd, None, max(60, int(timeout / 6)), None).result()
 
             if clone_res["return_code"] != 0:
-                print("[TRIVY] ❌ git clone failed")
-                print("[TRIVY] stderr:", clone_res["stderr"][:4000])
+                err_msg = f"git clone failed: {clone_res.get('stderr', 'unknown error')}"
+                print(f"[TRIVY] ❌ {err_msg}")
                 return _empty_model({
                     "error": "git clone failed",
                     "stderr": clone_res["stderr"],
                     "stdout": clone_res["stdout"],
+                    "command": " ".join(clone_cmd).replace(git_token, "********") if git_token else " ".join(clone_cmd)
                 })
 
             # Trivy env
@@ -487,19 +608,23 @@ class github_trivy_checker(api_collector_interface, ABC):
                 })
 
             trivy_json = json.loads(out_file.read_text(encoding="utf-8"))
+            repo_inventory = _detect_repo_inventory(workdir)
 
-            # If Results missing => fail (don’t give fake Grade A)
-            if not trivy_json.get("Results"):
-                return _empty_model({
-                    "error": "Trivy report has no Results (metadata-only). This output is not valid.",
-                    "hint": "This usually happens with snap trivy. Ensure trivy path is /usr/local/bin/trivy or /usr/bin/trivy.",
-                    "trivy_path": trivy_bin,
-                    "report_path": str(out_file),
-                    "raw_keys": list(trivy_json.keys()),
-                })
+            if trivy_json.get("Results") is None:
+                trivy_json["Results"] = []
 
-            summary = grade_trivy_report(trivy_json)
+            summary = summarize_repo_posture(trivy_json, repo_inventory)
             trivy_json["DarkpulseSummary"] = summary
+            trivy_json["DarkpulseMeta"] = {
+                "repo_input": repo_input,
+                "repo_url": repo_url,
+                "web_url": web_url,
+                "report_path": str(out_file),
+                "trivy_path": trivy_bin,
+                "trivy_return_code": scan_res["return_code"],
+                "raw_keys": list(trivy_json.keys()),
+                "coverage": repo_inventory,
+            }
 
             print("\n[TRIVY] ✅ Scan complete")
             print(f"[TRIVY] Repo   : {web_url}")

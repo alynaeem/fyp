@@ -1,0 +1,1805 @@
+{
+  "generated_on": "2026-04-08",
+  "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+  "count": 50,
+  "items": [
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://3011i3011.com/",
+      "final_url": "https://3011i3011.com/",
+      "host": "3011i3011.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://3011i3011.com/",
+        "content_len": 2808,
+        "content_type": "text/html; charset=utf-8",
+        "server": "openresty"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 4,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "c0025d1d7c49e06b0bc7e712dde4f6592c05a0fe",
+        "snippet": "<!DOCTYPE html><html><head><meta charset=utf-8><title></title><link rel=stylesheet type=text/css href=https://pccr.zy163.net/static/css/reset.css><style>#app-loader{ width: 2000px; height: 2000px; position: fixed; left: 50%; top: 50%; } @-webkit-keyframes loader13-1{ 0%{-webkit-transform:rotate(270deg);} 50%{-webkit-transform:rota",
+        "raw_html_len": 2808
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://www.robiox.com.py/users/377059899225/profile",
+      "final_url": "https://www.robiox.com.py/users/377059899225/profile",
+      "host": "www.robiox.com.py",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://www.robiox.com.py/users/377059899225/profile",
+        "content_len": 95323,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "JesxanaYT - Roblox",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 142,
+        "iframes": 1,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "0254dc5c0789ee4c4fc8d748c9927eb02bfa4e2d",
+        "snippet": "<!DOCTYPE html><!--[if IE 8]><html class=\"ie8\" ng-app=\"robloxApp\"><![endif]--><!--[if gt IE 8]><!--><html lang=\"en\"><!--<![endif]--><head data-machine-id=\"ffd6eb39-ee00-46c4-b7f8-fd9c6e6ca75e\"> <!-- MachineID: ffd6eb39-ee00-46c4-b7f8-fd9c6e6ca75e --> <title>JesxanaYT - Roblox</title> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,requiresActiveX=true\"> <meta charset=\"UTF-8\"> <meta na",
+        "raw_html_len": 95323
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://siwacruz.github.io/info-perfect/",
+      "final_url": "https://siwacruz.github.io/info-perfect/",
+      "host": "siwacruz.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "meta",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://siwacruz.github.io/info-perfect/",
+        "content_len": 46049,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "welcomeDiv",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 34,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "dfc269754ca0a45c811ce496f48f90a18cb5059d",
+        "snippet": "<html class=\" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio loca",
+        "raw_html_len": 46049
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:meta,banking"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://muhammad-haris014.github.io/epic-webpage/",
+      "final_url": "https://muhammad-haris014.github.io/epic-webpage/",
+      "host": "muhammad-haris014.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://muhammad-haris014.github.io/epic-webpage/",
+        "content_len": 3058,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Document",
+        "forms": 2,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "6f9dc6c7d12b8bf13af2569698f62dc14005ac49",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Document</title> <link rel=\"stylesheet\" href=\"style.css\"> </head> <body> <div class=\"header\"> <nav> <img src=\"logo.png\" class=\"logo\"> <div class=\"buttun\"> <button >Sign in</but",
+        "raw_html_len": 3058
+      },
+      "score": 60,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://booking.com-conflrm-apart-spain.com/8AJTJ6CJ",
+      "final_url": "https://booking.com-conflrm-apart-spain.com/8AJTJ6CJ",
+      "host": "booking.com-conflrm-apart-spain.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://booking.com-conflrm-apart-spain.com/8AJTJ6CJ",
+        "content_len": 84864,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Booking.com | الموقع الرسمي | أفضل الفنادق والإقامة",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 10,
+        "iframes": 1,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "06aaa09a65fc3912bf932983624f20985c2adbf7",
+        "snippet": "<!DOCTYPE html> <html> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title> Booking.com | الموقع الرسمي | أفضل الفنادق والإقامة </title> <link rel=\"icon\" href=\"/dist/sites/ALL/booking/favicon.ico\" sizes=\"any\"> <link rel=\"stylesheet\" href=\"/dist/booking/booking/styles-new4.css?v=5\"> <link rel=\"stylesheet\"",
+        "raw_html_len": 84864
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.dimoopoo.ru/Fvc8zCgIK5@ZxOTUl/$3mail@a.b.c0",
+      "final_url": "http://www.dimoopoo.ru/Fvc8zCgIK5@ZxOTUl/$3mail@a.b.c0",
+      "host": "www.dimoopoo.ru",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://www.dimoopoo.ru/Fvc8zCgIK5@ZxOTUl/$3mail@a.b.c0",
+        "content_len": 0,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://funndaciondesoluciones2026.zya.me/",
+      "final_url": "https://funndaciondesoluciones2026.zya.me/",
+      "host": "funndaciondesoluciones2026.zya.me",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://funndaciondesoluciones2026.zya.me/",
+        "content_len": 860,
+        "content_type": "text/html",
+        "server": "openresty"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 2,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "c20867263c12f48f9e4dcecd10a91991d076605b",
+        "snippet": "<html><body><script type=\"text/javascript\" src=\"/aes.js\" ></script><script>function toNumbers(d){var e=[];d.replace(/(..)/g,function(d){e.push(parseInt(d,16))});return e}function toHex(){for(var d=[],d=1==arguments.length&&arguments[0].constructor==Array?arguments[0]:arguments,e=\"\",f=0;f<d.length;f++)e+=(16>d[f]?\"0\":\"\")+d[f].toString(16);return e.toLowerCase()}var a=toNumbers(\"f655ba9d09a112d4968c",
+        "raw_html_len": 860
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://fastthemegaplay.com/landingpages/1xbt?refCode=sk_w238255c300299l23986p2169_D1xbet-2004&sub_id=D1xbet-2004",
+      "final_url": "https://fastthemegaplay.com/1xbt/?refCode=sk_w238255c300299l23986p2169_D1xbet-2004&sub_id=D1xbet-2004",
+      "host": "fastthemegaplay.com",
+      "category": "login_branding",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://fastthemegaplay.com/1xbt/?refCode=sk_w238255c300299l23986p2169_D1xbet-2004&sub_id=D1xbet-2004",
+        "content_len": 4906,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "1XBET",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 4,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "a4c8a9f362d83b6fb50c88e8e789a5a76d3577f7",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\" data-country=\"us\" class=\"\"> <head> <meta charset=\"UTF-8\" /> <meta content=\"width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover\" name=\"viewport\" /> <meta content=\"ie=edge\" http-equiv=\"X-UA-Compatible\" /> <link rel=\"icon\" type=\"image/png\" href=\"img/favicon.png\" /> <title>1XBET</title> <",
+        "raw_html_len": 4906
+      },
+      "score": 80,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://binance-bot.cfd/fckr/coinbase",
+      "final_url": "https://binance-bot.cfd/fckr/coinbase/",
+      "host": "binance-bot.cfd",
+      "category": "unknown",
+      "brands": [
+        "crypto"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://binance-bot.cfd/fckr/coinbase/",
+        "content_len": 13957,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "nginx/1.28.2"
+      },
+      "analysis": {
+        "title": "Coinbase Wallet",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "734bf2b3a7219a1007851af43f49217be1bf1baa",
+        "snippet": "<html class=\"js-focus-visible\" data-js-focus-visible=\"\" style=\"background-color: #000\"> <head> <meta http-equiv=\"Content-Security-Policy\" content=\"upgrade-insecure-requests\"> <meta charset=\"UTF-8\"> <title>Coinbase Wallet</title> <style> html { background-color: 255, 255, 255; } </style> <script> if (window.self === window.top",
+        "raw_html_len": 13957
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "brand_keywords:crypto"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://booking-com-cf1.prope356184.homes/property-a-Michaelkirchstrasse-21-Berlin-Germany-ssid-4BTIqOfUGdhATG94qduEFjnyLmfhPy.booking",
+      "final_url": "http://booking-com-cf1.prope356184.homes/property-a-Michaelkirchstrasse-21-Berlin-Germany-ssid-4BTIqOfUGdhATG94qduEFjnyLmfhPy.booking",
+      "host": "booking-com-cf1.prope356184.homes",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "http://booking-com-cf1.prope356184.homes/property-a-Michaelkirchstrasse-21-Berlin-Germany-ssid-4BTIqOfUGdhATG94qduEFjnyLmfhPy.booking",
+        "content_len": 5260,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "8aa4877ae3bee49fd7334408552cf5fa505a05d1",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <m",
+        "raw_html_len": 5260
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://metazxsdmaskmt.gitbook.io/",
+      "final_url": "https://metazxsdmaskmt.gitbook.io/us",
+      "host": "metazxsdmaskmt.gitbook.io",
+      "category": "login_branding",
+      "brands": [
+        "meta",
+        "crypto"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://metazxsdmaskmt.gitbook.io/us",
+        "content_len": 164205,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "MetaMask® Login | us",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 72,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "a4ca03ca6124b58d379b0f8df69c49e8842622c1",
+        "snippet": "<!DOCTYPE html><html lang=\"en\" class=\"rounded-corners theme-clean no-tint sidebar-default sidebar-list-default links-default depth-subtle __variable_6efe33 __variable_4d8f45 __variable_7857c7 font-Inter sheet-open:gutter-stable\"><head><meta charSet=\"utf-8\"/><link rel=\"preconnect\" href=\"https://static-2c.gitbook.com\" crossorigin=\"\"/><link rel=\"preconnect\" href=\"https://api.gitbook.com/cache/\"/><lin",
+        "raw_html_len": 164205
+      },
+      "score": 30,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "brand_keywords:meta,crypto"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://kiciuonlogxn.gitbook.io/",
+      "final_url": "https://kiciuonlogxn.gitbook.io/us",
+      "host": "kiciuonlogxn.gitbook.io",
+      "category": "login_branding",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://kiciuonlogxn.gitbook.io/us",
+        "content_len": 172700,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Login - KuCōin",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 74,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "4094927636ba00cba0737603a407aafa7f3408ef",
+        "snippet": "<!DOCTYPE html><html lang=\"en\" class=\"rounded-corners theme-clean no-tint sidebar-default sidebar-list-default links-default depth-subtle __variable_6efe33 __variable_4d8f45 __variable_7857c7 font-Inter sheet-open:gutter-stable\"><head><meta charSet=\"utf-8\"/><link rel=\"preconnect\" href=\"https://static-2c.gitbook.com\" crossorigin=\"\"/><link rel=\"preconnect\" href=\"https://api.gitbook.com/cache/\"/><lin",
+        "raw_html_len": 172700
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://ai-egao.github.io/Netflix-clone-Pk-only-html-and-CSS-",
+      "final_url": "https://ai-egao.github.io/Netflix-clone-Pk-only-html-and-CSS-/",
+      "host": "ai-egao.github.io",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://ai-egao.github.io/Netflix-clone-Pk-only-html-and-CSS-/",
+        "content_len": 19163,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Document",
+        "forms": 2,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "ee4a7477d32c369b57d7ca8ae0bc9b3a29a06f02",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Document</title> <style> * { padding: 0; margin: 0; } body { background: #000; } main { height: 100vh; background-image:",
+        "raw_html_len": 19163
+      },
+      "score": 50,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "login_keywords_detected",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://gemini-website-new.webflow.io/",
+      "final_url": "https://gemini-website-new.webflow.io/",
+      "host": "gemini-website-new.webflow.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://gemini-website-new.webflow.io/",
+        "content_len": 178185,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Gemini Energy Solutions - Clean Energy Hub Feasibility Study",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 21,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "4b10858c2aa63cd94ddcd34323a6d52a95994434",
+        "snippet": "<!DOCTYPE html><!-- This site was created in Webflow. https://webflow.com --><!-- Last Published: Wed Apr 01 2026 17:11:38 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain=\"gemini-website-new.webflow.io\" data-wf-page=\"68ca6ee3263d1f648cdbfbd2\" data-wf-site=\"6697eaa6dff84d5664df7e4d\" lang=\"en\"><head><meta charset=\"utf-8\"/><title>Gemini Energy Solutions - Clean Energy Hub Feasibility St",
+        "raw_html_len": 178185
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:meta"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.dpdlocaiy.cyou/com/",
+      "final_url": "https://www.dpdlocaiy.cyou/com/",
+      "host": "www.dpdlocaiy.cyou",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://www.dpdlocaiy.cyou/com/",
+        "content_len": 2176,
+        "content_type": "text/html;charset=utf-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "ae0085775a4c86cf913dd18aa8d1f3ed533e3a3d",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head><meta name=\"keywords\" content=\"d02804a68844577a5437773147eee0933c549823820a3872240574cbe4483f5147145a9008229b88afd6793715ddebda10d35304c35436b49919a25468719f27\"> <meta name=\"purpose\" content=\"login\"> <meta name=\"page-type\" content=\"authentication\"> <meta name=\"login-type\" content=\"standard\"> <meta name=\"user-action\" content=\"sign-in\"> <meta name=\"securi",
+        "raw_html_len": 2176
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.dpdlocaiz.cyou/com/",
+      "final_url": "https://www.dpdlocaiz.cyou/com/",
+      "host": "www.dpdlocaiz.cyou",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://www.dpdlocaiz.cyou/com/",
+        "content_len": 2176,
+        "content_type": "text/html;charset=utf-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "ae0085775a4c86cf913dd18aa8d1f3ed533e3a3d",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head><meta name=\"keywords\" content=\"d02804a68844577a5437773147eee0933c549823820a3872240574cbe4483f5147145a9008229b88afd6793715ddebda10d35304c35436b49919a25468719f27\"> <meta name=\"purpose\" content=\"login\"> <meta name=\"page-type\" content=\"authentication\"> <meta name=\"login-type\" content=\"standard\"> <meta name=\"user-action\" content=\"sign-in\"> <meta name=\"securi",
+        "raw_html_len": 2176
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.dpdlocaiz.autos/com/",
+      "final_url": "https://www.dpdlocaiz.autos/com/",
+      "host": "www.dpdlocaiz.autos",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://www.dpdlocaiz.autos/com/",
+        "content_len": 2176,
+        "content_type": "text/html;charset=utf-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "ae0085775a4c86cf913dd18aa8d1f3ed533e3a3d",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head><meta name=\"keywords\" content=\"d02804a68844577a5437773147eee0933c549823820a3872240574cbe4483f5147145a9008229b88afd6793715ddebda10d35304c35436b49919a25468719f27\"> <meta name=\"purpose\" content=\"login\"> <meta name=\"page-type\" content=\"authentication\"> <meta name=\"login-type\" content=\"standard\"> <meta name=\"user-action\" content=\"sign-in\"> <meta name=\"securi",
+        "raw_html_len": 2176
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.dpdlocaid.autos/com/",
+      "final_url": "https://www.dpdlocaid.autos/com/",
+      "host": "www.dpdlocaid.autos",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://www.dpdlocaid.autos/com/",
+        "content_len": 2176,
+        "content_type": "text/html;charset=utf-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "ae0085775a4c86cf913dd18aa8d1f3ed533e3a3d",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head><meta name=\"keywords\" content=\"d02804a68844577a5437773147eee0933c549823820a3872240574cbe4483f5147145a9008229b88afd6793715ddebda10d35304c35436b49919a25468719f27\"> <meta name=\"purpose\" content=\"login\"> <meta name=\"page-type\" content=\"authentication\"> <meta name=\"login-type\" content=\"standard\"> <meta name=\"user-action\" content=\"sign-in\"> <meta name=\"securi",
+        "raw_html_len": 2176
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://luminous-dusk-7767cb.netlify.app/home/",
+      "final_url": "https://luminous-dusk-7767cb.netlify.app/home/",
+      "host": "luminous-dusk-7767cb.netlify.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 401,
+        "final_url": "https://luminous-dusk-7767cb.netlify.app/home/",
+        "content_len": 3551,
+        "content_type": "text/html",
+        "server": "Netlify"
+      },
+      "analysis": {
+        "title": "Password Protection",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "c1d8902f38aed995961cd690e6c20240c0d9d1b3",
+        "snippet": "<!DOCTYPE html> <html> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\"> <title>Password Protection</title> <style> body { font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color E",
+        "raw_html_len": 3551
+      },
+      "score": 85,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.dpdlocaiu.cyou/com/",
+      "final_url": "https://www.dpdlocaiu.cyou/com/",
+      "host": "www.dpdlocaiu.cyou",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://www.dpdlocaiu.cyou/com/",
+        "content_len": 2176,
+        "content_type": "text/html;charset=utf-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "ae0085775a4c86cf913dd18aa8d1f3ed533e3a3d",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head><meta name=\"keywords\" content=\"d02804a68844577a5437773147eee0933c549823820a3872240574cbe4483f5147145a9008229b88afd6793715ddebda10d35304c35436b49919a25468719f27\"> <meta name=\"purpose\" content=\"login\"> <meta name=\"page-type\" content=\"authentication\"> <meta name=\"login-type\" content=\"standard\"> <meta name=\"user-action\" content=\"sign-in\"> <meta name=\"securi",
+        "raw_html_len": 2176
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.bookingsecure.org/a/1827777501/",
+      "final_url": "http://www.bookingsecure.org/a/1827777501/",
+      "host": "www.bookingsecure.org",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "error": "SOCKSHTTPConnectionPool(host='www.bookingsecure.org', port=80): Max retries exceeded with url: /a/1827777501/ (Caused by NewConnectionError(\"SOCKSConnection(host='www.bookingsecure.org', port=80): Failed to establish a new connection: 0x04: Host unreachable\"))",
+        "status_code": 0,
+        "final_url": "http://www.bookingsecure.org/a/1827777501/",
+        "content_len": 0,
+        "content_type": "",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": []
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.dpdlocaid.cyou/com/",
+      "final_url": "https://www.dpdlocaid.cyou/com/",
+      "host": "www.dpdlocaid.cyou",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://www.dpdlocaid.cyou/com/",
+        "content_len": 2176,
+        "content_type": "text/html;charset=utf-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "ae0085775a4c86cf913dd18aa8d1f3ed533e3a3d",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head><meta name=\"keywords\" content=\"d02804a68844577a5437773147eee0933c549823820a3872240574cbe4483f5147145a9008229b88afd6793715ddebda10d35304c35436b49919a25468719f27\"> <meta name=\"purpose\" content=\"login\"> <meta name=\"page-type\" content=\"authentication\"> <meta name=\"login-type\" content=\"standard\"> <meta name=\"user-action\" content=\"sign-in\"> <meta name=\"securi",
+        "raw_html_len": 2176
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.dpdlocaia.shop/com/",
+      "final_url": "https://www.dpdlocaia.shop/com/",
+      "host": "www.dpdlocaia.shop",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://www.dpdlocaia.shop/com/",
+        "content_len": 2176,
+        "content_type": "text/html;charset=utf-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "ae0085775a4c86cf913dd18aa8d1f3ed533e3a3d",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head><meta name=\"keywords\" content=\"d02804a68844577a5437773147eee0933c549823820a3872240574cbe4483f5147145a9008229b88afd6793715ddebda10d35304c35436b49919a25468719f27\"> <meta name=\"purpose\" content=\"login\"> <meta name=\"page-type\" content=\"authentication\"> <meta name=\"login-type\" content=\"standard\"> <meta name=\"user-action\" content=\"sign-in\"> <meta name=\"securi",
+        "raw_html_len": 2176
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://www.resynerrgi.com/",
+      "final_url": "https://www.resynerrgi.com/",
+      "host": "www.resynerrgi.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://www.resynerrgi.com/",
+        "content_len": 8378,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "Apache/2.4.58 (Ubuntu)"
+      },
+      "analysis": {
+        "title": "Initializing...",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 2,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "85d2bb22bb4ff413ec780eff6f9f54a981f3c556",
+        "snippet": "<!DOCTYPE html> <html lang=\"en-US\"> <head> <meta charset=\"UTF-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=5.0\"> <meta name=\"robots\" content=\"index, follow\"> <meta name=\"generator\" content=\"Nuxt v21.3.790\"> <meta name=\"build-time\" content=\"1775580573\"> <meta name=\"t",
+        "raw_html_len": 8378
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://dpd-local.eu.cc/uk/",
+      "final_url": "https://dpd-local.eu.cc/uk/",
+      "host": "dpd-local.eu.cc",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://dpd-local.eu.cc/uk/",
+        "content_len": 2176,
+        "content_type": "text/html;charset=utf-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "ae0085775a4c86cf913dd18aa8d1f3ed533e3a3d",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head><meta name=\"keywords\" content=\"d02804a68844577a5437773147eee0933c549823820a3872240574cbe4483f5147145a9008229b88afd6793715ddebda10d35304c35436b49919a25468719f27\"> <meta name=\"purpose\" content=\"login\"> <meta name=\"page-type\" content=\"authentication\"> <meta name=\"login-type\" content=\"standard\"> <meta name=\"user-action\" content=\"sign-in\"> <meta name=\"securi",
+        "raw_html_len": 2176
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://pub-def1757768e44ee4901749848f225c06.r2.dev/Adobe_Installer.html",
+      "final_url": "https://pub-def1757768e44ee4901749848f225c06.r2.dev/Adobe_Installer.html",
+      "host": "pub-def1757768e44ee4901749848f225c06.r2.dev",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://pub-def1757768e44ee4901749848f225c06.r2.dev/Adobe_Installer.html",
+        "content_len": 4095,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "746ffd858cf9b27337eecbb9e1493301d44656a3",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <",
+        "raw_html_len": 4095
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": []
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://xynfash.short.gy/my-link/",
+      "final_url": "http://xynfash.short.gy/my-link/",
+      "host": "xynfash.short.gy",
+      "category": "login_branding",
+      "brands": [
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "http://xynfash.short.gy/my-link/",
+        "content_len": 13527,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Fraud detected",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "c3c7b3a7674106d5c8e205490fb179db2dd8658f",
+        "snippet": "<!DOCTYPE html> <html> <head> <meta charset=\"UTF-8\"> <title data-i18n=\"title\">Fraud detected</title> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"> <link rel=\"icon\" href=\"data:,\"> <style> *{margin:0;padding:0;box-sizing:border-box} html{font-size:clamp(14px,2vw,18px);line-height:1.5} body{min-height:100vh;background:var(--them",
+        "raw_html_len": 13527
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "login_keywords_detected",
+        "brand_keywords:banking"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://pub-8a697ab80bb241e981463cb50ea003c3.r2.dev/Adobe-Installer.html",
+      "final_url": "https://pub-8a697ab80bb241e981463cb50ea003c3.r2.dev/Adobe-Installer.html",
+      "host": "pub-8a697ab80bb241e981463cb50ea003c3.r2.dev",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://pub-8a697ab80bb241e981463cb50ea003c3.r2.dev/Adobe-Installer.html",
+        "content_len": 4095,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "8187815be9ca4b65babba6d632c7ab721a3ecf2e",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <",
+        "raw_html_len": 4095
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": []
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://xynfash.short.gy/H22rKT/",
+      "final_url": "http://xynfash.short.gy/H22rKT/",
+      "host": "xynfash.short.gy",
+      "category": "login_branding",
+      "brands": [
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "http://xynfash.short.gy/H22rKT/",
+        "content_len": 13527,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Fraud detected",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "c3c7b3a7674106d5c8e205490fb179db2dd8658f",
+        "snippet": "<!DOCTYPE html> <html> <head> <meta charset=\"UTF-8\"> <title data-i18n=\"title\">Fraud detected</title> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"> <link rel=\"icon\" href=\"data:,\"> <style> *{margin:0;padding:0;box-sizing:border-box} html{font-size:clamp(14px,2vw,18px);line-height:1.5} body{min-height:100vh;background:var(--them",
+        "raw_html_len": 13527
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "login_keywords_detected",
+        "brand_keywords:banking"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://s.teamfw.world/p/qsp-qvd/hftjksef/",
+      "final_url": "http://s.teamfw.world/p/qsp-qvd/hftjksef/",
+      "host": "s.teamfw.world",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "http://s.teamfw.world/p/qsp-qvd/hftjksef/",
+        "content_len": 5111,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "bf293cedbc035117a3ef3dba2c7bb92c8146bceb",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <m",
+        "raw_html_len": 5111
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://loriimf.systeme.io/gtr/",
+      "final_url": "https://loriimf.systeme.io/gtr/",
+      "host": "loriimf.systeme.io",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://loriimf.systeme.io/gtr/",
+        "content_len": 919,
+        "content_type": "text/html",
+        "server": "CloudFront"
+      },
+      "analysis": {
+        "title": "ERROR: The request could not be satisfied",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "bb17f1f06840c84ca442f0c21fb8bc01aa617cd4",
+        "snippet": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"> <HTML><HEAD><META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=iso-8859-1\"> <TITLE>ERROR: The request could not be satisfied</TITLE> </HEAD><BODY> <H1>403 ERROR</H1> <H2>The request could not be satisfied.</H2> <HR noshade size=\"1px\"> Request blocked. We can't connect to the server for t",
+        "raw_html_len": 919
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": []
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://mydpd.huiktv.buzz/secure-ch/",
+      "final_url": "http://mydpd.huiktv.buzz/secure-ch/",
+      "host": "mydpd.huiktv.buzz",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "http://mydpd.huiktv.buzz/secure-ch/",
+        "content_len": 5092,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "96ee9dae0f9eeb46673a248b9a917a64f9842cc3",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <m",
+        "raw_html_len": 5092
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://s.team-hngm.site/vwbq/grbknrvb/",
+      "final_url": "http://s.team-hngm.site/vwbq/grbknrvb/",
+      "host": "s.team-hngm.site",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "error": "SOCKSHTTPConnectionPool(host='s.team-hngm.site', port=80): Max retries exceeded with url: /vwbq/grbknrvb/ (Caused by NewConnectionError(\"SOCKSConnection(host='s.team-hngm.site', port=80): Failed to establish a new connection: 0x04: Host unreachable\"))",
+        "status_code": 0,
+        "final_url": "http://s.team-hngm.site/vwbq/grbknrvb/",
+        "content_len": 0,
+        "content_type": "",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": []
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://dpd.parcelupx.cfd/com/",
+      "final_url": "http://dpd.parcelupx.cfd/com/",
+      "host": "dpd.parcelupx.cfd",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "http://dpd.parcelupx.cfd/com/",
+        "content_len": 5080,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "04d1caf83cce7cdcf2c400ae0adbb1085a331acb",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <m",
+        "raw_html_len": 5080
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://dpd.packrushx.cfd/com/",
+      "final_url": "http://dpd.packrushx.cfd/com/",
+      "host": "dpd.packrushx.cfd",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "http://dpd.packrushx.cfd/com/",
+        "content_len": 5079,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "1c53869d937e1a560fb587f9114086ffb97e3b79",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <m",
+        "raw_html_len": 5079
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://dpd.boxroutex.cfd/dpd.com/",
+      "final_url": "https://dpd.boxroutex.cfd/dpd.com/",
+      "host": "dpd.boxroutex.cfd",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://dpd.boxroutex.cfd/dpd.com/",
+        "content_len": 5088,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "268f4831f840fe8f7b36fd4bb997add0763a48c0",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <m",
+        "raw_html_len": 5088
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://dpd.boxroutex.cfd/dpd.com",
+      "final_url": "http://dpd.boxroutex.cfd/dpd.com",
+      "host": "dpd.boxroutex.cfd",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "http://dpd.boxroutex.cfd/dpd.com",
+        "content_len": 5086,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "ab5aa5a6c6964ca302f35a4427e1ef46fd9ee2ea",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <m",
+        "raw_html_len": 5086
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://dpd.packfly.cfd/dpd.com/",
+      "final_url": "https://dpd.packfly.cfd/dpd.com/",
+      "host": "dpd.packfly.cfd",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://dpd.packfly.cfd/dpd.com/",
+        "content_len": 5087,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "03fd399784956cbd283e26392d0a65874e8a43f3",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <m",
+        "raw_html_len": 5087
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://dpd.packfly.cfd/dpd.com",
+      "final_url": "http://dpd.packfly.cfd/dpd.com",
+      "host": "dpd.packfly.cfd",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "http://dpd.packfly.cfd/dpd.com",
+        "content_len": 5085,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "0913b4e489480ad248785e3dbbebdc394dc2ff6b",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <m",
+        "raw_html_len": 5085
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://dhl.boxstatusr.cfd/ie-en/",
+      "final_url": "https://dhl.boxstatusr.cfd/ie-en/",
+      "host": "dhl.boxstatusr.cfd",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 404,
+        "final_url": "https://dhl.boxstatusr.cfd/ie-en/",
+        "content_len": 0,
+        "content_type": "text/plain;charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": []
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://121wax.luxente.cc/stakings/cab397sk.php",
+      "final_url": "https://121wax.luxente.cc:443/stakings/cab397sk.php",
+      "host": "121wax.luxente.cc:443",
+      "category": "login_branding",
+      "brands": [
+        "crypto"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://121wax.luxente.cc:443/stakings/cab397sk.php",
+        "content_len": 15112,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "Staking",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "34bb7e86737c5672ae6f1fc4fcd0f30640e0cfc0",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <script> var page_id = 2; </script> <script type=\"text/javascript\" src=\"js/redirect.js\"></script> <meta charset=\"UTF-8\" /> <title>Staking</title> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <script src=\"https://cdn.tailwindcss.com\"></script> <link rel=\"stylesheet\" href=\"https://cdnjs.cl",
+        "raw_html_len": 15112
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "brand_keywords:crypto"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://dpd.packwayr.cfd/com/",
+      "final_url": "http://dpd.packwayr.cfd/com/",
+      "host": "dpd.packwayr.cfd",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "http://dpd.packwayr.cfd/com/",
+        "content_len": 5079,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "0fff82fb1913da55571c46f46a3b54dfe7814303",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <m",
+        "raw_html_len": 5079
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://emagrecimento2.vercel.app/of.html",
+      "final_url": "https://emagrecimento2.vercel.app/of.html",
+      "host": "emagrecimento2.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "paypal",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://emagrecimento2.vercel.app/of.html",
+        "content_len": 23333,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "TikTok Quiz",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 10,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "1b035b21e1f4b478d1d2b94e845feb503731c7a0",
+        "snippet": "<!doctype html> <html lang=\"en-US\"> <head> <script type=\"text/javascript\"> (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r);t.async=1;t.src=\"https://www.clarity.ms/tag/\"+i; y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); })(window, document, \"clarity\", \"script\", \"w4gg3h7fn1\"); </script>",
+        "raw_html_len": 23333
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:paypal,banking"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://dpd.parcelsignal.cfd/com/",
+      "final_url": "http://dpd.parcelsignal.cfd/com/",
+      "host": "dpd.parcelsignal.cfd",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "http://dpd.parcelsignal.cfd/com/",
+        "content_len": 5080,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Suspected phishing site | Cloudflare",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "812e13c7c8691387039e5a519583f770bdfec432",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Suspected phishing site | Cloudflare</title> <meta charset=\"UTF-8\" /> <m",
+        "raw_html_len": 5080
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "form_detected"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://dhl.delivery-edit.cyou/ie-en/",
+      "final_url": "https://dhl.delivery-edit.cyou/ie-en/",
+      "host": "dhl.delivery-edit.cyou",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 404,
+        "final_url": "https://dhl.delivery-edit.cyou/ie-en/",
+        "content_len": 0,
+        "content_type": "text/plain;charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": []
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "http://moonlit-custard-5fee2b.netlify.app/meta.access.html",
+      "final_url": "https://moonlit-custard-5fee2b.netlify.app/meta.access.html",
+      "host": "moonlit-custard-5fee2b.netlify.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 401,
+        "final_url": "https://moonlit-custard-5fee2b.netlify.app/meta.access.html",
+        "content_len": 3551,
+        "content_type": "text/html",
+        "server": "Netlify"
+      },
+      "analysis": {
+        "title": "Password Protection",
+        "forms": 1,
+        "password_inputs": 1,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "c1d8902f38aed995961cd690e6c20240c0d9d1b3",
+        "snippet": "<!DOCTYPE html> <html> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\"> <title>Password Protection</title> <style> body { font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color E",
+        "raw_html_len": 3551
+      },
+      "score": 85,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://devwebschloesser.github.io/Instagram_Login/",
+      "final_url": "https://devwebschloesser.github.io/Instagram_Login/",
+      "host": "devwebschloesser.github.io",
+      "category": "cloud_hosted",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://devwebschloesser.github.io/Instagram_Login/",
+        "content_len": 2313,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Instagram",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "629f377918ecfb1173990a166e117e738c826378",
+        "snippet": "<!DOCTYPE html> <html lang=\"pt-br\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <link rel=\"stylesheet\" href=\"./style.css\" /> <title>Instagram</title> </head> <body> <div class=\"container-imagens\"> <img src=\"./img/celular.png\" class=\"celular\" /> <img src=\"./img/insta1.png\" class=\"imagem-celular\">",
+        "raw_html_len": 2313
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:meta"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://www.aip1ed.vercel.app/",
+      "final_url": "https://www.aip1ed.vercel.app/",
+      "host": "www.aip1ed.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "error": "SOCKSHTTPSConnectionPool(host='www.aip1ed.vercel.app', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.aip1ed.vercel.app'. (_ssl.c:1000)\")))",
+        "status_code": 0,
+        "final_url": "https://www.aip1ed.vercel.app/",
+        "content_len": 0,
+        "content_type": "",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+        "snippet": "",
+        "raw_html_len": 0
+      },
+      "score": 10,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://collaborative-stories-062625.framer.app/",
+      "final_url": "https://collaborative-stories-062625.framer.app/",
+      "host": "collaborative-stories-062625.framer.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://collaborative-stories-062625.framer.app/",
+        "content_len": 103134,
+        "content_type": "text/html",
+        "server": "Framer/154a7c5"
+      },
+      "analysis": {
+        "title": "Xfinity login",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 7,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "9d10b9926b2e6f1593799a9757320242673d12a1",
+        "snippet": "<!doctype html> <!-- Made in Framer Â· framer.com â¨ --> <!-- Published Mar 2, 2026, 2:27 PM UTC --> <html dir=\"ltr\"> <head> <meta charset=\"utf-8\"> <script>try{if(localStorage.get(\"__framer_force_showing_editorbar_since\")){const n=document.createElement(\"link\");n.rel = \"modulepreload\";n.href=\"https://framer.com/edit/init.mjs\";document.head.appendChild(n)}}catch(e){}</script> <!--",
+        "raw_html_len": 103134
+      },
+      "score": 50,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "login_keywords_detected",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "source": "openphish",
+      "seed_url": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
+      "url": "https://aip1ed.vercel.app/",
+      "final_url": "https://aip1ed.vercel.app/",
+      "host": "aip1ed.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 451,
+        "final_url": "https://aip1ed.vercel.app/",
+        "content_len": 1590,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Deployment Unavailable",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fdced6b8de16155e4f454b32dab9785faf8f8084",
+        "snippet": "<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content=\"width=device-width,initial-scale=1\"><meta name=theme-color content=#000><title>Deployment Unavailable</title><style>:root{--background: #fff;--secondary: #666;--foreground: #000}@media(prefers-color-scheme:dark){:root{--background: #000;--secondary: #a1a1a1;--foreground: #fff}}html,body{overflow:hidden;background:var(--b",
+        "raw_html_len": 1590
+      },
+      "score": 10,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "cloud_hosted_platform"
+      ]
+    }
+  ]
+}

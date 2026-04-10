@@ -3,7 +3,7 @@ from datetime import datetime
 from abc import ABC
 from typing import List, Dict, Optional
 from difflib import SequenceMatcher
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse, parse_qs, quote_plus, unquote
 from playwright.async_api import BrowserContext
 
 from crawler.common.crawler_instance.local_interface_model.api.api_apk_model import apk_data_model
@@ -132,17 +132,17 @@ class _apk_mod(api_collector_interface, ABC):
             "base_url": "https://9mod.com",
             "search": "https://9mod.com/?s={apk_name}",
             "selectors": {
-                "results": "a.link-title",
-                "result_title": "h2.body-2",
+                "results": "a.block.p-2.relative",
+                "result_title": "h3",
                 "details_title": "h1",
                 "last_update": "span.date-news",
-                "content": "div.body-2.blockreadmore.body-content.readmore-section.readmore-collapsed",
-                "pkg_anchor": "a.body-2.text-truncate",
-                "pkg_id": "a.body-2.text-truncate",
+                "content": "div.body-content",
+                "pkg_anchor": "a[href*='play.google.com']",
+                "pkg_id": "a[href*='play.google.com']",
                 "publisher": "span.body-2 a[rel='tag']",
-                "size": "div.info-block.scora:has(span.gray:has-text('Size')) >> span.body-2:not(.gray)",
-                "version": "div.info-block.scora:has(span.gray:has-text('Version')) >> span.body-2:not(.gray)",
-                "mod": "span.body-2 p",
+                "size": "div.info-block:has-text('Size') span.body-2",
+                "version": "div.info-block:has-text('Version') span.body-2",
+                "mod": "div.body-content p",
                 "download": "a.download-button",
             },
         },
@@ -152,15 +152,15 @@ class _apk_mod(api_collector_interface, ABC):
             "search": "https://getmodsapk.com/search?query={apk_name}",
             "selectors": {
                 "results": "a.bg-white",
-                "result_title": "h3.font-semibold",
-                "details_title": "h1.text-2xl",
-                "version": "div.info-grid-card-custom:nth-of-type(2) p.text-sm.md\\:text-xl.font-bold",
+                "result_title": "h3",
+                "details_title": "h1",
+                "version": "div.info-grid-card-custom:nth-of-type(2) p.font-bold",
                 "last_update": "div.flex.items-center.dark\\:text-gray-300",
-                "publisher": "div.info-grid-card-custom:nth-of-type(4) p.text-sm.md\\:text-xl.font-bold",
-                "size": "div.info-grid-card-custom:nth-of-type(7) p.text-sm.md\\:text-xl.font-bold",
+                "publisher": "div.info-grid-card-custom:nth-of-type(4) p.font-bold",
+                "size": "div.info-grid-card-custom:nth-of-type(7) p.font-bold",
                 "pkg_anchor": "div.info-grid-card-custom:nth-of-type(8) a",
                 "mod": "div.pl-8.pb-3.prose ul",
-                "content": "div.post-content.text-gray-900",
+                "content": "div.post-content",
                 "download": "a[href*='/download']",
             },
         },
@@ -234,37 +234,301 @@ class _apk_mod(api_collector_interface, ABC):
             text = re.sub(r"\bv?\d+(\.\d+)*\b", "", text)
             text = re.sub(r"\bmod( apk)?\b", "", text)
             text = re.sub(r"[^a-z0-9\s]", "", text)
-            return text.strip()
+            return re.sub(r"\s+", " ", text).strip()
 
         a_clean = clean(a)
         b_clean = clean(b)
+        a_flat = a_clean.replace(" ", "")
+        b_flat = b_clean.replace(" ", "")
 
-        if a_clean == b_clean:
+        if a_clean == b_clean or (a_flat and a_flat == b_flat):
             return 1.0
-        if a_clean and a_clean in b_clean:
-            return 0.95
+        if a_flat and a_flat in b_flat:
+            return 0.98
 
-        return SequenceMatcher(None, a_clean, b_clean).ratio()
+        return max(
+            SequenceMatcher(None, a_clean, b_clean).ratio(),
+            SequenceMatcher(None, a_flat, b_flat).ratio(),
+        )
 
     @staticmethod
-    async def search_site(page, site, app_name: str):
-        search_url = site["search"].format(apk_name=app_name.replace(" ", "+").lower())
-        await page.goto(search_url, timeout=60000)
+    def _normalize_lookup_text(value: str) -> str:
+        return re.sub(r"[^a-z0-9]+", "", (value or "").lower())
 
-        results = await page.query_selector_all(site["selectors"]["results"])
+    @staticmethod
+    def _same_site_url(site_base_url: str, candidate_url: str) -> bool:
+        site_host = urlparse(site_base_url or "").netloc.lower().replace("www.", "")
+        candidate_host = urlparse(candidate_url or "").netloc.lower().replace("www.", "")
+        if not site_host or not candidate_host:
+            return True
+        return candidate_host == site_host or candidate_host.endswith(f".{site_host}")
+
+    @staticmethod
+    def _parse_playstore_input(value: str) -> tuple[str, str]:
+        text = str(value or "").strip()
+        if not text:
+            return "", ""
+
+        if text.startswith("http://") or text.startswith("https://") or "play.google.com" in text:
+            parsed = urlparse(text)
+            pkg_name = parse_qs(parsed.query).get("id", [""])[0].strip()
+            return text, pkg_name
+
+        if re.match(r"^[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)+$", text):
+            return f"https://play.google.com/store/apps/details?id={text}", text
+
+        return "", ""
+
+    @staticmethod
+    def _humanize_package_name(pkg_name: str) -> str:
+        if not pkg_name:
+            return ""
+        last = pkg_name.split(".")[-1].strip()
+        if not last:
+            return ""
+        last = re.sub(r"([a-z])([A-Z])", r"\1 \2", last)
+        last = last.replace("_", " ").replace("-", " ")
+        common_compounds = {
+            "clashofclans": "Clash of Clans",
+            "subwaysurf": "Subway Surf",
+            "subwaysurfers": "Subway Surfers",
+            "candycrushsaga": "Candy Crush Saga",
+            "freefiremax": "Free Fire Max",
+        }
+        lowered = last.replace(" ", "").lower()
+        if lowered in common_compounds:
+            return common_compounds[lowered]
+        return " ".join(part.capitalize() for part in last.split())
+
+    async def _first_text(self, page, selectors: List[str]) -> str:
+        for selector in selectors:
+            try:
+                el = await page.query_selector(selector)
+                if not el:
+                    continue
+                text = (await el.inner_text()).strip()
+                if text:
+                    return text
+            except Exception:
+                continue
+        return ""
+
+    async def _first_attr(self, page, selectors: List[str], attr: str) -> str:
+        for selector in selectors:
+            try:
+                el = await page.query_selector(selector)
+                if not el:
+                    continue
+                value = (await el.get_attribute(attr) or "").strip()
+                if value:
+                    return value
+            except Exception:
+                continue
+        return ""
+
+    async def _extract_playstore_app_name(self, page, pkg_name: str, fallback_value: str) -> str:
+        title_text = ""
+        try:
+            title_text = (await page.title()).strip()
+        except Exception:
+            title_text = ""
+
+        if title_text:
+            title_text = re.sub(r"\s*-\s*Apps on Google Play\s*$", "", title_text, flags=re.I).strip()
+            if title_text and "google play" not in title_text.lower():
+                return title_text
+
+        meta_title = await self._first_attr(
+            page,
+            [
+                'meta[property="og:title"]',
+                'meta[name="twitter:title"]',
+                'meta[itemprop="name"]',
+            ],
+            "content",
+        )
+        if meta_title:
+            meta_title = re.sub(r"\s*-\s*Apps on Google Play\s*$", "", meta_title, flags=re.I).strip()
+            if meta_title and "google play" not in meta_title.lower():
+                return meta_title
+
+        heading = await self._first_text(
+            page,
+            [
+                "h1 span",
+                'h1[itemprop="name"]',
+                '[itemprop="name"] span',
+                "h1",
+            ],
+        )
+        if heading:
+            return heading
+
+        try:
+            html = await page.content()
+        except Exception:
+            html = ""
+
+        if html:
+            patterns = [
+                r'"name":"([^"]+)"',
+                r"<title>(.*?)</title>",
+            ]
+            for pattern in patterns:
+                match = re.search(pattern, html, re.I | re.S)
+                if not match:
+                    continue
+                candidate = unquote(match.group(1)).strip()
+                candidate = re.sub(r"\s*-\s*Apps on Google Play\s*$", "", candidate, flags=re.I).strip()
+                if candidate and "google play" not in candidate.lower():
+                    return candidate
+
+        return self._humanize_package_name(pkg_name) or fallback_value
+
+    def _build_query_variants(self, app_name: str, pkg_name: str) -> List[str]:
+        variants: List[str] = []
+
+        def add(value: str):
+            text = str(value or "").strip()
+            if not text:
+                return
+            if text not in variants:
+                variants.append(text)
+
+        humanized_pkg = self._humanize_package_name(pkg_name)
+        pkg_tail = pkg_name.split(".")[-1].strip() if pkg_name else ""
+
+        add(app_name)
+        add(humanized_pkg)
+        add(pkg_tail)
+        add(pkg_name)
+
+        if humanized_pkg:
+            add(f"{humanized_pkg} apk")
+            add(f"{humanized_pkg} mod")
+            add(f"{humanized_pkg} mod apk")
+
+        return variants
+
+    async def _collect_generic_anchor_matches(self, page, site, needles: List[str]) -> List[tuple[str, str]]:
+        anchors = await page.query_selector_all("a[href]")
+        collected: List[tuple[str, str]] = []
+        seen = set()
+
+        for anchor in anchors[:250]:
+            try:
+                href = (await anchor.get_attribute("href") or "").strip()
+                if not href:
+                    continue
+                title = (await anchor.inner_text()).strip()
+                if not title:
+                    continue
+                full_href = urljoin(site["base_url"], href)
+                if not self._same_site_url(site["base_url"], full_href):
+                    continue
+                haystack = self._normalize_lookup_text(f"{title} {full_href}")
+                if needles and not any(needle and needle in haystack for needle in needles):
+                    continue
+                if full_href in seen:
+                    continue
+                seen.add(full_href)
+                collected.append((title, href))
+            except Exception:
+                continue
+
+        return collected
+
+    @staticmethod
+    async def search_site(page, site, queries: List[str], pkg_name: str = ""):
         collected = []
+        seen = set()
+        result_selectors = site["selectors"].get("results") or []
+        if isinstance(result_selectors, str):
+            result_selectors = [result_selectors]
+        title_selectors = site["selectors"].get("result_title") or []
+        if isinstance(title_selectors, str):
+            title_selectors = [title_selectors]
 
-        for r in results[:5]:
-            sel_title = site["selectors"].get("result_title")
-            if sel_title:
-                title_el = await r.query_selector(sel_title)
-                title = await title_el.inner_text() if title_el else await r.inner_text()
-            else:
-                title = await r.inner_text()
+        needles = [
+            _apk_mod._normalize_lookup_text(query)
+            for query in [pkg_name, *(queries or [])]
+            if str(query or "").strip()
+        ]
 
-            href = await r.get_attribute("href")
-            if href:
-                collected.append((title.strip(), href))
+        for query in queries or []:
+            search_url = site["search"].format(apk_name=quote_plus(query))
+            try:
+                await page.goto(search_url, timeout=60000, wait_until="domcontentloaded")
+                await page.wait_for_timeout(2500)
+            except Exception:
+                continue
+
+            results = []
+            for selector in result_selectors:
+                try:
+                    results = await page.query_selector_all(selector)
+                except Exception:
+                    results = []
+                if results:
+                    break
+
+            if not results:
+                generic_matches = await _apk_mod._collect_generic_anchor_matches(_apk_mod, page, site, needles)
+                for title, href in generic_matches:
+                    full_href = urljoin(site["base_url"], href)
+                    if full_href in seen:
+                        continue
+                    seen.add(full_href)
+                    collected.append((title.strip(), href))
+                if collected:
+                    break
+                continue
+
+            for r in results[:8]:
+                title = ""
+                for sel_title in title_selectors:
+                    try:
+                        title_el = await r.query_selector(sel_title)
+                        if title_el:
+                            title = (await title_el.inner_text()).strip()
+                            if title:
+                                break
+                    except Exception:
+                        continue
+                if not title:
+                    try:
+                        title = (await r.inner_text()).strip()
+                    except Exception:
+                        title = ""
+
+                href = ""
+                try:
+                    href = (await r.get_attribute("href") or "").strip()
+                except Exception:
+                    href = ""
+                if not href:
+                    try:
+                        nested_anchor = await r.query_selector("a[href]")
+                        href = (await nested_anchor.get_attribute("href") or "").strip() if nested_anchor else ""
+                    except Exception:
+                        href = ""
+
+                if not href:
+                    continue
+
+                full_href = urljoin(site["base_url"], href)
+                if not _apk_mod._same_site_url(site["base_url"], full_href):
+                    continue
+                haystack = _apk_mod._normalize_lookup_text(f"{title} {full_href}")
+                if needles and not any(needle and needle in haystack for needle in needles):
+                    continue
+                if full_href in seen:
+                    continue
+                seen.add(full_href)
+                collected.append((title.strip() or full_href, href))
+
+            if collected:
+                break
 
         return collected
 
@@ -288,7 +552,7 @@ class _apk_mod(api_collector_interface, ABC):
 
     async def extract_metadata(self, page, site, href: str) -> Dict:
         full_url = urljoin(site["base_url"], href)
-        await page.goto(full_url, timeout=60000)
+        await page.goto(full_url, timeout=60000, wait_until="domcontentloaded")
         meta: Dict = {}
 
         for key, selector in site["selectors"].items():
@@ -313,6 +577,45 @@ class _apk_mod(api_collector_interface, ABC):
                 continue
 
         meta["url"] = full_url
+
+        if not meta.get("details_title"):
+            try:
+                page_title = (await page.title()).strip()
+            except Exception:
+                page_title = ""
+            if page_title:
+                meta["details_title"] = re.sub(r"\s*(MOD APK|APK|Download).*$", "", page_title, flags=re.I).strip() or page_title
+
+        if not meta.get("content"):
+            for selector in ["article", "main", ".entry-content", ".post-content", "body"]:
+                try:
+                    el = await page.query_selector(selector)
+                    if not el:
+                        continue
+                    text = (await el.inner_text()).strip()
+                    if text:
+                        meta["content"] = text[:2000]
+                        break
+                except Exception:
+                    continue
+
+        if not meta.get("download"):
+            for selector in [
+                "a[href*='download']",
+                "a[class*='download']",
+                "a[href$='.apk']",
+                "a[href$='.xapk']",
+            ]:
+                try:
+                    el = await page.query_selector(selector)
+                    if not el:
+                        continue
+                    href_value = (await el.get_attribute("href") or "").strip()
+                    if href_value:
+                        meta["download"] = urljoin(site["base_url"], href_value)
+                        break
+                except Exception:
+                    continue
 
         # pkg_id fallback
         m_pkg_id = meta.get("pkg_id")
@@ -347,29 +650,38 @@ class _apk_mod(api_collector_interface, ABC):
         if not v:
             return apk_data_model(base_url=self.base_url, content_type=["cracked"])
 
-        if v.startswith("http://") or v.startswith("https://") or "play.google.com" in v:
-            url = v
-            m = re.search(r"id=([a-zA-Z0-9._-]+)", v)
-            pkg_name = m.group(1) if m else ""
-        elif re.match(r"^[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)+$", v):
-            pkg_name = v
-            url = f"https://play.google.com/store/apps/details?id={v}"
-        else:
+        url, pkg_name = self._parse_playstore_input(v)
+        if not url:
             return apk_data_model(base_url=self.base_url, content_type=["cracked"])
 
-        await page.goto(url, timeout=60000)
-        app_name = await page.inner_text("h1 span[itemprop='name']", timeout=60000)
+        app_name = self._humanize_package_name(pkg_name) or v
+        try:
+            await page.goto(url, timeout=60000, wait_until="domcontentloaded")
+            await page.wait_for_timeout(1500)
+            extracted_name = await self._extract_playstore_app_name(page, pkg_name, v)
+            if extracted_name:
+                app_name = extracted_name
+        except Exception:
+            try:
+                await page.close()
+            except Exception:
+                pass
+            page = await context.new_page()
+
+        query_variants = self._build_query_variants(app_name, pkg_name)
 
         all_best_results = []
         for site in self.APK_SITES:
             try:
-                collected = await self.search_site(page, site, app_name)
+                collected = await self.search_site(page, site, query_variants, pkg_name=pkg_name)
 
                 best_site_result = None
                 best_site_score = 0.0
 
                 for title, href in collected:
-                    score = self.similarity(app_name, title)
+                    score = max(self.similarity(candidate, title) for candidate in query_variants if candidate)
+                    if pkg_name and pkg_name.lower() in href.lower():
+                        score = max(score, 0.99)
                     if score > best_site_score:
                         best_site_score = score
                         best_site_result = (site, title, href, score)
@@ -398,6 +710,10 @@ class _apk_mod(api_collector_interface, ABC):
             setattr(card_data, "m_download_link", [meta.get("download")] if meta.get("download") else [])
             setattr(card_data, "m_content_type", ["apk"])
             setattr(card_data, "m_latest_date", str(meta.get("last_update") or ""))
+            setattr(card_data, "m_apk_size", meta.get("size") or "")
+            setattr(card_data, "m_source", site["name"])
+            setattr(card_data, "m_publisher", meta.get("publisher") or "")
+            setattr(card_data, "m_description", meta.get("content") or "")
 
             found_cards.append(card_data)
             self.append_apk_data(card_data)
@@ -407,4 +723,3 @@ class _apk_mod(api_collector_interface, ABC):
         setattr(model, "content_type", ["cracked"])
         setattr(model, "cards_data", found_cards)
         return model
-

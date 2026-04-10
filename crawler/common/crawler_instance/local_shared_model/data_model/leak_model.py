@@ -34,6 +34,7 @@ class leak_model:
     m_base_url: str = ""
     m_content: str = ""
     m_network: str = ""
+    m_team: str = ""
 
     m_important_content: str = ""
     #m_weblink: list[str] = ""
@@ -54,6 +55,9 @@ class leak_model:
     # ✅ ADD these for backward compatibility with your scripts
     m_section: List[str] = field(default_factory=list)  # your script uses m_section
     m_data_size: Optional[str] = None
+    m_screenshot: str = ""
+    m_ref_html: str = ""
+    m_country: str = ""
 
     # Optional: convenience converters
     def leak_date_iso(self) -> str:
@@ -75,4 +79,8 @@ class leak_model:
             "logo_or_images": list(self.m_logo_or_images or []),
             "leak_date": self.leak_date_iso(),
             "extra": dict(self.m_extra or {}),
+            "screenshot": self.m_screenshot,
+            "ref_html": self.m_ref_html,
+            "country": self.m_country,
+            "team": self.m_team,
         }

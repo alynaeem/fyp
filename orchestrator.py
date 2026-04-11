@@ -173,11 +173,18 @@ def _run_leaks() -> None:
     # --- leak sites (Playwright-based, most need Tor) ---
     from leak_collector.scripts.leak._akiral2iz6a7qgd3ayp3l6yub7xx2uep76idk3u2kollpj5z3z636bad import _akiral2iz6a7qgd3ayp3l6yub7xx2uep76idk3u2kollpj5z3z636bad
     from leak_collector.scripts.leak._business_data_leaks import _business_data_leaks
+    from leak_collector.scripts.leak._5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid import _5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid
+    from leak_collector.scripts.leak._black3gnkizshuynieigw6ejgpblb53mpasftzd6pydqpmq2vn2xf6yd import _black3gnkizshuynieigw6ejgpblb53mpasftzd6pydqpmq2vn2xf6yd
+    from leak_collector.scripts.leak._csidb import _csidb
     from leak_collector.scripts.leak._darkleakyqmv62eweqwy4dnhaijg4m4dkburo73pzuqfdumcntqdokyd import _darkleakyqmv62eweqwy4dnhaijg4m4dkburo73pzuqfdumcntqdokyd
     from leak_collector.scripts.leak._dataleakypypu7uwblm5kttv726l3iripago6p336xjnbstkjwrlnlid import _dataleakypypu7uwblm5kttv726l3iripago6p336xjnbstkjwrlnlid
     from leak_collector.scripts.leak._ddosecrets import _ddosecrets
+    from leak_collector.scripts.leak._fjg4zi4opkxkvdz7mvwp7h6goe4tcby3hhkrz43pht4j3vakhy75znyd import _fjg4zi4opkxkvdz7mvwp7h6goe4tcby3hhkrz43pht4j3vakhy75znyd
     from leak_collector.scripts.leak._handala_hack import _handala_hack
+    from leak_collector.scripts.leak._hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd import _hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd
     from leak_collector.scripts.leak._hunters55atbdusuladzv7vzv6a423bkh6ksl2uftwrxyuarbzlfh7yd import _hunters55atbdusuladzv7vzv6a423bkh6ksl2uftwrxyuarbzlfh7yd
+    from leak_collector.scripts.leak._ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd import _ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd
+    from leak_collector.scripts.leak._incblog6qu4y4mm4zvw5nrmue6qbwtgjsxpw6b7ixzssu36tsajldoad import _incblog6qu4y4mm4zvw5nrmue6qbwtgjsxpw6b7ixzssu36tsajldoad
     from leak_collector.scripts.leak._intelrepository import _intelrepository
     from leak_collector.scripts.leak._leak_lookup import _leak_lookup
     from leak_collector.scripts.leak._leaksndi6i6m2ji6ozulqe4imlrqn6wrgjlhxe25vremvr3aymm4aaid import _leaksndi6i6m2ji6ozulqe4imlrqn6wrgjlhxe25vremvr3aymm4aaid
@@ -191,8 +198,12 @@ def _run_leaks() -> None:
     from leak_collector.scripts.leak._ransomlook import _ransomlook
     from leak_collector.scripts.leak._ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad import _ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad
     from leak_collector.scripts.leak._ransomware_live import _ransomware_live
+    from leak_collector.scripts.leak._rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad import _rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad
     from leak_collector.scripts.leak._rnsmwareartse3m4hjsumjf222pnka6gad26cqxqmbjvevhbnym5p6ad import _rnsmwareartse3m4hjsumjf222pnka6gad26cqxqmbjvevhbnym5p6ad
+    from leak_collector.scripts.leak._safepaypfxntwixwjrlcscft433ggemlhgkkdupi2ynhtcmvdgubmoyd import _safepaypfxntwixwjrlcscft433ggemlhgkkdupi2ynhtcmvdgubmoyd
+    from leak_collector.scripts.leak._securo45z554mw7rgrt7wcgv5eenj2xmxyrsdj3fcjsvindu63s4bsid import _securo45z554mw7rgrt7wcgv5eenj2xmxyrsdj3fcjsvindu63s4bsid
     from leak_collector.scripts.leak._toufanleaks import _toufanleaks
+    from leak_collector.scripts.leak._yzcpwxuhbkyjnyn4qsf4o5dkvu6m2fyo7dwizmnlutanlmzlos7pa6qd import _yzcpwxuhbkyjnyn4qsf4o5dkvu6m2fyo7dwizmnlutanlmzlos7pa6qd
 
     optional_leak_sources = []
     try:
@@ -222,11 +233,18 @@ def _run_leaks() -> None:
     leak_sources = [
         ("akira", _akiral2iz6a7qgd3ayp3l6yub7xx2uep76idk3u2kollpj5z3z636bad),
         ("business_data_leaks", _business_data_leaks),
+        ("fivebutb", _5butbkrljkaorg5maepuca25oma7eiwo6a2rlhvkblb4v6mf3ki2ovid),
+        ("black3g", _black3gnkizshuynieigw6ejgpblb53mpasftzd6pydqpmq2vn2xf6yd),
+        ("csidb", _csidb),
         ("darkleak", _darkleakyqmv62eweqwy4dnhaijg4m4dkburo73pzuqfdumcntqdokyd),
         ("blacklock", _dataleakypypu7uwblm5kttv726l3iripago6p336xjnbstkjwrlnlid),
         ("ddosecrets", _ddosecrets),
+        ("fjg4zi", _fjg4zi4opkxkvdz7mvwp7h6goe4tcby3hhkrz43pht4j3vakhy75znyd),
         ("handala_hack", _handala_hack),
+        ("hptqq2", _hptqq2o2qjva7lcaaq67w36jihzivkaitkexorauw7b2yul2z6zozpqd),
         ("hunters_intl", _hunters55atbdusuladzv7vzv6a423bkh6ksl2uftwrxyuarbzlfh7yd),
+        ("ijzn3sic", _ijzn3sicrcy7guixkzjkib4ukbiilwc3xhnmby4mcbccnsd7j2rekvqd),
+        ("incblog", _incblog6qu4y4mm4zvw5nrmue6qbwtgjsxpw6b7ixzssu36tsajldoad),
         ("intelrepository", _intelrepository),
         ("leak_lookup", _leak_lookup),
         ("leaks_onion", _leaksndi6i6m2ji6ozulqe4imlrqn6wrgjlhxe25vremvr3aymm4aaid),
@@ -240,8 +258,12 @@ def _run_leaks() -> None:
         ("ransomlook", _ransomlook),
         ("ransomhub", _ransomocmou6mnbquqz44ewosbkjk3o5qjsl3orawojexfook2j7esad),
         ("ransomware_live", _ransomware_live),
+        ("rhysida", _rhysidafohrhyy2aszi7bm32tnjat5xri65fopcxkdfxhi4tidsg7cad),
         ("rnsmware", _rnsmwareartse3m4hjsumjf222pnka6gad26cqxqmbjvevhbnym5p6ad),
+        ("safepay", _safepaypfxntwixwjrlcscft433ggemlhgkkdupi2ynhtcmvdgubmoyd),
+        ("securo", _securo45z554mw7rgrt7wcgv5eenj2xmxyrsdj3fcjsvindu63s4bsid),
         ("toufanleaks", _toufanleaks),
+        ("yzcpwx", _yzcpwxuhbkyjnyn4qsf4o5dkvu6m2fyo7dwizmnlutanlmzlos7pa6qd),
     ]
     leak_sources.extend(optional_leak_sources)
 

@@ -64,6 +64,7 @@ services:
       tor:
         condition: service_healthy
     volumes:
+      - ./data/credential_checker:/app/data/credential_checker
       - ./api_collector/scripts/trivy_reports:/app/api_collector/scripts/trivy_reports
       - ./logs:/app/logs
     healthcheck:
@@ -92,6 +93,7 @@ services:
       tor:
         condition: service_healthy
     volumes:
+      - ./data/credential_checker:/app/data/credential_checker
       - ./logs:/app/logs
       - ./api_collector/scripts/trivy_reports:/app/api_collector/scripts/trivy_reports
 

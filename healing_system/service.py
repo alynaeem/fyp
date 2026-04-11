@@ -289,6 +289,7 @@ class HealingMonitorService:
         }
 
     def get_stats(self) -> dict[str, Any]:
+        breakdown = self._build_discovery_breakdown()
         total_targets = self.targets.count_documents({"active": {"$ne": False}})
         changed = self.targets.count_documents({"active": {"$ne": False}, "html_changed": True})
         auto_fixed = self.targets.count_documents({"active": {"$ne": False}, "selector_fix_count": {"$gt": 0}})
@@ -309,6 +310,7 @@ class HealingMonitorService:
             "last_discovered_at": latest_registry.get("last_discovered_at"),
             "last_event_status": recent_event.get("status"),
             "last_event_target": recent_event.get("script_name"),
+            "discovery_breakdown": breakdown,
         }
 
     def list_targets(self, *, limit: int = 100) -> list[dict[str, Any]]:
@@ -358,6 +360,44 @@ class HealingMonitorService:
             "additional_urls": [url for url in urls if url != target_url][:10],
             "selector_hints": selector_hints[:40],
             "fetch_strategy": fetch_strategy,
+        }
+
+    def _build_discovery_breakdown(self) -> dict[str, Any]:
+        total_python_files = 0
+        skipped_files: list[str] = []
+        utility_files: list[str] = []
+        discovered_files: list[str] = []
+
+        for collector_type, root in SCRIPT_ROOTS:
+            base = Path(root)
+            if not base.exists():
+                continue
+
+            for path in sorted(base.rglob("*.py")):
+                total_python_files += 1
+                rel_path = path.as_posix().lstrip("./")
+
+                if path.name in SKIP_FILE_NAMES or path.name.startswith("test_") or path.name.startswith("_example"):
+                    skipped_files.append(rel_path)
+                    continue
+
+                target = self._build_target_definition(path, collector_type)
+                if not target:
+                    utility_files.append(rel_path)
+                    continue
+
+                discovered_files.append(rel_path)
+
+        return {
+            "roots": [root for _, root in SCRIPT_ROOTS],
+            "root_count": len(SCRIPT_ROOTS),
+            "total_python_files": total_python_files,
+            "skipped_file_count": len(skipped_files),
+            "utility_file_count": len(utility_files),
+            "discovered_target_count": len(discovered_files),
+            "default_run_limit": int(cfg.healing_monitor_target_limit or 12),
+            "skipped_files": skipped_files[:20],
+            "utility_files": utility_files[:20],
         }
 
     def _extract_urls(self, source: str) -> list[str]:

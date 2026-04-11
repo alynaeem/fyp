@@ -1493,6 +1493,49 @@ a {
   color: #8dc7ff;
 }
 
+.status-ingested {
+  background: rgba(34, 197, 94, 0.14);
+  color: #8ef0a8;
+}
+
+.status-empty,
+.status-not_run {
+  background: rgba(148, 163, 184, 0.14);
+  color: #cdd7e5;
+}
+
+.status-running {
+  background: rgba(59, 130, 246, 0.14);
+  color: #9fc8ff;
+}
+
+.status-error,
+.status-import_error {
+  background: rgba(255, 107, 87, 0.14);
+  color: #ffb0a2;
+}
+
+.status-unreachable {
+  background: rgba(245, 158, 11, 0.14);
+  color: #ffd37d;
+}
+
+.leak-status-shell code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.84em;
+}
+
+.leak-status-table-shell td {
+  vertical-align: top;
+}
+
+.leak-status-table-shell td:last-child {
+  max-width: 360px;
+  white-space: normal;
+  word-break: break-word;
+  color: var(--text-dim);
+}
+
 .pakdb-search-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

@@ -20,8 +20,10 @@ import subprocess
 import sys
 import time
 import traceback
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, Optional
+from urllib.parse import urlparse
 
 import pymongo
 from config import cfg
@@ -35,6 +37,7 @@ from mongo_persistence import (
 log = get_logger("orchestrator")
 
 _LEAK_SCRIPT_DIR = Path(__file__).resolve().parent / "leak_collector" / "scripts" / "leak"
+_SOURCE_STATUS_COLLECTION = "collector_source_status"
 
 
 def _cleanup_browsers():
@@ -70,6 +73,167 @@ def _get_kv_collection():
     if _mongo_client is None:
         _mongo_client = pymongo.MongoClient(cfg.mongo_uri)
     return _mongo_client[cfg.mongo_db]["redis_kv_store"]
+
+
+def _get_source_status_collection():
+    global _mongo_client
+    if _mongo_client is None:
+        _mongo_client = pymongo.MongoClient(cfg.mongo_uri)
+    return _mongo_client[cfg.mongo_db][_SOURCE_STATUS_COLLECTION]
+
+
+def _utcnow_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _target_host(value: str) -> str:
+    if not value:
+        return ""
+    try:
+        return urlparse(value).netloc or value
+    except Exception:
+        return value
+
+
+def _script_identity(name: str, cls=None, *, module_stem: str | None = None, script_file: str | None = None) -> tuple[str, str]:
+    resolved_module_stem = module_stem or getattr(cls, "__module__", "").rsplit(".", 1)[-1] or name
+    resolved_script_file = script_file or f"{resolved_module_stem}.py"
+    return resolved_module_stem, resolved_script_file
+
+
+def _model_target_url(model) -> str:
+    for attr_name in ("seed_url", "base_url"):
+        try:
+            value = getattr(model, attr_name, "")
+        except Exception:
+            value = ""
+        if callable(value):
+            try:
+                value = value()
+            except Exception:
+                value = ""
+        if value:
+            return str(value)
+    try:
+        contact = model.contact_page()
+        if contact:
+            return str(contact)
+    except Exception:
+        pass
+    return ""
+
+
+def _summarize_error(error) -> str:
+    if not error:
+        return ""
+    message = str(error).strip()
+    if len(message) > 900:
+        return f"{message[:897]}..."
+    return message
+
+
+def _derive_leak_status(parse_meta: dict | None, db_stats: dict | None) -> str:
+    parse_meta = parse_meta or {}
+    db_stats = db_stats or {}
+    raw_items = int(db_stats.get("raw_items") or 0)
+    parse_count = int(parse_meta.get("count") or 0)
+    parse_error = str(parse_meta.get("error") or "").strip().lower()
+    parse_state = str(parse_meta.get("status") or "").strip().lower()
+
+    if raw_items > 0 or parse_count > 0:
+        return "ingested"
+    if parse_error:
+        unreachable_markers = (
+            "err_socks_connection_failed",
+            "socks",
+            "proxy",
+            "timed out",
+            "timeout",
+            "name resolution",
+            "dns",
+            "connection refused",
+            "connection reset",
+            "net::err",
+            "tunnel",
+            "unreachable",
+        )
+        if any(marker in parse_error for marker in unreachable_markers):
+            return "unreachable"
+        return "error"
+    if parse_state and parse_state != "success":
+        return "error"
+    return "empty"
+
+
+def _record_source_status(
+    collector_type: str,
+    name: str,
+    *,
+    cls=None,
+    model=None,
+    status: str,
+    source_kind: str = "",
+    parse_meta: dict | None = None,
+    db_stats: dict | None = None,
+    error=None,
+    auto_discovered: bool | None = None,
+    module_stem: str | None = None,
+    script_file: str | None = None,
+) -> None:
+    collection = _get_source_status_collection()
+    now = _utcnow_iso()
+    resolved_module_stem, resolved_script_file = _script_identity(
+        name,
+        cls,
+        module_stem=module_stem,
+        script_file=script_file,
+    )
+    target_url = _model_target_url(model) if model is not None else ""
+    parse_meta = parse_meta or {}
+    db_stats = db_stats or {}
+    normalized_status = str(status or "unknown").strip().lower() or "unknown"
+    error_message = _summarize_error(error or parse_meta.get("error"))
+
+    update_fields = {
+        "collector_type": collector_type,
+        "source_name": name,
+        "module_stem": resolved_module_stem,
+        "script_file": resolved_script_file,
+        "status": normalized_status,
+        "updated_at": now,
+        "target_url": target_url,
+        "target_host": _target_host(target_url),
+        "parse_count": int(parse_meta.get("count") or 0),
+        "parse_duration_seconds": float(parse_meta.get("duration") or 0),
+        "raw_items": int(db_stats.get("raw_items") or 0),
+        "raw_entities": int(db_stats.get("raw_entities") or 0),
+    }
+    if source_kind:
+        update_fields["source_kind"] = source_kind
+    if auto_discovered is not None:
+        update_fields["auto_discovered"] = bool(auto_discovered)
+    if error_message:
+        update_fields["last_error"] = error_message
+    elif normalized_status not in {"error", "import_error", "unreachable"}:
+        update_fields["last_error"] = ""
+
+    if normalized_status in {"running", "queued"}:
+        update_fields["last_started_at"] = now
+    if normalized_status in {"ingested", "empty", "error", "unreachable", "import_error"}:
+        update_fields["last_run_at"] = now
+    if normalized_status == "ingested":
+        update_fields["last_success_at"] = now
+
+    collection.update_one(
+        {"_id": f"{collector_type}:{resolved_module_stem}"},
+        {
+            "$set": update_fields,
+            "$setOnInsert": {
+                "created_at": now,
+            },
+        },
+        upsert=True,
+    )
 
 
 def _persist_model_data(collector_type: str, name: str, model, parsed_data=None):
@@ -135,10 +299,30 @@ def _discover_additional_leak_sources(existing_sources):
             module = importlib.import_module(module_name)
             cls = getattr(module, module_stem, None)
             if cls is None:
+                _record_source_status(
+                    "leak",
+                    module_stem.lstrip("_"),
+                    status="import_error",
+                    error=f"collector class `{module_stem}` not found",
+                    source_kind="leak_site",
+                    auto_discovered=True,
+                    module_stem=module_stem,
+                    script_file=script_path.name,
+                )
                 log.warning(f"  [{module_stem}] skipped: collector class `{module_stem}` not found")
                 continue
             discovered.append((module_stem.lstrip("_"), cls))
         except Exception as exc:
+            _record_source_status(
+                "leak",
+                module_stem.lstrip("_"),
+                status="import_error",
+                error=exc,
+                source_kind="leak_site",
+                auto_discovered=True,
+                module_stem=module_stem,
+                script_file=script_path.name,
+            )
             log.warning(f"  [{module_stem}] skipped during auto-discovery: {exc}")
 
     return discovered
@@ -193,6 +377,7 @@ def _run_news() -> None:
 def _run_leaks() -> None:
     from crawler.request_manager import init_services
     from crawler.request_parser import RequestParser
+    leak_sites_only = os.getenv("LEAK_SITES_ONLY", "").strip().lower() in {"1", "true", "yes", "on"}
 
     # --- tracking (REQUESTS-based, self-contained with run()) ---
     from leak_collector.scripts.tracking._acn import _acn
@@ -311,20 +496,60 @@ def _run_leaks() -> None:
             ", ".join(name for name, _ in auto_discovered_leak_sources[:20]),
         )
 
-    all_sources = tracking_sources + leak_sources
+    all_sources = leak_sources if leak_sites_only else tracking_sources + leak_sources
+    if leak_sites_only:
+        log.info("  [leaks] running leak site scripts only (tracking sources skipped)")
+    auto_discovered_names = {name for name, _ in auto_discovered_leak_sources}
+    leak_source_names = {name for name, _ in leak_sources}
     for name, cls in all_sources:
+        model = None
         try:
             model = cls()
             if hasattr(model, "set_proxy"):
                 model.set_proxy(proxy or {})
+            if name in leak_source_names:
+                _record_source_status(
+                    "leak",
+                    name,
+                    cls=cls,
+                    model=model,
+                    status="running",
+                    source_kind="leak_site",
+                    auto_discovered=name in auto_discovered_names,
+                )
             result = RequestParser(proxy=proxy, model=model, reset_cache=True).parse()
-            count = result.get('meta', {}).get('count', 0)
+            parse_meta = result.get("meta", {}) or {}
+            count = parse_meta.get("count", 0)
             db_stats = _persist_model_data("leak", name, model, parsed_data=result.get('data'))
+            if name in leak_source_names:
+                _record_source_status(
+                    "leak",
+                    name,
+                    cls=cls,
+                    model=model,
+                    status=_derive_leak_status(parse_meta, db_stats),
+                    source_kind="leak_site",
+                    parse_meta=parse_meta,
+                    db_stats=db_stats,
+                    auto_discovered=name in auto_discovered_names,
+                )
             log.info(
                 f"  [{name}] parse_count={count} raw_items={db_stats['raw_items']} "
                 f"raw_entities={db_stats['raw_entities']} kv_written={db_stats['legacy_kv']}"
             )
         except Exception as e:
+            if name in leak_source_names:
+                target_url = _model_target_url(model) if model is not None else ""
+                _record_source_status(
+                    "leak",
+                    name,
+                    cls=cls,
+                    model=model,
+                    status="unreachable" if ".onion" in target_url else "error",
+                    source_kind="leak_site",
+                    error=e,
+                    auto_discovered=name in auto_discovered_names,
+                )
             log.error(f"  [{name}] failed: {e}", exc_info=True)
         finally:
             _cleanup_browsers()

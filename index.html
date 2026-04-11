@@ -7,7 +7,7 @@
   <meta name="description" content="Live DarkPulse intelligence dashboard for leaks, defacement, exploits, and threat reporting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/style.css?v=34" />
+    <link rel="stylesheet" href="/style.css?v=35" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/world.js"></script>
@@ -186,6 +186,13 @@
             <div class="nav-copy">
               <span class="nav-label">Healing Monitor</span>
               <span class="nav-meta">HTML drift, selector breakage, auto-fix status</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="leak-source-status" id="sidebarNavItemLeakSourceStatus">
+            <span class="nav-icon">LS</span>
+            <div class="nav-copy">
+              <span class="nav-label">Leak Source Status</span>
+              <span class="nav-meta">Every leak script, Mongo docs, and crawl result</span>
             </div>
           </div>
           <div class="nav-item" data-view="docs" id="sidebarNavItemDocs">
@@ -1007,6 +1014,77 @@
           </div>
         </div>
 
+        <div class="view-panel hidden" id="viewLeakSourceStatus">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Leak Pipeline</p>
+              <h2 class="section-title">Leak Source Status</h2>
+              <p class="section-copy">Track every script inside <code>leak_collector/scripts/leak</code>, see whether it has pushed documents into Mongo, and confirm what is already visible on localhost.</p>
+            </div>
+          </div>
+          <div class="lookup-shell leak-status-shell">
+            <div class="healing-toolbar leak-status-toolbar">
+              <div class="healing-toolbar-copy">
+                <h3 class="healing-toolbar-title">Mongo-backed visibility for every leak script</h3>
+                <p class="healing-toolbar-note">Scripts with Mongo documents are already eligible to appear in Leak Feed and Live Feed on <code>localhost:9000</code>. Empty, unreachable, and import-error rows show what still needs fixing.</p>
+              </div>
+              <div class="healing-toolbar-actions">
+                <button class="btn-secondary" id="leakSourceRefreshBtn">Refresh Status</button>
+              </div>
+            </div>
+
+            <div id="leakSourceStatusNotice" class="pakdb-status">Loading leak source status...</div>
+
+            <div class="healing-stats-grid leak-status-summary-grid">
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Scripts</span>
+                <span class="mini-card-value" id="leakSourceStatTotal">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">With Data</span>
+                <span class="mini-card-value" id="leakSourceStatWithData">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Mongo Docs</span>
+                <span class="mini-card-value" id="leakSourceStatMongoDocs">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Ingested</span>
+                <span class="mini-card-value" id="leakSourceStatIngested">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Unreachable</span>
+                <span class="mini-card-value" id="leakSourceStatUnreachable">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Needs Work</span>
+                <span class="mini-card-value" id="leakSourceStatNeedsWork">0</span>
+              </div>
+            </div>
+
+            <div class="table-container leak-status-table-shell">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Script</th>
+                    <th>Alias</th>
+                    <th>Status</th>
+                    <th>Mongo Docs</th>
+                    <th>Last Run</th>
+                    <th>Target Host</th>
+                    <th>Last Error</th>
+                  </tr>
+                </thead>
+                <tbody id="leakSourceStatusTableBody">
+                  <tr>
+                    <td colspan="7">Loading leak source status...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
         <div class="view-panel hidden" id="viewDocs">
           <div class="panel-header">
             <div>
@@ -1647,6 +1725,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=41"></script>
+  <script src="app.js?v=42"></script>
 </body>
 </html>

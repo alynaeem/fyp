@@ -178,6 +178,10 @@ const VIEW_META = {
     title: "Healing Monitor",
     subtitle: "HTML drift detection, selector health checks, and self-healing visibility across collector scripts."
   },
+  "leak-source-status": {
+    title: "Leak Source Status",
+    subtitle: "Track every leak script, its MongoDB footprint, and what is already visible on localhost."
+  },
   docs: {
     title: "Documentation",
     subtitle: "Feature guides, operator workflows, search behavior, auth flows, and system notes."
@@ -200,7 +204,7 @@ const VIEW_META = {
   }
 };
 
-const TOOL_VIEWS = ["admin-users", "pakdb", "credential-checker", "confidential-data", "seo", "playstore", "software", "repo-scan", "healing", "docs", "account"];
+const TOOL_VIEWS = ["admin-users", "pakdb", "credential-checker", "confidential-data", "seo", "playstore", "software", "repo-scan", "healing", "leak-source-status", "docs", "account"];
 const FEED_PREFETCH_VIEWS = ["all", "news", "leak", "defacement", "exploit", "social", "api"];
 
 const SMART_UPDATE_SOURCE_LABELS = {
@@ -230,6 +234,10 @@ const state = {
     page: 1,
     totalPages: 0,
     totalItems: 0
+  },
+  leakSourceStatus: {
+    items: [],
+    summary: {}
   },
   feedFilters: {
     startDate: "",
@@ -3685,6 +3693,45 @@ function renderHealingEventCard(item) {
   `;
 }
 
+function formatLeakSourceStatus(status) {
+  const normalized = String(status || "not_run").toLowerCase();
+  switch (normalized) {
+    case "ingested":
+      return "Ingested";
+    case "unreachable":
+      return "Unreachable";
+    case "import_error":
+      return "Import Error";
+    case "not_run":
+      return "Not Run";
+    default:
+      return normalized ? normalized.replace(/_/g, " ").replace(/\b\w/g, char => char.toUpperCase()) : "Unknown";
+  }
+}
+
+function renderLeakSourceStatusRows(items = []) {
+  if (!Array.isArray(items) || !items.length) {
+    return `<tr><td colspan="7">No leak script status records are available yet.</td></tr>`;
+  }
+
+  return items.map(item => {
+    const status = String(item.status || "not_run").toLowerCase();
+    const error = String(item.last_error || "").trim();
+    const displayError = error.length > 140 ? `${error.slice(0, 137)}...` : error;
+    return `
+      <tr>
+        <td><strong>${escapeHtml(item.script_file || item.module_stem || "-")}</strong></td>
+        <td>${escapeHtml(item.source_name || "-")}</td>
+        <td><span class="status-badge status-${escapeHtml(status)}">${escapeHtml(formatLeakSourceStatus(status))}</span></td>
+        <td>${escapeHtml(String(item.mongo_document_count ?? 0))}</td>
+        <td>${escapeHtml(item.last_run_at ? formatDate(item.last_run_at) : "-")}</td>
+        <td>${escapeHtml(item.target_host || "-")}</td>
+        <td title="${escapeHtml(error || "")}">${escapeHtml(displayError || "-")}</td>
+      </tr>
+    `;
+  }).join("");
+}
+
 function renderHealingExplainer(stats = {}) {
   const breakdown = stats.discovery_breakdown || {};
   const totalFiles = Number(breakdown.total_python_files || 0);
@@ -3719,6 +3766,49 @@ function renderHealingExplainer(stats = {}) {
   $("healingExplainerNote").textContent = utilityList.length
     ? `Utility files excluded from target discovery: ${utilityList.join(", ")}.`
     : "Utility files without a target URL will appear here once discovery stats load.";
+}
+
+async function loadLeakSourceStatus(preserveStatus = false) {
+  if (!preserveStatus) {
+    setScanStatusLoading("leakSourceStatusNotice", "Loading leak script status...");
+  }
+  $("leakSourceStatusTableBody").innerHTML = `<tr><td colspan="7">Loading leak source status...</td></tr>`;
+
+  try {
+    const data = await apiFetch("/leaks/source-status");
+    const summary = data.summary || {};
+    const items = Array.isArray(data.items) ? data.items : [];
+    const statusCounts = summary.status_counts || {};
+
+    state.leakSourceStatus = { summary, items };
+
+    $("leakSourceStatTotal").textContent = String(summary.total_scripts ?? items.length ?? 0);
+    $("leakSourceStatWithData").textContent = String(summary.with_data ?? 0);
+    $("leakSourceStatMongoDocs").textContent = String(summary.total_mongo_documents ?? 0);
+    $("leakSourceStatIngested").textContent = String(statusCounts.ingested ?? 0);
+    $("leakSourceStatUnreachable").textContent = String(statusCounts.unreachable ?? 0);
+    $("leakSourceStatNeedsWork").textContent = String(
+      (statusCounts.error ?? 0)
+      + (statusCounts.import_error ?? 0)
+      + (statusCounts.empty ?? 0)
+      + (statusCounts.not_run ?? 0)
+    );
+
+    $("leakSourceStatusTableBody").innerHTML = renderLeakSourceStatusRows(items);
+    if (!preserveStatus) {
+      $("leakSourceStatusNotice").textContent = `${summary.with_data ?? 0} script(s) already have Mongo-backed leak data. ${summary.without_data ?? 0} still need successful ingestion.`;
+    }
+    await maybeApplyActiveTranslation("view");
+  } catch (error) {
+    $("leakSourceStatusNotice").textContent = `Leak source status failed to load: ${error.message}`;
+    $("leakSourceStatusTableBody").innerHTML = `<tr><td colspan="7">${escapeHtml(error.message)}</td></tr>`;
+    $("leakSourceStatTotal").textContent = "0";
+    $("leakSourceStatWithData").textContent = "0";
+    $("leakSourceStatMongoDocs").textContent = "0";
+    $("leakSourceStatIngested").textContent = "0";
+    $("leakSourceStatUnreachable").textContent = "0";
+    $("leakSourceStatNeedsWork").textContent = "0";
+  }
 }
 
 async function loadHealingMonitor(preserveStatus = false) {
@@ -4294,6 +4384,12 @@ async function switchView(target, options = {}) {
     maybeApplyActiveTranslation("view");
     return;
   }
+  if (target === "leak-source-status") {
+    $("viewLeakSourceStatus").classList.remove("hidden");
+    await loadLeakSourceStatus();
+    maybeApplyActiveTranslation("view");
+    return;
+  }
   if (target === "docs") {
     $("viewDocs").classList.remove("hidden");
     maybeApplyActiveTranslation("view");
@@ -4326,6 +4422,8 @@ function scheduleRefresh() {
         await Promise.all([refreshUserList(), refreshPasswordResetRequests()]);
       } else if (state.currentView === "healing") {
         await loadHealingMonitor(true);
+      } else if (state.currentView === "leak-source-status") {
+        await loadLeakSourceStatus(true);
       } else if (!TOOL_VIEWS.includes(state.currentView)) {
         await loadArticles(true, state.feedPage || 1);
       }
@@ -4383,6 +4481,7 @@ function setupEventListeners() {
     openMediaLightbox(card.dataset.mediaSrc || "", card.dataset.mediaTitle || "Evidence image");
   });
   $("mediaLightboxClose").addEventListener("click", closeMediaLightbox);
+  $("leakSourceRefreshBtn").addEventListener("click", () => loadLeakSourceStatus(false));
   $("mediaLightboxBackdrop").addEventListener("click", event => {
     if (event.target === $("mediaLightboxBackdrop")) closeMediaLightbox();
   });

@@ -7,7 +7,7 @@
   <meta name="description" content="Live DarkPulse intelligence dashboard for leaks, defacement, exploits, and threat reporting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/style.css?v=14" />
+    <link rel="stylesheet" href="/style.css?v=33" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/world.js"></script>
@@ -19,7 +19,7 @@
     <aside class="app-sidebar">
       <div class="sidebar-header">
         <div class="logo">
-          <span class="logo-pulse"></span>
+          <img src="/assets/logos/darkpulse-threatmark.svg" alt="DarkPulse" class="logo-mark" />
           <div class="logo-stack">
             <span class="logo-text" id="appBrandName">Dark<span class="logo-accent">Pulse</span></span>
             <span class="logo-subtext">Live Intelligence Console</span>
@@ -123,12 +123,19 @@
         </div>
 
         <div class="nav-section">
-          <div class="nav-separator">Operations</div>
+          <div class="nav-separator">Lookup & Exposure</div>
           <div class="nav-item" data-view="pakdb">
             <span class="nav-icon">PK</span>
             <div class="nav-copy">
               <span class="nav-label">National Identity</span>
               <span class="nav-meta">Entity and phone lookup workflow</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="credential-checker" id="sidebarNavItemCredentialChecker">
+            <span class="nav-icon">CC</span>
+            <div class="nav-copy">
+              <span class="nav-label">Credential Checker</span>
+              <span class="nav-meta">Search local stealer-log JSON datasets</span>
             </div>
           </div>
           <div class="nav-item" data-view="seo" id="sidebarNavItemSeo">
@@ -138,6 +145,17 @@
               <span class="nav-meta">Full report for website audits</span>
             </div>
           </div>
+          <div class="nav-item" data-view="repo-scan" id="sidebarNavItemRepoScan">
+            <span class="nav-icon">RS</span>
+            <div class="nav-copy">
+              <span class="nav-label">Repository Scan</span>
+              <span class="nav-meta">GitHub vulnerability analysis</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-separator">App & Software Scans</div>
           <div class="nav-item" data-view="playstore" id="sidebarNavItemPlaystore">
             <span class="nav-icon">PS</span>
             <div class="nav-copy">
@@ -152,18 +170,22 @@
               <span class="nav-meta">Search for PC games and mods</span>
             </div>
           </div>
-          <div class="nav-item" data-view="repo-scan" id="sidebarNavItemRepoScan">
-            <span class="nav-icon">RS</span>
-            <div class="nav-copy">
-              <span class="nav-label">Repository Scan</span>
-              <span class="nav-meta">GitHub vulnerability analysis</span>
-            </div>
-          </div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-separator">Operations</div>
           <div class="nav-item" data-view="healing" id="sidebarNavItemHealing">
             <span class="nav-icon">HM</span>
             <div class="nav-copy">
               <span class="nav-label">Healing Monitor</span>
               <span class="nav-meta">HTML drift, selector breakage, auto-fix status</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="docs" id="sidebarNavItemDocs">
+            <span class="nav-icon">DC</span>
+            <div class="nav-copy">
+              <span class="nav-label">Documentation</span>
+              <span class="nav-meta">Guides, features, workflows, and operating notes</span>
             </div>
           </div>
           <div class="nav-item" data-view="account" id="sidebarNavItemAccount">
@@ -200,9 +222,10 @@
         </div>
 
         <div class="header-center">
-          <div class="search-bar">
-            <span class="search-icon">/</span>
-            <input type="text" id="searchInput" placeholder="Search title, author, IP, actor, country, or raw JSON..." />
+          <div class="search-bar" id="headerSearchBar">
+            <span class="search-icon" id="headerSearchIcon">/</span>
+            <input type="text" id="searchInput" placeholder="Search here" />
+            <span class="search-bar-status hidden" id="searchBarStatus">Routing semantic search...</span>
           </div>
         </div>
 
@@ -268,7 +291,7 @@
               <div>
                 <p class="section-kicker">Global Impact Map</p>
                 <h2 class="section-title">Countries hit by leak and defacement activity</h2>
-                <p class="section-copy">Affected regions are highlighted in red. Countries are spotlighted one by one with a red glow, and hover shows the country name with its live leak total from the restored dataset.</p>
+                <p class="section-copy">Affected regions are highlighted in red across the live heat map, with the active country and leak total rotating automatically from the restored dataset.</p>
               </div>
               <div class="impact-summary-grid">
                 <div class="mini-stat">
@@ -329,14 +352,32 @@
               <p class="section-kicker">Feed</p>
               <h2 class="section-title">Restored intelligence feed</h2>
             </div>
-            <div class="feed-summary" id="feedSummary">0 results loaded</div>
+            <div class="feed-toolbar-actions">
+              <button class="btn-secondary filter-launch-btn" id="feedFilterBtn" type="button">Filters</button>
+              <div class="feed-summary" id="feedSummary">0 results loaded</div>
+            </div>
+          </div>
+
+          <div class="feed-filter-bar hidden" id="feedFilterBar">
+            <div class="feed-filter-copy">
+              <span class="feed-filter-label">Active Filters</span>
+              <span class="feed-filter-note" id="feedFilterNote">No feed filters applied.</span>
+            </div>
+            <div class="feed-filter-chips" id="feedFilterChips"></div>
+          </div>
+
+          <div class="search-insight hidden" id="searchInsight">
+            <div class="search-insight-copy">
+              <p class="section-kicker">Semantic Route</p>
+              <h3 class="section-title" id="searchInsightTitle">Searching restored intelligence</h3>
+              <p class="section-copy" id="searchInsightMessage">DarkPulse will route your query into the most relevant intelligence stream and show stored matches from the local system.</p>
+            </div>
+            <div class="search-insight-meta" id="searchInsightMeta"></div>
           </div>
 
           <div class="cards-grid" id="cardsGrid"></div>
 
-          <div class="load-more-wrap hidden" id="loadMoreWrap">
-            <button class="btn-secondary" id="loadMoreBtn">Load More</button>
-          </div>
+          <div class="pagination-shell hidden" id="feedPagination"></div>
 
           <div class="empty-state hidden" id="emptyState">
             <span class="empty-state-title">No matching records</span>
@@ -351,20 +392,50 @@
               <h2 class="section-title">User Management</h2>
             </div>
           </div>
-          <div class="table-container">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="userTableBody"></tbody>
-            </table>
+          <div class="admin-panel-stack">
+            <div class="table-container">
+              <div class="panel-subheader">
+                <div>
+                  <h3 class="panel-subtitle">Access Requests and Analysts</h3>
+                  <p class="panel-subcopy">Approve pending users, reject invalid requests, and manage analyst access from one place.</p>
+                </div>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="userTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="table-container">
+              <div class="panel-subheader">
+                <div>
+                  <h3 class="panel-subtitle">Password Recovery Queue</h3>
+                  <p class="panel-subcopy">Operators can request access recovery from the login page. Review the request, contact the analyst, and mark it handled here.</p>
+                </div>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Requested By</th>
+                    <th>Identity</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="resetRequestTableBody"></tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -381,9 +452,77 @@
               <button class="btn-primary" id="pakdbSearchBtn">Search</button>
             </div>
             <div id="pakdbStatus" class="pakdb-status"></div>
+            <div class="export-toolbar hidden" id="pakdbExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export Lookup</span>
+                <span class="export-toolbar-note">Download the current identity lookup result set.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="pakdb" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="pakdb" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
             <div id="pakdbHistoryList" class="compact-list"></div>
+            <div id="pakdbPagination" class="pagination-shell hidden"></div>
           </div>
         </div>
+
+        <div class="view-panel hidden" id="viewCredentialChecker">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Exposure Review</p>
+              <h2 class="section-title">Credential Checker</h2>
+            </div>
+          </div>
+          <div class="lookup-shell credential-shell">
+            <div class="pakdb-search-row">
+              <input type="text" id="credentialInput" class="search-input" placeholder="Search a domain or email (e.g. ucp.edu.pk)..." />
+              <button class="btn-primary" id="credentialSearchBtn">Search</button>
+            </div>
+            <div class="credential-toolbar">
+              <button class="btn-secondary" id="credentialUploadBtn">Optional Upload</button>
+              <button class="btn-secondary" id="credentialRefreshBtn">Refresh Files</button>
+              <input type="file" id="credentialFileInput" accept=".json,.jsonl,.ndjson" multiple class="hidden" />
+            </div>
+            <p class="hero-subtitle credential-hero-note">Saved server files inside <code>data/credential_checker</code> load into Mongo automatically. Search reads backend data on <code>localhost:9000</code>; upload is only optional.</p>
+
+            <div id="credentialStatus" class="pakdb-status"></div>
+            <div class="export-toolbar hidden" id="credentialExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export Exposure Review</span>
+                <span class="export-toolbar-note">Download the current redacted credential-checker search result set.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="credential" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="credential" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
+
+            <div id="credentialStats" class="results-stats-row hidden">
+              <div class="stat-card">
+                <span class="stat-label">Search Elapsed</span>
+                <span class="stat-value" id="credentialElapsed">0 ms</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Results</span>
+                <span class="stat-value" id="credentialCount">0</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Hosts</span>
+                <span class="stat-value" id="credentialHosts">0</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Matched Files</span>
+                <span class="stat-value" id="credentialFiles">0</span>
+              </div>
+            </div>
+
+            <div id="credentialDatasetMeta" class="credential-dataset-meta hidden"></div>
+            <div id="credentialResults" class="credential-results-container"></div>
+            <div id="credentialPagination" class="pagination-shell hidden"></div>
+          </div>
+        </div>
+
         <div class="view-panel hidden" id="viewSeo">
           <div class="panel-header">
             <div>
@@ -397,6 +536,16 @@
               <button class="btn-primary" id="seoSearchBtn">Analyze</button>
             </div>
             <div id="seoStatus" class="pakdb-status"></div>
+            <div class="export-toolbar hidden" id="seoExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export SEO Report</span>
+                <span class="export-toolbar-note">Download the latest SEO analysis as JSON or PDF.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="seo" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="seo" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
 
             <div id="seoReport" class="seo-report-container hidden">
               <!-- SEO Report Header (Matches Screenshot) -->
@@ -480,6 +629,16 @@
             <p class="hero-subtitle" style="margin-top: 10px; opacity: 0.7;">Checks for cracked key signals for the provided Play Store URL.</p>
             
             <div id="playstoreStatus" class="pakdb-status"></div>
+            <div class="export-toolbar hidden" id="playstoreExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export Playstore Scan</span>
+                <span class="export-toolbar-note">Download the current Playstore scanner result set.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="playstore" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="playstore" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
 
             <div id="playstoreResultsHeader" class="results-stats-row hidden">
               <div class="stat-card">
@@ -499,6 +658,7 @@
             <div id="playstoreResults" class="playstore-results-container">
               <!-- Results go here -->
             </div>
+            <div id="playstorePagination" class="pagination-shell hidden"></div>
           </div>
         </div>
 
@@ -517,6 +677,16 @@
             <p class="hero-subtitle" style="margin-top: 10px; opacity: 0.7;">Checks for cracked mirrors of known softwares.</p>
             
             <div id="softwareStatus" class="pakdb-status"></div>
+            <div class="export-toolbar hidden" id="softwareExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export PC Game Scan</span>
+                <span class="export-toolbar-note">Download the current PC game scan result set.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="software" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="software" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
 
             <div id="softwareResultsHeader" class="results-stats-row hidden">
               <div class="stat-card">
@@ -536,6 +706,7 @@
             <div id="softwareResults" class="software-results-container">
               <!-- Results go here -->
             </div>
+            <div id="softwarePagination" class="pagination-shell hidden"></div>
           </div>
         </div>
 
@@ -552,6 +723,16 @@
               <button class="btn-primary" id="repoScanSearchBtn">Search</button>
             </div>
             <div id="repoScanStatus" class="pakdb-status"></div>
+            <div class="export-toolbar hidden" id="repoExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export Repository Scan</span>
+                <span class="export-toolbar-note">Download the latest repository posture report as JSON or PDF.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="repo" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="repo" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
 
             <div id="repoScanReport" class="seo-report-container hidden">
               <div class="seo-report-header">
@@ -634,6 +815,57 @@
               </div>
             </div>
 
+            <div class="healing-explainer-card" id="healingExplainerCard">
+              <div class="healing-explainer-head">
+                <div>
+                  <span class="section-kicker">How It Works</span>
+                  <h3 class="healing-explainer-title">Why the monitor shows fewer targets than total backend scripts</h3>
+                </div>
+                <span class="healing-status-pill status-changed" id="healingExplainerBadge">Loading...</span>
+              </div>
+              <p class="healing-explainer-copy" id="healingExplainerIntro">Healing discovery scans collector script folders, skips framework files, ignores utility modules without a target URL, and keeps only real monitorable web targets.</p>
+              <div class="healing-explainer-metrics">
+                <div class="mini-card healing-stat-card">
+                  <span class="mini-card-label">Python Files</span>
+                  <span class="mini-card-value" id="healingExplainFiles">0</span>
+                </div>
+                <div class="mini-card healing-stat-card">
+                  <span class="mini-card-label">Skipped Infra</span>
+                  <span class="mini-card-value" id="healingExplainSkipped">0</span>
+                </div>
+                <div class="mini-card healing-stat-card">
+                  <span class="mini-card-label">Utility / No URL</span>
+                  <span class="mini-card-value" id="healingExplainUtility">0</span>
+                </div>
+                <div class="mini-card healing-stat-card">
+                  <span class="mini-card-label">Actual Targets</span>
+                  <span class="mini-card-value" id="healingExplainTargets">0</span>
+                </div>
+                <div class="mini-card healing-stat-card">
+                  <span class="mini-card-label">Default Run Limit</span>
+                  <span class="mini-card-value" id="healingExplainLimit">0</span>
+                </div>
+              </div>
+              <div class="healing-explainer-steps">
+                <article class="healing-step-card">
+                  <span class="healing-pill-label">1. Discovery</span>
+                  <strong class="healing-step-title">Script folders are scanned</strong>
+                  <p class="healing-step-copy" id="healingExplainRoots">The monitor checks leak, news, exploit, defacement, social, and API collector folders.</p>
+                </article>
+                <article class="healing-step-card">
+                  <span class="healing-pill-label">2. Filtering</span>
+                  <strong class="healing-step-title">Only real web targets are kept</strong>
+                  <p class="healing-step-copy" id="healingExplainFiltering">Files like <code>__init__.py</code>, <code>main.py</code>, and utility helpers are excluded from target discovery.</p>
+                </article>
+                <article class="healing-step-card">
+                  <span class="healing-pill-label">3. Monitor Run</span>
+                  <strong class="healing-step-title">HTML snapshots are compared</strong>
+                  <p class="healing-step-copy" id="healingExplainMonitor">Each run fetches target pages, stores a new HTML snapshot, compares drift, and checks selector health.</p>
+                </article>
+              </div>
+              <div class="healing-explainer-note" id="healingExplainerNote">Utility files without target URLs will appear here once discovery stats load.</div>
+            </div>
+
             <div id="healingStatus" class="pakdb-status">Monitor ready.</div>
 
             <div class="healing-stats-grid" id="healingStatsGrid">
@@ -684,6 +916,120 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="view-panel hidden" id="viewDocs">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Operator Manual</p>
+              <h2 class="section-title">DarkPulse Documentation</h2>
+            </div>
+          </div>
+          <div class="docs-shell">
+            <aside class="docs-rail">
+              <a href="#docs-quickstart" class="docs-rail-link">Quick Start</a>
+              <a href="#docs-auth" class="docs-rail-link">Access and Auth</a>
+              <a href="#docs-command" class="docs-rail-link">Command Center</a>
+              <a href="#docs-search" class="docs-rail-link">Semantic Search</a>
+              <a href="#docs-scanners" class="docs-rail-link">Scanners</a>
+              <a href="#docs-healing" class="docs-rail-link">Healing Monitor</a>
+              <a href="#docs-admin" class="docs-rail-link">Admin Operations</a>
+            </aside>
+            <article class="docs-article">
+              <section class="docs-hero" id="docs-quickstart">
+                <p class="section-kicker">DarkPulse Manual</p>
+                <h3 class="docs-title">Threat intelligence, scanning, translation, search, healing, and operator workflows in one local console.</h3>
+                <p class="docs-copy">This page documents the features already implemented in DarkPulse so analysts and admins can move through authentication, feeds, scanners, automation, 2FA, healing, and recovery flows without guesswork.</p>
+                <div class="docs-chip-row">
+                  <span class="docs-chip">Live Intelligence Feed</span>
+                  <span class="docs-chip">One-Click Scan</span>
+                  <span class="docs-chip">Semantic Search</span>
+                  <span class="docs-chip">Translation</span>
+                  <span class="docs-chip">Healing Monitor</span>
+                  <span class="docs-chip">2FA Access</span>
+                </div>
+              </section>
+
+              <section class="docs-section" id="docs-auth">
+                <h4>Access and Authentication</h4>
+                <p>DarkPulse supports approved-user login, access requests, approval guidance, 2-factor authentication, OTP verification, and an operator-visible password recovery workflow. First-time 2FA setup shows a QR code. Later sign-ins require OTP only. Forgot-password requests are recorded for admin review inside the local system.</p>
+                <ul class="docs-list">
+                  <li>Sign in with approved username and password.</li>
+                  <li>Request analyst access from the login screen.</li>
+                  <li>Open the approval workflow page to understand how access is granted.</li>
+                  <li>Submit a password recovery request when account access is lost, then let an administrator review it from the recovery queue.</li>
+                  <li>Use authenticator-based OTP for 2FA-protected accounts.</li>
+                </ul>
+              </section>
+
+              <section class="docs-section" id="docs-command">
+                <h4>Command Center and Feeds</h4>
+                <p>The Command Center is the operator launch surface. It combines automation status, source counters, global impact mapping, and routing into detailed feeds. Analysts can jump directly into News, Leaks, Defacement, Exploits, Social, and API/Tools from the sidebar.</p>
+                <div class="docs-grid">
+                  <div class="docs-card">
+                    <strong>Live Feed</strong>
+                    <p>Unified restored records with screenshots, evidence links, categories, entities, and raw JSON available in the detail modal.</p>
+                  </div>
+                  <div class="docs-card">
+                    <strong>One-Click Intelligence Update</strong>
+                    <p>Manual orchestration for news, leaks, social, and defacement with live dashboard state and result summaries.</p>
+                  </div>
+                  <div class="docs-card">
+                    <strong>Alert Summary</strong>
+                    <p>Per-source scan completion, new records, and delivery summary after each intelligence update.</p>
+                  </div>
+                  <div class="docs-card">
+                    <strong>Translation and Review</strong>
+                    <p>Translate the current view or an opened detail modal into another language, then return to the original source text instantly.</p>
+                  </div>
+                </div>
+              </section>
+
+              <section class="docs-section" id="docs-search">
+                <h4>Semantic Search</h4>
+                <p>The global header search is designed to behave like an intelligence search, not just a literal string filter. When a query is entered from the Command Center, DarkPulse analyzes the query, estimates the most relevant stream, and routes the operator into the feed with matching intelligence. If there are no matches, the feed shows a clear no-result state.</p>
+                <ul class="docs-list">
+                  <li>Works with simple actor or topic terms like <code>bitcoin</code>, <code>anubis</code>, <code>telegram</code>.</li>
+                  <li>Supports multi-term searches like <code>iran vs israel</code> and routes to the most relevant stream.</li>
+                  <li>Matches title, summary, description, categories, entities, IPs, actors, teams, URLs, and stored source text.</li>
+                  <li>Use the global header search and press <code>Enter</code> from the Command Center to route into the best matching intelligence stream.</li>
+                </ul>
+              </section>
+
+              <section class="docs-section" id="docs-scanners">
+                <h4>Scanners and Operator Tools</h4>
+                <p>DarkPulse includes multiple scanner workflows alongside the core intelligence feeds.</p>
+                <div class="docs-grid">
+                  <div class="docs-card"><strong>Credential Checker</strong><p>Searches local stealer-log JSON files and shows redacted exposure matches, source files, dates, and host context.</p></div>
+                  <div class="docs-card"><strong>SEO Checker</strong><p>Website posture report, grade output, audits, and AI/fallback recommendations.</p></div>
+                  <div class="docs-card"><strong>Playstore Scanner</strong><p>Checks for modded APK signals from a Play Store URL.</p></div>
+                  <div class="docs-card"><strong>PC Game Scan</strong><p>Looks for cracked or mirrored PC game/software results.</p></div>
+                  <div class="docs-card"><strong>Repository Scan</strong><p>Trivy-backed repo posture grading with findings and remediation guidance.</p></div>
+                  <div class="docs-card"><strong>National Identity</strong><p>Local connected-DB lookup for CNIC or phone-based result retrieval.</p></div>
+                </div>
+              </section>
+
+              <section class="docs-section" id="docs-healing">
+                <h4>Healing Monitor</h4>
+                <p>The healing system stores HTML snapshots for collector targets, checks selector health, detects page drift, and flags scripts as healthy, changed, repair-ready, or needing review. It is built for controlled recovery, not blind rewrites.</p>
+                <ul class="docs-list">
+                  <li>Target discovery from collector scripts.</li>
+                  <li>Historical HTML snapshots per script target.</li>
+                  <li>Selector drift detection and status history.</li>
+                  <li>Repair suggestions for broken extraction paths.</li>
+                  <li>Operator visibility on what changed and what needs review.</li>
+                </ul>
+              </section>
+
+              <section class="docs-section" id="docs-admin">
+                <h4>Admin Operations</h4>
+                <p>Admins can approve users, manage 2FA, trigger healing scans, run intelligence updates, and review the local dashboard state. Security-sensitive values like GitHub tokens should stay in <code>.env</code> only and never be committed into source files.</p>
+                <div class="docs-note">
+                  <strong>Operator note:</strong> use the Documentation page as the local operating reference when onboarding new analysts into DarkPulse.
+                </div>
+              </section>
+            </article>
           </div>
         </div>
 
@@ -762,87 +1108,241 @@
     </main>
   </div>
 
-  <div class="modal-backdrop" id="loginBackdrop">
-    <div class="modal modal-login">
-      <div class="modal-header">
-        <div class="logo modal-logo">
-          <span class="logo-pulse"></span>
-          <div class="logo-stack">
-            <span class="logo-text">Dark<span class="logo-accent">Pulse</span></span>
-            <span class="logo-subtext">Authenticate to the live console</span>
+  <div class="modal-backdrop auth-backdrop" id="loginBackdrop">
+    <div class="auth-shell">
+      <div class="modal modal-login">
+        <div class="modal-header auth-login-header">
+          <div class="logo modal-logo">
+            <img src="/assets/logos/darkpulse-threatmark.svg" alt="DarkPulse" class="logo-mark" />
+            <div class="logo-stack">
+              <span class="logo-text">Dark<span class="logo-accent">Pulse</span></span>
+              <span class="logo-subtext">Authenticate to the live console</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="modal-body" id="loginForm">
-        <h2 class="modal-title" id="loginTitle">Access the restored dashboard</h2>
-        <div id="loginInfo" class="test-result hidden"></div>
-        <div class="input-group">
-          <label>Username</label>
-          <input type="text" id="loginUsername" placeholder="admin" autofocus />
-        </div>
-        <div class="input-group">
-          <label>Password</label>
-          <input type="password" id="loginPassword" placeholder="••••••••" />
-        </div>
-        <div id="loginError" class="error-msg hidden"></div>
-        <div class="auth-links">
-          <a href="#" id="showRegisterLink">Create account</a>
-          <span>|</span>
-          <a href="#" id="forgotPasswordLink">Need approval?</a>
-        </div>
-      </div>
-
-      <div class="modal-body hidden" id="registerForm">
-        <h2 class="modal-title">Request access</h2>
-        <div class="input-group">
-          <label>Full Name</label>
-          <input type="text" id="regName" placeholder="John Doe" />
-        </div>
-        <div class="input-group">
-          <label>Email Address</label>
-          <input type="email" id="regEmail" placeholder="john@example.com" />
-        </div>
-        <div class="input-group">
-          <label>Username</label>
-          <input type="text" id="regUsername" placeholder="johndoe" />
-        </div>
-        <div class="input-group">
-          <label>Password</label>
-          <input type="password" id="regPassword" placeholder="Minimum 8 characters" />
-        </div>
-        <div id="registerError" class="error-msg hidden"></div>
-        <div class="auth-links">
-          <a href="#" id="showLoginLink">Back to login</a>
-        </div>
-      </div>
-
-      <div class="modal-body hidden" id="mfaForm">
-        <h2 class="modal-title" id="mfaTitle">Verify your identity</h2>
-        <p class="mfa-copy" id="mfaCopy">Enter the 6-digit code from your authenticator app to finish signing in.</p>
-        <div class="mfa-qr-shell hidden" id="mfaQrSection">
-          <div class="mfa-qr-card">
-            <img id="mfaQrImage" src="" alt="2FA setup QR code" />
+        <div class="modal-body" id="loginForm">
+          <p class="section-kicker auth-login-kicker">Threat Intelligence Access</p>
+          <h2 class="modal-title" id="loginTitle">Access the DarkPulse console</h2>
+          <p class="auth-panel-copy">Sign in to monitor leak activity, track adversaries, run scans, and manage the restored DarkPulse workflow from one local command surface.</p>
+          <div class="auth-login-meta">
+            <span>Local-first</span>
+            <span>2FA ready</span>
+            <span>Approval workflow</span>
           </div>
-          <div class="mfa-secret-shell">
-            <label>Manual setup key</label>
-            <code id="mfaManualSecret" class="mfa-secret-code">-</code>
-            <p id="mfaSecretHint" class="mfa-secret-hint">Scan the QR code once, or enter the secret manually in your authenticator app.</p>
+          <div id="loginInfo" class="test-result hidden"></div>
+          <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="loginUsername" placeholder="admin" autofocus />
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" />
+          </div>
+          <div id="loginError" class="error-msg hidden"></div>
+          <div class="auth-links auth-links-grid">
+            <a href="#" id="showRegisterLink">Create account</a>
+            <a href="#" id="showApprovalLink">Need approval?</a>
+            <a href="#" id="showForgotLink">Forgot password?</a>
           </div>
         </div>
-        <div class="input-group">
-          <label>One-Time Password</label>
-          <input type="text" id="mfaOtpInput" placeholder="123456" inputmode="numeric" maxlength="6" />
+
+        <div class="modal-body hidden" id="registerForm">
+          <h2 class="modal-title">Request access</h2>
+          <p class="auth-panel-copy">Submit your analyst access request. An administrator can review and approve it from the DarkPulse user management panel.</p>
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="regName" placeholder="John Doe" />
+          </div>
+          <div class="input-group">
+            <label>Email Address</label>
+            <input type="email" id="regEmail" placeholder="john@example.com" />
+          </div>
+          <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="regUsername" placeholder="johndoe" />
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="regPassword" placeholder="Minimum 8 characters" />
+          </div>
+          <div id="registerError" class="error-msg hidden"></div>
+          <div class="auth-links">
+            <a href="#" id="showLoginLink">Back to login</a>
+          </div>
         </div>
-        <div id="mfaError" class="error-msg hidden"></div>
-        <div class="auth-links">
-          <a href="#" id="mfaBackToLogin">Back to login</a>
+
+        <div class="modal-body hidden" id="forgotForm">
+          <h2 class="modal-title">Recover access</h2>
+          <p class="auth-panel-copy">Enter your username or email. DarkPulse will record a reset request for administrator review inside the local system.</p>
+          <div class="input-group">
+            <label>Username or Email</label>
+            <input type="text" id="forgotIdentity" placeholder="admin or analyst@example.com" />
+          </div>
+          <div class="input-group">
+            <label>Recovery Note</label>
+            <input type="text" id="forgotMessage" placeholder="Explain what needs reset or mention the account context" />
+          </div>
+          <div id="forgotError" class="error-msg hidden"></div>
+          <div class="auth-links">
+            <a href="#" id="forgotBackToLogin">Back to login</a>
+          </div>
+        </div>
+
+        <div class="modal-body hidden" id="approvalForm">
+          <h2 class="modal-title">Approval workflow</h2>
+          <p class="auth-panel-copy">If your account is not approved yet, use this workflow so an administrator can review and activate it properly.</p>
+          <div class="auth-guide">
+            <div class="auth-guide-step"><span>01</span><p>Create an account with your full name, email, and analyst username.</p></div>
+            <div class="auth-guide-step"><span>02</span><p>Wait for admin review in the DarkPulse User Management section.</p></div>
+            <div class="auth-guide-step"><span>03</span><p>Once approved, sign in normally. If 2FA is enabled, DarkPulse will ask for OTP.</p></div>
+          </div>
+          <div class="auth-links auth-links-grid">
+            <a href="#" id="approvalOpenRegister">Open access request</a>
+            <a href="#" id="approvalBackToLogin">Back to login</a>
+          </div>
+        </div>
+
+        <div class="modal-body hidden" id="mfaForm">
+          <h2 class="modal-title" id="mfaTitle">Verify your identity</h2>
+          <p class="mfa-copy" id="mfaCopy">Enter the 6-digit code from your authenticator app to finish signing in.</p>
+          <div class="mfa-qr-shell hidden" id="mfaQrSection">
+            <div class="mfa-qr-card">
+              <img id="mfaQrImage" src="" alt="2FA setup QR code" />
+            </div>
+            <div class="mfa-secret-shell">
+              <label>Manual setup key</label>
+              <code id="mfaManualSecret" class="mfa-secret-code">-</code>
+              <p id="mfaSecretHint" class="mfa-secret-hint">Scan the QR code once, or enter the secret manually in your authenticator app.</p>
+            </div>
+          </div>
+          <div class="input-group">
+            <label>One-Time Password</label>
+            <input type="text" id="mfaOtpInput" placeholder="123456" inputmode="numeric" maxlength="6" />
+          </div>
+          <div id="mfaError" class="error-msg hidden"></div>
+          <div class="auth-links">
+            <a href="#" id="mfaBackToLogin">Back to login</a>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-primary auth-submit" id="authSubmitBtn">Sign In</button>
         </div>
       </div>
 
-      <div class="modal-footer">
-        <button class="btn-primary auth-submit" id="authSubmitBtn">Sign In</button>
-      </div>
+      <section class="auth-showcase" aria-hidden="true">
+        <div class="auth-showcase-grid"></div>
+        <div class="auth-showcase-copy">
+          <p class="section-kicker">Threat Intelligence Platform</p>
+          <div class="auth-brand-line">
+            <img src="/assets/logos/darkpulse-threatmark.svg" alt="DarkPulse mark" class="auth-brand-mark" />
+            <div>
+              <h1>Dark<span class="logo-accent">Pulse</span> Intelligence</h1>
+              <p>Operational visibility for leaks, ransomware signals, defacement evidence, hostile channels, semantic routing, and collector healing.</p>
+            </div>
+          </div>
+          <div class="auth-feature-column">
+            <div class="auth-feature-card">
+              <span class="auth-feature-dot"></span>
+              <div>
+                <strong>Adversary Tracking</strong>
+                <p>Correlate actors, victim mentions, and restored evidence inside one console.</p>
+              </div>
+            </div>
+            <div class="auth-feature-card">
+              <span class="auth-feature-dot"></span>
+              <div>
+                <strong>Collector Healing</strong>
+                <p>Monitor HTML drift, selector health, and repair readiness before feeds break.</p>
+              </div>
+            </div>
+            <div class="auth-feature-card">
+              <span class="auth-feature-dot"></span>
+              <div>
+                <strong>Analyst Workflow</strong>
+                <p>Route search semantically, translate records, and review screenshots locally.</p>
+              </div>
+            </div>
+          </div>
+          <div class="auth-threat-ribbon">
+            <span class="auth-threat-pill critical">Leak Watch</span>
+            <span class="auth-threat-pill">Exploit Correlation</span>
+            <span class="auth-threat-pill">Dark Web Signals</span>
+            <span class="auth-threat-pill info">Collector Healing</span>
+          </div>
+        </div>
+        <div class="auth-visual-deck">
+          <div class="auth-console-preview">
+            <div class="auth-console-chrome">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="auth-console-frame">
+              <aside class="auth-console-sidebar">
+                <div class="auth-console-logo">
+                  <img src="/assets/logos/darkpulse-threatmark.svg" alt="" />
+                  <span>DarkPulse</span>
+                </div>
+                <div class="auth-console-nav">
+                  <span class="active">Command Center</span>
+                  <span>Leaks</span>
+                  <span>Defacement</span>
+                  <span>Social Intel</span>
+                  <span>Documentation</span>
+                </div>
+              </aside>
+              <div class="auth-console-content">
+                <div class="auth-console-toolbar">
+                  <div class="auth-console-search"></div>
+                  <div class="auth-console-led"></div>
+                </div>
+                <div class="auth-console-stats">
+                  <div class="auth-console-stat"><strong>326</strong><span>Social</span></div>
+                  <div class="auth-console-stat"><strong>1520</strong><span>Leaks</span></div>
+                  <div class="auth-console-stat"><strong>9604</strong><span>Exploit</span></div>
+                </div>
+                <div class="auth-console-feed">
+                  <div class="auth-console-card live featured">
+                    <span class="auth-console-card-tag">Threat Intel</span>
+                    <strong>Iran-linked Microsoft 365 targeting surfaced</strong>
+                    <p>DarkPulse semantically connected this reporting to ransomware coverage, actor references, and linked campaign evidence already restored inside the local console.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="auth-visual-column">
+            <div class="auth-radar-panel">
+              <div class="auth-radar">
+                <div class="auth-radar-threats">
+                  <span class="auth-radar-threat label-1">Leaks</span>
+                  <span class="auth-radar-threat label-2">Ransomware</span>
+                  <span class="auth-radar-threat label-3">Defacement</span>
+                  <span class="auth-radar-threat label-4">Threat Intel</span>
+                </div>
+                <span class="auth-radar-ring ring-1"></span>
+                <span class="auth-radar-ring ring-2"></span>
+                <span class="auth-radar-ring ring-3"></span>
+                <span class="auth-radar-sweep"></span>
+                <span class="auth-radar-core"></span>
+              </div>
+              <div class="auth-radar-caption">
+                <strong>Active intelligence sweep</strong>
+                <p>Restored feeds, collector health, and evidence surfaces stay visible in one live command view.</p>
+              </div>
+            </div>
+          
+                
+             
+               
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 
@@ -861,6 +1361,11 @@
         <div class="modal-meta" id="modalMeta"></div>
 
         <div class="fact-grid" id="modalFactGrid"></div>
+
+        <div class="modal-section">
+          <label>AI Summary</label>
+          <p id="modalAiSummary" class="modal-ai-summary"></p>
+        </div>
 
         <div id="modalMediaSection" class="modal-section hidden">
           <label>Screenshot Evidence</label>
@@ -895,7 +1400,8 @@
 
       <div class="modal-footer detail-footer">
         <button class="btn-secondary" id="detailTranslateBtn" type="button">Translate</button>
-        <a class="btn-secondary" id="modalJsonLink" href="#" target="_blank">JSON Endpoint</a>
+        <button class="btn-secondary" type="button" data-export-target="detail" data-export-format="json">Download JSON</button>
+        <button class="btn-secondary" type="button" data-export-target="detail" data-export-format="pdf">Download PDF</button>
         <a class="btn-primary" id="modalReadBtn" href="#" target="_blank">Open Source</a>
       </div>
     </div>
@@ -915,6 +1421,52 @@
       </div>
       <div class="modal-footer detail-footer">
         <a class="btn-primary" id="mediaLightboxOpen" href="#" target="_blank" rel="noopener noreferrer">Open Original</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="feedFiltersBackdrop">
+    <div class="modal modal-settings modal-feed-filters">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div class="modal-source">DarkPulse Feed Filters</div>
+          <div class="modal-top-tag">Date Range and Topic Routing</div>
+        </div>
+        <button class="modal-close" id="feedFiltersClose">x</button>
+      </div>
+      <div class="modal-body modal-summary-body">
+        <h2 class="modal-title">Filter feed sections</h2>
+        <p class="translate-copy">Apply one set of filters across the live feed tabs like News, Leaks, Defacement, Social, Exploit, and API.</p>
+        <div class="feed-filter-grid">
+          <div class="input-group">
+            <label>Start Date</label>
+            <input type="date" id="feedFilterStartDate" />
+          </div>
+          <div class="input-group">
+            <label>End Date</label>
+            <input type="date" id="feedFilterEndDate" />
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Topic / Tag</label>
+          <input type="text" id="feedFilterTopic" placeholder="e.g. vulnerability, ransomware, leak" list="feedFilterTopicList" />
+          <datalist id="feedFilterTopicList">
+            <option value="vulnerability"></option>
+            <option value="ransomware"></option>
+            <option value="leak"></option>
+            <option value="data breach"></option>
+            <option value="research"></option>
+            <option value="policy"></option>
+            <option value="defacement"></option>
+            <option value="exploit"></option>
+            <option value="malware"></option>
+          </datalist>
+        </div>
+        <div id="feedFilterStatus" class="pakdb-status">No feed filters applied yet.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="feedFiltersResetBtn" type="button">Reset Filters</button>
+        <button class="btn-primary" id="feedFiltersApplyBtn" type="button">Apply Filters</button>
       </div>
     </div>
   </div>
@@ -1006,6 +1558,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=25"></script>
+  <script src="app.js?v=40"></script>
 </body>
 </html>

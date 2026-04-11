@@ -1,0 +1,41 @@
+<svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="dpThreatAccent" x1="34" y1="28" x2="176" y2="188" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF8268"/>
+      <stop offset="0.55" stop-color="#FF4A58"/>
+      <stop offset="1" stop-color="#5AD4FF"/>
+    </linearGradient>
+    <linearGradient id="dpThreatFill" x1="42" y1="34" x2="178" y2="178" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101B2C"/>
+      <stop offset="1" stop-color="#09111B"/>
+    </linearGradient>
+    <filter id="dpThreatGlow" x="10" y="10" width="200" height="200" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0.96 0 1 0 0 0.18 0 0 1 0 0.3 0 0 0 0.28 0"/>
+    </filter>
+  </defs>
+
+  <rect x="18" y="18" width="184" height="184" rx="46" fill="url(#dpThreatFill)"/>
+  <rect x="18" y="18" width="184" height="184" rx="46" stroke="#213347" stroke-width="2"/>
+  <rect x="34" y="34" width="152" height="152" rx="34" stroke="url(#dpThreatAccent)" stroke-opacity="0.32" stroke-width="2"/>
+  <rect x="34" y="34" width="152" height="152" rx="34" filter="url(#dpThreatGlow)" fill="url(#dpThreatAccent)" fill-opacity="0.08"/>
+
+  <circle cx="110" cy="110" r="54" stroke="#22364F" stroke-width="2"/>
+  <circle cx="110" cy="110" r="38" stroke="#22364F" stroke-width="1.6" stroke-dasharray="5 9"/>
+  <circle cx="110" cy="110" r="18" fill="url(#dpThreatAccent)"/>
+  <circle cx="110" cy="110" r="8" fill="#08111B"/>
+
+  <path d="M58 112H84L96 92L111 132L126 101L142 112H162" stroke="#FFE0D7" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M76 69C84 59 95 54 110 54C125 54 136 59 144 69" stroke="#5AD4FF" stroke-width="4" stroke-linecap="round"/>
+  <path d="M76 151C84 161 95 166 110 166C125 166 136 161 144 151" stroke="#FF6B57" stroke-width="4" stroke-linecap="round"/>
+
+  <circle cx="56" cy="72" r="7" fill="#FF6B57"/>
+  <circle cx="164" cy="148" r="7" fill="#5AD4FF"/>
+  <circle cx="160" cy="68" r="6" fill="#FF9E75"/>
+  <circle cx="62" cy="150" r="6" fill="#FF4A58"/>
+
+  <path d="M56 72L82 88" stroke="#31445C" stroke-width="2"/>
+  <path d="M160 68L138 88" stroke="#31445C" stroke-width="2"/>
+  <path d="M164 148L140 132" stroke="#31445C" stroke-width="2"/>
+  <path d="M62 150L86 132" stroke="#31445C" stroke-width="2"/>
+</svg>

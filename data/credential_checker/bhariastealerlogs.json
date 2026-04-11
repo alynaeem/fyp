@@ -1,0 +1,5572 @@
+{
+  "stealerLog": {
+    "Result": [
+      {
+        "type": "c",
+        "raw": "https://idp.bahria.edu.pk/idp/profile/SAML2/Redirect/SSO:majid.buic@bahria.edu.pk:Azeez@#218.",
+        "channel": "NEW Pegasus Cloud",
+        "file": null,
+        "filename": "Slurm Data Base [@SlurmDataBase].rar",
+        "password": "Azeez@#218.",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "idp.bahria.edu.pk"
+        ],
+        "email": [
+          "majid.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "majid.buic"
+        ],
+        "m_index": "stealer_model-000122",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "http://172.16.0.9/:ddexams.bukc@bahria.edu.pk:Password@123",
+        "channel": "NEW Pegasus Cloud",
+        "file": null,
+        "filename": "Slurm Data Base [@SlurmDataBase].rar",
+        "password": "Password@123",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "ip": [
+          "172.16.0.9"
+        ],
+        "email": [
+          "ddexams.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "ddexams.bukc"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000119",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://www.researchgate.net:info@bahria.edu.pk:cj4303410",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 467].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "researchgate.net"
+        ],
+        "username": [
+          "info"
+        ],
+        "password": "cj4303410",
+        "email": [
+          "info@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "218227296906680537525902528514326013863",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "zahid@bahria.edu.pk:mahmood35",
+        "channel": "Collection",
+        "file": "АП9__Collection #2-#5 & Antipublic__Collection #2_New combo cloud_General Splits Collection__Collection #2_New combo cloud_General Splits Collection.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "zahid@bahria.edu.pk"
+        ],
+        "password": "mahmood35",
+        "username": [
+          "zahid"
+        ],
+        "m_index": "stealer_model-000023",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cbept.accaglobal.com:saher.zeast@bahria.edu.pk:Shahmeer@25",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "cbept.accaglobal.com"
+        ],
+        "username": [
+          "saher.zeast"
+        ],
+        "password": "Shahmeer@25",
+        "email": [
+          "saher.zeast@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "143171725156402718192652795805107909023",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://my.pcloud.com:muhammad.imran@bahria.edu.pk:cobras1",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "my.pcloud.com"
+        ],
+        "username": [
+          "muhammad.imran"
+        ],
+        "password": "cobras1",
+        "email": [
+          "muhammad.imran@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "193343369011204821293634169354333295641",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "www.grammarly.com:abdullah.bulc@bahria.edu.pk:Abd123ullah",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@AhegaoCloud 30KK+ LINES.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "grammarly.com"
+        ],
+        "username": [
+          "abdullah.bulc"
+        ],
+        "password": "Abd123ullah",
+        "email": [
+          "abdullah.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "236993657874597925938427453735650116876",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:zahra.buic@bahria.edu.pk:bu@sa9889",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "zahra.buic"
+        ],
+        "password": "bu@sa9889",
+        "email": [
+          "zahra.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "180646276663599739195197343816554508928",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/logins/staff/login.aspx:tahir.iqbal@bahria.edu.pk:45oHkNMA",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "tahir.iqbal"
+        ],
+        "password": "45oHkNMA",
+        "email": [
+          "tahir.iqbal@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "4385912376446293497719593263572407429",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/logins/user/resetpassword.aspx:syedqamar.bulc@bahria.edu.pk:abc@123456789",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "syedqamar.bulc"
+        ],
+        "password": "abc@123456789",
+        "email": [
+          "syedqamar.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "15533310089511182731537349691077133861",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com:haseeb.buic@bahria.edu.pk:fm9fyashbeeAAA",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10531).txt",
+        "password": "fm9fyashbeeAAA",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "haseeb.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "haseeb.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com/common/login:bujhss.bukc@bahria.edu.pk:?",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10531).txt",
+        "password": "?",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "bujhss.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "bujhss.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "khalid@bahria.edu.pk:ric990",
+        "channel": "Collection",
+        "file": "АП189__Collection #2-#5 & Antipublic__Collection #2_New combo cloud_General Splits Collection__Collection #2_New combo cloud_General Splits Collection.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "khalid@bahria.edu.pk"
+        ],
+        "password": "ric990",
+        "username": [
+          "khalid"
+        ],
+        "m_index": "stealer_model-000031",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/logins/staff/login.aspx:tehmina.bulc@bahria.edu.pk:Tehmina.355",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "tehmina.bulc"
+        ],
+        "password": "Tehmina.355",
+        "email": [
+          "tehmina.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "120189155794791184287575425813033636952",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "najam@bahria.edu.pk:najamulislam",
+        "channel": "Collection",
+        "file": "MoneyGood__Collection #2-#5 & Antipublic__Collection #2_New combo cloud_Money Related Collection__Collection #2_New combo cloud_Money Related Collection.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "najam@bahria.edu.pk"
+        ],
+        "password": "najamulislam",
+        "username": [
+          "najam"
+        ],
+        "m_index": "stealer_model-000050",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://www.turnitin.com/login_page.asp:mramzan@bahria.edu.pk:asn14@BU",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10536).txt",
+        "password": "asn14@BU",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.turnitin.com"
+        ],
+        "email": [
+          "mramzan@bahria.edu.pk"
+        ],
+        "username": [
+          "mramzan"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize:saqlain.vfm.bukc@bahria.edu.pk:saq@567",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10536).txt",
+        "password": "saq@567",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "saqlain.vfm.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "saqlain.vfm.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:asjad.bulc@bahria.edu.pk:mtbc123456789@",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "asjad.bulc"
+        ],
+        "password": "mtbc123456789@",
+        "email": [
+          "asjad.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "73567006920863549398373681191499863470",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "m.facebook.com:asharahmed.ipp@bahria.edu.pk:adminadmin",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "m.facebook.com"
+        ],
+        "username": [
+          "asharahmed.ipp"
+        ],
+        "password": "adminadmin",
+        "email": [
+          "asharahmed.ipp@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "69789378101168134132036285811658412433",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://corp.sehatkahani.com/:tariqsaeed.bukc@bahria.edu.pk:R0shan@Y",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10544).txt",
+        "password": "R0shan@Y",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "corp.sehatkahani.com"
+        ],
+        "email": [
+          "tariqsaeed.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "tariqsaeed.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "nadiajaweed@bahria.edu.pk:7nadya9",
+        "channel": "Collection",
+        "file": "MYR (11)__Collection #2-#5 & Antipublic__ANTIPUBLIC #1__ANTIPUBLIC #1.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "nadiajaweed@bahria.edu.pk"
+        ],
+        "password": "7nadya9",
+        "username": [
+          "nadiajaweed"
+        ],
+        "m_index": "stealer_model-000034",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://www.turnitin.com/login_page.asp:haider.buic@bahria.edu.pk:1034522918Ha.",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (6).txt",
+        "password": "1034522918Ha.",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{domain}",
+          "{email}"
+        ],
+        "email": [
+          "haider.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "haider.buic"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000049",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "safiamalik@bahria.edu.pk:safia351355",
+        "channel": "Collection",
+        "file": "247__Collection #2-#5 & Antipublic__Collection #5_EU combos__Collection #5_EU combos.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "safiamalik@bahria.edu.pk"
+        ],
+        "password": "safia351355",
+        "username": [
+          "safiamalik"
+        ],
+        "m_index": "stealer_model-000083",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com/common/oauth2/v2.0/authorize:msajid.vfm.buic@bahria.edu.pk:thr@678",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 467].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "msajid.vfm.buic"
+        ],
+        "password": "thr@678",
+        "email": [
+          "msajid.vfm.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "300858623226881189305131361978508334946",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:arasheed.bulc@bahria.edu.pk:asdfghjkL.99",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "arasheed.bulc"
+        ],
+        "password": "asdfghjkL.99",
+        "email": [
+          "arasheed.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "330584786260995095683140179800103774729",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/Executive/Login.aspx:dda.buic@bahria.edu.pk:time5617@#$%",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "dda.buic"
+        ],
+        "password": "time5617@#$%",
+        "email": [
+          "dda.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "8462261253472862666714273613150324986",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://corp.sehatkahani.com/:mshafiq.bukc@bahria.edu.pk:shafiq786",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10544).txt",
+        "password": "shafiq786",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "corp.sehatkahani.com"
+        ],
+        "email": [
+          "mshafiq.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "mshafiq.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:smushtaq.buic@bahria.edu.pk:basitali999",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "smushtaq.buic"
+        ],
+        "password": "basitali999",
+        "email": [
+          "smushtaq.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "86669455831152825096097637425771344849",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://www.grammarly.com/upgrade:abdullah.bulc@bahria.edu.pk:Abd123ullah",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10531).txt",
+        "password": "Abd123ullah",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.grammarly.com"
+        ],
+        "email": [
+          "abdullah.bulc@bahria.edu.pk"
+        ],
+        "username": [
+          "abdullah.bulc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com/:sharis.buic@bahria.edu.pk:Ilovemyfamily007#",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10538).txt",
+        "password": "Ilovemyfamily007#",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "sharis.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "sharis.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "hodmsugs@bahria.edu.pk:mofejepe",
+        "channel": "Collection",
+        "file": "MYR (8)__Collection #2-#5 & Antipublic__ANTIPUBLIC #1__ANTIPUBLIC #1.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "hodmsugs@bahria.edu.pk"
+        ],
+        "password": "mofejepe",
+        "username": [
+          "hodmsugs"
+        ],
+        "m_index": "stealer_model-000081",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "http://172.16.0.9/Account/Login Amldc.bulc@bahria.edu.pk:Password@123",
+        "channel": "textbases (url:log:pass)",
+        "file": null,
+        "filename": "@txtbaseportal - FREE [OCT].txt",
+        "password": "Password@123",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null,
+          null
+        ],
+        "ip": [
+          "172.16.0.9"
+        ],
+        "email": [
+          "Amldc.bulc@bahria.edu.pk"
+        ],
+        "username": [
+          "Amldc.bulc"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000106",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize mlpdc.bulc@bahria.edu.pk:123321",
+        "channel": "textbases (url:log:pass)",
+        "file": null,
+        "filename": "@txtbaseportal - FREE [OCT].txt",
+        "password": "123321",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null,
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "mlpdc.bulc@bahria.edu.pk"
+        ],
+        "username": [
+          "mlpdc.bulc"
+        ],
+        "m_index": "stealer_model-000106",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://login.oracle.com/mysso/signon.jsp:taimoor.aamer@bahria.edu.pk:Muhammadsaw12",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 467].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "login.oracle.com"
+        ],
+        "username": [
+          "taimoor.aamer"
+        ],
+        "password": "Muhammadsaw12",
+        "email": [
+          "taimoor.aamer@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "286207696507913969636435974360214754864",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://innovate-apj.virtual.awsevents.com/register:maryam.buic@bahria.edu.pk:SUfFgS@p7SUfFgS@p7",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 467].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "innovate-apj.virtual.awsevents.com"
+        ],
+        "username": [
+          "maryam.buic"
+        ],
+        "password": "SUfFgS@p7SUfFgS@p7",
+        "email": [
+          "maryam.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "85761079218566750103134937254280673974",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://172.16.0.9/:fypbsit.buic@bahria.edu.pk:Password@123",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10526).txt",
+        "password": "Password@123",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "ip": [
+          "172.16.0.9"
+        ],
+        "email": [
+          "fypbsit.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "fypbsit.buic"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "researchportal.bahria.edu.pk/index.php:imtiaz.bumdc@bahria.edu.pk:vitaminfresh1",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 467].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "researchportal.bahria.edu.pk"
+        ],
+        "username": [
+          "imtiaz.bumdc"
+        ],
+        "password": "vitaminfresh1",
+        "email": [
+          "imtiaz.bumdc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "110907340777412064026027366012237375993",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://drgs.usindh.edu.pk:shagufta.bukc@bahria.edu.pk:Yousuf12",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@AhegaoCloud 9KK+ LINES.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "drgs.usindh.edu.pk"
+        ],
+        "username": [
+          "shagufta.bukc"
+        ],
+        "password": "Yousuf12",
+        "email": [
+          "shagufta.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "80636641760443629883072663958426737814",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "app.brand24.com/user/register-account/:hqadeer.buic@bahria.edu.pk:Rango@123",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "app.brand24.com"
+        ],
+        "username": [
+          "hqadeer.buic"
+        ],
+        "password": "Rango@123",
+        "email": [
+          "hqadeer.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "149036240039582470778485962353838995293",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "director@bahria.edu.pk:chakmusa",
+        "channel": "Collection",
+        "file": "MYR (205)__Collection #2-#5 & Antipublic__ANTIPUBLIC #1__ANTIPUBLIC #1.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "director@bahria.edu.pk"
+        ],
+        "password": "chakmusa",
+        "username": [
+          "director"
+        ],
+        "m_index": "stealer_model-000061",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/logins/executive/login.aspx:hodcs.bulc@bahria.edu.pk:farhan_6661514",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 467].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "hodcs.bulc"
+        ],
+        "password": "farhan_6661514",
+        "email": [
+          "hodcs.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "143788042157474301059617851369623147867",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com/common/oauth2/authorize:oicnsh@bahria.edu.pk:N@tion@7890",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10526).txt",
+        "password": "N@tion@7890",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "oicnsh@bahria.edu.pk"
+        ],
+        "username": [
+          "oicnsh"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "freehaazmat@bahria.edu.pk:reeha123",
+        "channel": "Collection",
+        "file": null,
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "freehaazmat@bahria.edu.pk"
+        ],
+        "password": "reeha123",
+        "username": [
+          "freehaazmat"
+        ],
+        "m_index": "stealer_model-000111",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "id.elsevier.com:02-322222-017@bahria.edu.pk:petarian47",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "id.elsevier.com"
+        ],
+        "username": [
+          "02-322222-017"
+        ],
+        "password": "petarian47",
+        "email": [
+          "02-322222-017@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "103515605048227197002630691651724463596",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:hodssisb@bahria.edu.pk:phase8@1979",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "hodssisb"
+        ],
+        "password": "phase8@1979",
+        "email": [
+          "hodssisb@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "229601498045541514869276953366532807469",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://www.researchgate.net/login:majid.buic@bahria.edu.pk:azeez@218",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@PixelCloud2 ULP 21.11.2025 #714.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "researchgate.net"
+        ],
+        "username": [
+          "majid.buic"
+        ],
+        "password": "azeez@218",
+        "email": [
+          "majid.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "62669559343847777947261766310892032288",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://login.microsoftonline.com/common/oauth2/authorize:abdulrasheed.vfm.buic@bahria.edu.pk:bahria@789",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@PixelCloud2 ULP 21.11.2025 #714.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "abdulrasheed.vfm.buic"
+        ],
+        "password": "bahria@789",
+        "email": [
+          "abdulrasheed.vfm.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "58927492373267440064607582897736870579",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:amish.buic@bahria.edu.pk:reasonisyou@123",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@PixelCloud2 ULP 21.11.2025 #714.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "amish.buic"
+        ],
+        "password": "reasonisyou@123",
+        "email": [
+          "amish.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "19982447615636620191503148368213505903",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:ridakhan.buic@bahria.edu.pk:Rida@1994",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@PixelCloud2 ULP 21.11.2025 #714.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "ridakhan.buic"
+        ],
+        "password": "Rida@1994",
+        "email": [
+          "ridakhan.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "21777404051217239164405102158227487811",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://login.microsoftonline.com/common/oauth2/authorize:echss.buic@bahria.edu.pk:Azeez@218",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@PixelCloud2 ULP 21.11.2025 #714.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "echss.buic"
+        ],
+        "password": "Azeez@218",
+        "email": [
+          "echss.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "22737739863325161079170249793169253599",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:sanzak.buic@bahria.edu.pk:anzak12345@",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@PixelCloud2 ULP 21.11.2025 #714.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "sanzak.buic"
+        ],
+        "password": "anzak12345@",
+        "email": [
+          "sanzak.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "174363761437833416992237305211170586009",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/staff/Login.aspx:umerhayat.buic@bahria.edu.pk:audit@003344",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@PixelCloud2 ULP 21.11.2025 #714.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "umerhayat.buic"
+        ],
+        "password": "audit@003344",
+        "email": [
+          "umerhayat.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "254743831587026995154189177785913071755",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:hsscoord.buic@bahria.edu.pk:Bahria1@34",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@PixelCloud2 ULP 21.11.2025 #714.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "hsscoord.buic"
+        ],
+        "password": "Bahria1@34",
+        "email": [
+          "hsscoord.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "175405176049095392037564921710499789835",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:chdshss.buic@bahria.edu.pk:Azeez@218",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@PixelCloud2 ULP 21.11.2025 #714.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "chdshss.buic"
+        ],
+        "password": "Azeez@218",
+        "email": [
+          "chdshss.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "63710865003828639396858685170189030493",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "admin.typeform.com/signup:aqayyum.buic@bahria.edu.pk:kingarther",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "admin.typeform.com"
+        ],
+        "username": [
+          "aqayyum.buic"
+        ],
+        "password": "kingarther",
+        "email": [
+          "aqayyum.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "70827631854546723928352495661145705025",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com/:cpcbs.buic@bahria.edu.pk:awerty@789",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "cpcbs.buic"
+        ],
+        "password": "awerty@789",
+        "email": [
+          "cpcbs.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "50980183665918187813419872200269485096",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "http://recsys.kfupm.edu.sa/RecommendationSystem/Rec.do:mirfan.bukc@bahria.edu.pk:52166548",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10526).txt",
+        "password": "52166548",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "recsys.kfupm.edu.sa"
+        ],
+        "email": [
+          "mirfan.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "mirfan.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "asif@bahria.edu.pk:ycfmbnci",
+        "channel": "Collection",
+        "file": "185__Collection #2-#5 & Antipublic__Collection #2_New combo cloud_VIP Collection_More Lists__Collection #2_New combo cloud_VIP Collection_More Lists.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "asif@bahria.edu.pk"
+        ],
+        "password": "ycfmbnci",
+        "username": [
+          "asif"
+        ],
+        "m_index": "stealer_model-000080",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "vu.edu.pk:hammad.buic@bahria.edu.pk:zulfiqar133",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "vu.edu.pk"
+        ],
+        "username": [
+          "hammad.buic"
+        ],
+        "password": "zulfiqar133",
+        "email": [
+          "hammad.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "122951102840122655515536427251989681157",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com/common/oauth2/v2.0/authorize:fouzia.buic@bahria.edu.pk:Fouzia@786",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "fouzia.buic"
+        ],
+        "password": "Fouzia@786",
+        "email": [
+          "fouzia.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "123337943470761980690298603906839848283",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "www.turnitin.com/login_page.asp:Fouzia.buic@bahria.edu.pk:Fouzia@1602",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "turnitin.com"
+        ],
+        "username": [
+          "Fouzia.buic"
+        ],
+        "password": "Fouzia@1602",
+        "email": [
+          "Fouzia.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "301338812260578091489703000368941995681",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/executive/Login.aspx:hodmsisb@bahria.edu.pk:bahria@123",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "hodmsisb"
+        ],
+        "password": "bahria@123",
+        "email": [
+          "hodmsisb@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "195034167683533714240584635356176995211",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "internationaloffice@bahria.edu.pk:garichum",
+        "channel": "Collection",
+        "file": null,
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "internationaloffice@bahria.edu.pk"
+        ],
+        "password": "garichum",
+        "username": [
+          "internationaloffice"
+        ],
+        "m_index": "stealer_model-000110",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://login.microsoftonline.com:asifaziz.bukc@bahria.edu.pk:aziz456",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (7).txt",
+        "password": "aziz456",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null,
+          null,
+          null,
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "asifaziz.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "asifaziz.bukc"
+        ],
+        "m_index": "stealer_model-000100",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:fypbscs.buic@bahria.edu.pk:sig@349!01",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10531).txt",
+        "password": "sig@349!01",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cms.bahria.edu.pk"
+        ],
+        "email": [
+          "fypbscs.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "fypbscs.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com/common/oauth2/v2.0/authorize:sidra.buic@bahria.edu.pk:teMp@790",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#195.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "sidra.buic"
+        ],
+        "password": "teMp@790",
+        "email": [
+          "sidra.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "41948501500306187929133947306862992978",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize ddexams.bukc@bahria.edu.pk:Death$talker123",
+        "channel": "textbases (url:log:pass)",
+        "file": null,
+        "filename": "@txtbaseportal - FREE [NOV].txt",
+        "password": "Death$talker123",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "ddexams.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "ddexams.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com/:mlpdc.bulc@bahria.edu.pk:123321",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "mlpdc.bulc"
+        ],
+        "password": "123321",
+        "email": [
+          "mlpdc.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "172230817859967064697576244626288041997",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com/common/oauth2/v2.0/authorize:amldc.bulc@bahria.edu.pk:321321",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "amldc.bulc"
+        ],
+        "password": "321321",
+        "email": [
+          "amldc.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "197168234237287134101142660948879908768",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "www.turnitin.com:srehman.buic@bahria.edu.pk:1983iiui11",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#195.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "turnitin.com"
+        ],
+        "username": [
+          "srehman.buic"
+        ],
+        "password": "1983iiui11",
+        "email": [
+          "srehman.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "324509570316962060830406061799989322483",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://researchportal.bahria.edu.pk:asifaziz.bukc@bahria.edu.pk:bahria345",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (7).txt",
+        "password": "bahria345",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null,
+          null,
+          null,
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "researchportal.bahria.edu.pk"
+        ],
+        "email": [
+          "asifaziz.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "asifaziz.bukc"
+        ],
+        "m_index": "stealer_model-000100",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://smp.bahria.edu.pk/:guest@bahria.edu.pk:guest@786",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (10).txt",
+        "password": "guest@786",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "smp.bahria.edu.pk"
+        ],
+        "email": [
+          "guest@bahria.edu.pk"
+        ],
+        "username": [
+          "guest"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:adeela.buic@bahria.edu.pk:adeelakiani_4347",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#195.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "adeela.buic"
+        ],
+        "password": "adeelakiani_4347",
+        "email": [
+          "adeela.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "130715949282762791251601797299569985555",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://cloud.smartdraw.com/signup/signupmodal.aspx:admin.bulc@bahria.edu.pk:admin.bulc",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#195.txt",
+        "date": "2026-03-25",
+        "source_domain": [
+          "cloud.smartdraw.com"
+        ],
+        "username": [
+          "admin.bulc"
+        ],
+        "password": "admin.bulc",
+        "email": [
+          "admin.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "172517416761082744045861664403731489667",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "faftab@bahria.edu.pk:brother12",
+        "channel": "Collection",
+        "file": null,
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "faftab@bahria.edu.pk"
+        ],
+        "password": "brother12",
+        "username": [
+          "faftab"
+        ],
+        "m_index": "stealer_model-000104",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://www.researchgate.net:haris.bukc@bahria.edu.pk:army420army",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (10).txt",
+        "password": "army420army",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.researchgate.net"
+        ],
+        "email": [
+          "haris.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "haris.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com:shagufta.bukc@bahria.edu.pk:asd@356",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (10).txt",
+        "password": "asd@356",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "shagufta.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "shagufta.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://172.16.0.9:dda.buic@bahria.edu.pk:Time5617@#$%",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (10).txt",
+        "password": "Time5617@#$%",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "ip": [
+          "172.16.0.9"
+        ],
+        "email": [
+          "dda.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "dda.buic"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "email.bahria.edu.pk/owa/auth/logon.aspx:01-134142-093@bahria.edu.pk:BahriaUniversity27700@",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "email.bahria.edu.pk"
+        ],
+        "username": [
+          "01-134142-093"
+        ],
+        "password": "BahriaUniversity27700@",
+        "email": [
+          "01-134142-093@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "288353053990677638807529150083406995744",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "bahria.edu.pk/libraries/:02-229172-003:Ghani@345",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "bahria.edu.pk"
+        ],
+        "username": [
+          "02-229172-003"
+        ],
+        "password": "Ghani@345",
+        "m_hash": "146856777059168368245793700573097757090",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "rfid.bahria.edu.pk/:director.bumdc@bahria.edu.pk:dbumdc@321",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "rfid.bahria.edu.pk"
+        ],
+        "username": [
+          "director.bumdc"
+        ],
+        "password": "dbumdc@321",
+        "email": [
+          "director.bumdc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "81236342847087790167463481734013738682",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "rfid.bahria.edu.pk/:vpdental.bumdc@bahria.edu.pk:vp@321",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "rfid.bahria.edu.pk"
+        ],
+        "username": [
+          "vpdental.bumdc"
+        ],
+        "password": "vp@321",
+        "email": [
+          "vpdental.bumdc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "153482160565230973890607434660789409885",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "rfid.bahria.edu.pk/:principal.bucpt@bahria.edu.pk:Wa10112$$",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "rfid.bahria.edu.pk"
+        ],
+        "username": [
+          "principal.bucpt"
+        ],
+        "password": "Wa10112$$",
+        "email": [
+          "principal.bucpt@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "43514769568418555498909009549548089266",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://172.16.0.9:ddhr.buic@bahria.edu.pk:Password@123",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (10).txt",
+        "password": "Password@123",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "ip": [
+          "172.16.0.9"
+        ],
+        "email": [
+          "ddhr.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "ddhr.buic"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "qasim@bahria.edu.pk:qasimvu935",
+        "channel": "Collection",
+        "file": "АП214__Collection #2-#5 & Antipublic__Collection #2_New combo cloud_General Splits Collection__Collection #2_New combo cloud_General Splits Collection.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "qasim@bahria.edu.pk"
+        ],
+        "password": "qasimvu935",
+        "username": [
+          "qasim"
+        ],
+        "m_index": "stealer_model-000078",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "login.microsoftonline.com/common/oauth2/authorize:hodmsisb@bahria.edu.pk:Allah@786",
+        "channel": "Database.",
+        "file": null,
+        "filename": "chunk_13.txt",
+        "password": "Allah@786",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{domain}",
+          "{email}",
+          null
+        ],
+        "email": [
+          "hodmsisb@bahria.edu.pk"
+        ],
+        "username": [
+          "hodmsisb"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000089",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://ccs.login.microsoftonline.com:papbbs.bukc@bahria.edu.pk:bbs@123",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#204.txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "ccs.login.microsoftonline.com"
+        ],
+        "username": [
+          "papbbs.bukc"
+        ],
+        "password": "bbs@123",
+        "email": [
+          "papbbs.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "99621538405601990541605677763935574710",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://selfservice.adu.ac.ae555/psc/olapp/employee/psft_hr/c/scc_nur.adu_scc_nur_reg.gbl&cmd=start:alichipa.bukc@bahria.edu.pk:sodium897",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (2).txt",
+        "password": "sodium897",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "selfservice.adu.ac.ae555"
+        ],
+        "email": [
+          "alichipa.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "alichipa.bukc"
+        ],
+        "m_index": "stealer_model-000046",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "raw",
+        "raw": "45896488,UACjo7zbows,2017-10-12 11:06:37,sudhir.rana@gmail.com,,C,sudhir.rana,Sudhir Rana,,,0,U,0,,,,,en,45844129,BACjo6KXug0,,\n45896489,UACjo8zLeFY,2017-10-12 11:06:38,goli.kashfi@web.de,,V,goli.kashfi,Anna Br,,,0,U,0,,,,,de-DE,45844130,BACjo8qso9w,,$2a$10$JwukbuuTAK5P6jEhKjLSxemheITwL9W/EkT7y4suQ8/gng/VteWLK\n45896490,UACjo8wnNCA,2017-10-12 11:06:40,joedempsey81@yahoo.co.uk,,C,joedempsey81,Joe Dempsey,,,0,U,0,,,,,en,45844131,BACjozKihqI,,$2a$10$.GmHhNv1jl35pEE9jK.OoOaGZW4nQQ5SL2d0BxbirslYdmAZZu2u.\n45896491,UACjoxpS6Z4,2017-10-12 11:06:41,basharat@bahria.edu.pk,,C,basharat3,Madeeha Basharat Bahria,,,0,U,0,{seenMobileExpDialog:true},,,,en,45844132,BACjo144dpM,,",
+        "channel": "dump",
+        "file": null,
+        "file_name": "canva.7z",
+        "email": [
+          "sudhir.rana@gmail.com",
+          "goli.kashfi@web.de",
+          "joedempsey81@yahoo.co.uk",
+          "basharat@bahria.edu.pk"
+        ],
+        "username": [
+          "sudhir.rana",
+          "goli.kashfi",
+          "joedempsey81",
+          "basharat"
+        ],
+        "domain": [
+          "sudhir.rana",
+          "gmail.com",
+          "goli.kashfi",
+          "web.de",
+          "gmhhnv1jl35pee9jk.oooagzw",
+          "yahoo.co.uk",
+          "bahria.edu.pk"
+        ],
+        "date": "2026-03-02",
+        "m_hash": "240802752936635371583404798757377907833",
+        "autofill_hash": "49bc4465528526824ad810a60800b478",
+        "m_index": "stealer_model-000187",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:fypbsit.buic@bahria.edu.pk:bsit@111",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (8).txt",
+        "password": "bsit@111",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cms.bahria.edu.pk"
+        ],
+        "email": [
+          "fypbsit.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "fypbsit.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://publicationethics.org/user:editor.bumdc@bahria.edu.pk:arch@678",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (8).txt",
+        "password": "arch@678",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "publicationethics.org"
+        ],
+        "email": [
+          "editor.bumdc@bahria.edu.pk"
+        ],
+        "username": [
+          "editor.bumdc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com/75df096c-8b72-48e4-9b91-cbf79d87ee3a/oauth2/authorize:maryam.buic@bahria.edu.pk:CL5jtd@iris",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (8).txt",
+        "password": "CL5jtd@iris",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "maryam.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "maryam.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com/common/oauth2/authorize:ads.bukc@bahria.edu.pk:ads@654",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#204.txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "ads.bukc"
+        ],
+        "password": "ads@654",
+        "email": [
+          "ads.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "124979422286802734955587591784421522896",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://www.turnitin.com/login_page.asp:hammad.buic@bahria.edu.pk:firdoos133",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (8).txt",
+        "password": "firdoos133",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.turnitin.com"
+        ],
+        "email": [
+          "hammad.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "hammad.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.live.com:bujhss.bukc@bahria.edu.pk:yousuf",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (10).txt",
+        "password": "yousuf",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.live.com"
+        ],
+        "email": [
+          "bujhss.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "bujhss.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize:msajid.vfm.buic@bahria.edu.pk:thr@678",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (8).txt",
+        "password": "thr@678",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "msajid.vfm.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "msajid.vfm.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com:tasawar.vfm.buic@bahria.edu.pk:Yob46710",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (6).txt",
+        "password": "Yob46710",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "tasawar.vfm.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "tasawar.vfm.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "raw",
+        "raw": "57223998,UACt8KwLwBk,2018-01-30 08:36:25,ajayakchouhan2233@gmail.com,,V,ajayakchouhan2233,ajayakchouhan2233,,,0,U,0,,,,,en,57127403,BACt8NOV-sM,,$2a$10$4tpcCMk8DqYhqjjPVWmABeeocrMeJGSFwIt6oGY8xKtaoo0wAj.Xe\n57223999,UACt8FGiDU0,2018-01-30 08:36:26,dncmpri@bahria.edu.pk,,V,dncmpri,baber bilal,,,0,U,0,{contextTipRoyaltyFreePaymentOption:true;hasSeenPublishPaymentLicensesOnboarding:true},,,,en,57127404,BACt8G0B1Ck,,$2a$10$C0F3xuw0kFb145ra.qyfF.GjwMlWveSzAwt0.XBvbR6IdTKYBmMmK",
+        "channel": "dump",
+        "file": null,
+        "file_name": "canva.7z",
+        "email": [
+          "ajayakchouhan2233@gmail.com",
+          "dncmpri@bahria.edu.pk"
+        ],
+        "username": [
+          "ajayakchouhan2233",
+          "dncmpri"
+        ],
+        "domain": [
+          "4tpccmk8dqyhqjjpvwmabeeocrmejgsfwit6ogy8xktaoo0waj.xe",
+          "gmail.com",
+          "c0f3xuw0kfb145ra.qyff.gjwmlwveszawt0.xbvbr",
+          "bahria.edu.pk"
+        ],
+        "date": "2026-03-03",
+        "m_hash": "169407842211306965845087685978294516259",
+        "autofill_hash": "40b2efc7650fc6b5f52387b37a391140",
+        "m_index": "stealer_model-000187",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "turnitin.com/login_page.asp:saqibmehmood@bahria.edu.pk:tabu1234",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#204.txt",
+        "date": "2026-04-01",
+        "source_domain": [
+          "turnitin.com"
+        ],
+        "username": [
+          "saqibmehmood"
+        ],
+        "password": "tabu1234",
+        "email": [
+          "saqibmehmood@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "205780993262367524991096148716314866669",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://bahria.edu.pk/wp-login.php:01-134171-054:MSms786=",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#194.txt",
+        "date": "2026-03-26",
+        "source_domain": [
+          "bahria.edu.pk"
+        ],
+        "username": [
+          "01-134171-054"
+        ],
+        "password": "MSms786=",
+        "m_hash": "337845432033554751045174591432336159587",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://researchportal.bahria.edu.pk:ghulammurtaza.bumdc@bahria.edu.pk:Bahria@104471",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "researchportal.bahria.edu.pk"
+        ],
+        "username": [
+          "ghulammurtaza.bumdc"
+        ],
+        "password": "Bahria@104471",
+        "email": [
+          "ghulammurtaza.bumdc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "236095741052646808825041831445509292370",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://ieeexplore.ieee.org:abdullah.bulc@bahria.edu.pk:Abd123ullah",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (6).txt",
+        "password": "Abd123ullah",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "ieeexplore.ieee.org"
+        ],
+        "email": [
+          "abdullah.bulc@bahria.edu.pk"
+        ],
+        "username": [
+          "abdullah.bulc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "bahria-pk.leaderinme.net:hodbs.bukc@bahria.edu.pk:123456789",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#194.txt",
+        "date": "2026-03-26",
+        "source_domain": [
+          "bahria-pk.leaderinme.net"
+        ],
+        "username": [
+          "hodbs.bukc"
+        ],
+        "password": "123456789",
+        "email": [
+          "hodbs.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "314203955087874970526558901580905578217",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "www.bahria.edu.pk/ojs/index.php/bujict/user/register:a2usmani:khankhan786786!",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#204.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "bahria.edu.pk"
+        ],
+        "username": [
+          "a2usmani"
+        ],
+        "password": "khankhan786786!",
+        "m_hash": "235689415404333039708169475170332684563",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "raw",
+        "raw": "32831483,UACVTYk-u14,2017-05-12 13:11:38,riadhaouas@gmail.com,,C,riadhaouas,Mohamed Riadh Haouas,,,0,U,0,,,,,fr-FR,32823097,BACVTTvm7K0,,\n32831484,UACVTZHsWdo,2017-05-12 13:11:39,19belskyt@nasdkids.org,,C,19belskyt,Tyler Belsky,,,0,U,0,,,,,en,32823098,BACVTcpUBkc,,\n32831486,UACVTXOM6Gg,2017-05-12 13:11:39,02-111142-101@bahria.edu.pk,,C,02-111142-101,02-111142-101 HUBA AFZAL,,,0,U,0,,,,,en,32823100,BACVTXUyQKM,,\n32831487,UACVTYd4-vM,2017-05-12 13:11:39,terry.grenfell@sja.org.uk,,V,terry.grenfell,Terry Grenfell,,,0,U,0,,,,,en,32823101,BACVTc4Gbhs,,$2a$10$6K/KYuIGVvV9scp1lHdivudfn/ibflbRB11Bg21jTxgCNY/5/TPu2\n32831488,UACVTQ0i_vg,2017-05-12 13:11:40,eduarda.bulhoes@hotmail.com,,C,eduarda.bulhoes,Eduarda Bulhes,,,0,U,0,{contextTipRoyaltyFreePaymentOption:true;hasSeenPublishPaymentLicensesOnboarding:true;seenMobileExpDialog:true},,,,pt-BR,32823102,BACVTXD0cz8,,$2a$10$mko8xBJ4HEAzr8dAiZ1QSOy/wPqvUKFTcT8vTZWGJrXvqR4N/ws9W\n32831489,UACVTdt0yy8,2017-05-12 13:11:40,ctoussaint-22@wwpsstudents.com,,C,ctoussaint-22,Chansley Toussaint,,,0,U,0,,,,,en,32823103,BACVTfdpQY8,,\n32831490,UACVTXTWBko,2017-05-12 13:11:41,anita@onclin.nl,,C,anita1604,Anita Onclin,,,0,U,0,,,,,nl-NL,32823104,BACVTYU6sDY,,",
+        "channel": "dump",
+        "file": null,
+        "file_name": "canva.7z",
+        "email": [
+          "riadhaouas@gmail.com",
+          "19belskyt@nasdkids.org",
+          "02-111142-101@bahria.edu.pk",
+          "terry.grenfell@sja.org.uk",
+          "eduarda.bulhoes@hotmail.com",
+          "ctoussaint-22@wwpsstudents.com",
+          "anita@onclin.nl"
+        ],
+        "username": [
+          "riadhaouas",
+          "19belskyt",
+          "02-111142-101",
+          "terry.grenfell",
+          "eduarda.bulhoes",
+          "ctoussaint-22",
+          "anita"
+        ],
+        "domain": [
+          "gmail.com",
+          "nasdkids.org",
+          "bahria.edu.pk",
+          "sja.org.uk",
+          "terry.grenfell",
+          "eduarda.bulhoes",
+          "hotmail.com",
+          "wwpsstudents.com",
+          "onclin.nl"
+        ],
+        "date": "2026-03-02",
+        "m_hash": "89907015647069318739828597288163949169",
+        "autofill_hash": "7edd78bcd9696618edee01b5ba7ed7de",
+        "m_index": "stealer_model-000187",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "bahria.edu.pk/ojs/index.php/bujict/login:a2usmani:khankhan786786!",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#204.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "bahria.edu.pk"
+        ],
+        "username": [
+          "a2usmani"
+        ],
+        "password": "khankhan786786!",
+        "m_hash": "89065200583853787036133072030927601383",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "pcp.pern.edu.pk/:adnanahmed.vp.bumdc@bahria.edu.pk:khankhan786786",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#204.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "pcp.pern.edu.pk"
+        ],
+        "username": [
+          "adnanahmed.vp.bumdc"
+        ],
+        "password": "khankhan786786",
+        "email": [
+          "adnanahmed.vp.bumdc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "172311125708783208692321992307174585458",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "huggingface.co/join:01-133202-136@bahria.edu.pk:Ptcl901@305",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#204.txt",
+        "date": "2026-03-20",
+        "source_domain": [
+          "huggingface.co"
+        ],
+        "username": [
+          "01-133202-136"
+        ],
+        "password": "Ptcl901@305",
+        "email": [
+          "01-133202-136@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "201602596909786234811606188324478262590",
+        "m_index": "stealer_model-000188",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "saqib.saeed@bahria.edu.pk:saeed19",
+        "channel": "Collection",
+        "file": "393__Collection #2-#5 & Antipublic__Collection #5_Money combos__Collection #5_Money combos.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "saqib.saeed@bahria.edu.pk"
+        ],
+        "password": "saeed19",
+        "username": [
+          "saqib.saeed"
+        ],
+        "m_index": "stealer_model-000050",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "bahria.edu.pk:01-132232-030:9879357IbIb@",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#194.txt",
+        "date": "2026-03-26",
+        "source_domain": [
+          "bahria.edu.pk"
+        ],
+        "username": [
+          "01-132232-030"
+        ],
+        "password": "9879357IbIb@",
+        "m_hash": "24110586862452983959170681392475763194",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "rfid.bahria.edu.pk/:sne.bumdc@bahria.edu.pk:bumdc0123",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10553).txt",
+        "password": "bumdc0123",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{domain}",
+          "{email}",
+          null
+        ],
+        "email": [
+          "sne.bumdc@bahria.edu.pk"
+        ],
+        "username": [
+          "sne.bumdc"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000029",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "cortexom.com:Taimoor.aamer@bahria.edu.pk:mui@567",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#194.txt",
+        "date": "2026-03-26",
+        "source_domain": [
+          "cortexom.com"
+        ],
+        "username": [
+          "Taimoor.aamer"
+        ],
+        "password": "mui@567",
+        "email": [
+          "Taimoor.aamer@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "26960086921892401240002144710994679082",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "bahria.edu.pk:soneozofro23@gmail.com:sOniAhussAin123",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#194.txt",
+        "date": "2026-03-26",
+        "source_domain": [
+          "bahria.edu.pk"
+        ],
+        "username": [
+          "soneozofro23"
+        ],
+        "password": "sOniAhussAin123",
+        "email": [
+          "soneozofro23@gmail.com"
+        ],
+        "domain": [
+          "gmail.com"
+        ],
+        "m_hash": "287352345084777622508701194021906729595",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://www.researchgate.net/signup.SignUp.html:info@bahria.edu.pk:Gtalha123",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10535).txt",
+        "password": "Gtalha123",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.researchgate.net"
+        ],
+        "email": [
+          "info@bahria.edu.pk"
+        ],
+        "username": [
+          "info"
+        ],
+        "m_index": "stealer_model-000038",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com:ayeza.vfm.buic@bahria.edu.pk:Ss4UfX_9-s8M",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#194.txt",
+        "date": "2026-03-26",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "ayeza.vfm.buic"
+        ],
+        "password": "Ss4UfX_9-s8M",
+        "email": [
+          "ayeza.vfm.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "85239861934432994421401619296126211325",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "dde@bahria.edu.pk:cdrhafeez",
+        "channel": "Collection",
+        "file": null,
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "dde@bahria.edu.pk"
+        ],
+        "password": "cdrhafeez",
+        "username": [
+          "dde"
+        ],
+        "m_index": "stealer_model-000111",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "tbbs.turkiyeburslari.gov.tr/:alichipa.bukc@bahria.edu.pk:sodium786",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (3).txt",
+        "password": "sodium786",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "email": [
+          "alichipa.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "alichipa.bukc"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com:adhr1@bahria.edu.pk:Awerty@789$#@",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#194.txt",
+        "date": "2026-03-26",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "adhr1"
+        ],
+        "password": "Awerty@789$#@",
+        "email": [
+          "adhr1@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "177151897499361702112641703027737505589",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "www.linkedin.com:editor.bumdc@bahria.edu.pk:arch@678",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#194.txt",
+        "date": "2026-03-26",
+        "source_domain": [
+          "linkedin.com"
+        ],
+        "username": [
+          "editor.bumdc"
+        ],
+        "password": "arch@678",
+        "email": [
+          "editor.bumdc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "146719677779934382785929942900642106268",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com:ddexams.bukc@bahria.edu.pk:dongoo0077@@",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#194.txt",
+        "date": "2026-03-26",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "ddexams.bukc"
+        ],
+        "password": "dongoo0077@@",
+        "email": [
+          "ddexams.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "70333112786873439931792939759072170550",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "raw",
+        "raw": "67369885,UAC1J1iKncE,2018-04-17 07:18:44,zaimaqoyyimah15@gmail.com,,C,zaimaqoyyimah15,zaimatul qoyyimah,,,0,U,0,,,,,en-GB,67229266,BAC1J9L7lgk,,\n67369886,UAC1J85sWWQ,2018-04-17 07:18:45,shao-nols@hotmail.com,,C,shao-nols,Shao,,,0,U,0,,,,,pt-BR,67229267,BAC1Jy4ZrX8,,\n67369887,UAC1JysOxck,2018-04-17 07:18:45,jako973c@aaks.dk,,C,jako973c,Jakob Glarborg Hannestad 4Z Ellevangskolen,,,0,U,0,,,,,da-DK,67229268,BAC1J7YhLyg,,\n67369888,UAC1J5NjLSw,2018-04-17 07:18:45,sanarahim.ipp@bahria.edu.pk,,V,sanarahim.ipp,sana,,,0,U,0,{seenMobileExpDialog:true},,,,en,67229269,BAC1J82cFtY,,$2a$10$pqDI.fB7qvEE/rKUHSMOueIqtebuHzL3O6ZVrNHiw0cGETdh26rIi",
+        "channel": "dump",
+        "file": null,
+        "file_name": "canva.7z",
+        "email": [
+          "zaimaqoyyimah15@gmail.com",
+          "shao-nols@hotmail.com",
+          "jako973c@aaks.dk",
+          "sanarahim.ipp@bahria.edu.pk"
+        ],
+        "username": [
+          "zaimaqoyyimah15",
+          "shao-nols",
+          "jako973c",
+          "sanarahim.ipp"
+        ],
+        "domain": [
+          "gmail.com",
+          "hotmail.com",
+          "aaks.dk",
+          "pqdi.fb",
+          "sanarahim.ipp",
+          "bahria.edu.pk"
+        ],
+        "date": "2026-03-03",
+        "m_hash": "244540421696593395229954920684617480535",
+        "autofill_hash": "05a3c0eefd72f812d369b9cadb337fd9",
+        "m_index": "stealer_model-000187",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "hr@bahria.edu.pk:quenchme",
+        "channel": "Collection",
+        "file": null,
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "hr@bahria.edu.pk"
+        ],
+        "password": "quenchme",
+        "username": [
+          "hr"
+        ],
+        "m_index": "stealer_model-000111",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://bahria.edu.pk:masood-ahmed:M@sood89",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 465].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "bahria.edu.pk"
+        ],
+        "username": [
+          "masood-ahmed"
+        ],
+        "password": "M@sood89",
+        "m_hash": "125129962014528149090349145114144719084",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com/common/oauth2/authorize sanasharif.bumdc@bahria.edu.pk:shifa123",
+        "channel": "textbases (url:log:pass)",
+        "file": null,
+        "filename": "@txtbaseportal - FREE [OCT].txt",
+        "password": "shifa123",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "sanasharif.bumdc@bahria.edu.pk"
+        ],
+        "username": [
+          "sanasharif.bumdc",
+          "shifa123"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "rizwan@bahria.edu.pk:aamir1",
+        "channel": "Collection",
+        "file": "MYR (158)__Collection #2-#5 & Antipublic__ANTIPUBLIC #1__ANTIPUBLIC #1.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "rizwan@bahria.edu.pk"
+        ],
+        "password": "aamir1",
+        "username": [
+          "rizwan"
+        ],
+        "m_index": "stealer_model-000096",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://www.researchgate.net/login majid.buic@bahria.edu.pk:azeez@218",
+        "channel": "textbases (url:log:pass)",
+        "file": null,
+        "filename": "@txtbaseportal - FREE [OCT].txt",
+        "password": "azeez@218",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.researchgate.net"
+        ],
+        "email": [
+          "majid.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "majid.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://smp.bahria.edu.pk/Login.aspx hodssisb@bahria.edu.pk:hodssisb@709",
+        "channel": "textbases (url:log:pass)",
+        "file": null,
+        "filename": "@txtbaseportal - FREE [OCT].txt",
+        "password": "hodssisb@709",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "smp.bahria.edu.pk"
+        ],
+        "email": [
+          "hodssisb@bahria.edu.pk"
+        ],
+        "username": [
+          "hodssisb"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com/common/oauth2/authorize abdulrasheed.vfm.buic@bahria.edu.pk:bahria@789",
+        "channel": "textbases (url:log:pass)",
+        "file": null,
+        "filename": "@txtbaseportal - FREE [OCT].txt",
+        "password": "bahria@789",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "abdulrasheed.vfm.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "abdulrasheed.vfm.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx amish.buic@bahria.edu.pk:reasonisyou@123",
+        "channel": "textbases (url:log:pass)",
+        "file": null,
+        "filename": "@txtbaseportal - FREE [OCT].txt",
+        "password": "reasonisyou@123",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cms.bahria.edu.pk"
+        ],
+        "email": [
+          "amish.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "amish.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx ridakhan.buic@bahria.edu.pk:Rida@1994",
+        "channel": "textbases (url:log:pass)",
+        "file": null,
+        "filename": "@txtbaseportal - FREE [OCT].txt",
+        "password": "Rida@1994",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cms.bahria.edu.pk"
+        ],
+        "email": [
+          "ridakhan.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "ridakhan.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx sanzak.buic@bahria.edu.pk:anzak12345@",
+        "channel": "textbases (url:log:pass)",
+        "file": null,
+        "filename": "@txtbaseportal - FREE [OCT].txt",
+        "password": "anzak12345@",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cms.bahria.edu.pk"
+        ],
+        "email": [
+          "sanzak.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "sanzak.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://cms.bahria.edu.pk/Logins/staff/Login.aspx umerhayat.buic@bahria.edu.pk:audit@003344",
+        "channel": "textbases (url:log:pass)",
+        "file": null,
+        "filename": "@txtbaseportal - FREE [OCT].txt",
+        "password": "audit@003344",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cms.bahria.edu.pk"
+        ],
+        "email": [
+          "umerhayat.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "umerhayat.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx hsscoord.buic@bahria.edu.pk:Bahria1@34",
+        "channel": "textbases (url:log:pass)",
+        "file": null,
+        "filename": "@txtbaseportal - FREE [OCT].txt",
+        "password": "Bahria1@34",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cms.bahria.edu.pk"
+        ],
+        "email": [
+          "hsscoord.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "hsscoord.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "njp.gov.pk : mirzahassan.bumdc@bahria.edu.pk : 9231269873",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (6).txt",
+        "password": "9231269873",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "email": [
+          "mirzahassan.bumdc@bahria.edu.pk"
+        ],
+        "username": [
+          "mirzahassan.bumdc"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "safiamalik@bahria.edu.pk:118593989052454",
+        "channel": "Collection",
+        "file": null,
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "safiamalik@bahria.edu.pk"
+        ],
+        "password": "118593989052454",
+        "username": [
+          "safiamalik"
+        ],
+        "m_index": "stealer_model-000109",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://id.sophos.com:guest.buic@bahria.edu.pk:Zoltrixound",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 465].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "id.sophos.com"
+        ],
+        "username": [
+          "guest.buic"
+        ],
+        "password": "Zoltrixound",
+        "email": [
+          "guest.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "318960648678701932042163344934013920769",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://www.turnitin.com:nayab.bulc@bahria.edu.pk:Mango2020@",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 465].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "turnitin.com"
+        ],
+        "username": [
+          "nayab.bulc"
+        ],
+        "password": "Mango2020@",
+        "email": [
+          "nayab.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "48554910627512108480356533768916688455",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://itin.com/login_page.asp:maryamkhokhar.bukc@bahria.edu.pk:786Maryam@li",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 465].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "itin.com"
+        ],
+        "username": [
+          "maryamkhokhar.bukc"
+        ],
+        "password": "786Maryam@li",
+        "email": [
+          "maryamkhokhar.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "319723598989215917728008849594981280195",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://a.com:abrarahmed.buic@bahria.edu.pk:Bahria@123",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 465].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "a.com"
+        ],
+        "username": [
+          "abrarahmed.buic"
+        ],
+        "password": "Bahria@123",
+        "email": [
+          "abrarahmed.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "62960057996251783350418702415352808517",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "gamebanana.com/members/account/register:admin.bulc@bahria.edu.pk:escalpe331",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (5).txt",
+        "password": "escalpe331",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "email": [
+          "admin.bulc@bahria.edu.pk"
+        ],
+        "username": [
+          "admin.bulc"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "librarian@bahria.edu.pk:846786873785835",
+        "channel": "Collection",
+        "file": null,
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "librarian@bahria.edu.pk"
+        ],
+        "password": "846786873785835",
+        "username": [
+          "librarian"
+        ],
+        "m_index": "stealer_model-000112",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "bashirahmad.bukc@bahria.edu.pk:bash@123eb",
+        "channel": "Collection",
+        "file": "result.txt_div_91_DupDel__Collection #2-#5 & Antipublic__Collection #2_New combo cloud_Private Collection_Private combos__Collection #2_New combo cloud_Private Collection_Private combos.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "bashirahmad.bukc@bahria.edu.pk"
+        ],
+        "password": "bash@123eb",
+        "username": [
+          "bashirahmad.bukc"
+        ],
+        "m_index": "stealer_model-000065",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "hbsp.harvard.edu/:naimah.buic@bahria.edu.pk:Naimah@123",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#193.txt",
+        "date": "2026-03-26",
+        "source_domain": [
+          "hbsp.harvard.edu"
+        ],
+        "username": [
+          "naimah.buic"
+        ],
+        "password": "Naimah@123",
+        "email": [
+          "naimah.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "118290845869044421778499371856772400031",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://profile.oracle.com/myprofile/account/create-account.jspx:raheelaambrin.h11@bahria.edu.pk:Bahria@123",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#193.txt",
+        "date": "2026-03-26",
+        "source_domain": [
+          "profile.oracle.com"
+        ],
+        "username": [
+          "raheelaambrin.h11"
+        ],
+        "password": "Bahria@123",
+        "email": [
+          "raheelaambrin.h11@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "9860293751012661193761834710894729707",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://cms.bahria.edu.pk/logins/staff/login.aspx tahir.iqbal@bahria.edu.pk:45oHkNMA",
+        "channel": "Database.",
+        "file": null,
+        "filename": "url.login.pass_15.txt",
+        "password": "45oHkNMA",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cms.bahria.edu.pk"
+        ],
+        "email": [
+          "tahir.iqbal@bahria.edu.pk"
+        ],
+        "username": [
+          "tahir.iqbal"
+        ],
+        "m_index": "stealer_model-000087",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "smtp.office365.com:587abdullah.bulc@bahria.edu.pk:Abd123ullah",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#193.txt",
+        "date": "2026-03-26",
+        "source_domain": [
+          "smtp.office365.com"
+        ],
+        "username": [
+          "587abdullah.bulc"
+        ],
+        "password": "Abd123ullah",
+        "email": [
+          "587abdullah.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "251692524202790705909175016580818928518",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://www.researchgate.net/signup.SignUpInstitution.html|tasawar@bahria.edu.pk|Tasawar123",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 465].txt",
+        "date": "2026-04-02",
+        "source_domain": [
+          "researchgate.net"
+        ],
+        "username": [
+          "tasawar"
+        ],
+        "password": "Tasawar123",
+        "email": [
+          "tasawar@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "233372663713351112446251617153756701369",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://prp.pern.edu.pk/changepass alichipa.bukc@bahria.edu.pk:@li@123",
+        "channel": "Database.",
+        "file": null,
+        "filename": "url.login.pass_60.txt",
+        "password": "@li@123",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "prp.pern.edu.pk"
+        ],
+        "email": [
+          "alichipa.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "alichipa.bukc"
+        ],
+        "m_index": "stealer_model-000076",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "saqib.saeed@bahria.edu.pk:9NkA6pGh",
+        "channel": "Collection",
+        "file": "123__Collection #2-#5 & Antipublic__Collection #2_New combo cloud_VIP Collection_More Lists__Collection #2_New combo cloud_VIP Collection_More Lists.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "saqib.saeed@bahria.edu.pk"
+        ],
+        "password": "9NkA6pGh",
+        "username": [
+          "saqib.saeed"
+        ],
+        "m_index": "stealer_model-000005",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "masaeed@bahria.edu.pk:alisaeed",
+        "channel": "Collection",
+        "file": "MYR (154)__Collection #2-#5 & Antipublic__ANTIPUBLIC #1__ANTIPUBLIC #1.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "masaeed@bahria.edu.pk"
+        ],
+        "password": "alisaeed",
+        "username": [
+          "masaeed"
+        ],
+        "m_index": "stealer_model-000020",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://id.elsevier.com:02-322222-017@bahria.edu.pk:petarian47",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (8).txt",
+        "password": "petarian47",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "id.elsevier.com"
+        ],
+        "email": [
+          "02-322222-017@bahria.edu.pk"
+        ],
+        "username": [
+          "02-322222-017"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://cms.bahria.edu.pk:hodssisb@bahria.edu.pk:phase8@1979",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (8).txt",
+        "password": "phase8@1979",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cms.bahria.edu.pk"
+        ],
+        "email": [
+          "hodssisb@bahria.edu.pk"
+        ],
+        "username": [
+          "hodssisb"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://cms.bahria.edu.pk/Logins/Staff/Login.aspx:saher.zeast@bahria.edu.pk:shahmeer@25",
+        "channel": "Database.",
+        "file": null,
+        "filename": "url.login.pass_87.txt",
+        "password": "shahmeer@25",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          "{url}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cms.bahria.edu.pk"
+        ],
+        "email": [
+          "saher.zeast@bahria.edu.pk"
+        ],
+        "username": [
+          "saher.zeast"
+        ],
+        "m_index": "stealer_model-000068",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com/common/oauth2/authorize:msajid.bulc@bahria.edu.pk:0246810cba",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (3).txt",
+        "password": "0246810cba",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "msajid.bulc@bahria.edu.pk"
+        ],
+        "username": [
+          "msajid.bulc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://www.codecademy.com/login:nabeel.far@bahria.edu.pk:nabeel123456789",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (4).txt",
+        "password": "nabeel123456789",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.codecademy.com"
+        ],
+        "email": [
+          "nabeel.far@bahria.edu.pk"
+        ],
+        "username": [
+          "nabeel.far"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com/:sabirali.buic@bahria.edu.pk:PASS",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@AhegaoCloud 10KK+LINES.txt",
+        "date": "2026-04-03",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "sabirali.buic"
+        ],
+        "password": "PASS",
+        "email": [
+          "sabirali.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "297793314948765822206114054397841578701",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://login.microsoftonline.com/common/oauth2/authorize:asmaz.buic@bahria.edu.pk:tEmp@789",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "Untitled.txt",
+        "date": "2026-04-03",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "asmaz.buic"
+        ],
+        "password": "tEmp@789",
+        "email": [
+          "asmaz.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "202444896854753189305801930504678139351",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "cms.bahria.edu.pk/logins/staff/login.aspx:externalauditor@bahria.edu.pk:Bahria@147",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#200.txt",
+        "date": "2026-04-03",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "externalauditor"
+        ],
+        "password": "Bahria@147",
+        "email": [
+          "externalauditor@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "89477286035365619939367434197835807768",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://coursera.org/campus-confirmation:alichipa.bukc@bahria.edu.pk:Sodium@786",
+        "channel": "darkside linklogs",
+        "file": null,
+        "file_name": "mansory (6).txt",
+        "date": "2026-03-03",
+        "source_domain": [
+          "coursera.org"
+        ],
+        "username": [
+          "alichipa.bukc"
+        ],
+        "password": "Sodium@786",
+        "email": [
+          "alichipa.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "252459678255806059810432558770925200078",
+        "m_index": "stealer_model-000187",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://login.microsoftonline.com/common/oauth2/authorize:saher.zeast@bahria.edu.pk:dntmid@769",
+        "channel": "Database.",
+        "file": null,
+        "filename": "url.login.pass_70.txt",
+        "password": "dntmid@769",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "saher.zeast@bahria.edu.pk"
+        ],
+        "username": [
+          "saher.zeast"
+        ],
+        "m_index": "stealer_model-000073",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com/common/login:vjf53@bahria.edu.pk:hWu@784",
+        "channel": "Darkside hub",
+        "file": null,
+        "file_name": "mansory (4).txt",
+        "date": "2026-03-03",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "vjf53"
+        ],
+        "password": "hWu@784",
+        "email": [
+          "vjf53@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "61755687955215643486492853521509187177",
+        "m_index": "stealer_model-000187",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "bashirahmad.bukc@bahria.edu.pk:bash",
+        "channel": "Collection",
+        "file": "ZABUGOR 15.12.2018__Collection #2-#5 & Antipublic__Collection #2_New combo cloud_UPDATES_Update 19 12 2018__Collection #2_New combo cloud_UPDATES_Update 19 12 2018.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "bashirahmad.bukc@bahria.edu.pk"
+        ],
+        "password": "bash",
+        "username": [
+          "bashirahmad.bukc"
+        ],
+        "m_index": "stealer_model-000011",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "cms.bahria.edu.pk/Logins/Staff/Login.aspx:mssc.h11@bahria.edu.pk:Password@111",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#191.txt",
+        "date": "2026-03-27",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "mssc.h11"
+        ],
+        "password": "Password@111",
+        "email": [
+          "mssc.h11@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "323420398910190784878161920713764918448",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://yayvo.com/customer/account/login/:hammad.buic@bahria.edu.pk:firdoos133",
+        "channel": "Database.",
+        "file": null,
+        "filename": "url.login.pass_24.txt",
+        "password": "firdoos133",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "yayvo.com"
+        ],
+        "email": [
+          "hammad.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "hammad.buic"
+        ],
+        "m_index": "stealer_model-000085",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "email.bahria.edu.pk/owa/auth/logon.aspx:director.bulc@bahria.edu.pk:123456",
+        "channel": "Darkside hub",
+        "file": null,
+        "file_name": "mansory (2).txt",
+        "date": "2026-03-03",
+        "source_domain": [
+          "email.bahria.edu.pk"
+        ],
+        "username": [
+          "director.bulc"
+        ],
+        "password": "123456",
+        "email": [
+          "director.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "99261161393301753255249868633949887179",
+        "m_index": "stealer_model-000187",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize:fouzia.buic@bahria.edu.pk:Fouzia@786",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10612).txt",
+        "password": "Fouzia@786",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "fouzia.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "fouzia.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "cms.bahria.edu.pk/Logins/Staff/Login.aspx:amsfc.h11@bahria.edu.pk:Bahria@786$",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#191.txt",
+        "date": "2026-03-27",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "amsfc.h11"
+        ],
+        "password": "Bahria@786$",
+        "email": [
+          "amsfc.h11@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "334573264256438033430368751659249177993",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://www.applyweb.com:mirfan.bukc@bahria.edu.pk:gujjar321",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (3).txt",
+        "password": "gujjar321",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.applyweb.com"
+        ],
+        "email": [
+          "mirfan.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "mirfan.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://login.live.com/login.srf:04-444444-005@bahria.edu.pk:hesoyam4444",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#199.txt",
+        "date": "2026-04-04",
+        "source_domain": [
+          "login.live.com"
+        ],
+        "username": [
+          "04-444444-005"
+        ],
+        "password": "hesoyam4444",
+        "email": [
+          "04-444444-005@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "216835089880123251124160752678259875846",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://rfid.bahria.edu.pk/:sne.bumdc@bahria.edu.pk:bumdc0123",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10559).txt",
+        "password": "bumdc0123",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "rfid.bahria.edu.pk"
+        ],
+        "email": [
+          "sne.bumdc@bahria.edu.pk"
+        ],
+        "username": [
+          "sne.bumdc"
+        ],
+        "m_index": "stealer_model-000111",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "http://www.researchgate.net/signup.signup.html:haris.bukc@bahria.edu.pk:army309army",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10616).txt",
+        "password": "army309army",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.researchgate.net"
+        ],
+        "email": [
+          "haris.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "haris.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "login.microsoftonline.com/common/login:sfc.bukc@bahria.edu.pk:786Maleehali",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10552).txt",
+        "password": "786Maleehali",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{domain}",
+          "{email}",
+          null
+        ],
+        "email": [
+          "sfc.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "sfc.bukc"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000112",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://symaccount.symantec.com:muhammad.imran@bahria.edu.pk:Pass-100",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10620).txt",
+        "password": "Pass-100",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "symaccount.symantec.com"
+        ],
+        "email": [
+          "muhammad.imran@bahria.edu.pk"
+        ],
+        "username": [
+          "muhammad.imran"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://pcp.pern.edu.pk:po.bulc@bahria.edu.pk:po.bulc@123",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10620).txt",
+        "password": "po.bulc@123",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "pcp.pern.edu.pk"
+        ],
+        "email": [
+          "po.bulc@bahria.edu.pk"
+        ],
+        "username": [
+          "po.bulc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://www.facebook.com/login/:ahmedhussain.bukc@bahria.edu.pk:ahmed@123",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#200.txt",
+        "date": "2026-04-04",
+        "source_domain": [
+          "facebook.com"
+        ],
+        "username": [
+          "ahmedhussain.bukc"
+        ],
+        "password": "ahmed@123",
+        "email": [
+          "ahmedhussain.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "32184612819010792575628475130124479775",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "bahria.edu.pk@bahria.edu.pk;safia351355",
+        "channel": "Collection",
+        "file": "272__Collection #2-#5 & Antipublic__Collection #5_EU combos__Collection #5_EU combos.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "bahria.edu.pk@bahria.edu.pk"
+        ],
+        "password": "safia351355",
+        "username": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000084",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://www.researchgate.net:03134172039@bahria.edu.pk:umairbaig39@",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10620).txt",
+        "password": "umairbaig39@",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.researchgate.net"
+        ],
+        "email": [
+          "03134172039@bahria.edu.pk"
+        ],
+        "username": [
+          "03134172039"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://pakistan.leaderinme.net/admin/240825/users/new:munazabibi.bukc@bahria.edu.pk:tariq1971",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#200.txt",
+        "date": "2026-04-04",
+        "source_domain": [
+          "pakistan.leaderinme.net"
+        ],
+        "username": [
+          "munazabibi.bukc"
+        ],
+        "password": "tariq1971",
+        "email": [
+          "munazabibi.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "223839353253250799937972724782626423401",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com:imtiaz.bumdc@bahria.edu.pk:bahria@123",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10616).txt",
+        "password": "bahria@123",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "imtiaz.bumdc@bahria.edu.pk"
+        ],
+        "username": [
+          "imtiaz.bumdc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "bahria.edu.pk/wp-login.php:02-248282-068:MSms897=",
+        "channel": "Darkside hub",
+        "file": null,
+        "file_name": "mansory (1).txt",
+        "date": "2026-03-03",
+        "source_domain": [
+          "bahria.edu.pk"
+        ],
+        "username": [
+          "02-248282-068"
+        ],
+        "password": "MSms897=",
+        "m_hash": "53742505876976295362220831105839268881",
+        "m_index": "stealer_model-000187",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://orcid.org:engr.m.hussain.bukc@bahria.edu.pk:d919117o",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#199.txt",
+        "date": "2026-04-04",
+        "source_domain": [
+          "orcid.org"
+        ],
+        "username": [
+          "engr.m.hussain.bukc"
+        ],
+        "password": "d919117o",
+        "email": [
+          "engr.m.hussain.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "204856489838428061799022377993316275905",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://ccs.login.microsoftonline.com:asifaziz.bukc@bahria.edu.pk:aziz456",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10620).txt",
+        "password": "aziz456",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "ccs.login.microsoftonline.com"
+        ],
+        "email": [
+          "asifaziz.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "asifaziz.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://172.16.0.9/:dda.buic@bahria.edu.pk:Time5617@#$%",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10557).txt",
+        "password": "Time5617@#$%",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "ip": [
+          "172.16.0.9"
+        ],
+        "email": [
+          "dda.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "dda.buic"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "ldc1@bahria.edu.pk:islamabad",
+        "channel": "Collection",
+        "file": null,
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "ldc1@bahria.edu.pk"
+        ],
+        "password": "islamabad",
+        "username": [
+          "ldc1"
+        ],
+        "m_index": "stealer_model-000111",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://oas.cs.uni-saarland.de/SubmitLOR.php:azmatkhan.bukc@bahria.edu.pk:6435dm",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10579).txt",
+        "password": "6435dm",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "oas.cs.uni-saarland.de"
+        ],
+        "email": [
+          "azmatkhan.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "azmatkhan.bukc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://bahria.edu.pk/libraries/:01-132232-030:9879357IbIb@",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10579).txt",
+        "password": "9879357IbIb@",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "username": [
+          "01-132232-030"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://cgifederal.secure.force.com:saher.zeast@bahria.edu.pk:Shahmeer@25",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10559).txt",
+        "password": "Shahmeer@25",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cgifederal.secure.force.com"
+        ],
+        "email": [
+          "saher.zeast@bahria.edu.pk"
+        ],
+        "username": [
+          "saher.zeast"
+        ],
+        "m_index": "stealer_model-000111",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://app.brand24.com/user/register-account/:hqadeer.buic@bahria.edu.pk:Rango@123",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10625).txt",
+        "password": "Rango@123",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "app.brand24.com",
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "hqadeer.buic@bahria.edu.pk"
+        ],
+        "username": [
+          "hqadeer.buic"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://login.microsoftonline.com/common/oauth2/authorize:hassan.buic@bahria.edu.pk:@alpha&&&*10",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#189.txt",
+        "date": "2026-03-27",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "hassan.buic"
+        ],
+        "password": "@alpha&&&*10",
+        "email": [
+          "hassan.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "127227990580106018948265342800029759591",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "us.zoom.videomeetings/:nayab.bulc@bahria.edu.pk:Mango2019",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10611).txt",
+        "password": "Mango2019",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{domain}",
+          "{email}"
+        ],
+        "email": [
+          "nayab.bulc@bahria.edu.pk"
+        ],
+        "username": [
+          "nayab.bulc"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "mirfan.bukc@bahria.edu.pk:irfan@123",
+        "channel": "darkside linklogs",
+        "file": null,
+        "file_name": "mansory (6).txt",
+        "date": "2026-03-30",
+        "email": [
+          "mirfan.bukc@bahria.edu.pk"
+        ],
+        "password": "irfan@123",
+        "username": [
+          "mirfan.bukc"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "227891819667221933939666053646292449446",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.microsoftonline.com/common/oauth8/authorize:asjad.bulc@bahria.edu.pk:bahria@789",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10629).txt",
+        "password": "bahria@789",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "email": [
+          "asjad.bulc@bahria.edu.pk"
+        ],
+        "username": [
+          "asjad.bulc"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://login.microsoftonline.com/:adp.bukc@bahria.edu.pk:A@proj321",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#199.txt",
+        "date": "2026-04-04",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "adp.bukc"
+        ],
+        "password": "A@proj321",
+        "email": [
+          "adp.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "85289589874801132902915914549648608897",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://login.live.com/login.srf:01-131222-005@bahria.edu.pk:hesoyam1234",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10631).txt",
+        "password": "hesoyam1234",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.live.com"
+        ],
+        "email": [
+          "01-131222-005@bahria.edu.pk"
+        ],
+        "username": [
+          "01-131222-005"
+        ],
+        "m_index": "stealer_model-000113",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://ccs.login.microsoftonline.com/ccs/common/oauth2/authorize:po.bulc@bahria.edu.pk:po.bulc@123",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#199.txt",
+        "date": "2026-04-04",
+        "source_domain": [
+          "ccs.login.microsoftonline.com"
+        ],
+        "username": [
+          "po.bulc"
+        ],
+        "password": "po.bulc@123",
+        "email": [
+          "po.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "122312798143650250298647175709646588968",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://pcp.pern.edu.pk/:saqlain.vfm.bukc@bahria.edu.pk:saqlain@567",
+        "channel": "darkside linklogs",
+        "file": null,
+        "file_name": "mansory (5).txt",
+        "date": "2026-03-30",
+        "source_domain": [
+          "pcp.pern.edu.pk"
+        ],
+        "username": [
+          "saqlain.vfm.bukc"
+        ],
+        "password": "saqlain@567",
+        "email": [
+          "saqlain.vfm.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "29718087898884601166877038596204190440",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "drraheel.bukc@bahria.edu.pk:abc1234",
+        "channel": "darkside linklogs",
+        "file": null,
+        "file_name": "mansory (6).txt",
+        "date": "2026-03-30",
+        "email": [
+          "drraheel.bukc@bahria.edu.pk"
+        ],
+        "password": "abc1234",
+        "username": [
+          "drraheel.bukc"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "50647028668706392233005506439283417191",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://www.turnitin.com/login_page.asp:jafar.buic@bahria.edu.pk:H@nn@2803!984",
+        "channel": "darkside linklogs",
+        "file": null,
+        "file_name": "mansory (5).txt",
+        "date": "2026-03-30",
+        "source_domain": [
+          "turnitin.com"
+        ],
+        "username": [
+          "jafar.buic"
+        ],
+        "password": "H@nn@2803!984",
+        "email": [
+          "jafar.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "299075861187481219569835487457331675054",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://cms.bahria.edu.pk/logins/executive/login.aspx:tahir.iqbal@bahria.edu.pk:45oHkNMA",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10560).txt",
+        "password": "45oHkNMA",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null,
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cms.bahria.edu.pk"
+        ],
+        "email": [
+          "tahir.iqbal@bahria.edu.pk"
+        ],
+        "username": [
+          "tahir.iqbal"
+        ],
+        "m_index": "stealer_model-000109",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://www.turnitin.com:tanveertaj@bahria.edu.pk:abcd@1234",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#198.txt",
+        "date": "2026-04-04",
+        "source_domain": [
+          "turnitin.com"
+        ],
+        "username": [
+          "tanveertaj"
+        ],
+        "password": "abcd@1234",
+        "email": [
+          "tanveertaj@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "34358232582833490410787208243123083920",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://www.turnitin.com/login_page.asp:mehsan.bulc@bahria.edu.pk:ainoor12",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#198.txt",
+        "date": "2026-04-04",
+        "source_domain": [
+          "turnitin.com"
+        ],
+        "username": [
+          "mehsan.bulc"
+        ],
+        "password": "ainoor12",
+        "email": [
+          "mehsan.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "97249526578044548952414484701543537483",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "cms.bahria.edu.pk/Logins/Staff/Login.aspx:managerssc.bukc@bahria.edu.pk:Daniyal_321",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#198.txt",
+        "date": "2026-04-04",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "managerssc.bukc"
+        ],
+        "password": "Daniyal_321",
+        "email": [
+          "managerssc.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "17570046440686114945472378842584729366",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://www.applyweb.com/forms/lor/login assad@bahria.edu.pk:Ass@dIqbal1234",
+        "channel": "darkside linklogs",
+        "file": null,
+        "file_name": "mansory (8).txt",
+        "date": "2026-03-30",
+        "source_domain": [
+          "applyweb.com"
+        ],
+        "username": [
+          "assad"
+        ],
+        "password": "Ass@dIqbal1234",
+        "email": [
+          "assad@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "193247997977000080230792753323187715632",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com/common/oauth2/authorize:pa.registrar@bahria.edu.pk:782162asdf",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#198.txt",
+        "date": "2026-04-04",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "pa.registrar"
+        ],
+        "password": "782162asdf",
+        "email": [
+          "pa.registrar@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "144815724667926407192639532105083913543",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://login.microsoftonline.com:iqra.vfm.bulc@bahria.edu.pk:allah786",
+        "channel": "Darkside hub",
+        "file": null,
+        "file_name": "mansory (4).txt",
+        "date": "2026-03-13",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "iqra.vfm.bulc"
+        ],
+        "password": "allah786",
+        "email": [
+          "iqra.vfm.bulc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "272537570513146352930165955810477620932",
+        "m_index": "stealer_model-000187",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "cms.bahria.edu.pk/Logins/Executive/Login.aspx:dg.bukc@bahria.edu.pk:Dgbukc@321",
+        "channel": "darkside linklogs",
+        "file": null,
+        "file_name": "mansory (5).txt",
+        "date": "2026-03-31",
+        "source_domain": [
+          "cms.bahria.edu.pk"
+        ],
+        "username": [
+          "dg.bukc"
+        ],
+        "password": "Dgbukc@321",
+        "email": [
+          "dg.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "251489807953648759169013138553890045583",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "corp.sehatkahani.com/:mshafiq.bukc@bahria.edu.pk:shafiq786",
+        "channel": "darkside linklogs",
+        "file": null,
+        "file_name": "mansory (5).txt",
+        "date": "2026-03-31",
+        "source_domain": [
+          "corp.sehatkahani.com"
+        ],
+        "username": [
+          "mshafiq.bukc"
+        ],
+        "password": "shafiq786",
+        "email": [
+          "mshafiq.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "241366217186688720814745697127971907763",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "corp.sehatkahani.com/:tariqsaeed.bukc@bahria.edu.pk:R0shan@Y",
+        "channel": "darkside linklogs",
+        "file": null,
+        "file_name": "mansory (5).txt",
+        "date": "2026-03-31",
+        "source_domain": [
+          "corp.sehatkahani.com"
+        ],
+        "username": [
+          "tariqsaeed.bukc"
+        ],
+        "password": "R0shan@Y",
+        "email": [
+          "tariqsaeed.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "315284517264451982949863090415264017356",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com/common/login:sfc.bukc@bahria.edu.pk:786Maleeha\"li",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#198.txt",
+        "date": "2026-04-04",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "sfc.bukc"
+        ],
+        "password": "786Maleeha\"li",
+        "email": [
+          "sfc.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "204136624841425088413124162106044505638",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://login.microsoftonline.com/common/login:fypbscs.buic@bahria.edu.pk:temp@789",
+        "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+        "file": null,
+        "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#198.txt",
+        "date": "2026-04-04",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "fypbscs.buic"
+        ],
+        "password": "temp@789",
+        "email": [
+          "fypbscs.buic@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "78629866597870481716903873164561905315",
+        "m_index": "stealer_model-000190",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "login.microsoftonline.com/common/oauth2/authorize:asifaziz.bukc@bahria.edu.pk:aziz456",
+        "channel": "darkside linklogs",
+        "file": null,
+        "file_name": "mansory (7).txt",
+        "date": "2026-03-31",
+        "source_domain": [
+          "login.microsoftonline.com"
+        ],
+        "username": [
+          "asifaziz.bukc"
+        ],
+        "password": "aziz456",
+        "email": [
+          "asifaziz.bukc@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "339647499254812000239545644849065433315",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "cgifederal.secure.force.com:saher.zeast@bahria.edu.pk:Shahmeer@25",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10553).txt",
+        "password": "Shahmeer@25",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{domain}",
+          "{email}",
+          null
+        ],
+        "email": [
+          "saher.zeast@bahria.edu.pk"
+        ],
+        "username": [
+          "saher.zeast"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_index": "stealer_model-000029",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "combo",
+        "raw": "https://researchgate.net:registrar@bahria.edu.pk:rana.tajmal19@gmail.com",
+        "channel": "darkside linklogs",
+        "file": null,
+        "file_name": "mansory (7).txt",
+        "date": "2026-03-31",
+        "source_domain": [
+          "researchgate.net"
+        ],
+        "username": [
+          "registrar"
+        ],
+        "password": "rana.tajmal19@gmail.com",
+        "email": [
+          "registrar@bahria.edu.pk"
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "m_hash": "301826805874418779897121391877698612949",
+        "m_index": "stealer_model-000189",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://access.publons.com:nayab.bulc@bahria.edu.pk:Mango2020@",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (13).txt",
+        "password": "Mango2020@",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "access.publons.com",
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "nayab.bulc@bahria.edu.pk"
+        ],
+        "username": [
+          "nayab.bulc"
+        ],
+        "m_index": "stealer_model-000051",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "faftab@bahria.edu.pk;brother12",
+        "channel": "Collection",
+        "file": "1711__Collection #2-#5 & Antipublic__Collection #4_EU COMBOS_Разбитая база 03 11 02-46-50__Collection #4_EU COMBOS_Разбитая база 03 11 02-46-50.txt",
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "email": [
+          "faftab@bahria.edu.pk"
+        ],
+        "password": "brother12",
+        "username": [
+          "faftab"
+        ],
+        "m_index": "stealer_model-000005",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://www.turnitin.com/login_page.asp tanveertaj@bahria.edu.pk:abcd@1234",
+        "channel": "Database.",
+        "file": null,
+        "filename": "url.login.pass_11.txt",
+        "password": "abcd@1234",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.turnitin.com"
+        ],
+        "email": [
+          "tanveertaj@bahria.edu.pk"
+        ],
+        "username": [
+          "tanveertaj"
+        ],
+        "m_index": "stealer_model-000088",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://cms.bahria.edu.pk/logins/executive/login.aspx tahir.iqbal@bahria.edu.pk:45oHkNMA",
+        "channel": "Database.",
+        "file": null,
+        "filename": "url.login.pass_92.txt",
+        "password": "45oHkNMA",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "cms.bahria.edu.pk"
+        ],
+        "email": [
+          "tahir.iqbal@bahria.edu.pk"
+        ],
+        "username": [
+          "tahir.iqbal"
+        ],
+        "m_index": "stealer_model-000066",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://www.researchgate.net/signup.SignUp.html 03134172039@bahria.edu.pk:umairbaig39@",
+        "channel": "Database.",
+        "file": null,
+        "filename": "url.login.pass_97.txt",
+        "password": "umairbaig39@",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.researchgate.net"
+        ],
+        "email": [
+          "03134172039@bahria.edu.pk"
+        ],
+        "username": [
+          "03134172039"
+        ],
+        "m_index": "stealer_model-000065",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "vjf53@bahria.edu.pk:hWu@784:https://login.microsoftonline.com/common/login",
+        "channel": "Database.",
+        "file": null,
+        "filename": "url.login.pass_86.txt",
+        "password": "https://login.microsoftonline.com/common/login",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{email}",
+          null,
+          "{url}",
+          null
+        ],
+        "email": [
+          "vjf53@bahria.edu.pk"
+        ],
+        "username": [
+          "vjf53"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "login.microsoftonline.com"
+        ],
+        "m_index": "stealer_model-000069",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://rfid.bahria.edu.pk/:bilalkhan.bukc@bahria.edu.pk:itkc@321",
+        "channel": "DARKSIDE REBORN",
+        "file": null,
+        "filename": "Mansory (1).txt",
+        "password": "itkc@321",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "rfid.bahria.edu.pk"
+        ],
+        "email": [
+          "bilalkhan.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "bilalkhan.bukc"
+        ],
+        "m_index": "stealer_model-000047",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://www.researchgate.net/signup.SignUp.html info@bahria.edu.pk:cj4303410",
+        "channel": "Database.",
+        "file": null,
+        "filename": "url.login.pass_78.txt",
+        "password": "cj4303410",
+        "delimiter": [
+          ":",
+          " "
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null,
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.researchgate.net"
+        ],
+        "email": [
+          "info@bahria.edu.pk"
+        ],
+        "username": [
+          "info"
+        ],
+        "m_index": "stealer_model-000071",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://www.coursera.org/campus-confirmation:alichipa.bukc@bahria.edu.pk:Sodium@786",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10566).txt",
+        "password": "Sodium@786",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}"
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.coursera.org"
+        ],
+        "email": [
+          "alichipa.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "alichipa.bukc"
+        ],
+        "m_index": "stealer_model-000108",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "c",
+        "raw": "https://bahria.edu.pk/libraries/:02-134181-133:mamr321&",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10560).txt",
+        "password": "mamr321&",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null,
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk"
+        ],
+        "username": [
+          "02-134181-133"
+        ],
+        "m_index": "stealer_model-000109",
+        "m_sub_host": "/"
+      },
+      {
+        "type": "credential",
+        "raw": "https://www.digiskills.pk/Register.aspx:shagufta.bukc@bahria.edu.pk:yousufshah",
+        "channel": "UNIVERSE CLOUD / txtbases",
+        "file": null,
+        "filename": "@UNIVERSECLOUDTXT(10531).txt",
+        "password": "yousufshah",
+        "delimiter": [
+          ":"
+        ],
+        "mapping": [
+          "{url}",
+          "{email}",
+          null
+        ],
+        "domain": [
+          "bahria.edu.pk",
+          "www.digiskills.pk"
+        ],
+        "email": [
+          "shagufta.bukc@bahria.edu.pk"
+        ],
+        "username": [
+          "shagufta.bukc"
+        ],
+        "m_index": "stealer_model-000037",
+        "m_sub_host": "/"
+      }
+    ],
+    "Suggestions": [],
+    "Page_Count": 1
+  },
+  "rankedResult": {
+    "result": [],
+    "pageCount": 0,
+    "totalHits": 0
+  }
+}

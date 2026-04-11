@@ -3,10 +3,10 @@
   "Trivy": {
     "Version": "0.69.1"
   },
-  "ReportID": "019d7139-6fc2-72c6-ab44-bda827b31afe",
-  "CreatedAt": "2026-04-09T12:51:22.818185495+05:00",
+  "ReportID": "019d7895-832d-7d5f-b324-0de51c959974",
+  "CreatedAt": "2026-04-10T23:09:17.613878481+05:00",
   "ArtifactID": "sha256:1878ec14c6e60f33ac39d6a106435f0621216b742777740406167a4630585c88",
-  "ArtifactName": "/home/muhmmad-abdullah/.cache/darkpulse/trivy_repos/repo_trivy_5etyiaic",
+  "ArtifactName": "/home/muhmmad-abdullah/.cache/darkpulse/trivy_repos/repo_trivy_uxgql85y",
   "ArtifactType": "repository",
   "Metadata": {
     "RepoURL": "https://github.com/juice-shop/juice-shop.git",

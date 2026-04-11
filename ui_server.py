@@ -1,5 +1,6 @@
 import asyncio
 import base64
+import math
 import os
 import pathlib
 import json
@@ -15,9 +16,9 @@ import struct
 from typing import Any, Dict, List, Optional
 from urllib.parse import quote, unquote, urlencode, urlparse
 from uuid import uuid4
-from fastapi import FastAPI, Query, Request, HTTPException, Depends, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Query, Request, HTTPException, Depends, WebSocket, WebSocketDisconnect, UploadFile, File
 import bcrypt
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from jose import JWTError, jwt
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader, HTTPBearer, HTTPAuthorizationCredentials
@@ -40,9 +41,12 @@ news_items_col = db["news_items"]
 
 # Users collection and auth setup
 users_col = db["users"]
+password_reset_requests_col = db["password_reset_requests"]
 intelligence_runs_col = db["intelligence_runs"]
 intelligence_notifications_col = db["dashboard_notifications"]
 automation_state_col = db["automation_state"]
+credential_exposures_col = db["credential_exposures"]
+credential_datasets_col = db["credential_datasets"]
 
 
 INTELLIGENCE_SCAN_SOURCES = {
@@ -97,11 +101,15 @@ SCAN_RECOVERY_GRACE_SECONDS = 10
 SOURCE_HIGHLIGHT_LIMIT = 5
 FEED_CACHE_TTL_SECONDS = 30
 _FEED_ITEMS_CACHE: dict[tuple[str, bool], tuple[float, list[dict]]] = {}
+MAP_STATS_CACHE_TTL_SECONDS = 120
+_MAP_STATS_CACHE: tuple[float, dict] | None = None
+_MAP_STATS_INFLIGHT: asyncio.Task | None = None
 _TRANSLATION_CACHE: dict[tuple[str, str], str] = {}
 TRANSLATION_BATCH_LIMIT = 100
 TRANSLATION_CHUNK_SIZE = 25
 SEARCH_CANDIDATE_LIMIT = 400
 _healing_monitor_task: asyncio.Task | None = None
+_map_stats_warmup_task: asyncio.Task | None = None
 _SEARCH_STOPWORDS = {
     "a",
     "an",
@@ -182,6 +190,22 @@ def _cache_get_feed_items(key: tuple[str, bool]) -> Optional[list[dict]]:
 def _cache_set_feed_items(key: tuple[str, bool], items: list[dict]) -> list[dict]:
     _FEED_ITEMS_CACHE[key] = (time.monotonic(), items)
     return items
+
+
+def _cache_get_map_stats() -> Optional[dict]:
+    cached = _MAP_STATS_CACHE
+    if not cached:
+        return None
+    cached_at, payload = cached
+    if time.monotonic() - cached_at > MAP_STATS_CACHE_TTL_SECONDS:
+        return None
+    return payload
+
+
+def _cache_set_map_stats(payload: dict) -> dict:
+    global _MAP_STATS_CACHE
+    _MAP_STATS_CACHE = (time.monotonic(), payload)
+    return payload
 
 
 def _normalize_search_text(value: Any) -> str:
@@ -275,7 +299,9 @@ def _build_mongo_text_search(query: str, fields: list[str]) -> dict:
 
 
 def _clear_feed_cache() -> None:
+    global _MAP_STATS_CACHE
     _FEED_ITEMS_CACHE.clear()
+    _MAP_STATS_CACHE = None
 
 
 def _chunk_list(values: list[str], size: int) -> list[list[str]]:
@@ -1447,9 +1473,25 @@ async def startup_healing_monitor():
         _healing_monitor_task = asyncio.create_task(_healing_monitor_loop())
 
 
+async def _warm_map_stats_cache() -> None:
+    await asyncio.sleep(1)
+    try:
+        await get_map_stats()
+        log.info("Map stats cache warmed on startup.")
+    except Exception as exc:
+        log.error(f"Map stats warmup failed: {exc}", exc_info=True)
+
+
+@app.on_event("startup")
+async def startup_warm_map_stats():
+    global _map_stats_warmup_task
+    if _map_stats_warmup_task is None or _map_stats_warmup_task.done():
+        _map_stats_warmup_task = asyncio.create_task(_warm_map_stats_cache())
+
+
 @app.on_event("shutdown")
 async def shutdown_healing_monitor():
-    global _healing_monitor_task
+    global _healing_monitor_task, _map_stats_warmup_task
     if _healing_monitor_task and not _healing_monitor_task.done():
         _healing_monitor_task.cancel()
         try:
@@ -1457,10 +1499,20 @@ async def shutdown_healing_monitor():
         except asyncio.CancelledError:
             pass
     _healing_monitor_task = None
+    if _map_stats_warmup_task and not _map_stats_warmup_task.done():
+        _map_stats_warmup_task.cancel()
+        try:
+            await _map_stats_warmup_task
+        except asyncio.CancelledError:
+            pass
+    _map_stats_warmup_task = None
 
 
 # ---------- Static file serving ----------
 _STATIC_DIR = pathlib.Path(__file__).resolve().parent
+_ASSETS_DIR = _STATIC_DIR / "assets"
+if _ASSETS_DIR.exists():
+    app.mount("/assets", StaticFiles(directory=str(_ASSETS_DIR)), name="assets")
 
 # ---------- API endpoints ----------
 @app.get("/")
@@ -1875,6 +1927,44 @@ async def register(request: Request):
     return {"status": "ok", "message": "Registration successful. Please wait for admin approval."}
 
 
+@app.post("/auth/password-reset-request")
+async def password_reset_request(request: Request):
+    body = await request.json()
+    identity = (body.get("identity") or "").strip()
+    message = (body.get("message") or "").strip()
+
+    if not identity:
+        raise HTTPException(status_code=400, detail="Username or email is required")
+
+    user = await users_col.find_one(
+        {
+            "$or": [
+                {"username": identity},
+                {"email": identity},
+            ]
+        },
+        {"password": 0},
+    )
+
+    if user:
+        await password_reset_requests_col.insert_one(
+            {
+                "username": user.get("username"),
+                "email": user.get("email"),
+                "name": user.get("name") or user.get("username"),
+                "identity": identity,
+                "message": message,
+                "status": "pending",
+                "created_at": datetime.utcnow().isoformat(),
+            }
+        )
+
+    return {
+        "status": "ok",
+        "message": "Reset request recorded. If the account exists, an administrator can now review the recovery request.",
+    }
+
+
 @app.get("/auth/2fa/status")
 async def two_factor_status(current_user: dict = Depends(get_current_user)):
     return _two_factor_payload(current_user)
@@ -1945,6 +2035,39 @@ async def list_users():
     return {"users": users}
 
 
+@app.get("/admin/password-reset-requests", dependencies=[Depends(admin_required)])
+async def list_password_reset_requests():
+    cursor = password_reset_requests_col.find({}).sort("created_at", -1)
+    requests = await cursor.to_list(length=200)
+    for item in requests:
+        if "_id" in item:
+            item["_id"] = str(item["_id"])
+    return {"requests": requests}
+
+
+@app.post("/admin/password-reset-requests/{request_id}/resolve", dependencies=[Depends(admin_required)])
+async def resolve_password_reset_request(request_id: str):
+    from bson import ObjectId
+
+    try:
+        object_id = ObjectId(request_id)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="Invalid request id") from exc
+
+    result = await password_reset_requests_col.update_one(
+        {"_id": object_id},
+        {
+            "$set": {
+                "status": "reviewed",
+                "reviewed_at": datetime.utcnow().isoformat(),
+            }
+        },
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Recovery request not found")
+    return {"status": "ok", "message": "Recovery request marked as reviewed"}
+
+
 @app.post("/admin/users/{username}/approve", dependencies=[Depends(admin_required)])
 async def approve_user(username: str):
     result = await users_col.update_one({"username": username}, {"$set": {"status": "approved"}})
@@ -2000,11 +2123,13 @@ async def admin_create_user(request: Request):
     await users_col.insert_one(user_doc)
     return {"status": "ok", "message": "User created successfully"}
 
-@app.get("/stats/map")
-async def get_map_stats():
-    """Return country impact data for leaks and defacement items."""
-    leak_items = sorted(await _fetch_threat_items("leak"), key=_feed_sort_key, reverse=True)
-    defacement_items = sorted(await _fetch_threat_items("defacement"), key=_feed_sort_key, reverse=True)
+async def _build_map_stats_payload() -> dict:
+    leak_items, defacement_items = await asyncio.gather(
+        _fetch_threat_items("leak"),
+        _fetch_threat_items("defacement"),
+    )
+    leak_items = sorted(leak_items, key=_feed_sort_key, reverse=True)
+    defacement_items = sorted(defacement_items, key=_feed_sort_key, reverse=True)
 
     bucket: Dict[str, Dict[str, Any]] = {}
 
@@ -2069,6 +2194,24 @@ async def get_map_stats():
             "updated_at": _utcnow_iso(),
         },
     }
+
+
+@app.get("/stats/map")
+async def get_map_stats():
+    """Return country impact data for leaks and defacement items."""
+    global _MAP_STATS_INFLIGHT
+    cached = _cache_get_map_stats()
+    if cached is not None:
+        return cached
+    if _MAP_STATS_INFLIGHT and not _MAP_STATS_INFLIGHT.done():
+        return await _MAP_STATS_INFLIGHT
+    _MAP_STATS_INFLIGHT = asyncio.create_task(_build_map_stats_payload())
+    try:
+        payload = await _MAP_STATS_INFLIGHT
+        return _cache_set_map_stats(payload)
+    finally:
+        if _MAP_STATS_INFLIGHT and _MAP_STATS_INFLIGHT.done():
+            _MAP_STATS_INFLIGHT = None
 
 
 # ── Collection holding raw crawl data (Redis-style KV) ──────────────────────
@@ -2751,6 +2894,126 @@ def _filter_feed_items(items: list[dict], query: str) -> list[dict]:
     return [item for _, item in scored]
 
 
+def _parse_feed_filter_date(value: str) -> date | None:
+    text = (value or "").strip()
+    if not text:
+        return None
+    try:
+        if re.match(r"^\d{4}-\d{2}-\d{2}$", text):
+            return datetime.strptime(text, "%Y-%m-%d").date()
+        if text.endswith("Z"):
+            text = text[:-1] + "+00:00"
+        return datetime.fromisoformat(text).date()
+    except Exception:
+        return None
+
+
+def _item_effective_date(item: dict) -> date | None:
+    for field in ("date", "scraped_at", "published_at", "attack_date", "discovered_at", "collected_at", "created_at"):
+        parsed = _parse_feed_filter_date(str(item.get(field) or ""))
+        if parsed:
+            return parsed
+    return None
+
+
+def _apply_feed_filters(
+    items: list[dict],
+    topic: str = "",
+    start_date: str = "",
+    end_date: str = "",
+) -> list[dict]:
+    normalized_topic = _normalize_search_text(topic)
+    start_bound = _parse_feed_filter_date(start_date)
+    end_bound = _parse_feed_filter_date(end_date)
+
+    if not normalized_topic and not start_bound and not end_bound:
+        return items
+
+    filtered: list[dict] = []
+    for item in items:
+        if normalized_topic:
+            haystack = _compose_search_blob(
+                item.get("title"),
+                item.get("description"),
+                item.get("summary"),
+                item.get("top_tag"),
+                item.get("source_type"),
+                item.get("categories"),
+                item.get("entities"),
+                item.get("attacker"),
+                item.get("team"),
+                item.get("source"),
+            )
+            if normalized_topic not in haystack:
+                continue
+
+        effective_date = _item_effective_date(item)
+        if start_bound and (not effective_date or effective_date < start_bound):
+            continue
+        if end_bound and (not effective_date or effective_date > end_bound):
+            continue
+
+        filtered.append(item)
+
+    return filtered
+
+
+def _build_ai_summary(item: dict) -> str:
+    source_label = (
+        _clean_text(item.get("source_label"))
+        or _clean_text(item.get("source_site"))
+        or _clean_text(item.get("source"))
+        or "the monitored source"
+    )
+    source_type = (_clean_text(item.get("source_type")) or "intelligence").replace("_", " ")
+    topic_labels = [
+        _clean_text(category.get("label"))
+        for category in (item.get("categories") or [])
+        if isinstance(category, dict) and _clean_text(category.get("label"))
+    ]
+    topic_labels = list(dict.fromkeys(topic_labels))
+    entity_labels = [
+        _clean_text(entity.get("text"))
+        for entity in (item.get("entities") or [])
+        if isinstance(entity, dict) and _clean_text(entity.get("text"))
+    ]
+    entity_labels = list(dict.fromkeys(entity_labels))
+    geography = ", ".join((item.get("country_names") or [])[:2])
+    base_summary = (
+        _meaningful_description(item.get("summary"))
+        or _meaningful_description(item.get("description"))
+        or _clean_text(item.get("title"))
+        or "No summary is available for this record."
+    )
+    base_summary = _excerpt_text(base_summary) or base_summary
+    if base_summary and not re.search(r"[.!?]$", base_summary):
+        base_summary = f"{base_summary}."
+
+    if topic_labels:
+        topic_line = f"This {source_type} item from {source_label} focuses on {', '.join(topic_labels[:3])}."
+    else:
+        topic_line = f"This {source_type} item from {source_label} highlights the reported activity."
+
+    context_bits = []
+    if entity_labels:
+        context_bits.append(f"Key entities include {', '.join(entity_labels[:3])}")
+    if geography:
+        context_bits.append(f"geography points to {geography}")
+    if _clean_text(item.get('attacker')):
+        context_bits.append(f"the named attacker is {_clean_text(item.get('attacker'))}")
+    elif _clean_text(item.get('team')):
+        context_bits.append(f"the named team is {_clean_text(item.get('team'))}")
+
+    context_line = ""
+    if context_bits:
+        context_line = " " + context_bits[0][0].upper() + context_bits[0][1:]
+        if len(context_bits) > 1:
+            context_line += "; " + "; ".join(context_bits[1:])
+        context_line += "."
+
+    return f"{topic_line} {base_summary}{context_line}".strip()
+
+
 def _public_feed_item(item: dict) -> dict:
     if "_search_blob" not in item:
         return item
@@ -2832,6 +3095,7 @@ def _build_article_item(doc: dict, include_raw: bool = False) -> dict:
     item["website_host"] = _extract_hostname(item["website"])
     item["country_codes"] = _infer_country_codes(item, raw_doc)
     item["country_names"] = [_COUNTRY_CODE_TO_NAME[code] for code in item["country_codes"]]
+    item["ai_summary"] = _build_ai_summary(item)
     item["_search_blob"] = _compose_search_blob(
         item["title"],
         item["description"],
@@ -3008,6 +3272,7 @@ def _build_threat_item(key: str, data: dict, include_raw: bool = False) -> dict 
     }
     item["country_codes"] = _infer_country_codes(item, data)
     item["country_names"] = [_COUNTRY_CODE_TO_NAME[code] for code in item["country_codes"]]
+    item["ai_summary"] = _build_ai_summary(item)
     item["_search_blob"] = _compose_search_blob(
         item["title"],
         item["description"],
@@ -3302,18 +3567,60 @@ async def get_news(aid: str):
     return {"article": public_item, **public_item}
 
 
+@app.get("/search/semantic")
+async def semantic_search(
+    q: str = Query(..., min_length=2),
+    limit: int = Query(8, ge=1, le=30),
+):
+    query = (q or "").strip()
+    news_items, threat_items = await asyncio.gather(
+        _search_news_items(query, include_raw=False, limit=max(limit * 4, 40)),
+        _search_threat_items(query, include_raw=False, limit=max(limit * 6, 60)),
+    )
+    ranked_items = sorted(
+        _filter_feed_items(news_items + threat_items, query),
+        key=_feed_sort_key,
+        reverse=True,
+    )
+
+    source_counts: dict[str, int] = {}
+    for item in ranked_items[:120]:
+        source_key = _canonical_source_type(item.get("source_type") or "all")
+        source_counts[source_key] = source_counts.get(source_key, 0) + 1
+
+    suggested_view = "all"
+    if source_counts:
+        dominant_source, dominant_count = max(source_counts.items(), key=lambda pair: pair[1])
+        total_matches = sum(source_counts.values())
+        if dominant_source != "all" and dominant_count >= 3 and dominant_count / max(total_matches, 1) >= 0.45:
+            suggested_view = dominant_source
+
+    return {
+        "status": "ok",
+        "query": query,
+        "total": len(ranked_items),
+        "matched_terms": _query_search_terms(query),
+        "suggested_view": suggested_view,
+        "source_counts": source_counts,
+        "top_matches": [_public_feed_item(item) for item in ranked_items[:limit]],
+    }
+
+
 @app.get("/feed")
 async def list_feed(
     limit: int = Query(50, ge=1, le=500),
     offset: int = Query(0, ge=0),
     source_type: str = Query("all"),
     q: str = Query(""),
+    topic: str = Query(""),
+    start_date: str = Query(""),
+    end_date: str = Query(""),
     include_raw: bool = Query(False),
 ):
     canonical = _canonical_source_type(source_type)
 
     if canonical == "news":
-        if not q and not include_raw:
+        if not q and not include_raw and not topic and not start_date and not end_date:
             total, items = await _fetch_news_page(limit, offset)
             return {
                 "total": total,
@@ -3346,6 +3653,7 @@ async def list_feed(
     items = sorted(items, key=_feed_sort_key, reverse=True)
     if q:
         items = _filter_feed_items(items, q)
+    items = _apply_feed_filters(items, topic=topic, start_date=start_date, end_date=end_date)
     return {
         "total": len(items),
         "offset": offset,
@@ -4657,3 +4965,273 @@ async def scan_repo(request: Request):
     except Exception as e:
         log.error(f"Repository scan failed: {e}", exc_info=True)
         return {"status": "error", "message": f"Scan failed: {str(e)}"}
+
+
+async def _sync_credential_datasets(force: bool = False) -> dict[str, Any]:
+    from api_collector.stealer_log_scan import build_documents_from_file, discover_credential_files
+
+    dataset_paths = await asyncio.to_thread(discover_credential_files)
+    dataset_path_strings = {str(path.resolve()) for path in dataset_paths}
+    datasets: list[dict[str, Any]] = []
+    synced_files = 0
+    synced_records = 0
+
+    if dataset_path_strings:
+        stale_meta_cursor = credential_datasets_col.find({"path": {"$nin": list(dataset_path_strings)}})
+        stale_meta = await stale_meta_cursor.to_list(length=None)
+        stale_paths = [item.get("path") for item in stale_meta if item.get("path")]
+        if stale_paths:
+            await credential_datasets_col.delete_many({"path": {"$in": stale_paths}})
+            await credential_exposures_col.delete_many({"dataset_path": {"$in": stale_paths}})
+    else:
+        await credential_datasets_col.delete_many({})
+        await credential_exposures_col.delete_many({})
+
+    for path in dataset_paths:
+        resolved_path = str(path.resolve())
+        stat = path.stat()
+        existing = await credential_datasets_col.find_one({"path": resolved_path})
+
+        should_sync = force or not existing
+        if existing and not force:
+            should_sync = (
+                existing.get("mtime_ns") != stat.st_mtime_ns
+                or existing.get("size_bytes") != stat.st_size
+            )
+
+        if should_sync:
+            docs = await asyncio.to_thread(build_documents_from_file, path)
+            await credential_exposures_col.delete_many({"dataset_path": resolved_path})
+            if docs:
+                await credential_exposures_col.insert_many(docs, ordered=False)
+            synced_files += 1
+            synced_records += len(docs)
+            await credential_datasets_col.update_one(
+                {"path": resolved_path},
+                {"$set": {
+                    "name": path.name,
+                    "path": resolved_path,
+                    "size_bytes": stat.st_size,
+                    "mtime_ns": stat.st_mtime_ns,
+                    "modified_at": datetime.utcfromtimestamp(stat.st_mtime).isoformat() + "Z",
+                    "records_count": len(docs),
+                    "synced_at": datetime.utcnow().isoformat() + "Z",
+                }},
+                upsert=True,
+            )
+
+        meta = await credential_datasets_col.find_one({"path": resolved_path}) or {}
+        datasets.append({
+            "name": meta.get("name", path.name),
+            "path": resolved_path,
+            "size_bytes": meta.get("size_bytes", stat.st_size),
+            "modified_at": meta.get("modified_at", datetime.utcfromtimestamp(stat.st_mtime).isoformat() + "Z"),
+            "records_count": meta.get("records_count", 0),
+            "synced_at": meta.get("synced_at", ""),
+        })
+
+    datasets.sort(key=lambda item: item.get("name", "").lower())
+    return {
+        "datasets": datasets,
+        "files_loaded": len(datasets),
+        "synced_files": synced_files,
+        "synced_records": synced_records,
+    }
+
+
+@app.on_event("startup")
+async def startup_sync_credential_checker() -> None:
+    try:
+        await credential_datasets_col.create_index("path", unique=True)
+        await credential_exposures_col.create_index("ingest_key", unique=True)
+        await credential_exposures_col.create_index("dataset_path")
+
+        summary = await _sync_credential_datasets(force=False)
+        if summary.get("files_loaded", 0):
+            log.info(
+                "Credential checker startup sync loaded %s file(s) and %s new record(s).",
+                summary.get("files_loaded", 0),
+                summary.get("synced_records", 0),
+            )
+        else:
+            log.info("Credential checker startup sync found no saved dataset files.")
+    except Exception as exc:
+        log.error(f"Credential checker startup sync failed: {exc}", exc_info=True)
+
+
+@app.post("/credentials/search")
+async def credential_checker_search(request: Request):
+    """Search Mongo-backed credential exposure records hydrated from local datasets."""
+    body = await request.json()
+    query = str(body.get("query", "")).strip()
+    limit = body.get("limit", 30)
+    page = body.get("page", 1)
+
+    try:
+        limit = int(limit)
+    except (TypeError, ValueError):
+        limit = 30
+
+    try:
+        page = int(page)
+    except (TypeError, ValueError):
+        page = 1
+
+    limit = max(1, min(limit, 100))
+    page = max(1, page)
+
+    if not query:
+        raise HTTPException(status_code=400, detail="Search query is required")
+
+    log.info(f"Credential checker search requested for: {query}")
+
+    try:
+        sync_summary = await _sync_credential_datasets(force=False)
+        datasets = sync_summary.get("datasets", [])
+        if not datasets:
+            return {
+                "status": "ok",
+                "query": query,
+                "count": 0,
+                "results": [],
+                "elapsed_ms": 0,
+                "hosts_count": 0,
+                "files_loaded": 0,
+                "aggregated_count": 0,
+                "datasets": [],
+                "page": page,
+                "per_page": limit,
+                "total_pages": 0,
+                "message": "No stealer-log JSON files are saved on disk yet. Upload them in Credential Checker or place them inside data/credential_checker so they can sync into Mongo.",
+            }
+
+        start = time.perf_counter()
+        terms = [term for term in re.split(r"\s+", query.lower()) if term]
+        mongo_query = {
+            "$and": [
+                {"search_blob": {"$regex": re.escape(term), "$options": "i"}}
+                for term in terms
+            ]
+        }
+        count = await credential_exposures_col.count_documents(mongo_query)
+        projection = {
+            "_id": 0,
+            "domain_host": 1,
+            "credential_identifier": 1,
+            "date": 1,
+            "source_domain": 1,
+            "channel": 1,
+            "year": 1,
+            "file_type": 1,
+            "email_username": 1,
+            "domain": 1,
+            "ip": 1,
+            "password": 1,
+            "password_present": 1,
+            "metadata_tags": 1,
+            "raw_trace": 1,
+            "source_file": 1,
+        }
+        total_pages = math.ceil(count / limit) if count else 0
+        if total_pages:
+            page = min(page, total_pages)
+        skip = (page - 1) * limit
+
+        cursor = credential_exposures_col.find(mongo_query, projection).sort("date", -1).skip(skip).limit(limit)
+        docs = await cursor.to_list(length=limit)
+
+        hosts = {doc.get("domain_host") for doc in docs if doc.get("domain_host") and doc.get("domain_host") != "-"}
+        result = {
+            "status": "ok",
+            "query": query,
+            "count": count,
+            "results": docs,
+            "elapsed_ms": int((time.perf_counter() - start) * 1000),
+            "hosts_count": len(hosts),
+            "files_loaded": sync_summary.get("files_loaded", len(datasets)),
+            "aggregated_count": len(datasets),
+            "datasets": [item.get("name", "") for item in datasets],
+            "page": page,
+            "per_page": limit,
+            "total_pages": total_pages,
+            "message": (
+                f"{count} redacted credential exposure result(s) found."
+                if count
+                else f"No matching exposure records were found for {query}."
+            ),
+        }
+        log.info(
+            "Credential checker complete: %s match(es) across %s file(s) for %s",
+            result.get("count", 0),
+            result.get("files_loaded", 0),
+            query,
+        )
+        return result
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception as exc:
+        log.error(f"Credential checker failed: {exc}", exc_info=True)
+        return {"status": "error", "message": f"Scan failed: {str(exc)}"}
+
+
+@app.get("/credentials/datasets")
+async def credential_checker_datasets():
+    try:
+        summary = await _sync_credential_datasets(force=False)
+        datasets = summary.get("datasets", [])
+        return {
+            "status": "ok",
+            "count": len(datasets),
+            "datasets": datasets,
+            "message": (
+                f"{len(datasets)} backend dataset file(s) are saved on disk and synced to Mongo."
+                if datasets
+                else "No stealer-log JSON files are saved on disk yet, so Mongo has nothing to load."
+            ),
+        }
+    except Exception as exc:
+        log.error(f"Credential dataset listing failed: {exc}", exc_info=True)
+        return {"status": "error", "message": f"Dataset listing failed: {str(exc)}"}
+
+
+@app.post("/credentials/upload")
+async def credential_checker_upload(files: list[UploadFile] = File(...)):
+    if not files:
+        raise HTTPException(status_code=400, detail="At least one file is required")
+
+    try:
+        from api_collector.stealer_log_scan import credential_data_dir
+
+        base_dir = credential_data_dir()
+        saved: list[str] = []
+        allowed_exts = {".json", ".jsonl", ".ndjson"}
+
+        for upload in files:
+            file_name = pathlib.Path(upload.filename or "").name.strip()
+            if not file_name:
+                continue
+
+            suffix = pathlib.Path(file_name).suffix.lower()
+            if suffix not in allowed_exts:
+                raise HTTPException(status_code=400, detail=f"Unsupported file type for {file_name}")
+
+            destination = base_dir / file_name
+            content = await upload.read()
+            destination.write_bytes(content)
+            saved.append(file_name)
+            await upload.close()
+
+        summary = await _sync_credential_datasets(force=True)
+        datasets = summary.get("datasets", [])
+        log.info(f"Credential dataset upload complete: {saved}")
+        return {
+            "status": "ok",
+            "saved": saved,
+            "datasets": datasets,
+            "message": f"Saved {len(saved)} dataset file(s) to disk and synced them to Mongo.",
+        }
+    except HTTPException:
+        raise
+    except Exception as exc:
+        log.error(f"Credential dataset upload failed: {exc}", exc_info=True)
+        return {"status": "error", "message": f"Upload failed: {str(exc)}"}

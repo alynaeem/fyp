@@ -190,13 +190,17 @@ const VIEW_META = {
     title: "Credential Checker",
     subtitle: "Review redacted exposure matches from locally saved stealer-log JSON files."
   },
+  "confidential-data": {
+    title: "Confidential Data",
+    subtitle: "Guarded review for sensitive document evidence with a withheld in-app preview."
+  },
   "admin-users": {
     title: "User Management",
     subtitle: "Approve, reject, and review dashboard access."
   }
 };
 
-const TOOL_VIEWS = ["admin-users", "pakdb", "credential-checker", "seo", "playstore", "software", "repo-scan", "healing", "docs", "account"];
+const TOOL_VIEWS = ["admin-users", "pakdb", "credential-checker", "confidential-data", "seo", "playstore", "software", "repo-scan", "healing", "docs", "account"];
 const FEED_PREFETCH_VIEWS = ["all", "news", "leak", "defacement", "exploit", "social", "api"];
 
 const SMART_UPDATE_SOURCE_LABELS = {
@@ -4254,6 +4258,12 @@ async function switchView(target, options = {}) {
   if (target === "credential-checker") {
     $("viewCredentialChecker").classList.remove("hidden");
     await refreshCredentialDatasets();
+    maybeApplyActiveTranslation("view");
+    return;
+  }
+
+  if (target === "confidential-data") {
+    $("viewConfidentialData").classList.remove("hidden");
     maybeApplyActiveTranslation("view");
     return;
   }

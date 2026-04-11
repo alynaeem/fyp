@@ -13,12 +13,14 @@ import argparse
 import gc
 import json
 import hashlib
+import importlib
 import os
 import signal
 import subprocess
 import sys
 import time
 import traceback
+from pathlib import Path
 from typing import Callable, Optional
 
 import pymongo
@@ -31,6 +33,8 @@ from mongo_persistence import (
 )
 
 log = get_logger("orchestrator")
+
+_LEAK_SCRIPT_DIR = Path(__file__).resolve().parent / "leak_collector" / "scripts" / "leak"
 
 
 def _cleanup_browsers():
@@ -106,6 +110,38 @@ def _persist_model_data(collector_type: str, name: str, model, parsed_data=None)
             kv.update_one({"_id": ekey}, {"$set": {"value": eraw}}, upsert=True)
 
     return {**raw_stats, "legacy_kv": written}
+
+
+def _discover_additional_leak_sources(existing_sources):
+    """Load any leak collectors present on disk that are not manually registered yet.
+
+    This keeps backwards-compatible aliases for the known collectors while ensuring
+    newly dropped-in leak scripts are picked up automatically by the collector
+    scheduler and pushed into MongoDB without further manual wiring.
+    """
+    known_modules = {
+        getattr(cls, "__module__", "").rsplit(".", 1)[-1]
+        for _, cls in existing_sources
+    }
+    discovered = []
+
+    for script_path in sorted(_LEAK_SCRIPT_DIR.glob("_*.py")):
+        module_stem = script_path.stem
+        if module_stem == "__init__" or module_stem in known_modules:
+            continue
+
+        module_name = f"leak_collector.scripts.leak.{module_stem}"
+        try:
+            module = importlib.import_module(module_name)
+            cls = getattr(module, module_stem, None)
+            if cls is None:
+                log.warning(f"  [{module_stem}] skipped: collector class `{module_stem}` not found")
+                continue
+            discovered.append((module_stem.lstrip("_"), cls))
+        except Exception as exc:
+            log.warning(f"  [{module_stem}] skipped during auto-discovery: {exc}")
+
+    return discovered
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -266,6 +302,14 @@ def _run_leaks() -> None:
         ("yzcpwx", _yzcpwxuhbkyjnyn4qsf4o5dkvu6m2fyo7dwizmnlutanlmzlos7pa6qd),
     ]
     leak_sources.extend(optional_leak_sources)
+    auto_discovered_leak_sources = _discover_additional_leak_sources(leak_sources)
+    if auto_discovered_leak_sources:
+        leak_sources.extend(auto_discovered_leak_sources)
+        log.info(
+            "  [leaks] auto-discovered %s additional script(s): %s",
+            len(auto_discovered_leak_sources),
+            ", ".join(name for name, _ in auto_discovered_leak_sources[:20]),
+        )
 
     all_sources = tracking_sources + leak_sources
     for name, cls in all_sources:

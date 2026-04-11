@@ -144,6 +144,19 @@ class RequestParser:
         if not self.model:
             return False
 
+        # 0) legacy leak scrapers often only expose parse_leak_data(page)
+        # and may have an outdated rule_config signature that raises when read.
+        try:
+            has_parse_leak_data = callable(getattr(self.model, "parse_leak_data", None))
+        except Exception:
+            has_parse_leak_data = False
+        try:
+            has_run = callable(getattr(self.model, "run", None))
+        except Exception:
+            has_run = False
+        if has_parse_leak_data and not has_run:
+            return True
+
         # 1) if model explicitly says it needs a browser/page
         for flag in ("needs_playwright", "use_playwright", "needs_browser"):
             try:
@@ -238,12 +251,19 @@ class RequestParser:
         try:
             rule = getattr(self.model, "rule_config", None)
             if rule is None:
-                return False
+                raise RuntimeError("missing rule_config")
             fp = getattr(rule, "m_fetch_proxy", None)
             if fp is None:
-                return False
+                raise RuntimeError("missing fetch proxy")
             return str(fp).upper().endswith("TOR") or getattr(fp, "name", "") == "TOR"
         except Exception:
+            for attr in ("seed_url", "base_url"):
+                try:
+                    value = str(getattr(self.model, attr, "") or "").lower()
+                except Exception:
+                    value = ""
+                if ".onion" in value:
+                    return True
             return False
 
     def _run_with_playwright(self) -> Any:

@@ -7,7 +7,7 @@
   <meta name="description" content="Live DarkPulse intelligence dashboard for leaks, defacement, exploits, and threat reporting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/style.css?v=33" />
+    <link rel="stylesheet" href="/style.css?v=34" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/world.js"></script>
@@ -136,6 +136,13 @@
             <div class="nav-copy">
               <span class="nav-label">Credential Checker</span>
               <span class="nav-meta">Search local stealer-log JSON datasets</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="confidential-data" id="sidebarNavItemConfidentialData">
+            <span class="nav-icon">CD</span>
+            <div class="nav-copy">
+              <span class="nav-label">Confidential Data</span>
+              <span class="nav-meta">Guarded review for sensitive document evidence</span>
             </div>
           </div>
           <div class="nav-item" data-view="seo" id="sidebarNavItemSeo">
@@ -520,6 +527,87 @@
             <div id="credentialDatasetMeta" class="credential-dataset-meta hidden"></div>
             <div id="credentialResults" class="credential-results-container"></div>
             <div id="credentialPagination" class="pagination-shell hidden"></div>
+          </div>
+        </div>
+
+        <div class="view-panel hidden" id="viewConfidentialData">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Restricted Review</p>
+              <h2 class="section-title">Confidential Data</h2>
+            </div>
+          </div>
+          <div class="lookup-shell confidential-shell">
+            <div class="confidential-banner">
+              <div class="confidential-banner-copy">
+                <span class="badge-outline">Sensitive Evidence</span>
+                <h3 class="confidential-banner-title">Guarded identity-document review</h3>
+                <p class="confidential-banner-copytext">This panel keeps confidential-document evidence behind a withheld preview shell. The dashboard shows review context and handling status, but it does not render raw personal ID imagery.</p>
+              </div>
+            </div>
+
+            <div class="confidential-layout">
+              <article class="confidential-card">
+                <div class="confidential-preview-shell">
+                  <div class="confidential-preview-frame" aria-label="Withheld confidential-document preview">
+                    <div class="confidential-doc-mock" aria-hidden="true">
+                      <div class="confidential-doc-header">
+                        <span class="confidential-doc-badge"></span>
+                        <div class="confidential-doc-title-stack">
+                          <span></span>
+                          <span></span>
+                        </div>
+                      </div>
+                      <div class="confidential-doc-body">
+                        <div class="confidential-doc-portrait"></div>
+                        <div class="confidential-doc-lines">
+                          <span class="wide"></span>
+                          <span></span>
+                          <span></span>
+                          <span class="short"></span>
+                          <span class="wide"></span>
+                        </div>
+                      </div>
+                      <div class="confidential-doc-footer">
+                        <span></span>
+                        <span class="wide"></span>
+                        <span class="short"></span>
+                      </div>
+                    </div>
+                    <div class="confidential-preview-overlay">
+                      <span class="confidential-preview-title">Preview Withheld</span>
+                      <span class="confidential-preview-copy">Sensitive government-issued identity details stay blocked inside DarkPulse.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="confidential-card-body">
+                  <div class="confidential-meta-grid">
+                    <div class="fact-item">
+                      <span class="fact-label">Record Type</span>
+                      <span class="fact-value">Government identity document</span>
+                    </div>
+                    <div class="fact-item">
+                      <span class="fact-label">Region</span>
+                      <span class="fact-value">Kuwait</span>
+                    </div>
+                    <div class="fact-item">
+                      <span class="fact-label">Classification</span>
+                      <span class="fact-value">Confidential</span>
+                    </div>
+                    <div class="fact-item">
+                      <span class="fact-label">Display Mode</span>
+                      <span class="fact-value">Withheld preview</span>
+                    </div>
+                  </div>
+
+                  <div class="confidential-notice">
+                    <strong>Handling note</strong>
+                    <p>Use this tab for controlled review status, case metadata, and downstream workflow decisions. Raw passport, civil-ID, and other personal-document imagery is not rendered directly in the dashboard.</p>
+                  </div>
+                </div>
+              </article>
+            </div>
           </div>
         </div>
 
@@ -1002,6 +1090,7 @@
                 <p>DarkPulse includes multiple scanner workflows alongside the core intelligence feeds.</p>
                 <div class="docs-grid">
                   <div class="docs-card"><strong>Credential Checker</strong><p>Searches local stealer-log JSON files and shows redacted exposure matches, source files, dates, and host context.</p></div>
+                  <div class="docs-card"><strong>Confidential Data</strong><p>Guarded review panel for highly sensitive document evidence, with metadata and withheld preview handling.</p></div>
                   <div class="docs-card"><strong>SEO Checker</strong><p>Website posture report, grade output, audits, and AI/fallback recommendations.</p></div>
                   <div class="docs-card"><strong>Playstore Scanner</strong><p>Checks for modded APK signals from a Play Store URL.</p></div>
                   <div class="docs-card"><strong>PC Game Scan</strong><p>Looks for cracked or mirrored PC game/software results.</p></div>
@@ -1558,6 +1647,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=40"></script>
+  <script src="app.js?v=41"></script>
 </body>
 </html>

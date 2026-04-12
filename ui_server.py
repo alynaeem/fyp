@@ -28,6 +28,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import ReturnDocument
 
 from config import cfg
+from healing.routes import build_healing_router
 from healing_system import get_healing_service
 from logger import get_logger
 
@@ -38,6 +39,8 @@ client = AsyncIOMotorClient(cfg.mongo_uri, serverSelectionTimeoutMS=5000)
 db = client[cfg.mongo_db]
 articles_col = db["articles"]
 news_items_col = db["news_items"]
+leak_items_col = db["leak_items"]
+collector_source_status_col = db["collector_source_status"]
 
 # Users collection and auth setup
 users_col = db["users"]
@@ -47,6 +50,7 @@ intelligence_notifications_col = db["dashboard_notifications"]
 automation_state_col = db["automation_state"]
 credential_exposures_col = db["credential_exposures"]
 credential_datasets_col = db["credential_datasets"]
+_LEAK_SOURCE_SCRIPT_DIR = pathlib.Path(__file__).resolve().parent / "leak_collector" / "scripts" / "leak"
 
 
 INTELLIGENCE_SCAN_SOURCES = {
@@ -136,6 +140,15 @@ _SEARCH_STOPWORDS = {
     "vs",
     "v",
     "with",
+}
+_LEAK_SOURCE_STATUS_ORDER = {
+    "ingested": 0,
+    "running": 1,
+    "unreachable": 2,
+    "error": 3,
+    "import_error": 4,
+    "empty": 5,
+    "not_run": 6,
 }
 
 
@@ -1411,6 +1424,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(build_healing_router(get_current_user, admin_required))
+
 
 # Ensure default admin exists on startup
 @app.on_event("startup")
@@ -1506,6 +1521,99 @@ async def shutdown_healing_monitor():
         except asyncio.CancelledError:
             pass
     _map_stats_warmup_task = None
+
+
+def _leak_status_host(value: str) -> str:
+    if not value:
+        return ""
+    try:
+        return urlparse(value).netloc or value
+    except Exception:
+        return value
+
+
+def _leak_status_sort_key(item: dict[str, Any]) -> tuple[int, int, str]:
+    status = str(item.get("status") or "not_run").lower()
+    mongo_docs = int(item.get("mongo_document_count") or 0)
+    script_file = str(item.get("script_file") or "")
+    return (_LEAK_SOURCE_STATUS_ORDER.get(status, 99), -mongo_docs, script_file)
+
+
+async def _build_leak_source_status_payload() -> dict[str, Any]:
+    script_paths = sorted(
+        path
+        for path in _LEAK_SOURCE_SCRIPT_DIR.glob("_*.py")
+        if path.name != "__init__.py"
+    )
+    status_docs = await collector_source_status_col.find({"collector_type": "leak"}).to_list(length=None)
+    status_by_module = {
+        str(doc.get("module_stem") or ""): doc
+        for doc in status_docs
+        if doc.get("module_stem")
+    }
+
+    mongo_counts_rows = await leak_items_col.aggregate([
+        {"$group": {"_id": "$source_name", "count": {"$sum": 1}}},
+    ]).to_list(length=None)
+    mongo_counts = {
+        str(row.get("_id") or ""): int(row.get("count") or 0)
+        for row in mongo_counts_rows
+        if row.get("_id")
+    }
+
+    items: list[dict[str, Any]] = []
+    status_counts: dict[str, int] = {}
+    total_mongo_documents = 0
+    with_data = 0
+
+    for script_path in script_paths:
+        module_stem = script_path.stem
+        status_doc = status_by_module.get(module_stem, {})
+        source_name = (
+            status_doc.get("source_name")
+            or module_stem.lstrip("_")
+        )
+        mongo_document_count = int(mongo_counts.get(str(source_name), 0))
+        status = str(status_doc.get("status") or "").lower() or ("ingested" if mongo_document_count else "not_run")
+        if mongo_document_count > 0 and status in {"empty", "not_run"}:
+            status = "ingested"
+
+        item = {
+            "module_stem": module_stem,
+            "script_file": script_path.name,
+            "source_name": source_name,
+            "status": status,
+            "source_kind": status_doc.get("source_kind") or "leak_site",
+            "auto_discovered": bool(status_doc.get("auto_discovered")),
+            "target_url": status_doc.get("target_url") or "",
+            "target_host": status_doc.get("target_host") or _leak_status_host(str(status_doc.get("target_url") or "")),
+            "parse_count": int(status_doc.get("parse_count") or 0),
+            "raw_items": int(status_doc.get("raw_items") or 0),
+            "raw_entities": int(status_doc.get("raw_entities") or 0),
+            "mongo_document_count": mongo_document_count,
+            "last_run_at": status_doc.get("last_run_at"),
+            "last_success_at": status_doc.get("last_success_at"),
+            "last_error": status_doc.get("last_error") or "",
+            "updated_at": status_doc.get("updated_at"),
+        }
+        items.append(item)
+        status_counts[status] = status_counts.get(status, 0) + 1
+        total_mongo_documents += mongo_document_count
+        if mongo_document_count > 0:
+            with_data += 1
+
+    items.sort(key=_leak_status_sort_key)
+
+    return {
+        "summary": {
+            "total_scripts": len(items),
+            "with_data": with_data,
+            "without_data": max(len(items) - with_data, 0),
+            "total_mongo_documents": total_mongo_documents,
+            "status_counts": status_counts,
+        },
+        "items": items,
+    }
 
 
 # ---------- Static file serving ----------
@@ -1681,6 +1789,12 @@ async def intelligence_status():
             "updated_at": lock_doc.get("updated_at"),
         },
     }
+
+
+@app.get("/leaks/source-status")
+async def leak_source_status(current_user: dict = Depends(get_current_user)):
+    payload = await _build_leak_source_status_payload()
+    return {"status": "ok", **payload}
 
 
 @app.get("/healing/stats")
@@ -5042,6 +5156,9 @@ async def _sync_credential_datasets(force: bool = False) -> dict[str, Any]:
 @app.on_event("startup")
 async def startup_sync_credential_checker() -> None:
     try:
+        await collector_source_status_col.create_index("module_stem", unique=True)
+        await collector_source_status_col.create_index("source_name")
+        await collector_source_status_col.create_index("status")
         await credential_datasets_col.create_index("path", unique=True)
         await credential_exposures_col.create_index("ingest_key", unique=True)
         await credential_exposures_col.create_index("dataset_path")

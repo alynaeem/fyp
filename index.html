@@ -7,7 +7,7 @@
   <meta name="description" content="Live DarkPulse intelligence dashboard for leaks, defacement, exploits, and threat reporting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/style.css?v=33" />
+    <link rel="stylesheet" href="/style.css?v=36" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/world.js"></script>
@@ -138,6 +138,13 @@
               <span class="nav-meta">Search local stealer-log JSON datasets</span>
             </div>
           </div>
+          <div class="nav-item" data-view="confidential-data" id="sidebarNavItemConfidentialData">
+            <span class="nav-icon">CD</span>
+            <div class="nav-copy">
+              <span class="nav-label">Confidential Data</span>
+              <span class="nav-meta">Guarded review for sensitive document evidence</span>
+            </div>
+          </div>
           <div class="nav-item" data-view="seo" id="sidebarNavItemSeo">
             <span class="nav-icon">SO</span>
             <div class="nav-copy">
@@ -179,6 +186,13 @@
             <div class="nav-copy">
               <span class="nav-label">Healing Monitor</span>
               <span class="nav-meta">HTML drift, selector breakage, auto-fix status</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="leak-source-status" id="sidebarNavItemLeakSourceStatus">
+            <span class="nav-icon">LS</span>
+            <div class="nav-copy">
+              <span class="nav-label">Leak Source Status</span>
+              <span class="nav-meta">Every leak script, Mongo docs, and crawl result</span>
             </div>
           </div>
           <div class="nav-item" data-view="docs" id="sidebarNavItemDocs">
@@ -520,6 +534,87 @@
             <div id="credentialDatasetMeta" class="credential-dataset-meta hidden"></div>
             <div id="credentialResults" class="credential-results-container"></div>
             <div id="credentialPagination" class="pagination-shell hidden"></div>
+          </div>
+        </div>
+
+        <div class="view-panel hidden" id="viewConfidentialData">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Restricted Review</p>
+              <h2 class="section-title">Confidential Data</h2>
+            </div>
+          </div>
+          <div class="lookup-shell confidential-shell">
+            <div class="confidential-banner">
+              <div class="confidential-banner-copy">
+                <span class="badge-outline">Sensitive Evidence</span>
+                <h3 class="confidential-banner-title">Guarded identity-document review</h3>
+                <p class="confidential-banner-copytext">This panel keeps confidential-document evidence behind a withheld preview shell. The dashboard shows review context and handling status, but it does not render raw personal ID imagery.</p>
+              </div>
+            </div>
+
+            <div class="confidential-layout">
+              <article class="confidential-card">
+                <div class="confidential-preview-shell">
+                  <div class="confidential-preview-frame" aria-label="Withheld confidential-document preview">
+                    <div class="confidential-doc-mock" aria-hidden="true">
+                      <div class="confidential-doc-header">
+                        <span class="confidential-doc-badge"></span>
+                        <div class="confidential-doc-title-stack">
+                          <span></span>
+                          <span></span>
+                        </div>
+                      </div>
+                      <div class="confidential-doc-body">
+                        <div class="confidential-doc-portrait"></div>
+                        <div class="confidential-doc-lines">
+                          <span class="wide"></span>
+                          <span></span>
+                          <span></span>
+                          <span class="short"></span>
+                          <span class="wide"></span>
+                        </div>
+                      </div>
+                      <div class="confidential-doc-footer">
+                        <span></span>
+                        <span class="wide"></span>
+                        <span class="short"></span>
+                      </div>
+                    </div>
+                    <div class="confidential-preview-overlay">
+                      <span class="confidential-preview-title">Preview Withheld</span>
+                      <span class="confidential-preview-copy">Sensitive government-issued identity details stay blocked inside DarkPulse.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="confidential-card-body">
+                  <div class="confidential-meta-grid">
+                    <div class="fact-item">
+                      <span class="fact-label">Record Type</span>
+                      <span class="fact-value">Government identity document</span>
+                    </div>
+                    <div class="fact-item">
+                      <span class="fact-label">Region</span>
+                      <span class="fact-value">Kuwait</span>
+                    </div>
+                    <div class="fact-item">
+                      <span class="fact-label">Classification</span>
+                      <span class="fact-value">Confidential</span>
+                    </div>
+                    <div class="fact-item">
+                      <span class="fact-label">Display Mode</span>
+                      <span class="fact-value">Withheld preview</span>
+                    </div>
+                  </div>
+
+                  <div class="confidential-notice">
+                    <strong>Handling note</strong>
+                    <p>Use this tab for controlled review status, case metadata, and downstream workflow decisions. Raw passport, civil-ID, and other personal-document imagery is not rendered directly in the dashboard.</p>
+                  </div>
+                </div>
+              </article>
+            </div>
           </div>
         </div>
 
@@ -870,8 +965,20 @@
 
             <div class="healing-stats-grid" id="healingStatsGrid">
               <div class="mini-card healing-stat-card">
-                <span class="mini-card-label">Targets</span>
-                <span class="mini-card-value" id="healingStatTargets">0</span>
+                <span class="mini-card-label">Total Scripts</span>
+                <span class="mini-card-value" id="healingStatTotalScripts">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Healthy</span>
+                <span class="mini-card-value" id="healingStatHealthy">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">No Data</span>
+                <span class="mini-card-value" id="healingStatNoData">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Unreachable</span>
+                <span class="mini-card-value" id="healingStatUnreachable">0</span>
               </div>
               <div class="mini-card healing-stat-card">
                 <span class="mini-card-label">HTML Changed</span>
@@ -879,30 +986,79 @@
               </div>
               <div class="mini-card healing-stat-card">
                 <span class="mini-card-label">Repair Ready</span>
-                <span class="mini-card-value" id="healingStatAutoFixed">0</span>
+                <span class="mini-card-value" id="healingStatRepairReady">0</span>
               </div>
               <div class="mini-card healing-stat-card">
                 <span class="mini-card-label">Needs Review</span>
                 <span class="mini-card-value" id="healingStatNeedsReview">0</span>
               </div>
-              <div class="mini-card healing-stat-card">
-                <span class="mini-card-label">Healthy</span>
-                <span class="mini-card-value" id="healingStatHealthy">0</span>
+            </div>
+
+            <div class="rail-card healing-collector-shell">
+              <div class="rail-card-header">
+                <span class="section-kicker">Collector Breakdown</span>
+                <span class="rail-card-note" id="healingCollectorsSummary">0 collectors</span>
               </div>
-              <div class="mini-card healing-stat-card">
-                <span class="mini-card-label">Unreachable</span>
-                <span class="mini-card-value" id="healingStatUnreachable">0</span>
+              <div id="healingCollectorsGrid" class="healing-collector-grid"></div>
+            </div>
+
+            <div class="rail-card healing-scripts-shell">
+              <div class="rail-card-header healing-scripts-head">
+                <div>
+                  <span class="section-kicker">Per-Script Health</span>
+                  <span class="rail-card-note" id="healingScriptsSummary">0 scripts tracked</span>
+                </div>
+                <div class="healing-filter-bar">
+                  <select id="healingCollectorFilter" class="healing-filter-select">
+                    <option value="">All Collectors</option>
+                  </select>
+                  <select id="healingStatusFilter" class="healing-filter-select">
+                    <option value="">All Statuses</option>
+                    <option value="healthy">Healthy</option>
+                    <option value="no_data">No Data</option>
+                    <option value="target_unreachable">Unreachable</option>
+                    <option value="html_changed">HTML Changed</option>
+                    <option value="repair_ready">Repair Ready</option>
+                    <option value="needs_review">Needs Review</option>
+                    <option value="skipped">Skipped</option>
+                    <option value="discovered">Discovered</option>
+                  </select>
+                  <button class="btn-secondary" id="healingRefreshBtn">Refresh</button>
+                </div>
+              </div>
+              <div class="table-shell healing-table-shell">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Script</th>
+                      <th>Collector</th>
+                      <th>Domain</th>
+                      <th>Data</th>
+                      <th>Status</th>
+                      <th>Live</th>
+                      <th>Drift</th>
+                      <th>Selectors</th>
+                      <th>Last Checked</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="healingScriptsTableBody">
+                    <tr><td colspan="10">Loading healing monitor...</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
             <div class="healing-grid">
               <div class="healing-column">
-                <div class="rail-card">
+                <div class="rail-card healing-detail-shell">
                   <div class="rail-card-header">
-                    <span class="section-kicker">Monitored Targets</span>
-                    <span class="rail-card-note" id="healingTargetsSummary">0 scripts tracked</span>
+                    <span class="section-kicker">Monitored Target Detail</span>
+                    <span class="rail-card-note" id="healingDetailSummary">Select a script to inspect</span>
                   </div>
-                  <div id="healingTargetsList" class="compact-list"></div>
+                  <div id="healingDetailPanel" class="healing-detail-panel">
+                    <div class="healing-empty-copy">Select a script to inspect baseline snapshots, latest HTML drift, failed selectors, and repair suggestions.</div>
+                  </div>
                 </div>
               </div>
 
@@ -910,11 +1066,82 @@
                 <div class="rail-card">
                   <div class="rail-card-header">
                     <span class="section-kicker">Recent Events</span>
-                    <span class="rail-card-note" id="healingEventsSummary">0 recent events</span>
+                    <span class="rail-card-note" id="healingEventsSummary">0 recent healing events</span>
                   </div>
                   <div id="healingEventsList" class="compact-list"></div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="view-panel hidden" id="viewLeakSourceStatus">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Leak Pipeline</p>
+              <h2 class="section-title">Leak Source Status</h2>
+              <p class="section-copy">Track every script inside <code>leak_collector/scripts/leak</code>, see whether it has pushed documents into Mongo, and confirm what is already visible on localhost.</p>
+            </div>
+          </div>
+          <div class="lookup-shell leak-status-shell">
+            <div class="healing-toolbar leak-status-toolbar">
+              <div class="healing-toolbar-copy">
+                <h3 class="healing-toolbar-title">Mongo-backed visibility for every leak script</h3>
+                <p class="healing-toolbar-note">Scripts with Mongo documents are already eligible to appear in Leak Feed and Live Feed on <code>localhost:9000</code>. Empty, unreachable, and import-error rows show what still needs fixing.</p>
+              </div>
+              <div class="healing-toolbar-actions">
+                <button class="btn-secondary" id="leakSourceRefreshBtn">Refresh Status</button>
+              </div>
+            </div>
+
+            <div id="leakSourceStatusNotice" class="pakdb-status">Loading leak source status...</div>
+
+            <div class="healing-stats-grid leak-status-summary-grid">
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Scripts</span>
+                <span class="mini-card-value" id="leakSourceStatTotal">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">With Data</span>
+                <span class="mini-card-value" id="leakSourceStatWithData">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Mongo Docs</span>
+                <span class="mini-card-value" id="leakSourceStatMongoDocs">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Ingested</span>
+                <span class="mini-card-value" id="leakSourceStatIngested">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Unreachable</span>
+                <span class="mini-card-value" id="leakSourceStatUnreachable">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Needs Work</span>
+                <span class="mini-card-value" id="leakSourceStatNeedsWork">0</span>
+              </div>
+            </div>
+
+            <div class="table-container leak-status-table-shell">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Script</th>
+                    <th>Alias</th>
+                    <th>Status</th>
+                    <th>Mongo Docs</th>
+                    <th>Last Run</th>
+                    <th>Target Host</th>
+                    <th>Last Error</th>
+                  </tr>
+                </thead>
+                <tbody id="leakSourceStatusTableBody">
+                  <tr>
+                    <td colspan="7">Loading leak source status...</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -1002,6 +1229,7 @@
                 <p>DarkPulse includes multiple scanner workflows alongside the core intelligence feeds.</p>
                 <div class="docs-grid">
                   <div class="docs-card"><strong>Credential Checker</strong><p>Searches local stealer-log JSON files and shows redacted exposure matches, source files, dates, and host context.</p></div>
+                  <div class="docs-card"><strong>Confidential Data</strong><p>Guarded review panel for highly sensitive document evidence, with metadata and withheld preview handling.</p></div>
                   <div class="docs-card"><strong>SEO Checker</strong><p>Website posture report, grade output, audits, and AI/fallback recommendations.</p></div>
                   <div class="docs-card"><strong>Playstore Scanner</strong><p>Checks for modded APK signals from a Play Store URL.</p></div>
                   <div class="docs-card"><strong>PC Game Scan</strong><p>Looks for cracked or mirrored PC game/software results.</p></div>
@@ -1558,6 +1786,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=40"></script>
+  <script src="app.js?v=43"></script>
 </body>
 </html>

@@ -96,6 +96,8 @@ services:
       - ./data/credential_checker:/app/data/credential_checker
       - ./logs:/app/logs
       - ./api_collector/scripts/trivy_reports:/app/api_collector/scripts/trivy_reports
+    healthcheck:
+      disable: true
 
 volumes:
   mongo_data:

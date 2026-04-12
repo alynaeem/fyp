@@ -7,7 +7,7 @@
   <meta name="description" content="Live DarkPulse intelligence dashboard for leaks, defacement, exploits, and threat reporting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/style.css?v=35" />
+    <link rel="stylesheet" href="/style.css?v=36" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/world.js"></script>
@@ -965,8 +965,20 @@
 
             <div class="healing-stats-grid" id="healingStatsGrid">
               <div class="mini-card healing-stat-card">
-                <span class="mini-card-label">Targets</span>
-                <span class="mini-card-value" id="healingStatTargets">0</span>
+                <span class="mini-card-label">Total Scripts</span>
+                <span class="mini-card-value" id="healingStatTotalScripts">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Healthy</span>
+                <span class="mini-card-value" id="healingStatHealthy">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">No Data</span>
+                <span class="mini-card-value" id="healingStatNoData">0</span>
+              </div>
+              <div class="mini-card healing-stat-card">
+                <span class="mini-card-label">Unreachable</span>
+                <span class="mini-card-value" id="healingStatUnreachable">0</span>
               </div>
               <div class="mini-card healing-stat-card">
                 <span class="mini-card-label">HTML Changed</span>
@@ -974,30 +986,79 @@
               </div>
               <div class="mini-card healing-stat-card">
                 <span class="mini-card-label">Repair Ready</span>
-                <span class="mini-card-value" id="healingStatAutoFixed">0</span>
+                <span class="mini-card-value" id="healingStatRepairReady">0</span>
               </div>
               <div class="mini-card healing-stat-card">
                 <span class="mini-card-label">Needs Review</span>
                 <span class="mini-card-value" id="healingStatNeedsReview">0</span>
               </div>
-              <div class="mini-card healing-stat-card">
-                <span class="mini-card-label">Healthy</span>
-                <span class="mini-card-value" id="healingStatHealthy">0</span>
+            </div>
+
+            <div class="rail-card healing-collector-shell">
+              <div class="rail-card-header">
+                <span class="section-kicker">Collector Breakdown</span>
+                <span class="rail-card-note" id="healingCollectorsSummary">0 collectors</span>
               </div>
-              <div class="mini-card healing-stat-card">
-                <span class="mini-card-label">Unreachable</span>
-                <span class="mini-card-value" id="healingStatUnreachable">0</span>
+              <div id="healingCollectorsGrid" class="healing-collector-grid"></div>
+            </div>
+
+            <div class="rail-card healing-scripts-shell">
+              <div class="rail-card-header healing-scripts-head">
+                <div>
+                  <span class="section-kicker">Per-Script Health</span>
+                  <span class="rail-card-note" id="healingScriptsSummary">0 scripts tracked</span>
+                </div>
+                <div class="healing-filter-bar">
+                  <select id="healingCollectorFilter" class="healing-filter-select">
+                    <option value="">All Collectors</option>
+                  </select>
+                  <select id="healingStatusFilter" class="healing-filter-select">
+                    <option value="">All Statuses</option>
+                    <option value="healthy">Healthy</option>
+                    <option value="no_data">No Data</option>
+                    <option value="target_unreachable">Unreachable</option>
+                    <option value="html_changed">HTML Changed</option>
+                    <option value="repair_ready">Repair Ready</option>
+                    <option value="needs_review">Needs Review</option>
+                    <option value="skipped">Skipped</option>
+                    <option value="discovered">Discovered</option>
+                  </select>
+                  <button class="btn-secondary" id="healingRefreshBtn">Refresh</button>
+                </div>
+              </div>
+              <div class="table-shell healing-table-shell">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Script</th>
+                      <th>Collector</th>
+                      <th>Domain</th>
+                      <th>Data</th>
+                      <th>Status</th>
+                      <th>Live</th>
+                      <th>Drift</th>
+                      <th>Selectors</th>
+                      <th>Last Checked</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="healingScriptsTableBody">
+                    <tr><td colspan="10">Loading healing monitor...</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
             <div class="healing-grid">
               <div class="healing-column">
-                <div class="rail-card">
+                <div class="rail-card healing-detail-shell">
                   <div class="rail-card-header">
-                    <span class="section-kicker">Monitored Targets</span>
-                    <span class="rail-card-note" id="healingTargetsSummary">0 scripts tracked</span>
+                    <span class="section-kicker">Monitored Target Detail</span>
+                    <span class="rail-card-note" id="healingDetailSummary">Select a script to inspect</span>
                   </div>
-                  <div id="healingTargetsList" class="compact-list"></div>
+                  <div id="healingDetailPanel" class="healing-detail-panel">
+                    <div class="healing-empty-copy">Select a script to inspect baseline snapshots, latest HTML drift, failed selectors, and repair suggestions.</div>
+                  </div>
                 </div>
               </div>
 
@@ -1005,7 +1066,7 @@
                 <div class="rail-card">
                   <div class="rail-card-header">
                     <span class="section-kicker">Recent Events</span>
-                    <span class="rail-card-note" id="healingEventsSummary">0 recent events</span>
+                    <span class="rail-card-note" id="healingEventsSummary">0 recent healing events</span>
                   </div>
                   <div id="healingEventsList" class="compact-list"></div>
                 </div>
@@ -1725,6 +1786,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=42"></script>
+  <script src="app.js?v=43"></script>
 </body>
 </html>

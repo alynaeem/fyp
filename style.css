@@ -4975,7 +4975,7 @@ body {
 
 .healing-stats-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -5077,6 +5077,123 @@ body {
     linear-gradient(120deg, rgba(79, 172, 254, 0.03), rgba(255, 82, 82, 0.02));
 }
 
+.healing-collector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+.healing-collector-card {
+  min-height: 120px;
+  gap: 14px;
+}
+
+.healing-collector-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  color: #f8fbff;
+}
+
+.healing-collector-total {
+  color: rgba(179, 191, 222, 0.9);
+  font-size: 0.9rem;
+}
+
+.healing-collector-metrics {
+  display: grid;
+  gap: 8px;
+  color: rgba(214, 224, 255, 0.8);
+  font-size: 0.92rem;
+}
+
+.healing-scripts-head {
+  align-items: center;
+}
+
+.healing-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.healing-filter-select {
+  min-width: 170px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(120, 144, 255, 0.18);
+  background: rgba(12, 20, 34, 0.92);
+  color: #eef4ff;
+}
+
+.healing-table-shell {
+  overflow-x: auto;
+}
+
+.healing-table-shell table {
+  width: 100%;
+}
+
+.healing-table-shell td,
+.healing-table-shell th {
+  vertical-align: top;
+}
+
+.healing-table-shell tr.is-selected {
+  background: rgba(79, 172, 254, 0.07);
+}
+
+.table-meta {
+  margin-top: 6px;
+  color: rgba(179, 191, 222, 0.76);
+  font-size: 0.82rem;
+}
+
+.healing-action-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.healing-detail-shell {
+  min-height: 100%;
+}
+
+.healing-detail-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.healing-detail-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.healing-detail-title {
+  margin: 6px 0 8px;
+  color: #f8fbff;
+  font-size: 1.05rem;
+}
+
+.healing-code-block {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(120, 144, 255, 0.14);
+  background: rgba(8, 13, 24, 0.82);
+  color: rgba(214, 224, 255, 0.86);
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
 .healing-header-stack {
   display: flex;
   align-items: center;
@@ -5106,29 +5223,55 @@ body {
   color: #a7f3d0;
 }
 
-.healing-status-pill.status-changed {
+.healing-status-pill.status-changed,
+.healing-status-pill.status-html_changed {
   border-color: rgba(96, 165, 250, 0.24);
   background: rgba(59, 130, 246, 0.12);
   color: #bfdbfe;
 }
 
-.healing-status-pill.status-auto_fixed {
+.healing-status-pill.status-auto_fixed,
+.healing-status-pill.status-repair_ready {
   border-color: rgba(56, 189, 248, 0.28);
   background: rgba(14, 165, 233, 0.14);
   color: #bae6fd;
 }
 
 .healing-status-pill.status-needs_review,
-.healing-status-pill.status-discovered {
+.healing-status-pill.status-discovered,
+.healing-status-pill.status-no_data,
+.healing-status-pill.status-skipped {
   border-color: rgba(250, 204, 21, 0.26);
   background: rgba(234, 179, 8, 0.12);
   color: #fde68a;
 }
 
 .healing-status-pill.status-unreachable,
-.healing-status-pill.status-error {
+.healing-status-pill.status-error,
+.healing-status-pill.status-target_unreachable {
   border-color: rgba(248, 113, 113, 0.28);
   background: rgba(239, 68, 68, 0.13);
+  color: #fecaca;
+}
+
+.status-badge.status-live {
+  border-color: rgba(34, 197, 94, 0.24);
+  color: #9ae6b4;
+}
+
+.status-badge.status-redirect,
+.status-badge.status-blocked,
+.status-badge.status-client_error,
+.status-badge.status-server_error {
+  border-color: rgba(250, 204, 21, 0.24);
+  color: #fde68a;
+}
+
+.status-badge.status-timeout,
+.status-badge.status-dns_failure,
+.status-badge.status-connection_error,
+.status-badge.status-not_checked {
+  border-color: rgba(248, 113, 113, 0.24);
   color: #fecaca;
 }
 
@@ -5221,6 +5364,14 @@ body {
 
   .healing-toolbar-actions .btn-primary,
   .healing-toolbar-actions .btn-secondary {
+    width: 100%;
+  }
+
+  .healing-filter-bar {
+    width: 100%;
+  }
+
+  .healing-filter-select {
     width: 100%;
   }
 

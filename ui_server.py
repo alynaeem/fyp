@@ -28,6 +28,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import ReturnDocument
 
 from config import cfg
+from healing.routes import build_healing_router
 from healing_system import get_healing_service
 from logger import get_logger
 
@@ -1422,6 +1423,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(build_healing_router(get_current_user, admin_required))
 
 
 # Ensure default admin exists on startup

@@ -101,6 +101,11 @@ def _script_identity(name: str, cls=None, *, module_stem: str | None = None, scr
     return resolved_module_stem, resolved_script_file
 
 
+def _env_csv_set(name: str) -> set[str]:
+    raw = os.getenv(name, "")
+    return {part.strip().lower() for part in raw.split(",") if part.strip()}
+
+
 def _model_target_url(model) -> str:
     for attr_name in ("seed_url", "base_url"):
         try:
@@ -495,6 +500,38 @@ def _run_leaks() -> None:
             len(auto_discovered_leak_sources),
             ", ".join(name for name, _ in auto_discovered_leak_sources[:20]),
         )
+
+    leak_status_filters = _env_csv_set("LEAK_STATUS_FILTER")
+    leak_source_filters = _env_csv_set("LEAK_SOURCE_NAMES")
+    if leak_status_filters or leak_source_filters:
+        status_docs = list(_get_source_status_collection().find({"collector_type": "leak"}))
+        status_by_module = {
+            str(doc.get("module_stem") or ""): str(doc.get("status") or "not_run").lower()
+            for doc in status_docs
+            if doc.get("module_stem")
+        }
+        filtered_sources = []
+        for name, cls in leak_sources:
+            module_stem, script_file = _script_identity(name, cls)
+            current_status = status_by_module.get(module_stem, "not_run")
+            name_candidates = {
+                str(name).lower(),
+                str(module_stem).lower(),
+                str(script_file).lower(),
+                str(module_stem).lstrip("_"),
+            }
+            matches_status = not leak_status_filters or current_status in leak_status_filters
+            matches_name = not leak_source_filters or bool(name_candidates & leak_source_filters)
+            if matches_status and matches_name:
+                filtered_sources.append((name, cls))
+        log.info(
+            "  [leaks] filtered leak site scripts: kept %s of %s (status_filter=%s, name_filter=%s)",
+            len(filtered_sources),
+            len(leak_sources),
+            sorted(leak_status_filters) or ["all"],
+            sorted(leak_source_filters) or ["all"],
+        )
+        leak_sources = filtered_sources
 
     all_sources = leak_sources if leak_sites_only else tracking_sources + leak_sources
     if leak_sites_only:

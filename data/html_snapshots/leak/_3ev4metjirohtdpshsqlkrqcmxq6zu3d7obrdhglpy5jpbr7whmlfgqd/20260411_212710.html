@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="static/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <title>Abyss-data</title>
+    <script src="static/data.js"></script>
+    <link href="static/main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="collapse bg-dark" id="navbarHeader">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 col-md-7 py-4">
+                    </div>
+                    <div class="col-sm-4 offset-md-1 py-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <a href="#" class="navbar-brand d-flex align-items-center">
+                    <img src="/static/img/logo.svg" alt="logo" id="logo">
+                    <strong>Abyss</strong>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="py-5 text-center" id="main-cont">
+            <div class="row py-lg-5">
+                <div class="col-lg-6 col-md-8 mx-auto text-light">
+                    <h1 class="fw-light">Abyss free DATA</h1>
+                    <h1 class="fw-light"><br></h1>
+                    <h1 class="fw-light"><br></h1>
+                    <h1 class="fw-light"><br></h1>
+                    <p class="lead">
+                        We publish the data that is now freely available!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4" id="items">
+            <div class="spinner-border text-light" role="status" id="loading">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div class="modal fade" id="showCard" tabindex="-1" aria-labelledby="full-card-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content bg-dark text-white" style="--bs-bg-opacity: .9;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="full-card-title"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="full-card-text"></p>
+                        <p id="full-card-links"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="text-muted py-5 bg-dark">
+        <div class="container">
+            <p class="float-end mb-1">Copyright © <a href="/">Abyss</a> - 2023</p>
+            <p class="mb-1">Just business, nothing personal</p>
+        </div>
+    </footer>
+</div>
+
+<script src="static/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="static/main.js"></script>
+
+</body></html>

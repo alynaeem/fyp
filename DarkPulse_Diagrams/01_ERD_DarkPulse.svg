@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eef2ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.16"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#2563eb"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1600" height="1120" fill="url(#bg)"/>
+  <text x="800.0" y="48" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800" fill="#0f172a">DarkPulse ERD</text>
+  <text x="800.0" y="76" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" fill="#64748b">DarkPulse Design &amp; Test Specification Diagrams</text>
+<rect x="70" y="130" width="280" height="166" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="70" y="130" width="280" height="38" rx="12" fill="#0f766e"/>
+<path d="M70,158 Q70,168 82,168 L338,168 Q350,168 350,158 L350,168 L70,168 Z" fill="#0f766e"/>
+<text x="84" y="155" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">USERS</text>
+<text x="86" y="190" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">username PK</text>
+<text x="86" y="208" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">email</text>
+<text x="86" y="226" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">role</text>
+<text x="86" y="244" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">status</text>
+<text x="86" y="262" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">password_hash</text>
+<text x="86" y="280" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">two_factor_enabled</text>
+<rect x="70" y="370" width="280" height="146" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="70" y="370" width="280" height="38" rx="12" fill="#0f766e"/>
+<path d="M70,398 Q70,408 82,408 L338,408 Q350,408 350,398 L350,408 L70,408 Z" fill="#0f766e"/>
+<text x="84" y="395" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">PASSWORD_RESET_REQUESTS</text>
+<text x="86" y="430" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">request_id PK</text>
+<text x="86" y="448" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">username FK</text>
+<text x="86" y="466" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">email</text>
+<text x="86" y="484" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">status</text>
+<text x="86" y="502" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">created_at</text>
+<rect x="70" y="610" width="280" height="146" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="70" y="610" width="280" height="38" rx="12" fill="#7c3aed"/>
+<path d="M70,638 Q70,648 82,648 L338,648 Q350,648 350,638 L350,648 L70,648 Z" fill="#7c3aed"/>
+<text x="84" y="635" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">INTELLIGENCE_RUNS</text>
+<text x="86" y="670" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">job_id PK</text>
+<text x="86" y="688" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">status</text>
+<text x="86" y="706" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">triggered_by FK</text>
+<text x="86" y="724" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">started_at</text>
+<text x="86" y="742" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">completed_at</text>
+<rect x="70" y="850" width="280" height="146" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="70" y="850" width="280" height="38" rx="12" fill="#7c3aed"/>
+<path d="M70,878 Q70,888 82,888 L338,888 Q350,888 350,878 L350,888 L70,888 Z" fill="#7c3aed"/>
+<text x="84" y="875" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">DASHBOARD_NOTIFICATIONS</text>
+<text x="86" y="910" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">notification_id PK</text>
+<text x="86" y="928" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">job_id FK</text>
+<text x="86" y="946" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">level</text>
+<text x="86" y="964" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">message</text>
+<text x="86" y="982" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">created_at</text>
+<rect x="500" y="130" width="280" height="166" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="500" y="130" width="280" height="38" rx="12" fill="#2563eb"/>
+<path d="M500,158 Q500,168 512,168 L768,168 Q780,168 780,158 L780,168 L500,168 Z" fill="#2563eb"/>
+<text x="514" y="155" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">ARTICLES</text>
+<text x="516" y="190" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">article_id PK</text>
+<text x="516" y="208" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">title</text>
+<text x="516" y="226" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">url</text>
+<text x="516" y="244" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">source_name</text>
+<text x="516" y="262" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">content</text>
+<text x="516" y="280" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">date</text>
+<rect x="500" y="370" width="280" height="166" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="500" y="370" width="280" height="38" rx="12" fill="#2563eb"/>
+<path d="M500,398 Q500,408 512,408 L768,408 Q780,408 780,398 L780,408 L500,408 Z" fill="#2563eb"/>
+<text x="514" y="395" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">NEWS_ITEMS</text>
+<text x="516" y="430" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">dedupe_key PK</text>
+<text x="516" y="448" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">collector_type</text>
+<text x="516" y="466" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">source_name</text>
+<text x="516" y="484" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">title</text>
+<text x="516" y="502" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">url</text>
+<text x="516" y="520" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">content</text>
+<rect x="500" y="610" width="280" height="166" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="500" y="610" width="280" height="38" rx="12" fill="#dc2626"/>
+<path d="M500,638 Q500,648 512,648 L768,648 Q780,648 780,638 L780,648 L500,648 Z" fill="#dc2626"/>
+<text x="514" y="635" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">LEAK_ITEMS</text>
+<text x="516" y="670" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">dedupe_key PK</text>
+<text x="516" y="688" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">source_name</text>
+<text x="516" y="706" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">victim/title</text>
+<text x="516" y="724" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">url</text>
+<text x="516" y="742" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">country</text>
+<text x="516" y="760" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">leak_date</text>
+<rect x="500" y="850" width="280" height="146" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="500" y="850" width="280" height="38" rx="12" fill="#ea580c"/>
+<path d="M500,878 Q500,888 512,888 L768,888 Q780,888 780,878 L780,888 L500,888 Z" fill="#ea580c"/>
+<text x="514" y="875" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">DEFACEMENT_ITEMS</text>
+<text x="516" y="910" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">dedupe_key PK</text>
+<text x="516" y="928" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">source_name</text>
+<text x="516" y="946" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">target_url</text>
+<text x="516" y="964" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">web_server</text>
+<text x="516" y="982" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">severity</text>
+<rect x="930" y="130" width="280" height="166" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="930" y="130" width="280" height="38" rx="12" fill="#9333ea"/>
+<path d="M930,158 Q930,168 942,168 L1198,168 Q1210,168 1210,158 L1210,168 L930,168 Z" fill="#9333ea"/>
+<text x="944" y="155" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">COLLECTOR_SOURCE_STATUS</text>
+<text x="946" y="190" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">source_id PK</text>
+<text x="946" y="208" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">collector_type</text>
+<text x="946" y="226" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">source_name</text>
+<text x="946" y="244" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">status</text>
+<text x="946" y="262" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">parse_count</text>
+<text x="946" y="280" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">last_error</text>
+<rect x="930" y="370" width="280" height="146" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="930" y="370" width="280" height="38" rx="12" fill="#0891b2"/>
+<path d="M930,398 Q930,408 942,408 L1198,408 Q1210,408 1210,398 L1210,408 L930,408 Z" fill="#0891b2"/>
+<text x="944" y="395" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">CREDENTIAL_DATASETS</text>
+<text x="946" y="430" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">dataset_id PK</text>
+<text x="946" y="448" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">path</text>
+<text x="946" y="466" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">name</text>
+<text x="946" y="484" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">records_count</text>
+<text x="946" y="502" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">synced_at</text>
+<rect x="930" y="610" width="280" height="146" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="930" y="610" width="280" height="38" rx="12" fill="#0891b2"/>
+<path d="M930,638 Q930,648 942,648 L1198,648 Q1210,648 1210,638 L1210,648 L930,648 Z" fill="#0891b2"/>
+<text x="944" y="635" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">CREDENTIAL_EXPOSURES</text>
+<text x="946" y="670" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">ingest_key PK</text>
+<text x="946" y="688" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">dataset_path FK</text>
+<text x="946" y="706" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">domain_host</text>
+<text x="946" y="724" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">identifier</text>
+<text x="946" y="742" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">password_present</text>
+<rect x="1270" y="130" width="280" height="126" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="1270" y="130" width="280" height="38" rx="12" fill="#475569"/>
+<path d="M1270,158 Q1270,168 1282,168 L1538,168 Q1550,168 1550,158 L1550,168 L1270,168 Z" fill="#475569"/>
+<text x="1284" y="155" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">HEALING_TARGETS</text>
+<text x="1286" y="190" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">script_id PK</text>
+<text x="1286" y="208" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">collector_name</text>
+<text x="1286" y="226" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">target_url</text>
+<text x="1286" y="244" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">status</text>
+<rect x="1270" y="350" width="280" height="126" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="1270" y="350" width="280" height="38" rx="12" fill="#475569"/>
+<path d="M1270,378 Q1270,388 1282,388 L1538,388 Q1550,388 1550,378 L1550,388 L1270,388 Z" fill="#475569"/>
+<text x="1284" y="375" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">HEALING_SNAPSHOTS</text>
+<text x="1286" y="410" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">snapshot_id PK</text>
+<text x="1286" y="428" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">script_id FK</text>
+<text x="1286" y="446" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">fingerprint</text>
+<text x="1286" y="464" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">created_at</text>
+<rect x="1270" y="570" width="280" height="126" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="1270" y="570" width="280" height="38" rx="12" fill="#475569"/>
+<path d="M1270,598 Q1270,608 1282,608 L1538,608 Q1550,608 1550,598 L1550,608 L1270,608 Z" fill="#475569"/>
+<text x="1284" y="595" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">HEALING_EVENTS</text>
+<text x="1286" y="630" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">event_id PK</text>
+<text x="1286" y="648" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">script_id FK</text>
+<text x="1286" y="666" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">event_type</text>
+<text x="1286" y="684" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">status</text>
+<rect x="1270" y="790" width="280" height="126" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="1270" y="790" width="280" height="38" rx="12" fill="#475569"/>
+<path d="M1270,818 Q1270,828 1282,828 L1538,828 Q1550,828 1550,818 L1550,828 L1270,828 Z" fill="#475569"/>
+<text x="1284" y="815" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">HEALING_REPAIRS</text>
+<text x="1286" y="850" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">repair_id PK</text>
+<text x="1286" y="868" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">script_id FK</text>
+<text x="1286" y="886" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">candidate_patch</text>
+<text x="1286" y="904" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">status</text>
+<line x1="70" y1="213" x2="350" y2="443" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="210" y="320" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#475569">1 to many</text>
+<line x1="70" y1="213" x2="350" y2="683" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="210" y="440" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#475569">triggers</text>
+<line x1="70" y1="683" x2="350" y2="923" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="210" y="795" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#475569">creates</text>
+<line x1="500" y1="213" x2="780" y2="453" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="640" y="325" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#475569">derived/raw</text>
+<line x1="350" y1="683" x2="930" y2="213" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="640" y="440" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#475569">updates</text>
+<line x1="930" y1="443" x2="1210" y2="683" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="1070" y="555" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#475569">contains</text>
+<line x1="1270" y1="193" x2="1550" y2="413" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="1410" y="295" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#475569">stores</text>
+<line x1="1270" y1="193" x2="1550" y2="633" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="1410" y="405" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#475569">generates</text>
+<line x1="1270" y1="193" x2="1550" y2="853" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="1410" y="515" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#475569">suggests</text>
+<rect x="70" y="1020" width="136" height="28" rx="14" fill="#dbeafe" stroke="#1e40af" stroke-opacity="0.25"/>
+<text x="138" y="1039" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#1e40af">PK = Primary Key</text>
+<rect x="230" y="1020" width="136" height="28" rx="14" fill="#fef3c7" stroke="#92400e" stroke-opacity="0.25"/>
+<text x="298" y="1039" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#92400e">FK = Foreign Key</text>
+</svg>

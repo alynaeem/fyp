@@ -1,0 +1,1910 @@
+{
+  "generated_on": "2026-04-25",
+  "seed_url": "https://phishunt.io/feed.txt",
+  "count": 50,
+  "items": [
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://office365-service-c38bf0.webflow.io",
+      "final_url": "https://office365-service-c38bf0.webflow.io/",
+      "host": "office365-service-c38bf0.webflow.io",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://office365-service-c38bf0.webflow.io/",
+        "content_len": 7314,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Nova X - Webflow HTML website template",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 6,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "22b3a1495f604bb5d64a15dfe605042293099dfe",
+        "snippet": "<!DOCTYPE html><!-- This site was created in Webflow. https://webflow.com --><!-- Last Published: Wed Mar 18 2026 09:28:16 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain=\"office365-service-c38bf0.webflow.io\" data-wf-page=\"69ba6c96231c17bc39f7c03d\" data-wf-site=\"69ba6c95231c17bc39f7bef6\" data-wf-status=\"1\" lang=\"en\"><head><meta charset=\"utf-8\"/><link href=\"https://cdn.prod.website-fi",
+        "raw_html_len": 7314
+      },
+      "score": 35,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon1122.com",
+      "final_url": "https://amazon1122.com/",
+      "host": "amazon1122.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon1122.com/",
+        "content_len": 743,
+        "content_type": "text/html",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "deom",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fc121b3aabf54c2d0a45e403a80b26f332e83075",
+        "snippet": "<!doctype html><html lang=\"\"><head><meta charset=\"utf-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,location=no\"><title>deom</title><script src=\"./config.js\"></script><script defer=\"defer\" src=\"/static/js/chunk-vendors.6f608a3e.js\"></script><script defer=\"defer\" src=\"/static",
+        "raw_html_len": 743
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-ruby-ten.vercel.app",
+      "final_url": "https://netflix-clone-ruby-ten.vercel.app/",
+      "host": "netflix-clone-ruby-ten.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflix-clone-ruby-ten.vercel.app/",
+        "content_len": 7775,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "NETFLIX",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "50d348c86008a27ce83d6d7e17b279891135b6c0",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>NETFLIX</title> <link rel=\"stylesheet\" href=\"style.css\"> </head> <body> <section> <div class=\"hero\"> <img src=\"hero1.jpeg\" alt=\"\" class=\"hero-img\"> <div class=\"tint\"></div> <div class=\"nav\">",
+        "raw_html_len": 7775
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-iota-sand.vercel.app",
+      "final_url": "https://netflix-clone-iota-sand.vercel.app/",
+      "host": "netflix-clone-iota-sand.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflix-clone-iota-sand.vercel.app/",
+        "content_len": 18659,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "netflix",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 2,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "3f2e7d7c87ea64a15f6256aa5369e072abe10a09",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <meta name=\"google-site-verification\" content=\"jWR1ULZ_j_kJuyzp4GiAguzkVkqMFsfqBk5Rympjmjw\" /> <title>netflix</title> <link rel=\"stylesheet\" href=\"style.css\"> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6",
+        "raw_html_len": 18659
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://metamaskchromeextensionn.blogspot.com",
+      "final_url": "https://metamaskchromeextensionn.blogspot.com/",
+      "host": "metamaskchromeextensionn.blogspot.com",
+      "category": "redirector",
+      "brands": [
+        "google",
+        "meta",
+        "crypto"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://metamaskchromeextensionn.blogspot.com/",
+        "content_len": 90476,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "GSE"
+      },
+      "analysis": {
+        "title": "MetaMask Chrome Extension – Your Secure Gateway to Web3",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 7,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "7a6cc46f2b2d7a0d3de08cf639e0d5d82da3c115",
+        "snippet": "<!DOCTYPE html> <html dir='ltr' lang='en'> <head> <meta content='width=device-width, initial-scale=1' name='viewport'/> <title>MetaMask Chrome Extension &#8211; Your Secure Gateway to Web3</title> <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/> <!-- Chrome, Firefox OS and Opera --> <meta content='#eeeeee' name='theme-color'/> <!-- Windows Phone --> <meta content='#eeeeee' name",
+        "raw_html_len": 90476
+      },
+      "score": 45,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "redirector_or_shortener",
+        "brand_keywords:google,meta,crypto"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone-swart-kappa.vercel.app",
+      "final_url": "https://amazon-clone-swart-kappa.vercel.app/",
+      "host": "amazon-clone-swart-kappa.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "microsoft",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-swart-kappa.vercel.app/",
+        "content_len": 62154,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "d4a6fcb1f708ef00dc6836c222ce7cf0504f0101",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <link rel=\"stylesheet\" href=\"style.css\"> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css\" integrity=\"sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP88",
+        "raw_html_len": 62154
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,microsoft,banking"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://netflix-clone-two-sand.vercel.app",
+      "final_url": "https://netflix-clone-two-sand.vercel.app/",
+      "host": "netflix-clone-two-sand.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflix-clone-two-sand.vercel.app/",
+        "content_len": 7369,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Netflix Website Clone",
+        "forms": 2,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "9e02db3f9c9c1264b2190ada040cbd6c00550cd4",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Netflix Website Clone</title> <link rel=\"stylesheet\" href=\"style.css\"> </head> <body> <div class=\"header\"> <nav> <img src=\"images/f1.PNG\" class=\"logo\">",
+        "raw_html_len": 7369
+      },
+      "score": 60,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://register-facebook.blogspot.com",
+      "final_url": "http://register-facebook.blogspot.com/",
+      "host": "register-facebook.blogspot.com",
+      "category": "redirector",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://register-facebook.blogspot.com/",
+        "content_len": 20081,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "GSE"
+      },
+      "analysis": {
+        "title": "facebook",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 11,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "98b01808ce617fab45dff766fe670dbfbee7d410",
+        "snippet": "<!DOCTYPE html> <html dir='ltr'> <head> <link href='https://www.blogger.com/static/v1/widgets/2944754296-widget_css_bundle.css' rel='stylesheet' type='text/css'/> <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/> <meta content='blogger' name='generator'/> <link href='http://register-facebook.blogspot.com/favicon.ico' rel='icon' type='image/x-icon'/> <link href='http://register-f",
+        "raw_html_len": 20081
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener",
+        "brand_keywords:meta"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-gray-beta.vercel.app",
+      "final_url": "https://netflix-clone-gray-beta.vercel.app/",
+      "host": "netflix-clone-gray-beta.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflix-clone-gray-beta.vercel.app/",
+        "content_len": 8165,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Netflix India – Watch TV Shows Online, Watch Movies Online",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "8e97be78fff2b2b9321d13baf619284c675cfd8c",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Netflix India – Watch TV Shows Online, Watch Movies Online</title> <link rel=\"stylesheet\" href=\"style.css\"> <link rel=\"icon\" href=\"H:\\Sigma Web Development Course\\Netflix_Clone\\favicon.ico\"> </head> <body> <div class=\"main\">",
+        "raw_html_len": 8165
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-nu-nine.vercel.app",
+      "final_url": "https://netflix-clone-nu-nine.vercel.app/",
+      "host": "netflix-clone-nu-nine.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflix-clone-nu-nine.vercel.app/",
+        "content_len": 19987,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Netflix Clone",
+        "forms": 2,
+        "password_inputs": 0,
+        "scripts": 11,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "de6b74c275623e5c9457fc880e26a62b99f90808",
+        "snippet": "<!DOCTYPE html><html><head><meta name=\"viewport\" content=\"width=device-width\"/><meta charSet=\"utf-8\"/><title>Netflix Clone</title><meta name=\"description\" content=\"Netflix clone\"/><link rel=\"icon\" href=\"/favicon.ico\"/><meta name=\"next-head-count\" content=\"5\"/><link rel=\"preload\" href=\"/_next/static/css/be16f69071746263.css\" as=\"style\"/><link rel=\"stylesheet\" href=\"/_next/static/css/be16f6907174626",
+        "raw_html_len": 19987
+      },
+      "score": 60,
+      "severity": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:apple,banking"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://microsoft-clone-neon.vercel.app",
+      "final_url": "https://microsoft-clone-neon.vercel.app/",
+      "host": "microsoft-clone-neon.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "microsoft"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://microsoft-clone-neon.vercel.app/",
+        "content_len": 8478,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Home | Microsoft Landing Page",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 2,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "4b0a064f1ecd7b2726dfecc392a5a3085a902d06",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Home | Microsoft Landing Page</title> <!-- Stylesheet --> <link rel=\"stylesheet\" href=\"css/style.css\"> </head> <body> <div class=\"menu-btn\"> <i class=\"fa",
+        "raw_html_len": 8478
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:microsoft"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflixbot.top",
+      "final_url": "https://netflixbot.top/",
+      "host": "netflixbot.top",
+      "category": "login_branding",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflixbot.top/",
+        "content_len": 1158,
+        "content_type": "text/html",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Welcome to Netflixbot!",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 2,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "fd1fd617b4734725e233f483fff9b5ab0d3207ee",
+        "snippet": "<!DOCTYPE html> <html> <head> <title>Welcome to Netflixbot!</title> <style> body { width: 35em; margin: 0 auto; font-family: Tahoma, Verdana, Arial, sans-serif; } </style> </head> <body> <h1>Welcome to Netflixbot!</h1> <p>Netflix account email address: <a href=\"/cdn-cgi/l/email-protection\" class=\"__cf_email__\" data-cfemail=\"cda4a3aba28da3a8b9aba1a4b5afa2b9e3b9a2bd\">",
+        "raw_html_len": 1158
+      },
+      "score": 20,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://google-ji.com.cn",
+      "final_url": "https://google-ji.com.cn/",
+      "host": "google-ji.com.cn",
+      "category": "unknown",
+      "brands": [
+        "google"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://google-ji.com.cn/",
+        "content_len": 49441,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "谷歌浏览器 - 全球领先极速浏览器｜高效上网",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 11,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "712a8590feb59908e3556a7ef8537886485ff54c",
+        "snippet": "<!doctype html> <html lang=\"zh-hans\"> <head> <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"> <!-- 基础设置 --> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\"> <meta http-equiv=\"x-ua-compatible\" content=\"ie=edge,chrome=1\"> <!-- 网站信息 --> <!-- Search Engine Optimization by Rank Math - https://rankmath.",
+        "raw_html_len": 49441
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "brand_keywords:google"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazonvtc.com",
+      "final_url": "https://amazonvtc.com/",
+      "host": "amazonvtc.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazonvtc.com/",
+        "content_len": 1279,
+        "content_type": "text/html",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 4,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "47986a5e9ac73bbd312ee5a34e58b4040b936e5a",
+        "snippet": "<!DOCTYPE html><html lang=zh-CN><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content=\"IE=edge\"><title> </title><script>var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') || CSS.supports('top: constant(a)')) document.write('<meta name=\"viewport\" content=\"width=device-width, user-scalable=no, initial-scale=1.0, maximum-s",
+        "raw_html_len": 1279
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-k25l.vercel.app",
+      "final_url": "https://netflix-clone-k25l.vercel.app/",
+      "host": "netflix-clone-k25l.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflix-clone-k25l.vercel.app/",
+        "content_len": 7345,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Netflix",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "ce871de07b908cef22f2c65a2f636bcd1c4f8aea",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Netflix</title> <link rel=\"stylesheet\" href=\"style.css\"> </head> <body> <div class=\"main\"> <nav class=\"navbar\"> <span><img class=\"n\" src=\"./images/logo.svg\"></span> <div> <button class=\"btn",
+        "raw_html_len": 7345
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazon-clone-sable-rho.vercel.app",
+      "final_url": "https://amazon-clone-sable-rho.vercel.app/",
+      "host": "amazon-clone-sable-rho.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-sable-rho.vercel.app/",
+        "content_len": 12406,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon.com",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "88f3b0a95be4d0dd2d1dc75f5e3a9dff9b8b8695",
+        "snippet": "<html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon.com</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\" integrity=\"sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==\" cro",
+        "raw_html_len": 12406
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://binance-red-packet.vercel.app",
+      "final_url": "https://binance-red-packet.vercel.app/",
+      "host": "binance-red-packet.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "crypto"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://binance-red-packet.vercel.app/",
+        "content_len": 14210,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Binance Red Packet Code - Claim USDT",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "109c05cf07000439d4a3a95733aea9ea1640bda7",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Binance Red Packet Code - Claim USDT</title> <!-- SEO Meta Tags --> <meta name=\"description\" content=\"Claim free USDT instantly using Binance Red Packet codes. Limited time crypto giveaways available now! Secure and fast transaction",
+        "raw_html_len": 14210
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:crypto"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://jx-instagram.com",
+      "final_url": "https://jx-instagram.com/",
+      "host": "jx-instagram.com",
+      "category": "unknown",
+      "brands": [
+        "microsoft"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://jx-instagram.com/",
+        "content_len": 51755,
+        "content_type": "text/html; charset=utf-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "金星体育",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 21,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "32c6b723fa03acefd5f4ae0fc820ba6bf1b16d0f",
+        "snippet": "<html> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"> <title>金星体育</title> <meta name=\"description\" content=\"金星是最受欢迎的在线博彩平台之一，提供丰富多样的赛事投注和娱乐项目。我们致力于为用户提供安全可靠、刺激有趣的游戏体验，拥有正规的许可证和优质的客户服务。立即访问bet365亚洲中文版官网，尽享精彩的博彩娱乐！\"> <meta name=\"keywords\" content=\"金星体育_金星app\"> <link media=\"all\" href=\"/files/autoptimize_7d6f4436d919a3ef753cc492abd61917.css\" rel=\"stylesheet\">",
+        "raw_html_len": 51755
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "brand_keywords:microsoft"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-alpha-sand.vercel.app",
+      "final_url": "https://netflix-clone-alpha-sand.vercel.app/",
+      "host": "netflix-clone-alpha-sand.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "google",
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflix-clone-alpha-sand.vercel.app/",
+        "content_len": 11671,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Netflix-Clone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "8a44d22d0dff457666378053cfe11d86bd61d6ac",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Netflix-Clone</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css\" integrity=\"sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTW",
+        "raw_html_len": 11671
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:google,apple"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://office365.internal-alerts.com/i/d5b9af0d256f14c03ab8396a78d3687bf",
+      "final_url": "https://office365.internal-alerts.com/i/d5b9af0d256f14c03ab8396a78d3687bf",
+      "host": "office365.internal-alerts.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://office365.internal-alerts.com/i/d5b9af0d256f14c03ab8396a78d3687bf",
+        "content_len": 285,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "969bda8bdfda6f51c27b43526059603d50087d4a",
+        "snippet": "<!DOCTYPE html> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <link rel=\"icon\" href=\"data:,\" /> </head> <body> <script> window.location.replace('/page/eac6e2c4ddce477598e2cb62927a0ad2/d5b9af0d256f14c03ab8396a78d3687bf'); </script> </body> </html>",
+        "raw_html_len": 285
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://office365.internal-alerts.com/index/b445263c4c1f462796320ba80264bdce/d5b9af0d256f14c03ab8396a78d3687bf",
+      "final_url": "https://office365.internal-alerts.com/Admin/Home/Index",
+      "host": "office365.internal-alerts.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://office365.internal-alerts.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-signup-page.vercel.app",
+      "final_url": "https://netflix-clone-signup-page.vercel.app/",
+      "host": "netflix-clone-signup-page.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflix-clone-signup-page.vercel.app/",
+        "content_len": 13193,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Netflix Clone - Watch TV Shows Online, Watch Movies Online",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "eb180c446be8a60c5609ef9c274846d33223fcd6",
+        "snippet": "<html> <head> <meta name=\"description\" content=\"Hello this is my first web page!.\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <link rel=\"stylesheet\" href=\"src/styles.css\" /> <link rel=\"stylesheet\" href=\"https://pro.fontawesome.com/releases/v5.10.0/css/all.css\" integrity=\"sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVf",
+        "raw_html_len": 13193
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://instagram-clone-lime.vercel.app/signup",
+      "final_url": "https://instagram-clone-lime.vercel.app/signup",
+      "host": "instagram-clone-lime.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://instagram-clone-lime.vercel.app/signup",
+        "content_len": 3059,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Instagram",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "d0cffd652c2d6a25b9fa8555016d3ebc35d48fd1",
+        "snippet": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"/><link rel=\"icon\" href=\"./favicon.ico\"/><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"/><meta name=\"theme-color\" content=\"#000000\"/><meta name=\"description\" content=\"Web site created using create-react-app\"/><link rel=\"apple-touch-icon\" href=\"./logo192.png\"/><link rel=\"manifest\" href=\"./manifest.json\"/><title>Instagram<",
+        "raw_html_len": 3059
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:meta"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://instagram-clone-lime.vercel.app/passwordreset",
+      "final_url": "https://instagram-clone-lime.vercel.app/passwordreset",
+      "host": "instagram-clone-lime.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://instagram-clone-lime.vercel.app/passwordreset",
+        "content_len": 3059,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Instagram",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "d0cffd652c2d6a25b9fa8555016d3ebc35d48fd1",
+        "snippet": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"/><link rel=\"icon\" href=\"./favicon.ico\"/><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"/><meta name=\"theme-color\" content=\"#000000\"/><meta name=\"description\" content=\"Web site created using create-react-app\"/><link rel=\"apple-touch-icon\" href=\"./logo192.png\"/><link rel=\"manifest\" href=\"./manifest.json\"/><title>Instagram<",
+        "raw_html_len": 3059
+      },
+      "score": 25,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform",
+        "brand_keywords:meta"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://outlookfireworking.weebly.com",
+      "final_url": "https://outlookfireworking.weebly.com/",
+      "host": "outlookfireworking.weebly.com",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 403,
+        "final_url": "https://outlookfireworking.weebly.com/",
+        "content_len": 4546,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Attention Required! | Cloudflare",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "645286dd68e108fd28d12aecd35c6c12cf61c5d7",
+        "snippet": "<!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]--> <head> <title>Attention Required! | Cloudflare</title> <meta charset=\"UTF-8\" /> <meta",
+        "raw_html_len": 4546
+      },
+      "score": 11,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "blocked_or_checkpoint",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://amazonbookawards.com",
+      "final_url": "https://amazonbookawards.com/",
+      "host": "amazonbookawards.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazonbookawards.com/",
+        "content_len": 11695,
+        "content_type": "text/html",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "One moment, please...",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 2,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": true,
+        "sha1": "b964e5d2e4aa93048d1b60eb53d9fb52f7a5a63c",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"utf8\"> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"> <script> (function(){ setTimeout(function(){ window.location.reload(); }, 5000); }()) </script> <link rel=\"icon\" href=\"data:,\"> <title>One moment, please...</title> <style> .spinner { -webkit-animation: s",
+        "raw_html_len": 11695
+      },
+      "score": 0,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "challenge_page_detected"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://facebookpostscheduler.com",
+      "final_url": "https://facebookpostscheduler.com/",
+      "host": "facebookpostscheduler.com",
+      "category": "login_branding",
+      "brands": [
+        "google",
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://facebookpostscheduler.com/",
+        "content_len": 29556,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Automate Facebook Posts with AI | Save Time & Boost Engagement",
+        "forms": 2,
+        "password_inputs": 2,
+        "scripts": 7,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "b1dafd0d6d11d1c2c9e04ac519140c5108403563",
+        "snippet": "<!doctype html> <html lang=\"en\"> <head> <meta charset=\"utf-8\" /> <title>Automate Facebook Posts with AI | Save Time & Boost Engagement</title> <meta name=\"description\" content=\"Automate your Facebook posts with our AI-powered scheduler. Generate content, save time, and ensure consistent daily and weekly posting. Start now!\" /> <meta name=\"viewport\" content=\"width=device-width,",
+        "raw_html_len": 29556
+      },
+      "score": 90,
+      "severity": "HIGH",
+      "recommended_action": "BLOCK NOW",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "password_input_detected",
+        "login_keywords_detected",
+        "brand_keywords:google,meta"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://google-og.com.cn",
+      "final_url": "https://google-og.com.cn/",
+      "host": "google-og.com.cn",
+      "category": "unknown",
+      "brands": [
+        "google"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://google-og.com.cn/",
+        "content_len": 71608,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "谷歌浏览器下载_谷歌浏览器电脑版安装_Chrome浏览器高速稳定版",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 11,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "65a3215449a24e1c7b998923c2266a3bba85d1bb",
+        "snippet": "<!doctype html> <html lang=\"zh-hans\"> <head> <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"> <!-- 基础设置 --> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\"> <meta http-equiv=\"x-ua-compatible\" content=\"ie=edge,chrome=1\"> <!-- 网站信息 --> <!-- Search Engine Optimization by Rank Math - https://rankmath.",
+        "raw_html_len": 71608
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "brand_keywords:google"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/i/ab041e84e499243eca3e98fb328201632",
+      "final_url": "http://support.m365-microsoft.com/i/ab041e84e499243eca3e98fb328201632",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/i/ab041e84e499243eca3e98fb328201632",
+        "content_len": 285,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "4cae1aaeb109bafd60500a5303c9a787c19ce097",
+        "snippet": "<!DOCTYPE html> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <link rel=\"icon\" href=\"data:,\" /> </head> <body> <script> window.location.replace('/form/4249d37c72464f8484f6d33eac316363/ab041e84e499243eca3e98fb328201632'); </script> </body> </html>",
+        "raw_html_len": 285
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/index/d0c0a4acb5134410a2a4222dddc5dd5a/ab041e84e499243eca3e98fb328201632",
+      "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/i/a8472e4c0bb944ac1b09948052f48dd44",
+      "final_url": "http://support.m365-microsoft.com/i/a8472e4c0bb944ac1b09948052f48dd44",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/i/a8472e4c0bb944ac1b09948052f48dd44",
+        "content_len": 285,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "867551ee9cefefa6e1cfef0b9cc63880f0708f66",
+        "snippet": "<!DOCTYPE html> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <link rel=\"icon\" href=\"data:,\" /> </head> <body> <script> window.location.replace('/page/7abf000a9991472980caaab04b0b1c5e/a8472e4c0bb944ac1b09948052f48dd44'); </script> </body> </html>",
+        "raw_html_len": 285
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/page/cab136d8e0b44fd69ca7282432a94833/a3c830db69c7a4471885d1d2f44c22798",
+      "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/index/592bfc700e07476abb25aea03dd15abe/a8472e4c0bb944ac1b09948052f48dd44",
+      "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/page/b8b9adf6d6d74dad85d4773d4eb0b31a/a5722854c480a442880d9de7f2b5b55a9",
+      "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/i/a5722854c480a442880d9de7f2b5b55a9",
+      "final_url": "http://support.m365-microsoft.com/i/a5722854c480a442880d9de7f2b5b55a9",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/i/a5722854c480a442880d9de7f2b5b55a9",
+        "content_len": 285,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "035344059510c5ad0d32442eeed7bba383e1be1b",
+        "snippet": "<!DOCTYPE html> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <link rel=\"icon\" href=\"data:,\" /> </head> <body> <script> window.location.replace('/home/aaf38c4947b64065bce45aff81e45ad2/a5722854c480a442880d9de7f2b5b55a9'); </script> </body> </html>",
+        "raw_html_len": 285
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://support.m365-microsoft.com/index/8f9582b190ae4833831f9d605ef95d49/ac044ac20288e4a7bb84dd48b3cbb0756",
+      "final_url": "https://support.m365-microsoft.com/Admin/Home/Index",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://support.m365-microsoft.com/Admin/Home/Index",
+        "content_len": 2054,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "Phishing Simulation Notice",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "fe4289f7e72af31155482838e5cc33424e15288e",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"> <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin> <link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\"",
+        "raw_html_len": 2054
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://support.m365-microsoft.com/i/ac044ac20288e4a7bb84dd48b3cbb0756",
+      "final_url": "https://support.m365-microsoft.com/i/ac044ac20288e4a7bb84dd48b3cbb0756",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://support.m365-microsoft.com/i/ac044ac20288e4a7bb84dd48b3cbb0756",
+        "content_len": 286,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "017f5cf06e1c6f805bf856c1f17d9c66d0d24a49",
+        "snippet": "<!DOCTYPE html> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <link rel=\"icon\" href=\"data:,\" /> </head> <body> <script> window.location.replace('/index/31c24fa0a10a484e93ae0820328e802d/ac044ac20288e4a7bb84dd48b3cbb0756'); </script> </body> </html>",
+        "raw_html_len": 286
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://support.m365-microsoft.com/i/a3c830db69c7a4471885d1d2f44c22798",
+      "final_url": "http://support.m365-microsoft.com/i/a3c830db69c7a4471885d1d2f44c22798",
+      "host": "support.m365-microsoft.com",
+      "category": "redirector",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "http://support.m365-microsoft.com/i/a3c830db69c7a4471885d1d2f44c22798",
+        "content_len": 285,
+        "content_type": "text/html; charset=utf-8",
+        "server": ""
+      },
+      "analysis": {
+        "title": "",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "f494d1385ceb477b43dc7d111dbcd0762075d218",
+        "snippet": "<!DOCTYPE html> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <link rel=\"icon\" href=\"data:,\" /> </head> <body> <script> window.location.replace('/page/801ea74476af47ce9843739747666d8c/a3c830db69c7a4471885d1d2f44c22798'); </script> </body> </html>",
+        "raw_html_len": 285
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "redirector_or_shortener"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://spotify.fourthwall.app",
+      "final_url": "https://spotify.fourthwall.app/",
+      "host": "spotify.fourthwall.app",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://spotify.fourthwall.app/",
+        "content_len": 8589,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Spotify Merch Store",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 17,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "ce985a07caab0069920cede4527fcfaa25747d39",
+        "snippet": "<!DOCTYPE html><!--AJIe4_tXYGHyUolHcKQZI--><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" href=\"/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2\" as=\"font\" crossorigin=\"\" type=\"font/woff2\"/><link rel=\"preload\" href=\"/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2\" as=\"font\" crossorigin=\"\" type=\"fo",
+        "raw_html_len": 8589
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix-clone-iota-five.vercel.app",
+      "final_url": "https://netflix-clone-iota-five.vercel.app/",
+      "host": "netflix-clone-iota-five.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "apple"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflix-clone-iota-five.vercel.app/",
+        "content_len": 17264,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Netflix",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 4,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "36aa6dc4c19ab917a1b832342987f70f447c12c6",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <link rel=\"stylesheet\" href=\"style.css\" /> <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwI",
+        "raw_html_len": 17264
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:apple"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://facebookloginaccount.blogspot.com/?m=1",
+      "final_url": "https://facebookloginaccount.blogspot.com/?m=1",
+      "host": "facebookloginaccount.blogspot.com",
+      "category": "redirector",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://facebookloginaccount.blogspot.com/?m=1",
+        "content_len": 27206,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "GSE"
+      },
+      "analysis": {
+        "title": "Facebook Login",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 8,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "64addf7d5692b5e2e6b55c9042beb621673e2675",
+        "snippet": "<!DOCTYPE html> <html class='v2' dir='ltr' lang='vi'> <head> <link href='https://www.blogger.com/static/v1/widgets/3772415480-widget_css_mobile_2_bundle.css' rel='stylesheet' type='text/css'/> <meta content='width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0' name='viewport'/> <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/> <meta content='blogger' name='g",
+        "raw_html_len": 27206
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "redirector_or_shortener",
+        "brand_keywords:meta"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://tamires-ramos.github.io/imersao-alura-spotify",
+      "final_url": "https://tamires-ramos.github.io/imersao-alura-spotify/",
+      "host": "tamires-ramos.github.io",
+      "category": "cloud_hosted",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://tamires-ramos.github.io/imersao-alura-spotify/",
+        "content_len": 10258,
+        "content_type": "text/html; charset=utf-8",
+        "server": "GitHub.com"
+      },
+      "analysis": {
+        "title": "Spotify Imersão Alura",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 1,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "9051c02781f2bd65ac71f3ce96d94f157b9dde30",
+        "snippet": "<!DOCTYPE html> <html lang=\"pt-BR\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Spotify Imersão Alura</title> <link rel=\"stylesheet\" href=\"reset.css\"> <link rel=\"stylesheet\" href=\"./src/assets/styles/vars.css\"> <link rel=\"stylesheet\" href=\"./src/assets/styles/main-content.css\"> <link rel=\"sty",
+        "raw_html_len": 10258
+      },
+      "score": 15,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "cloud_hosted_platform"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazon-clone-neon-ten-70.vercel.app",
+      "final_url": "https://amazon-clone-neon-ten-70.vercel.app/",
+      "host": "amazon-clone-neon-ten-70.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "meta",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazon-clone-neon-ten-70.vercel.app/",
+        "content_len": 6029,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazon",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "d17ab929d9aa4a4d0dbaa8711844d7916e9e0ae7",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazon</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css\" integrity=\"sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==\"",
+        "raw_html_len": 6029
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,meta,banking"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://instagram-clone-nine-delta.vercel.app",
+      "final_url": "https://instagram-clone-nine-delta.vercel.app/",
+      "host": "instagram-clone-nine-delta.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://instagram-clone-nine-delta.vercel.app/",
+        "content_len": 5266,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Instagram",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 21,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "30141c7581922384de70ad254b70eb3270f915b2",
+        "snippet": "<!DOCTYPE html><html><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width\"/><title>Instagram</title><meta name=\"description\" content=\"Generated by create next app\"/><link rel=\"icon\" href=\"/favicon.ico\"/><meta name=\"next-head-count\" content=\"5\"/><link rel=\"preload\" href=\"/_next/static/css/e5f47312432140a6.css\" as=\"style\"/><link rel=\"stylesheet\" href=\"/_next/static/css/e5f4",
+        "raw_html_len": 5266
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:meta"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://amazone-clone-snowy.vercel.app",
+      "final_url": "https://amazone-clone-snowy.vercel.app/",
+      "host": "amazone-clone-snowy.vercel.app",
+      "category": "cloud_hosted",
+      "brands": [
+        "amazon",
+        "banking"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://amazone-clone-snowy.vercel.app/",
+        "content_len": 9056,
+        "content_type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "analysis": {
+        "title": "Amazone",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 0,
+        "iframes": 0,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "fc1c491c8d0d754471328a7a714e2a68a60acef6",
+        "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Amazone</title> <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css\" integrity=\"sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==\"",
+        "raw_html_len": 9056
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "cloud_hosted_platform",
+        "brand_keywords:amazon,banking"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://larco.paypal-merchant.ru",
+      "final_url": "https://www.paypal-merchant.com/micrositeportal/",
+      "host": "www.paypal-merchant.com",
+      "category": "redirector",
+      "brands": [
+        "paypal"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://www.paypal-merchant.com/micrositeportal/",
+        "content_len": 8776,
+        "content_type": "text/html;charset=UTF-8",
+        "server": "nginx"
+      },
+      "analysis": {
+        "title": "PayPal Microsite Portal for Russia KYB",
+        "forms": 1,
+        "password_inputs": 0,
+        "scripts": 17,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "e236efcacda3507e2dd6aafdf06bb0ef2f84371c",
+        "snippet": "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <META Http-Equiv=\"Cache-Control\" Content=\"no-cache\"> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /> <meta HTTP-EQUIV=\"Pragma\" CONTENT=\"no-cache\"> <meta HTTP-EQUIV=\"Expires\" CONTENT=\"-1\"",
+        "raw_html_len": 8776
+      },
+      "score": 45,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "form_detected",
+        "redirector_or_shortener",
+        "brand_keywords:paypal"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://metamaskuks.vip",
+      "final_url": "https://metamaskuks.vip/",
+      "host": "metamaskuks.vip",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://metamaskuks.vip/",
+        "content_len": 1444,
+        "content_type": "text/html",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "IDG",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 5,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "9a3476e3fc344841a189dbce8641c12af190d2ea",
+        "snippet": "<html lang=en translate=no><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content=\"IE=edge\"><title>IDG</title><script>var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') || CSS.supports('top: constant(a)')) document.write('<meta name=\"viewport\" content=\"width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, m",
+        "raw_html_len": 1444
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://netflix.2ndstage.app",
+      "final_url": "https://netflix.2ndstage.app/",
+      "host": "netflix.2ndstage.app",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://netflix.2ndstage.app/",
+        "content_len": 1406,
+        "content_type": "text/html; charset=utf-8",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "Netflix Conferenza Stampa",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 3,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "890f0ce105b2a24fe6042ea6874335e268c8b2c3",
+        "snippet": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"/><link rel=\"icon\" href=\"/favicon.ico\"/><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"/><meta name=\"theme-color\" content=\"#000000\"/><meta name=\"robots\" content=\"noindex, nofollow\"><meta name=\"description\" content=\"Netflix Conferenza Stampa\"/><link rel=\"apple-touch-icon\" href=\"/logo192.png\"/><link rel=\"manifest\" href=\"/ma",
+        "raw_html_len": 1406
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "https://openseaholding.com",
+      "final_url": "https://openseaholding.com/",
+      "host": "openseaholding.com",
+      "category": "unknown",
+      "brands": [],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://openseaholding.com/",
+        "content_len": 1666,
+        "content_type": "text/html",
+        "server": "cloudflare"
+      },
+      "analysis": {
+        "title": "OpenSea Holding | Holding Patrimonial Global",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 2,
+        "iframes": 0,
+        "login_keywords": false,
+        "challenge": false,
+        "sha1": "b377d9aa818d9f30be898f0323a04d9184037d2b",
+        "snippet": "<!doctype html> <html lang=\"pt-BR\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>OpenSea Holding | Holding Patrimonial Global</title> <meta name=\"description\" content=\"Holding patrimonial sediada em AsunciÃ³n, Paraguai com negÃ³cios em tecnologia, energia renovÃ¡vel, pagamentos internacionais, IA e data centers. P",
+        "raw_html_len": 1666
+      },
+      "score": 5,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx"
+      ]
+    },
+    {
+      "date": "2026-04-25",
+      "source": "phishunt",
+      "seed_url": "https://phishunt.io/feed.txt",
+      "url": "http://facebookcolorvisitor.blogspot.com",
+      "final_url": "https://facebookcolorvisitor.blogspot.com/",
+      "host": "facebookcolorvisitor.blogspot.com",
+      "category": "redirector",
+      "brands": [
+        "meta"
+      ],
+      "fetch": {
+        "status_code": 200,
+        "final_url": "https://facebookcolorvisitor.blogspot.com/",
+        "content_len": 10187,
+        "content_type": "text/html; charset=UTF-8",
+        "server": "GSE"
+      },
+      "analysis": {
+        "title": "Facebook Login",
+        "forms": 0,
+        "password_inputs": 0,
+        "scripts": 9,
+        "iframes": 1,
+        "login_keywords": true,
+        "challenge": false,
+        "sha1": "024ed68aaab6ec68bec10ba3fd22c232e88fe2d0",
+        "snippet": "<html class='v2' dir='rtl' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'> <head> <link href='https://www.blogger.com/static/v1/widgets/2370241452-css_bundle_v2_rtl.css' rel='stylesheet' type='text/css'/> <style> img{max-width:98% !important} </style> <me",
+        "raw_html_len": 10187
+      },
+      "score": 40,
+      "severity": "LOW",
+      "recommended_action": "IGNORE",
+      "reasons": [
+        "reachable_http_2xx",
+        "login_keywords_detected",
+        "redirector_or_shortener",
+        "brand_keywords:meta"
+      ]
+    }
+  ]
+}

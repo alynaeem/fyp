@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="950" viewBox="0 0 1600 950">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eef2ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.16"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#2563eb"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1600" height="950" fill="url(#bg)"/>
+  <text x="800.0" y="48" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800" fill="#0f172a">DarkPulse Deployment Diagram</text>
+  <text x="800.0" y="76" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" fill="#64748b">DarkPulse Design &amp; Test Specification Diagrams</text>
+<rect x="70" y="150" width="260" height="110" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="70" y="150" width="260" height="38" rx="12" fill="#2563eb"/>
+<path d="M70,178 Q70,188 82,188 L318,188 Q330,188 330,178 L330,188 L70,188 Z" fill="#2563eb"/>
+<text x="84" y="175" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">Client Browser</text>
+<text x="86" y="210" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">http://127.0.0.1:9000</text>
+<text x="86" y="228" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">Dashboard UI</text>
+<rect x="520" y="120" width="980" height="720" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="520" y="120" width="980" height="38" rx="12" fill="#0f172a"/>
+<path d="M520,148 Q520,158 532,158 L1488,158 Q1500,158 1500,148 L1500,158 L520,158 Z" fill="#0f172a"/>
+<text x="534" y="145" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">Local Machine / Docker Host</text>
+<rect x="580" y="210" width="300" height="145" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="580" y="210" width="300" height="38" rx="12" fill="#7c3aed"/>
+<path d="M580,238 Q580,248 592,248 L868,248 Q880,248 880,238 L880,248 L580,248 Z" fill="#7c3aed"/>
+<text x="594" y="235" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">FastAPI / Uvicorn</text>
+<text x="596" y="270" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">ui_server.py</text>
+<text x="596" y="288" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">Port 9000</text>
+<text x="596" y="306" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">Serves API + static UI</text>
+<rect x="1050" y="210" width="300" height="145" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="1050" y="210" width="300" height="38" rx="12" fill="#0f766e"/>
+<path d="M1050,238 Q1050,248 1062,248 L1338,248 Q1350,248 1350,238 L1350,248 L1050,248 Z" fill="#0f766e"/>
+<text x="1064" y="235" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">MongoDB Container</text>
+<text x="1066" y="270" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">darkpulse-mongo</text>
+<text x="1066" y="288" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">Port 27017</text>
+<text x="1066" y="306" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">Volume: mongo_data</text>
+<rect x="1050" y="430" width="300" height="130" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="1050" y="430" width="300" height="38" rx="12" fill="#475569"/>
+<path d="M1050,458 Q1050,468 1062,468 L1338,468 Q1350,468 1350,458 L1350,468 L1050,468 Z" fill="#475569"/>
+<text x="1064" y="455" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">Tor Container</text>
+<text x="1066" y="490" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">darkpulse_tor</text>
+<text x="1066" y="508" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">SOCKS 19050 -&gt; 9050</text>
+<rect x="580" y="430" width="300" height="145" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="580" y="430" width="300" height="38" rx="12" fill="#9333ea"/>
+<path d="M580,458 Q580,468 592,468 L868,468 Q880,468 880,458 L880,468 L580,468 Z" fill="#9333ea"/>
+<text x="594" y="455" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">Collector Service</text>
+<text x="596" y="490" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">orchestrator.py --schedule</text>
+<text x="596" y="508" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">Runs OSINT collectors</text>
+<text x="596" y="526" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">Writes MongoDB</text>
+<rect x="580" y="650" width="300" height="120" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="580" y="650" width="300" height="38" rx="12" fill="#0891b2"/>
+<path d="M580,678 Q580,688 592,688 L868,688 Q880,688 880,678 L880,688 L580,688 Z" fill="#0891b2"/>
+<text x="594" y="675" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">Project Files</text>
+<text x="596" y="710" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">index.html</text>
+<text x="596" y="728" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">app.js</text>
+<text x="596" y="746" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">style.css</text>
+<text x="596" y="764" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">assets/logos</text>
+<rect x="70" y="610" width="260" height="145" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="70" y="610" width="260" height="38" rx="12" fill="#dc2626"/>
+<path d="M70,638 Q70,648 82,648 L318,648 Q330,648 330,638 L330,648 L70,648 Z" fill="#dc2626"/>
+<text x="84" y="635" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">External Sources</text>
+<text x="86" y="670" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">News sites</text>
+<text x="86" y="688" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">Leak sites</text>
+<text x="86" y="706" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">GitHub</text>
+<text x="86" y="724" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">APK sites</text>
+<text x="86" y="742" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">PageSpeed/Gemini</text>
+<line x1="330" y1="205" x2="580" y2="280" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<line x1="880" y1="280" x2="1050" y2="280" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<line x1="880" y1="500" x2="1050" y2="500" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<line x1="730" y1="430" x2="730" y2="355" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<line x1="730" y1="650" x2="730" y2="575" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<polyline points="1050,500 450,500 450,682 330,682" fill="none" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<polyline points="580,500 450,500 450,682 330,682" fill="none" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="455" y="228" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#334155">HTTP</text>
+<text x="965" y="265" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#334155">Mongo URI</text>
+<text x="965" y="485" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#334155">SOCKS proxy</text>
+</svg>

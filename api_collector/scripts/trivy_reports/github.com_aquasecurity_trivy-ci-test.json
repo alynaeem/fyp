@@ -3,10 +3,10 @@
   "Trivy": {
     "Version": "0.69.1"
   },
-  "ReportID": "019d5a9e-2afd-7ab5-ba38-681ab4b2129f",
-  "CreatedAt": "2026-04-05T03:30:08.381704704+05:00",
+  "ReportID": "019dd361-4fed-7d2a-acfe-d2d60194f41e",
+  "CreatedAt": "2026-04-28T09:17:43.277866018Z",
   "ArtifactID": "sha256:a926c6a5ba71cef60babb6f4deb66e58e6b61e2ed5d17923f6df2e8b09c6eaf3",
-  "ArtifactName": "/home/muhmmad-abdullah/.cache/darkpulse/trivy_repos/repo_trivy_wwpu35r2",
+  "ArtifactName": "/home/darkpulse/.cache/darkpulse/trivy_repos/repo_trivy_5sgwafql",
   "ArtifactType": "repository",
   "Metadata": {
     "RepoURL": "https://github.com/aquasecurity/trivy-ci-test.git",
@@ -4396,7 +4396,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2024-1135"
           ],
           "PublishedDate": "2024-04-16T00:15:07.797Z",
-          "LastModifiedDate": "2024-12-20T07:15:12.59Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2024-6827",
@@ -4451,7 +4451,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2024-6827"
           ],
           "PublishedDate": "2025-03-20T10:15:33.357Z",
-          "LastModifiedDate": "2025-03-20T10:15:33.357Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2021-21240",
@@ -5551,6 +5551,7 @@
           "VendorSeverity": {
             "amazon": 2,
             "ghsa": 3,
+            "photon": 3,
             "redhat": 3,
             "ubuntu": 2
           },
@@ -5999,7 +6000,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2024-35195"
           ],
           "PublishedDate": "2024-05-20T21:15:09.99Z",
-          "LastModifiedDate": "2024-11-21T09:19:54.51Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2024-47081",
@@ -6056,12 +6057,12 @@
             "http://www.openwall.com/lists/oss-security/2025/06/03/9",
             "http://www.openwall.com/lists/oss-security/2025/06/04/1",
             "http://www.openwall.com/lists/oss-security/2025/06/04/6",
-            "https://access.redhat.com/errata/RHSA-2025:13604",
+            "https://access.redhat.com/errata/RHSA-2025:12519",
             "https://access.redhat.com/security/cve/CVE-2024-47081",
             "https://bugzilla.redhat.com/2371272",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2371272",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-47081",
-            "https://errata.almalinux.org/10/ALSA-2025-13604.html",
+            "https://errata.almalinux.org/9/ALSA-2025-12519.html",
             "https://errata.rockylinux.org/RLSA-2025:13604",
             "https://github.com/psf/requests",
             "https://github.com/psf/requests/commit/96ba401c1296ab1dda74a2365ef36d88f7d144ef",
@@ -6078,7 +6079,7 @@
             "https://www.openwall.com/lists/oss-security/2025/06/03/9"
           ],
           "PublishedDate": "2025-06-09T18:15:24.983Z",
-          "LastModifiedDate": "2025-06-12T16:06:47.857Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2026-25645",
@@ -6108,8 +6109,10 @@
             "CWE-377"
           ],
           "VendorSeverity": {
+            "azure": 2,
             "ghsa": 2,
             "nvd": 2,
+            "photon": 2,
             "redhat": 2
           },
           "CVSS": {
@@ -6246,7 +6249,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2024-4340"
           ],
           "PublishedDate": "2024-04-30T15:15:53.407Z",
-          "LastModifiedDate": "2025-11-03T22:18:33.897Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2023-30608",
@@ -6519,14 +6522,20 @@
             "CWE-400"
           ],
           "VendorSeverity": {
+            "alma": 2,
             "amazon": 3,
             "ghsa": 3,
             "nvd": 3,
-            "redhat": 2
+            "oracle-oval": 2,
+            "photon": 3,
+            "redhat": 2,
+            "ubuntu": 2
           },
           "CVSS": {
             "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
               "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 7.5,
               "V40Score": 8.7
             },
             "nvd": {
@@ -6539,13 +6548,19 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:8093",
             "https://access.redhat.com/security/cve/CVE-2026-31958",
+            "https://bugzilla.redhat.com/2446765",
+            "https://errata.almalinux.org/8/ALSA-2026-8093.html",
             "https://github.com/tornadoweb/tornado",
             "https://github.com/tornadoweb/tornado/commit/119a195e290c43ad2d63a2cf012c29d43d6ed839",
             "https://github.com/tornadoweb/tornado/releases/tag/v6.5.5",
             "https://github.com/tornadoweb/tornado/security/advisories/GHSA-qjxf-f2mg-c6mc",
+            "https://linux.oracle.com/cve/CVE-2026-31958.html",
+            "https://linux.oracle.com/errata/ELSA-2026-8093.html",
             "https://lists.debian.org/debian-lts-announce/2026/04/msg00000.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-31958",
+            "https://ubuntu.com/security/notices/USN-8198-1",
             "https://www.cve.org/CVERecord?id=CVE-2026-31958"
           ],
           "PublishedDate": "2026-03-11T20:16:16.617Z",
@@ -6580,12 +6595,18 @@
           ],
           "VendorSeverity": {
             "ghsa": 3,
-            "redhat": 2
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 2
           },
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:N",
               "V3Score": 7.2
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N",
@@ -6598,10 +6619,11 @@
             "https://github.com/tornadoweb/tornado/releases/tag/v6.5.5",
             "https://github.com/tornadoweb/tornado/security/advisories/GHSA-78cv-mqj4-43f7",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-35536",
+            "https://ubuntu.com/security/notices/USN-8198-1",
             "https://www.cve.org/CVERecord?id=CVE-2026-35536"
           ],
           "PublishedDate": "2026-04-03T04:16:53.55Z",
-          "LastModifiedDate": "2026-04-03T16:10:23.73Z"
+          "LastModifiedDate": "2026-04-10T15:14:22.7Z"
         },
         {
           "VulnerabilityID": "CVE-2023-28370",
@@ -7057,7 +7079,7 @@
           ],
           "VendorSeverity": {
             "alma": 3,
-            "amazon": 2,
+            "amazon": 3,
             "azure": 3,
             "cbl-mariner": 3,
             "ghsa": 3,
@@ -7083,7 +7105,7 @@
             }
           },
           "References": [
-            "https://access.redhat.com/errata/RHSA-2026:1086",
+            "https://access.redhat.com/errata/RHSA-2026:1239",
             "https://access.redhat.com/security/cve/CVE-2025-66418",
             "https://bugzilla.redhat.com/2419455",
             "https://bugzilla.redhat.com/2419467",
@@ -7094,7 +7116,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-66418",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-66471",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-21441",
-            "https://errata.almalinux.org/10/ALSA-2026-1086.html",
+            "https://errata.almalinux.org/9/ALSA-2026-1239.html",
             "https://errata.rockylinux.org/RLSA-2026:1086",
             "https://github.com/urllib3/urllib3",
             "https://github.com/urllib3/urllib3/commit/24d7b67eac89f94e11003424bcf0d8f7b72222a8",
@@ -7139,7 +7161,7 @@
           ],
           "VendorSeverity": {
             "alma": 3,
-            "amazon": 2,
+            "amazon": 3,
             "azure": 3,
             "cbl-mariner": 3,
             "ghsa": 3,
@@ -7165,7 +7187,7 @@
             }
           },
           "References": [
-            "https://access.redhat.com/errata/RHSA-2026:1086",
+            "https://access.redhat.com/errata/RHSA-2026:1239",
             "https://access.redhat.com/security/cve/CVE-2025-66471",
             "https://bugzilla.redhat.com/2419455",
             "https://bugzilla.redhat.com/2419467",
@@ -7176,7 +7198,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-66418",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-66471",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-21441",
-            "https://errata.almalinux.org/10/ALSA-2026-1086.html",
+            "https://errata.almalinux.org/9/ALSA-2026-1239.html",
             "https://errata.rockylinux.org/RLSA-2026:1086",
             "https://github.com/urllib3/urllib3",
             "https://github.com/urllib3/urllib3/commit/c19571de34c47de3a766541b041637ba5f716ed7",
@@ -7250,7 +7272,7 @@
             }
           },
           "References": [
-            "https://access.redhat.com/errata/RHSA-2026:1086",
+            "https://access.redhat.com/errata/RHSA-2026:1239",
             "https://access.redhat.com/security/cve/CVE-2026-21441",
             "https://bugzilla.redhat.com/2419455",
             "https://bugzilla.redhat.com/2419467",
@@ -7261,7 +7283,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-66418",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-66471",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-21441",
-            "https://errata.almalinux.org/10/ALSA-2026-1086.html",
+            "https://errata.almalinux.org/9/ALSA-2026-1239.html",
             "https://errata.rockylinux.org/RLSA-2026:1086",
             "https://github.com/urllib3/urllib3",
             "https://github.com/urllib3/urllib3/commit/8864ac407bba8607950025e0979c4c69bc7abc7b",

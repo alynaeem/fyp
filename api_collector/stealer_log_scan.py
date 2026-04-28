@@ -354,15 +354,7 @@ def _load_dataset_records(path: Path) -> list[dict[str, Any]]:
 
 
 def _mask_email(value: str) -> str:
-    if not value or "@" not in value:
-        return _mask_token(value)
-    local_part, domain_part = value.split("@", 1)
-    if not local_part:
-        return f"***@{domain_part}"
-    if len(local_part) <= 2:
-        return f"{local_part[:1]}***@{domain_part}"
-    return f"{local_part[:2]}***{local_part[-1:]}@{domain_part}"
-
+    return value
 
 def _mask_token(value: str) -> str:
     value = _normalize_text(value)
@@ -478,7 +470,8 @@ def _normalize_match(record: dict[str, Any], source_file: Path) -> dict[str, Any
         return None
 
     date_label = _format_date(_first_value(record, DATE_KEYS))
-    password_present = bool(_first_value(record, PASSWORD_KEYS))
+    password = _first_value(record, PASSWORD_KEYS)
+    password_present = bool(password)
     email_or_username = _first_value(record, {"email", "email_address", "mail", "username", "user", "user_name", "login"})
     source_domain = _first_value(record, SOURCE_DOMAIN_KEYS) or host or "-"
     url_value = _safe_source_url(record)
@@ -487,7 +480,7 @@ def _normalize_match(record: dict[str, Any], source_file: Path) -> dict[str, Any
 
     result = {
         "domain_host": host or "-",
-        "credential_identifier": _mask_email(identifier) if "@" in identifier else _mask_token(identifier),
+        "credential_identifier": _mask_email(identifier) if "" in identifier else _mask_token(identifier),
         "date": date_label,
         "source_domain": source_domain,
         "channel": _first_value(record, CHANNEL_KEYS) or "-",
@@ -496,7 +489,7 @@ def _normalize_match(record: dict[str, Any], source_file: Path) -> dict[str, Any
         "email_username": _mask_email(email_or_username) if "@" in email_or_username else _mask_token(email_or_username),
         "domain": normalized_domain,
         "ip": _mask_ip(_first_value(record, IP_KEYS)),
-        "password": "Present (redacted)" if password_present else "-",
+        "password": password if password else "-",
         "password_present": password_present,
         "metadata_tags": _build_tags(record, source_file.name),
         "raw_trace": _redacted_trace(record, host or normalized_domain, identifier, password_present),

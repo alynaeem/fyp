@@ -6370,6 +6370,129 @@ body {
   letter-spacing: 0.01em;
 }
 
+.auth-shell {
+  transition: opacity 0.24s ease, transform 0.24s ease, filter 0.24s ease;
+}
+
+.auth-shell.auth-shell-loading {
+  opacity: 0.18;
+  transform: scale(0.985);
+  filter: blur(10px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.auth-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  padding: clamp(20px, 3vw, 42px);
+  background: linear-gradient(180deg, rgba(3, 7, 12, 0.3), rgba(5, 8, 14, 0.54));
+  backdrop-filter: blur(10px);
+}
+
+.auth-loading-card {
+  width: min(440px, 100%);
+  padding: clamp(1.4rem, 2.4vw, 2rem);
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background:
+    radial-gradient(circle at top, rgba(255, 90, 61, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(14, 20, 31, 0.98), rgba(8, 12, 20, 0.98));
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 0.85rem;
+}
+
+.auth-loading-ring {
+  --auth-progress: 0%;
+  width: clamp(132px, 18vw, 164px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: 10px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  background:
+    conic-gradient(from -90deg, #ff5a3d var(--auth-progress), rgba(255, 255, 255, 0.08) var(--auth-progress)),
+    radial-gradient(circle, rgba(255, 90, 61, 0.16), transparent 62%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 18px 40px rgba(255, 90, 61, 0.16);
+}
+
+.auth-loading-ring::after {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.auth-loading-ring-core {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 0.18rem;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.06), rgba(10, 16, 25, 0.96) 68%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.auth-loading-ring-core strong {
+  font-size: clamp(1.8rem, 3vw, 2.2rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+}
+
+.auth-loading-ring-core span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(184, 199, 220, 0.82);
+}
+
+.auth-loading-kicker {
+  margin: 0.15rem 0 0;
+}
+
+.auth-loading-title {
+  margin: 0;
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #f8fbff;
+}
+
+.auth-loading-copy {
+  margin: 0;
+  max-width: 32ch;
+  color: rgba(197, 208, 226, 0.9);
+  line-height: 1.68;
+}
+
+.auth-loading-stage {
+  min-height: 48px;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffd8cb;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
 .error-msg,
 .test-result {
   margin-top: 0;
@@ -7979,6 +8102,52 @@ body.light-theme .auth-showcase-grid {
 
 body.light-theme .auth-shell .modal-login {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(244, 247, 252, 0.97));
+}
+
+body.light-theme .auth-loading-overlay {
+  background: linear-gradient(180deg, rgba(244, 247, 252, 0.42), rgba(238, 243, 249, 0.72));
+}
+
+body.light-theme .auth-loading-card {
+  border-color: rgba(15, 23, 42, 0.08);
+  background:
+    radial-gradient(circle at top, rgba(255, 90, 61, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(244, 247, 252, 0.98));
+  box-shadow: 0 30px 72px rgba(148, 163, 184, 0.22);
+}
+
+body.light-theme .auth-loading-ring {
+  background:
+    conic-gradient(from -90deg, #ff5a3d var(--auth-progress), rgba(148, 163, 184, 0.18) var(--auth-progress)),
+    radial-gradient(circle, rgba(255, 90, 61, 0.12), transparent 62%);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.06),
+    0 18px 36px rgba(255, 90, 61, 0.12);
+}
+
+body.light-theme .auth-loading-ring::after {
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
+body.light-theme .auth-loading-ring-core {
+  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.96), rgba(242, 246, 251, 0.98) 68%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+body.light-theme .auth-loading-ring-core strong,
+body.light-theme .auth-loading-title {
+  color: var(--text-main);
+}
+
+body.light-theme .auth-loading-ring-core span,
+body.light-theme .auth-loading-copy {
+  color: var(--text-soft);
+}
+
+body.light-theme .auth-loading-stage {
+  border-color: rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.76);
+  color: #b53c27;
 }
 
 body.light-theme .auth-feature-card,

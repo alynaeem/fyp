@@ -378,10 +378,9 @@ class github_trivy_checker(api_collector_interface, ABC):
     _instance = None
 
     def __new__(cls, *args, **kwargs):
-        if cls._instance is None:
-            cls._instance = super(github_trivy_checker, cls).__new__(cls)
-            cls._instance._initialized = False
-        return cls._instance
+        instance = super(github_trivy_checker, cls).__new__(cls)
+        instance._initialized = False
+        return instance
 
     def __init__(self, developer_name: str = "Muhammad Abdullah", developer_note: str = ""):
         if getattr(self, "_initialized", False):
@@ -539,10 +538,17 @@ class github_trivy_checker(api_collector_interface, ABC):
             return _empty_model({"error": "git not found in PATH"})
 
         if not trivy_bin:
+            current_trivy = _which("trivy")
+            if current_trivy and "/snap/" in current_trivy:
+                error = "Snap trivy detected, but repository scanning needs the official Trivy binary."
+                fix = "Install Trivy as /usr/local/bin/trivy or /usr/bin/trivy, or rebuild the Docker image so the bundled Trivy binary is available."
+            else:
+                error = "Trivy binary not found in PATH."
+                fix = "Install Trivy as /usr/local/bin/trivy or /usr/bin/trivy, or rebuild the Docker image so the bundled Trivy binary is available."
             return _empty_model({
-                "error": "Non-snap trivy not found (snap trivy gives metadata-only JSON).",
-                "fix": "Install trivy as /usr/local/bin/trivy or /usr/bin/trivy (official binary/deb), not /snap/bin/trivy.",
-                "current_trivy": _which("trivy"),
+                "error": error,
+                "fix": fix,
+                "current_trivy": current_trivy,
             })
 
         # Work dir
@@ -563,9 +569,9 @@ class github_trivy_checker(api_collector_interface, ABC):
             if git_token and "github.com" in repo_url and repo_url.startswith("https://"):
                 clone_cmd += ["-c", f"http.extraheader={_make_git_auth_header(git_token)}"]
 
-            clone_cmd += ["clone", "--depth", "1", "--recurse-submodules", repo_url, str(workdir)]
-            print(f"[TRIVY] Running   : {git_bin} clone --depth 1 --recurse-submodules <repo> <dir>")
-            clone_res = self._executor.submit(_run_blocking, clone_cmd, None, max(60, int(timeout / 6)), None).result()
+            clone_cmd += ["clone", "--depth", "1", "--filter=blob:none", repo_url, str(workdir)]
+            print(f"[TRIVY] Running   : {git_bin} clone --depth 1 --filter=blob:none <repo> <dir>")
+            clone_res = self._executor.submit(_run_blocking, clone_cmd, None, max(300, int(timeout / 3)), None).result()
 
             if clone_res["return_code"] != 0:
                 err_msg = f"git clone failed: {clone_res.get('stderr', 'unknown error')}"

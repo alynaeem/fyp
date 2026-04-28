@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b1568a1-947c-4c9d-83d7-022522265547" name="Changes" comment="DARKPULSE">
+      <change beforePath="$PROJECT_DIR$/api_collector/scripts/trivy_reports/github.com_RagePanda234_CC-Project-Phase-2.json" beforeDir="false" afterPath="$PROJECT_DIR$/api_collector/scripts/trivy_reports/github.com_RagePanda234_CC-Project-Phase-2.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_collector/stealer_log_scan.py" beforeDir="false" afterPath="$PROJECT_DIR$/api_collector/stealer_log_scan.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/ui_server.py" afterDir="false" />
     </list>
@@ -73,8 +74,9 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "ai.playground.ignore.import.keys.banner.in.settings": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "fyp-changes",
+    "git-widget-placeholder": "new-feature",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "/home/muhmmad-abdullah/Desktop/Personal Data/darkpulse/leak_collector/scripts/tracking",
@@ -119,6 +121,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/news_collector/scripts/main.py" />
@@ -143,6 +146,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/api_collector/scripts/seo_checker.py" />
@@ -167,8 +171,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.31033.139" />
-        <option value="bundled-python-sdk-2653e85de345-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.31033.139" />
+        <option value="bundled-js-predefined-d6986cc7102b-3bd3a6803838-JavaScript-PY-261.22158.340" />
+        <option value="bundled-python-sdk-b63d5a1f7c97-b61e75351b1f-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-261.22158.340" />
       </set>
     </attachedChunks>
   </component>
@@ -195,6 +199,7 @@
       <workItem from="1771689651844" duration="18523000" />
       <workItem from="1771874114526" duration="2930000" />
       <workItem from="1775024269019" duration="3594000" />
+      <workItem from="1777134505754" duration="88000" />
     </task>
     <task id="LOCAL-00001" summary="DARKPULSE">
       <option name="closed" value="true" />

@@ -108,12 +108,17 @@ _FEED_ITEMS_CACHE: dict[tuple[str, bool], tuple[float, list[dict]]] = {}
 MAP_STATS_CACHE_TTL_SECONDS = 120
 _MAP_STATS_CACHE: tuple[float, dict] | None = None
 _MAP_STATS_INFLIGHT: asyncio.Task | None = None
+STATS_CACHE_TTL_SECONDS = 60
+_STATS_CACHE: tuple[float, dict] | None = None
+SEMANTIC_SEARCH_CACHE_TTL_SECONDS = 90
+_SEMANTIC_SEARCH_CACHE: dict[tuple[str, int], tuple[float, dict]] = {}
 _TRANSLATION_CACHE: dict[tuple[str, str], str] = {}
 TRANSLATION_BATCH_LIMIT = 100
 TRANSLATION_CHUNK_SIZE = 25
 SEARCH_CANDIDATE_LIMIT = 400
 _healing_monitor_task: asyncio.Task | None = None
 _map_stats_warmup_task: asyncio.Task | None = None
+_feed_warmup_task: asyncio.Task | None = None
 _SEARCH_STOPWORDS = {
     "a",
     "an",
@@ -221,6 +226,38 @@ def _cache_set_map_stats(payload: dict) -> dict:
     return payload
 
 
+def _cache_get_stats() -> Optional[dict]:
+    cached = _STATS_CACHE
+    if not cached:
+        return None
+    cached_at, payload = cached
+    if time.monotonic() - cached_at > STATS_CACHE_TTL_SECONDS:
+        return None
+    return payload
+
+
+def _cache_set_stats(payload: dict) -> dict:
+    global _STATS_CACHE
+    _STATS_CACHE = (time.monotonic(), payload)
+    return payload
+
+
+def _cache_get_semantic_search(key: tuple[str, int]) -> Optional[dict]:
+    cached = _SEMANTIC_SEARCH_CACHE.get(key)
+    if not cached:
+        return None
+    cached_at, payload = cached
+    if time.monotonic() - cached_at > SEMANTIC_SEARCH_CACHE_TTL_SECONDS:
+        _SEMANTIC_SEARCH_CACHE.pop(key, None)
+        return None
+    return payload
+
+
+def _cache_set_semantic_search(key: tuple[str, int], payload: dict) -> dict:
+    _SEMANTIC_SEARCH_CACHE[key] = (time.monotonic(), payload)
+    return payload
+
+
 def _normalize_search_text(value: Any) -> str:
     if value is None:
         return ""
@@ -312,9 +349,11 @@ def _build_mongo_text_search(query: str, fields: list[str]) -> dict:
 
 
 def _clear_feed_cache() -> None:
-    global _MAP_STATS_CACHE
+    global _MAP_STATS_CACHE, _STATS_CACHE
     _FEED_ITEMS_CACHE.clear()
     _MAP_STATS_CACHE = None
+    _STATS_CACHE = None
+    _SEMANTIC_SEARCH_CACHE.clear()
 
 
 def _chunk_list(values: list[str], size: int) -> list[list[str]]:
@@ -1504,9 +1543,28 @@ async def startup_warm_map_stats():
         _map_stats_warmup_task = asyncio.create_task(_warm_map_stats_cache())
 
 
+async def _warm_feed_cache() -> None:
+    await asyncio.sleep(1.5)
+    try:
+        await asyncio.gather(
+            stats(),
+            _fetch_combined_feed_items(include_raw=False),
+        )
+        log.info("Feed and stats cache warmed on startup.")
+    except Exception as exc:
+        log.error(f"Feed cache warmup failed: {exc}", exc_info=True)
+
+
+@app.on_event("startup")
+async def startup_warm_feed_cache():
+    global _feed_warmup_task
+    if _feed_warmup_task is None or _feed_warmup_task.done():
+        _feed_warmup_task = asyncio.create_task(_warm_feed_cache())
+
+
 @app.on_event("shutdown")
 async def shutdown_healing_monitor():
-    global _healing_monitor_task, _map_stats_warmup_task
+    global _healing_monitor_task, _map_stats_warmup_task, _feed_warmup_task
     if _healing_monitor_task and not _healing_monitor_task.done():
         _healing_monitor_task.cancel()
         try:
@@ -1521,6 +1579,13 @@ async def shutdown_healing_monitor():
         except asyncio.CancelledError:
             pass
     _map_stats_warmup_task = None
+    if _feed_warmup_task and not _feed_warmup_task.done():
+        _feed_warmup_task.cancel()
+        try:
+            await _feed_warmup_task
+        except asyncio.CancelledError:
+            pass
+    _feed_warmup_task = None
 
 
 def _leak_status_host(value: str) -> str:
@@ -3492,7 +3557,7 @@ async def _fetch_news_items(include_raw: bool = False) -> list[dict]:
         if not existing or _news_item_score(item) >= _news_item_score(existing):
             merged[key] = item
 
-    items = list(merged.values())
+    items = sorted(merged.values(), key=_feed_sort_key, reverse=True)
     return _cache_set_feed_items(cache_key, items) if not include_raw else items
 
 
@@ -3600,6 +3665,16 @@ async def _search_threat_items(query: str, source_type: str = "", include_raw: b
     return items
 
 
+async def _count_threat_items(source_type: str = "") -> int:
+    prefixes = [prefix for prefix, category in _THREAT_PREFIXES.items() if category is not None]
+    if source_type:
+        prefixes = [prefix for prefix, category in _THREAT_PREFIXES.items() if category == source_type]
+        if not prefixes:
+            return 0
+    regex_pattern = "^(" + "|".join(prefixes) + "):"
+    return await kv_col.count_documents({"_id": {"$regex": regex_pattern}})
+
+
 async def _fetch_threat_items(source_type: str = "", include_raw: bool = False) -> list[dict]:
     cache_key = (f"threat:{source_type or 'all'}", include_raw)
     if not include_raw:
@@ -3633,6 +3708,22 @@ async def _fetch_threat_items(source_type: str = "", include_raw: bool = False) 
         parsed = _parse_kv_item(doc, include_raw=include_raw, entity_doc=entity_map.get(suffix))
         if parsed:
             items.append(parsed)
+    items = sorted(items, key=_feed_sort_key, reverse=True)
+    return _cache_set_feed_items(cache_key, items) if not include_raw else items
+
+
+async def _fetch_combined_feed_items(include_raw: bool = False) -> list[dict]:
+    cache_key = ("feed:all", include_raw)
+    if not include_raw:
+        cached = _cache_get_feed_items(cache_key)
+        if cached is not None:
+            return cached
+
+    news_items, threat_items = await asyncio.gather(
+        _fetch_news_items(include_raw=include_raw),
+        _fetch_threat_items(include_raw=include_raw),
+    )
+    items = sorted(news_items + threat_items, key=_feed_sort_key, reverse=True)
     return _cache_set_feed_items(cache_key, items) if not include_raw else items
 
 
@@ -3687,6 +3778,10 @@ async def semantic_search(
     limit: int = Query(8, ge=1, le=30),
 ):
     query = (q or "").strip()
+    cache_key = (query.lower(), limit)
+    cached = _cache_get_semantic_search(cache_key)
+    if cached is not None:
+        return cached
     news_items, threat_items = await asyncio.gather(
         _search_news_items(query, include_raw=False, limit=max(limit * 4, 40)),
         _search_threat_items(query, include_raw=False, limit=max(limit * 6, 60)),
@@ -3709,7 +3804,7 @@ async def semantic_search(
         if dominant_source != "all" and dominant_count >= 3 and dominant_count / max(total_matches, 1) >= 0.45:
             suggested_view = dominant_source
 
-    return {
+    return _cache_set_semantic_search(cache_key, {
         "status": "ok",
         "query": query,
         "total": len(ranked_items),
@@ -3717,7 +3812,7 @@ async def semantic_search(
         "suggested_view": suggested_view,
         "source_counts": source_counts,
         "top_matches": [_public_feed_item(item) for item in ranked_items[:limit]],
-    }
+    })
 
 
 @app.get("/feed")
@@ -3747,11 +3842,32 @@ async def list_feed(
         else:
             items = await _fetch_news_items(include_raw=include_raw)
     elif canonical in {"exploit", "leak", "defacement", "social", "api"}:
+        if not q and not include_raw and not topic and not start_date and not end_date:
+            total = await _count_threat_items(canonical)
+            items = await _fetch_threat_items(canonical, include_raw=False)
+            return {
+                "total": total,
+                "offset": offset,
+                "limit": limit,
+                "items": [_public_feed_item(item) for item in items[offset:offset + limit]],
+            }
         if q:
             items = await _search_threat_items(q, canonical, include_raw=include_raw)
         else:
             items = await _fetch_threat_items(canonical, include_raw=include_raw)
     else:
+        if not q and not include_raw and not topic and not start_date and not end_date:
+            total_news, total_threats, items = await asyncio.gather(
+                articles_col.count_documents({}),
+                _count_threat_items(),
+                _fetch_combined_feed_items(include_raw=False),
+            )
+            return {
+                "total": total_news + total_threats,
+                "offset": offset,
+                "limit": limit,
+                "items": [_public_feed_item(item) for item in items[offset:offset + limit]],
+            }
         if q:
             news_items, threat_items = await asyncio.gather(
                 _search_news_items(q, include_raw=include_raw),
@@ -3812,17 +3928,24 @@ async def list_threats(
 @app.get("/stats")
 async def stats():
     """Return counts per collector type for the dashboard stats bar."""
+    cached = _cache_get_stats()
+    if cached is not None:
+        return cached
+
+    threat_prefixes = [(pfx, cat) for pfx, cat in _THREAT_PREFIXES.items() if cat is not None]
+    count_tasks = [articles_col.count_documents({})] + [
+        kv_col.count_documents({"_id": {"$regex": f"^{pfx}:"}})
+        for pfx, _cat in threat_prefixes
+    ]
+    counts = await asyncio.gather(*count_tasks)
+
     result = {
-        "news": await articles_col.count_documents({}),
+        "news": counts[0],
     }
-    for pfx, cat in _THREAT_PREFIXES.items():
-        if cat is None:
-            continue
-        regex = f"^{pfx}:"
-        count = await kv_col.count_documents({"_id": {"$regex": regex}})
+    for (pfx, cat), count in zip(threat_prefixes, counts[1:]):
         result[cat] = result.get(cat, 0) + count
     result["total"] = sum(result.values())
-    return {"counts": result, **result}
+    return _cache_set_stats({"counts": result, **result})
 
 
 # ── PakDB Phone Lookup ──────────────────────────────────────────────────────
@@ -4988,7 +5111,12 @@ async def scan_repo(request: Request):
         scanner = github_trivy_checker()
         
         # run the scan
-        scan_query = {"github": repo_url}
+        scan_query = {
+            "github": repo_url,
+            "timeout": 900,
+            "print_details": False,
+            "keep_workdir": False,
+        }
         if git_token:
             scan_query["git_token"] = git_token
 
@@ -5000,6 +5128,10 @@ async def scan_repo(request: Request):
         # Check for internal scanner errors
         if "error" in raw_data:
             err_msg = raw_data.get("error")
+            if err_msg == "git clone failed":
+                stderr = str(raw_data.get("stderr") or "")
+                if "could not read Username" in stderr or "Authentication failed" in stderr or "Repository not found" in stderr:
+                    err_msg = "GitHub repository is not accessible. Check that the repo URL is correct and public, or provide a GitHub token for a private repository."
             log.error(f"Scanner internal error: {err_msg}")
             return {"status": "error", "message": f"Scan failed: {err_msg}"}
 

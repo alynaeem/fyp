@@ -5,6 +5,8 @@
 
 FROM python:3.11-slim-bookworm
 
+ARG TRIVY_VERSION=0.70.0
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
@@ -17,6 +19,12 @@ RUN apt-get update && \
         build-essential \
         libssl-dev \
     && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL \
+        "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" \
+    | tar -xz -C /usr/local/bin trivy && \
+    chmod +x /usr/local/bin/trivy && \
+    trivy --version
 
 WORKDIR /app
 

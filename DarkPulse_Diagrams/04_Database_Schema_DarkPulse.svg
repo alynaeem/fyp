@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1050" viewBox="0 0 1600 1050">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eef2ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.16"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#2563eb"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1600" height="1050" fill="url(#bg)"/>
+  <text x="800.0" y="48" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800" fill="#0f172a">DarkPulse Database Schema</text>
+  <text x="800.0" y="76" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" fill="#64748b">DarkPulse Design &amp; Test Specification Diagrams</text>
+<rect x="620" y="120" width="360" height="90" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="620" y="120" width="360" height="38" rx="12" fill="#0f766e"/>
+<path d="M620,148 Q620,158 632,158 L968,158 Q980,158 980,148 L980,158 L620,158 Z" fill="#0f766e"/>
+<text x="634" y="145" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">MongoDB Database: darkpulse</text>
+<text x="636" y="180" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">Main document database for dashboard and</text>
+<text x="636" y="198" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">collectors</text>
+<rect x="70" y="280" width="300" height="105" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="70" y="280" width="300" height="38" rx="12" fill="#0f766e"/>
+<path d="M70,308 Q70,318 82,318 L358,318 Q370,318 370,308 L370,318 L70,318 Z" fill="#0f766e"/>
+<text x="84" y="305" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">User &amp; Auth</text>
+<text x="86" y="340" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">users</text>
+<text x="86" y="358" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">password_reset_requests</text>
+<line x1="800" y1="210" x2="220" y2="280" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="390" y="280" width="300" height="255" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="390" y="280" width="300" height="38" rx="12" fill="#2563eb"/>
+<path d="M390,308 Q390,318 402,318 L678,318 Q690,318 690,308 L690,318 L390,318 Z" fill="#2563eb"/>
+<text x="404" y="305" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">Intelligence Feed</text>
+<text x="406" y="340" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">articles</text>
+<text x="406" y="358" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">news_items</text>
+<text x="406" y="376" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">leak_items</text>
+<text x="406" y="394" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">defacement_items</text>
+<text x="406" y="412" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">social_items</text>
+<text x="406" y="430" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">exploit_items</text>
+<text x="406" y="448" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">api_items</text>
+<text x="406" y="466" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">redis_kv_store</text>
+<line x1="800" y1="210" x2="540" y2="280" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="760" y="280" width="300" height="155" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="760" y="280" width="300" height="38" rx="12" fill="#7c3aed"/>
+<path d="M760,308 Q760,318 772,318 L1048,318 Q1060,318 1060,308 L1060,318 L760,318 Z" fill="#7c3aed"/>
+<text x="774" y="305" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">Automation</text>
+<text x="776" y="340" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">intelligence_runs</text>
+<text x="776" y="358" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">automation_state</text>
+<text x="776" y="376" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">dashboard_notifications</text>
+<text x="776" y="394" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">collector_source_status</text>
+<line x1="800" y1="210" x2="910" y2="280" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="1120" y="280" width="300" height="155" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="1120" y="280" width="300" height="38" rx="12" fill="#0891b2"/>
+<path d="M1120,308 Q1120,318 1132,318 L1408,318 Q1420,318 1420,308 L1420,318 L1120,318 Z" fill="#0891b2"/>
+<text x="1134" y="305" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">Scanner History</text>
+<text x="1136" y="340" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">pakdb_lookups</text>
+<text x="1136" y="358" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">github_scans</text>
+<text x="1136" y="376" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">apk_scans</text>
+<text x="1136" y="394" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">pcgame_scans</text>
+<line x1="800" y1="210" x2="1270" y2="280" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="260" y="690" width="300" height="105" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="260" y="690" width="300" height="38" rx="12" fill="#ea580c"/>
+<path d="M260,718 Q260,728 272,728 L548,728 Q560,728 560,718 L560,728 L260,728 Z" fill="#ea580c"/>
+<text x="274" y="715" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">Credential Checker</text>
+<text x="276" y="750" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">credential_datasets</text>
+<text x="276" y="768" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">credential_exposures</text>
+<line x1="800" y1="210" x2="410" y2="690" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="680" y="690" width="300" height="180" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="680" y="690" width="300" height="38" rx="12" fill="#475569"/>
+<path d="M680,718 Q680,728 692,728 L968,728 Q980,728 980,718 L980,728 L680,728 Z" fill="#475569"/>
+<text x="694" y="715" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">Healing Monitor</text>
+<text x="696" y="750" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">healing_targets</text>
+<text x="696" y="768" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">healing_snapshots</text>
+<text x="696" y="786" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">healing_events</text>
+<text x="696" y="804" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">healing_repairs</text>
+<text x="696" y="822" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">healing_runtime</text>
+<line x1="800" y1="210" x2="830" y2="690" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="1100" y="690" width="300" height="205" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="1100" y="690" width="300" height="38" rx="12" fill="#9333ea"/>
+<path d="M1100,718 Q1100,728 1112,728 L1388,728 Q1400,728 1400,718 L1400,728 L1100,728 Z" fill="#9333ea"/>
+<text x="1114" y="715" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">Entity Collections</text>
+<text x="1116" y="750" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">news_entities</text>
+<text x="1116" y="768" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">leak_entities</text>
+<text x="1116" y="786" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">defacement_entities</text>
+<text x="1116" y="804" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">social_entities</text>
+<text x="1116" y="822" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">exploit_entities</text>
+<text x="1116" y="840" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">api_entities</text>
+<line x1="800" y1="210" x2="1250" y2="690" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="70" y="970" width="206" height="28" rx="14" fill="#dbeafe" stroke="#1e40af" stroke-opacity="0.25"/>
+<text x="173" y="989" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#1e40af">Flexible MongoDB documents</text>
+<rect x="300" y="970" width="164" height="28" rx="14" fill="#dcfce7" stroke="#166534" stroke-opacity="0.25"/>
+<text x="382" y="989" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#166534">Upsert by dedupe_key</text>
+<rect x="510" y="970" width="199" height="28" rx="14" fill="#e0f2fe" stroke="#0369a1" stroke-opacity="0.25"/>
+<text x="609" y="989" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#0369a1">Scanner history preserved</text>
+</svg>

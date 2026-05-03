@@ -3,10 +3,10 @@
   "Trivy": {
     "Version": "0.69.1"
   },
-  "ReportID": "019d6b3e-db07-75ee-9204-3e0cdd47e5ee",
-  "CreatedAt": "2026-04-08T08:59:34.663391596+05:00",
+  "ReportID": "019dce53-7253-7b8b-adbd-f6e8afcdf42c",
+  "CreatedAt": "2026-04-27T14:44:28.4997586+05:00",
   "ArtifactID": "sha256:c18d564916d77203ac5d5202e66a788976158d6a5e0eb9acc7cdb6ab8defd8c9",
-  "ArtifactName": "/home/muhmmad-abdullah/.cache/darkpulse/trivy_repos/repo_trivy_koksslpt",
+  "ArtifactName": "/home/muhmmad-abdullah/.cache/darkpulse/trivy_repos/repo_trivy__bs7qozk",
   "ArtifactType": "repository",
   "Metadata": {
     "RepoURL": "https://github.com/OWASP/NodeGoat.git",
@@ -4228,7 +4228,7 @@
           "Name": "cliui",
           "Identifier": {
             "PURL": "pkg:npm/cliui@3.2.0",
-            "UID": "427f6f5e905325a3"
+            "UID": "367734f455e977c3"
           },
           "Version": "3.2.0",
           "Licenses": [
@@ -4237,9 +4237,9 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "string-width@1.0.1",
+            "string-width@1.0.2",
             "strip-ansi@3.0.1",
-            "wrap-ansi@2.0.0"
+            "wrap-ansi@2.1.0"
           ],
           "Locations": [
             {
@@ -6512,7 +6512,7 @@
           "Name": "dezalgo",
           "Identifier": {
             "PURL": "pkg:npm/dezalgo@1.0.3",
-            "UID": "a01759f3f7fe9d9c"
+            "UID": "f76b8d4b12551584"
           },
           "Version": "1.0.3",
           "Dev": true,
@@ -6522,7 +6522,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "asap@2.0.6",
+            "asap@2.0.5",
             "wrappy@1.0.2"
           ],
           "Locations": [
@@ -10186,7 +10186,7 @@
           "Name": "has-ansi",
           "Identifier": {
             "PURL": "pkg:npm/has-ansi@2.0.0",
-            "UID": "1b94a1be6f3b281d"
+            "UID": "20eb47b374b7bb62"
           },
           "Version": "2.0.0",
           "Dev": true,
@@ -10196,7 +10196,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "ansi-regex@2.0.0"
+            "ansi-regex@2.1.1"
           ],
           "Locations": [
             {
@@ -10823,7 +10823,7 @@
           "Name": "http-signature",
           "Identifier": {
             "PURL": "pkg:npm/http-signature@1.1.1",
-            "UID": "c0e6ba074b01dde0"
+            "UID": "d3b665e5be3c1140"
           },
           "Version": "1.1.1",
           "Dev": true,
@@ -10834,8 +10834,8 @@
           "Relationship": "indirect",
           "DependsOn": [
             "assert-plus@0.2.0",
-            "jsprim@1.3.1",
-            "sshpk@1.10.1"
+            "jsprim@1.4.1",
+            "sshpk@1.16.0"
           ],
           "Locations": [
             {
@@ -14210,7 +14210,7 @@
           "Name": "load-json-file",
           "Identifier": {
             "PURL": "pkg:npm/load-json-file@1.1.0",
-            "UID": "9c75626619c4326b"
+            "UID": "6fe16ba9149fcbc8"
           },
           "Version": "1.1.0",
           "Dev": true,
@@ -14220,7 +14220,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "graceful-fs@4.1.4",
+            "graceful-fs@4.1.15",
             "parse-json@2.2.0",
             "pify@2.3.0",
             "pinkie-promise@2.0.1",
@@ -17670,7 +17670,7 @@
           "Name": "optimist",
           "Identifier": {
             "PURL": "pkg:npm/optimist@0.6.1",
-            "UID": "d8dd41366908db49"
+            "UID": "14caa949b43933"
           },
           "Version": "0.6.1",
           "Licenses": [
@@ -17679,7 +17679,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "minimist@0.0.8",
+            "minimist@0.0.10",
             "wordwrap@0.0.3"
           ],
           "Locations": [
@@ -18069,7 +18069,7 @@
           "Name": "parse-json",
           "Identifier": {
             "PURL": "pkg:npm/parse-json@2.2.0",
-            "UID": "4a441a440daeaa01"
+            "UID": "6606e5a9903dd3a4"
           },
           "Version": "2.2.0",
           "Dev": true,
@@ -18079,7 +18079,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "error-ex@1.3.2"
+            "error-ex@1.3.0"
           ],
           "Locations": [
             {
@@ -18447,7 +18447,7 @@
           "Name": "path-type",
           "Identifier": {
             "PURL": "pkg:npm/path-type@1.1.0",
-            "UID": "13f6419f785a639e"
+            "UID": "ec76c566cefc9378"
           },
           "Version": "1.1.0",
           "Dev": true,
@@ -18457,7 +18457,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "graceful-fs@4.1.15",
+            "graceful-fs@4.1.4",
             "pify@2.3.0",
             "pinkie-promise@2.0.1"
           ],
@@ -19434,7 +19434,7 @@
           "Name": "read",
           "Identifier": {
             "PURL": "pkg:npm/read@1.0.7",
-            "UID": "a07ded05880af35b"
+            "UID": "5760dca2cf6f5e0a"
           },
           "Version": "1.0.7",
           "Licenses": [
@@ -19443,7 +19443,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "mute-stream@0.0.5"
+            "mute-stream@0.0.8"
           ],
           "Locations": [
             {
@@ -19487,7 +19487,7 @@
           "Name": "read-installed",
           "Identifier": {
             "PURL": "pkg:npm/read-installed@4.0.3",
-            "UID": "5339a6034636ecbc"
+            "UID": "6f017c7584fa7376"
           },
           "Version": "4.0.3",
           "Dev": true,
@@ -19498,10 +19498,10 @@
           "Relationship": "indirect",
           "DependsOn": [
             "debuglog@1.0.1",
-            "graceful-fs@4.1.15",
-            "read-package-json@2.0.13",
+            "graceful-fs@4.1.9",
+            "read-package-json@2.0.4",
             "readdir-scoped-modules@1.0.2",
-            "semver@5.6.0",
+            "semver@5.3.0",
             "slide@1.1.6",
             "util-extend@1.0.3"
           ],
@@ -19821,7 +19821,7 @@
           "Name": "readdir-scoped-modules",
           "Identifier": {
             "PURL": "pkg:npm/readdir-scoped-modules@1.0.2",
-            "UID": "7541708885691838"
+            "UID": "ec5e8079e3243dcc"
           },
           "Version": "1.0.2",
           "Dev": true,
@@ -19833,7 +19833,7 @@
           "DependsOn": [
             "debuglog@1.0.1",
             "dezalgo@1.0.3",
-            "graceful-fs@4.1.9",
+            "graceful-fs@4.1.15",
             "once@1.4.0"
           ],
           "Locations": [
@@ -22875,7 +22875,7 @@
           "Name": "strip-ansi",
           "Identifier": {
             "PURL": "pkg:npm/strip-ansi@3.0.1",
-            "UID": "d44017734ee22fdd"
+            "UID": "365b01962aa4ac62"
           },
           "Version": "3.0.1",
           "Licenses": [
@@ -22884,7 +22884,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "ansi-regex@2.0.0"
+            "ansi-regex@2.1.1"
           ],
           "Locations": [
             {
@@ -26295,7 +26295,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-69873"
           ],
           "PublishedDate": "2026-02-11T19:15:50.467Z",
-          "LastModifiedDate": "2026-03-02T21:16:24.213Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2021-3807",
@@ -26772,12 +26772,17 @@
           ],
           "VendorSeverity": {
             "ghsa": 2,
+            "nvd": 3,
             "redhat": 2
           },
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
               "V3Score": 6.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
@@ -26801,7 +26806,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2026-33750"
           ],
           "PublishedDate": "2026-03-27T15:16:57.297Z",
-          "LastModifiedDate": "2026-03-30T13:26:29.793Z"
+          "LastModifiedDate": "2026-04-22T14:23:19.11Z"
         },
         {
           "VulnerabilityID": "CVE-2017-18077",
@@ -26898,12 +26903,17 @@
           ],
           "VendorSeverity": {
             "ghsa": 2,
+            "nvd": 3,
             "redhat": 2
           },
           "CVSS": {
             "ghsa": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
               "V3Score": 6.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
@@ -26927,7 +26937,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2026-33750"
           ],
           "PublishedDate": "2026-03-27T15:16:57.297Z",
-          "LastModifiedDate": "2026-03-30T13:26:29.793Z"
+          "LastModifiedDate": "2026-04-22T14:23:19.11Z"
         },
         {
           "VulnerabilityID": "NSWG-ECO-338",
@@ -27251,7 +27261,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2024-21538"
           ],
           "PublishedDate": "2024-11-08T05:15:06.453Z",
-          "LastModifiedDate": "2025-05-20T15:16:03.53Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2024-21538",
@@ -27314,7 +27324,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2024-21538"
           ],
           "PublishedDate": "2024-11-08T05:15:06.453Z",
-          "LastModifiedDate": "2025-05-20T15:16:03.53Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2024-21538",
@@ -27377,7 +27387,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2024-21538"
           ],
           "PublishedDate": "2024-11-08T05:15:06.453Z",
-          "LastModifiedDate": "2025-05-20T15:16:03.53Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2024-21538",
@@ -27440,7 +27450,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2024-21538"
           ],
           "PublishedDate": "2024-11-08T05:15:06.453Z",
-          "LastModifiedDate": "2025-05-20T15:16:03.53Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2024-21538",
@@ -27503,7 +27513,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2024-21538"
           ],
           "PublishedDate": "2024-11-08T05:15:06.453Z",
-          "LastModifiedDate": "2025-05-20T15:16:03.53Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2017-20165",
@@ -27962,7 +27972,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-7783"
           ],
           "PublishedDate": "2025-07-18T17:15:44.747Z",
-          "LastModifiedDate": "2025-11-03T20:19:20.93Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2025-7783",
@@ -28019,7 +28029,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-7783"
           ],
           "PublishedDate": "2025-07-18T17:15:44.747Z",
-          "LastModifiedDate": "2025-11-03T20:19:20.93Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2025-7783",
@@ -28076,7 +28086,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-7783"
           ],
           "PublishedDate": "2025-07-18T17:15:44.747Z",
-          "LastModifiedDate": "2025-11-03T20:19:20.93Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2025-7783",
@@ -28133,7 +28143,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-7783"
           ],
           "PublishedDate": "2025-07-18T17:15:44.747Z",
-          "LastModifiedDate": "2025-11-03T20:19:20.93Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2025-7783",
@@ -28190,7 +28200,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-7783"
           ],
           "PublishedDate": "2025-07-18T17:15:44.747Z",
-          "LastModifiedDate": "2025-11-03T20:19:20.93Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2023-45311",
@@ -31208,7 +31218,7 @@
             "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
           },
           "Fingerprint": "sha256:a9ea7b8868cf591f08d28347b7be690c2f9c85c0b207cfb2dab98e58444440c5",
-          "Title": "Impact:  Lodash versions 4.17.23 and earlier are vulnerable to prototy ...",
+          "Title": "lodash: Lodash: Prototype pollution allows deletion of built-in prototype properties via array path bypass",
           "Description": "Impact:\n\nLodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the _.unset and _.omit functions. The fix for (CVE-2025-13465: https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as Object.prototype, Number.prototype, and String.prototype.\n\nThe issue permits deletion of prototype properties but does not allow overwriting their original behavior.\n\nPatches:\n\nThis issue is patched in 4.18.0.\n\nWorkarounds:\n\nNone. Upgrade to the patched version.",
           "Severity": "MEDIUM",
           "CweIDs": [
@@ -31216,7 +31226,8 @@
           ],
           "VendorSeverity": {
             "ghsa": 2,
-            "nvd": 2
+            "nvd": 2,
+            "redhat": 2
           },
           "CVSS": {
             "ghsa": {
@@ -31226,13 +31237,19 @@
             "nvd": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
               "V3Score": 5.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
             }
           },
           "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-2950",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/security/advisories/GHSA-f23m-r3pf-42rh",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
-            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950"
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950",
+            "https://www.cve.org/CVERecord?id=CVE-2026-2950"
           ],
           "PublishedDate": "2026-03-31T20:16:26.207Z",
           "LastModifiedDate": "2026-04-07T16:12:25.97Z"
@@ -31823,7 +31840,7 @@
             "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
           },
           "Fingerprint": "sha256:72bbae0a9e6560858ab2ae99428874af9aaca54838b5e3d3017a73df4697f369",
-          "Title": "Impact:  Lodash versions 4.17.23 and earlier are vulnerable to prototy ...",
+          "Title": "lodash: Lodash: Prototype pollution allows deletion of built-in prototype properties via array path bypass",
           "Description": "Impact:\n\nLodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the _.unset and _.omit functions. The fix for (CVE-2025-13465: https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as Object.prototype, Number.prototype, and String.prototype.\n\nThe issue permits deletion of prototype properties but does not allow overwriting their original behavior.\n\nPatches:\n\nThis issue is patched in 4.18.0.\n\nWorkarounds:\n\nNone. Upgrade to the patched version.",
           "Severity": "MEDIUM",
           "CweIDs": [
@@ -31831,7 +31848,8 @@
           ],
           "VendorSeverity": {
             "ghsa": 2,
-            "nvd": 2
+            "nvd": 2,
+            "redhat": 2
           },
           "CVSS": {
             "ghsa": {
@@ -31841,13 +31859,19 @@
             "nvd": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
               "V3Score": 5.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
             }
           },
           "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-2950",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/security/advisories/GHSA-f23m-r3pf-42rh",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
-            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950"
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950",
+            "https://www.cve.org/CVERecord?id=CVE-2026-2950"
           ],
           "PublishedDate": "2026-03-31T20:16:26.207Z",
           "LastModifiedDate": "2026-04-07T16:12:25.97Z"
@@ -32308,7 +32332,7 @@
             "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
           },
           "Fingerprint": "sha256:977f539403885adba3b108e08e14ca366d027d0eb62c01c2d03d19aa4929acb8",
-          "Title": "Impact:  Lodash versions 4.17.23 and earlier are vulnerable to prototy ...",
+          "Title": "lodash: Lodash: Prototype pollution allows deletion of built-in prototype properties via array path bypass",
           "Description": "Impact:\n\nLodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the _.unset and _.omit functions. The fix for (CVE-2025-13465: https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as Object.prototype, Number.prototype, and String.prototype.\n\nThe issue permits deletion of prototype properties but does not allow overwriting their original behavior.\n\nPatches:\n\nThis issue is patched in 4.18.0.\n\nWorkarounds:\n\nNone. Upgrade to the patched version.",
           "Severity": "MEDIUM",
           "CweIDs": [
@@ -32316,7 +32340,8 @@
           ],
           "VendorSeverity": {
             "ghsa": 2,
-            "nvd": 2
+            "nvd": 2,
+            "redhat": 2
           },
           "CVSS": {
             "ghsa": {
@@ -32326,13 +32351,19 @@
             "nvd": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
               "V3Score": 5.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
             }
           },
           "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-2950",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/security/advisories/GHSA-f23m-r3pf-42rh",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
-            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950"
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950",
+            "https://www.cve.org/CVERecord?id=CVE-2026-2950"
           ],
           "PublishedDate": "2026-03-31T20:16:26.207Z",
           "LastModifiedDate": "2026-04-07T16:12:25.97Z"
@@ -32644,7 +32675,7 @@
             "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
           },
           "Fingerprint": "sha256:ea1f89dbd95fa978a8e171fb2b32526088daaee3442f0fbf6e70cbb189ecd3c7",
-          "Title": "Impact:  Lodash versions 4.17.23 and earlier are vulnerable to prototy ...",
+          "Title": "lodash: Lodash: Prototype pollution allows deletion of built-in prototype properties via array path bypass",
           "Description": "Impact:\n\nLodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the _.unset and _.omit functions. The fix for (CVE-2025-13465: https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as Object.prototype, Number.prototype, and String.prototype.\n\nThe issue permits deletion of prototype properties but does not allow overwriting their original behavior.\n\nPatches:\n\nThis issue is patched in 4.18.0.\n\nWorkarounds:\n\nNone. Upgrade to the patched version.",
           "Severity": "MEDIUM",
           "CweIDs": [
@@ -32652,7 +32683,8 @@
           ],
           "VendorSeverity": {
             "ghsa": 2,
-            "nvd": 2
+            "nvd": 2,
+            "redhat": 2
           },
           "CVSS": {
             "ghsa": {
@@ -32662,13 +32694,19 @@
             "nvd": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
               "V3Score": 5.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
             }
           },
           "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-2950",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/security/advisories/GHSA-f23m-r3pf-42rh",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
-            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950"
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950",
+            "https://www.cve.org/CVERecord?id=CVE-2026-2950"
           ],
           "PublishedDate": "2026-03-31T20:16:26.207Z",
           "LastModifiedDate": "2026-04-07T16:12:25.97Z"
@@ -32822,7 +32860,7 @@
             "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
           },
           "Fingerprint": "sha256:58bc57afa889e299a3cacb4d18b71120014fd6cb528b6a59186ce8f9dd402490",
-          "Title": "Impact:  Lodash versions 4.17.23 and earlier are vulnerable to prototy ...",
+          "Title": "lodash: Lodash: Prototype pollution allows deletion of built-in prototype properties via array path bypass",
           "Description": "Impact:\n\nLodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the _.unset and _.omit functions. The fix for (CVE-2025-13465: https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as Object.prototype, Number.prototype, and String.prototype.\n\nThe issue permits deletion of prototype properties but does not allow overwriting their original behavior.\n\nPatches:\n\nThis issue is patched in 4.18.0.\n\nWorkarounds:\n\nNone. Upgrade to the patched version.",
           "Severity": "MEDIUM",
           "CweIDs": [
@@ -32830,7 +32868,8 @@
           ],
           "VendorSeverity": {
             "ghsa": 2,
-            "nvd": 2
+            "nvd": 2,
+            "redhat": 2
           },
           "CVSS": {
             "ghsa": {
@@ -32840,13 +32879,19 @@
             "nvd": {
               "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
               "V3Score": 5.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 6.5
             }
           },
           "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-2950",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/security/advisories/GHSA-f23m-r3pf-42rh",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
-            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950"
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-2950",
+            "https://www.cve.org/CVERecord?id=CVE-2026-2950"
           ],
           "PublishedDate": "2026-03-31T20:16:26.207Z",
           "LastModifiedDate": "2026-04-07T16:12:25.97Z"
@@ -33607,9 +33652,12 @@
             "CWE-1333"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 3,
             "nvd": 3,
-            "redhat": 2
+            "oracle-oval": 3,
+            "redhat": 2,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -33626,10 +33674,27 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:7896",
             "https://access.redhat.com/security/cve/CVE-2026-26996",
+            "https://bugzilla.redhat.com/2441268",
+            "https://bugzilla.redhat.com/2442922",
+            "https://bugzilla.redhat.com/2448754",
+            "https://bugzilla.redhat.com/2453151",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2441268",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2442922",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2448754",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2453151",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-21710",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-26996",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
+            "https://errata.almalinux.org/9/ALSA-2026-7896.html",
+            "https://errata.rockylinux.org/RLSA-2026:7896",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/2e111f3a79abc00fa73110195de2c0f2351904f5",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-3ppc-4f35-3m26",
+            "https://linux.oracle.com/cve/CVE-2026-26996.html",
+            "https://linux.oracle.com/errata/ELSA-2026-8339.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-26996",
             "https://www.cve.org/CVERecord?id=CVE-2026-26996"
           ],
@@ -33718,8 +33783,11 @@
             "CWE-1333"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 3,
-            "redhat": 2
+            "oracle-oval": 3,
+            "redhat": 2,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -33732,10 +33800,27 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:7896",
             "https://access.redhat.com/security/cve/CVE-2026-27904",
+            "https://bugzilla.redhat.com/2441268",
+            "https://bugzilla.redhat.com/2442922",
+            "https://bugzilla.redhat.com/2448754",
+            "https://bugzilla.redhat.com/2453151",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2441268",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2442922",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2448754",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2453151",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-21710",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-26996",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
+            "https://errata.almalinux.org/9/ALSA-2026-7896.html",
+            "https://errata.rockylinux.org/RLSA-2026:7896",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74",
+            "https://linux.oracle.com/cve/CVE-2026-27904.html",
+            "https://linux.oracle.com/errata/ELSA-2026-8339.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-27904",
             "https://www.cve.org/CVERecord?id=CVE-2026-27904"
           ],
@@ -33888,9 +33973,12 @@
             "CWE-1333"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 3,
             "nvd": 3,
-            "redhat": 2
+            "oracle-oval": 3,
+            "redhat": 2,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -33907,10 +33995,27 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:7896",
             "https://access.redhat.com/security/cve/CVE-2026-26996",
+            "https://bugzilla.redhat.com/2441268",
+            "https://bugzilla.redhat.com/2442922",
+            "https://bugzilla.redhat.com/2448754",
+            "https://bugzilla.redhat.com/2453151",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2441268",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2442922",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2448754",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2453151",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-21710",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-26996",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
+            "https://errata.almalinux.org/9/ALSA-2026-7896.html",
+            "https://errata.rockylinux.org/RLSA-2026:7896",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/2e111f3a79abc00fa73110195de2c0f2351904f5",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-3ppc-4f35-3m26",
+            "https://linux.oracle.com/cve/CVE-2026-26996.html",
+            "https://linux.oracle.com/errata/ELSA-2026-8339.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-26996",
             "https://www.cve.org/CVERecord?id=CVE-2026-26996"
           ],
@@ -33999,8 +34104,11 @@
             "CWE-1333"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 3,
-            "redhat": 2
+            "oracle-oval": 3,
+            "redhat": 2,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -34013,10 +34121,27 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:7896",
             "https://access.redhat.com/security/cve/CVE-2026-27904",
+            "https://bugzilla.redhat.com/2441268",
+            "https://bugzilla.redhat.com/2442922",
+            "https://bugzilla.redhat.com/2448754",
+            "https://bugzilla.redhat.com/2453151",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2441268",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2442922",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2448754",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2453151",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-21710",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-26996",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
+            "https://errata.almalinux.org/9/ALSA-2026-7896.html",
+            "https://errata.rockylinux.org/RLSA-2026:7896",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74",
+            "https://linux.oracle.com/cve/CVE-2026-27904.html",
+            "https://linux.oracle.com/errata/ELSA-2026-8339.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-27904",
             "https://www.cve.org/CVERecord?id=CVE-2026-27904"
           ],
@@ -34141,9 +34266,12 @@
             "CWE-1333"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 3,
             "nvd": 3,
-            "redhat": 2
+            "oracle-oval": 3,
+            "redhat": 2,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -34160,10 +34288,27 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:7896",
             "https://access.redhat.com/security/cve/CVE-2026-26996",
+            "https://bugzilla.redhat.com/2441268",
+            "https://bugzilla.redhat.com/2442922",
+            "https://bugzilla.redhat.com/2448754",
+            "https://bugzilla.redhat.com/2453151",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2441268",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2442922",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2448754",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2453151",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-21710",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-26996",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
+            "https://errata.almalinux.org/9/ALSA-2026-7896.html",
+            "https://errata.rockylinux.org/RLSA-2026:7896",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/2e111f3a79abc00fa73110195de2c0f2351904f5",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-3ppc-4f35-3m26",
+            "https://linux.oracle.com/cve/CVE-2026-26996.html",
+            "https://linux.oracle.com/errata/ELSA-2026-8339.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-26996",
             "https://www.cve.org/CVERecord?id=CVE-2026-26996"
           ],
@@ -34252,8 +34397,11 @@
             "CWE-1333"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 3,
-            "redhat": 2
+            "oracle-oval": 3,
+            "redhat": 2,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -34266,10 +34414,27 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:7896",
             "https://access.redhat.com/security/cve/CVE-2026-27904",
+            "https://bugzilla.redhat.com/2441268",
+            "https://bugzilla.redhat.com/2442922",
+            "https://bugzilla.redhat.com/2448754",
+            "https://bugzilla.redhat.com/2453151",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2441268",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2442922",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2448754",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2453151",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-21710",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-26996",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
+            "https://errata.almalinux.org/9/ALSA-2026-7896.html",
+            "https://errata.rockylinux.org/RLSA-2026:7896",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74",
+            "https://linux.oracle.com/cve/CVE-2026-27904.html",
+            "https://linux.oracle.com/errata/ELSA-2026-8339.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-27904",
             "https://www.cve.org/CVERecord?id=CVE-2026-27904"
           ],
@@ -34394,9 +34559,12 @@
             "CWE-1333"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 3,
             "nvd": 3,
-            "redhat": 2
+            "oracle-oval": 3,
+            "redhat": 2,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -34413,10 +34581,27 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:7896",
             "https://access.redhat.com/security/cve/CVE-2026-26996",
+            "https://bugzilla.redhat.com/2441268",
+            "https://bugzilla.redhat.com/2442922",
+            "https://bugzilla.redhat.com/2448754",
+            "https://bugzilla.redhat.com/2453151",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2441268",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2442922",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2448754",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2453151",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-21710",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-26996",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
+            "https://errata.almalinux.org/9/ALSA-2026-7896.html",
+            "https://errata.rockylinux.org/RLSA-2026:7896",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/2e111f3a79abc00fa73110195de2c0f2351904f5",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-3ppc-4f35-3m26",
+            "https://linux.oracle.com/cve/CVE-2026-26996.html",
+            "https://linux.oracle.com/errata/ELSA-2026-8339.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-26996",
             "https://www.cve.org/CVERecord?id=CVE-2026-26996"
           ],
@@ -34505,8 +34690,11 @@
             "CWE-1333"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 3,
-            "redhat": 2
+            "oracle-oval": 3,
+            "redhat": 2,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -34519,10 +34707,27 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:7896",
             "https://access.redhat.com/security/cve/CVE-2026-27904",
+            "https://bugzilla.redhat.com/2441268",
+            "https://bugzilla.redhat.com/2442922",
+            "https://bugzilla.redhat.com/2448754",
+            "https://bugzilla.redhat.com/2453151",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2441268",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2442922",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2448754",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2453151",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-21710",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-26996",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
+            "https://errata.almalinux.org/9/ALSA-2026-7896.html",
+            "https://errata.rockylinux.org/RLSA-2026:7896",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74",
+            "https://linux.oracle.com/cve/CVE-2026-27904.html",
+            "https://linux.oracle.com/errata/ELSA-2026-8339.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-27904",
             "https://www.cve.org/CVERecord?id=CVE-2026-27904"
           ],
@@ -36250,7 +36455,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2024-45296"
           ],
           "PublishedDate": "2024-09-09T19:15:13.33Z",
-          "LastModifiedDate": "2025-01-24T20:15:32.68Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2024-52798",
@@ -36309,7 +36514,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2024-52798"
           ],
           "PublishedDate": "2024-12-05T23:15:06.31Z",
-          "LastModifiedDate": "2025-01-24T20:15:33.107Z"
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
         },
         {
           "VulnerabilityID": "CVE-2026-4867",
@@ -36365,7 +36570,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2026-4867"
           ],
           "PublishedDate": "2026-03-26T17:16:42.983Z",
-          "LastModifiedDate": "2026-03-30T13:26:50.827Z"
+          "LastModifiedDate": "2026-04-16T18:01:04.783Z"
         },
         {
           "VulnerabilityID": "CVE-2014-10064",
@@ -39365,7 +39570,7 @@
             "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
           },
           "Fingerprint": "sha256:c1af60ee8211bcaee8dc66f8742079ca3ee8284dcc525b243fd04dec3ca28815",
-          "Title": "tar: node-tar: node-tar: Arbitrary file read/write via malicious archive hardlink creation",
+          "Title": "node-tar: node-tar: Arbitrary file read/write via malicious archive hardlink creation",
           "Description": "node-tar is a full-featured Tar for Node.js. When using default options in versions 7.5.7 and below, an attacker-controlled archive can create a hardlink inside the extraction directory that points to a file outside the extraction root, enabling arbitrary file read and write as the extracting user. Severity is high because the primitive bypasses path protections and turns archive extraction into a direct filesystem access primitive. This issue has been fixed in version 7.5.8.",
           "Severity": "HIGH",
           "CweIDs": [
@@ -40229,7 +40434,7 @@
             "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
           },
           "Fingerprint": "sha256:1ccda5f1b9f2e39d00c8fabf839e313c17fbdef779334ca9faa83f75f8d76530",
-          "Title": "tar: node-tar: node-tar: Arbitrary file read/write via malicious archive hardlink creation",
+          "Title": "node-tar: node-tar: Arbitrary file read/write via malicious archive hardlink creation",
           "Description": "node-tar is a full-featured Tar for Node.js. When using default options in versions 7.5.7 and below, an attacker-controlled archive can create a hardlink inside the extraction directory that points to a file outside the extraction root, enabling arbitrary file read and write as the extracting user. Severity is high because the primitive bypasses path protections and turns archive extraction into a direct filesystem access primitive. This issue has been fixed in version 7.5.8.",
           "Severity": "HIGH",
           "CweIDs": [
@@ -41491,6 +41696,46 @@
           ],
           "PublishedDate": "2026-03-03T23:15:55.56Z",
           "LastModifiedDate": "2026-03-05T21:08:35.32Z"
+        },
+        {
+          "VulnerabilityID": "GHSA-w5hq-g745-h8pq",
+          "PkgID": "uuid@3.3.2",
+          "PkgName": "uuid",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/uuid@3.3.2",
+            "UID": "87de5c8829064839"
+          },
+          "InstalledVersion": "3.3.2",
+          "FixedVersion": "14.0.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:477cbb300e8b8bc761869d355a13b950e5030888b7cf4358ad1b1a46a44be3bb",
+          "Title": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+          "Description": "### Summary\n\n`v3`, `v5`, and `v6` accept external output buffers but do not reject out-of-range writes (small `buf` or large `offset`).  \nBy contrast, `v4`, `v1`, and `v7` explicitly throw `RangeError` on invalid bounds.\n\nThis inconsistency allows **silent partial writes** into caller-provided buffers.\n\n\n### Affected code\n\n- `src/v35.ts` (`v3`/`v5` path) writes `buf[offset + i]` without bounds validation.\n- `src/v6.ts` writes `buf[offset + i]` without bounds validation.\n\n### Reproducible PoC\n\n```bash\ncd /home/StrawHat/uuid\nnpm ci\nnpm run build\n\nnode --input-type=module -e \"\nimport {v4,v5,v6} from './dist-node/index.js';\nconst ns='6ba7b810-9dad-11d1-80b4-00c04fd430c8';\nfor (const [name,fn] of [\n  ['v4',()=\u003ev4({},new Uint8Array(8),4)],\n  ['v5',()=\u003ev5('x',ns,new Uint8Array(8),4)],\n  ['v6',()=\u003ev6({},new Uint8Array(8),4)],\n]) {\n  try { fn(); console.log(name,'NO_THROW'); }\n  catch(e){ console.log(name,'THREW',e.name); }\n}\"\n```\n\nObserved:\n\n- `v4 THREW RangeError`\n- `v5 NO_THROW`\n- `v6 NO_THROW`\n\nExample partial overwrite evidence captured during audit:\n\n```text\nsame true buf [\n  170, 170, 170, 170,\n   75, 224, 100,  63\n]\nv6 [\n  187, 187, 187, 187,\n   31,  19, 185,  64\n]\n```\n\n### Security impact\n\n- **Primary**: integrity/robustness issue (silent partial output).\n- If an application assumes full UUID writes into preallocated buffers, this can produce malformed/truncated/partially stale identifiers without error.\n- In systems where caller-controlled offsets/buffer sizes are exposed indirectly, this may become a security-relevant logic flaw.\n\n### Suggested fix\n\nAdd the same guard used by `v4`/`v1`/`v7`:\n\n```ts\nif (offset \u003c 0 || offset + 16 \u003e buf.length) {\n  throw new RangeError(`UUID byte range ${offset}:${offset + 15} is out of buffer bounds`);\n}\n```\n\nApply to:\n\n- `src/v35.ts` (covers `v3` and `v5`)\n- `src/v6.ts`",
+          "Severity": "MEDIUM",
+          "VendorSeverity": {
+            "ghsa": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+              "V40Score": 6.3
+            }
+          },
+          "References": [
+            "https://github.com/uuidjs/uuid",
+            "https://github.com/uuidjs/uuid/commit/3d2c5b0342f0fcb52a5ac681c3d47c13e7444b34",
+            "https://github.com/uuidjs/uuid/releases/tag/v14.0.0",
+            "https://github.com/uuidjs/uuid/security/advisories/GHSA-w5hq-g745-h8pq"
+          ],
+          "PublishedDate": "2026-04-22T20:53:24Z",
+          "LastModifiedDate": "2026-04-22T20:53:24Z"
         },
         {
           "VulnerabilityID": "CVE-2020-7662",

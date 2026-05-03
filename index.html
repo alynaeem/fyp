@@ -7,7 +7,7 @@
   <meta name="description" content="Live DarkPulse intelligence dashboard for leaks, defacement, exploits, and threat reporting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/style.css?v=36" />
+    <link rel="stylesheet" href="/style.css?v=37" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/world.js"></script>
@@ -1337,7 +1337,7 @@
   </div>
 
   <div class="modal-backdrop auth-backdrop" id="loginBackdrop">
-    <div class="auth-shell">
+    <div class="auth-shell" id="authShell">
       <div class="modal modal-login">
         <div class="modal-header auth-login-header">
           <div class="logo modal-logo">
@@ -1572,6 +1572,21 @@
         </div>
       </section>
     </div>
+
+    <div class="auth-loading-overlay hidden" id="authLoadingOverlay" aria-live="polite" aria-busy="true">
+      <div class="auth-loading-card">
+        <div class="auth-loading-ring" id="authLoadingRing" style="--auth-progress: 0%;">
+          <div class="auth-loading-ring-core">
+            <strong id="authLoadingPercent">0%</strong>
+            <span>DarkPulse</span>
+          </div>
+        </div>
+        <p class="section-kicker auth-loading-kicker" id="authLoadingKicker">Authenticating</p>
+        <h3 class="auth-loading-title" id="authLoadingTitle">Signing in to DarkPulse</h3>
+        <p class="auth-loading-copy" id="authLoadingCopy">Verifying your credentials and preparing the live console.</p>
+        <div class="auth-loading-stage" id="authLoadingStage">Checking username and password...</div>
+      </div>
+    </div>
   </div>
 
   <div class="modal-backdrop hidden" id="detailBackdrop">
@@ -1786,6 +1801,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=43"></script>
+  <script src="app.js?v=45"></script>
 </body>
 </html>

@@ -15,6 +15,7 @@ const SMART_UPDATE_POLL_MS = 5 * 1000;
 const MAP_LIVE_REFRESH_MS = 15 * 1000;
 const MAP_SPOTLIGHT_MS = 2200;
 const SEARCH_DEBOUNCE_MS = 550;
+const AUTH_PROGRESS_TICK_MS = 140;
 const MIN_GLOBAL_SEARCH_LENGTH = 2;
 const FEED_SNAPSHOT_TTL_MS = 90 * 1000;
 const FEED_PREFETCH_DELAY_MS = 120;
@@ -262,6 +263,10 @@ const state = {
   authPendingRole: "",
   authQrCodeUrl: "",
   authManualSecret: "",
+  authLoadingActive: false,
+  authLoadingProgress: 0,
+  authLoadingCap: 0,
+  authLoadingTimer: null,
   semanticSearch: null,
   refreshTimer: null,
   smartUpdateTimer: null,
@@ -304,6 +309,10 @@ function debounce(fn, wait) {
     clearTimeout(timeout);
     timeout = setTimeout(() => fn(...args), wait);
   };
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function escapeHtml(value) {
@@ -1690,6 +1699,146 @@ async function apiFetch(path, noAuth = false, options = {}) {
   return data;
 }
 
+function clearAuthLoadingTimer() {
+  clearInterval(state.authLoadingTimer);
+  state.authLoadingTimer = null;
+}
+
+function renderAuthLoading(progress = state.authLoadingProgress) {
+  const safeProgress = Math.max(0, Math.min(100, Math.round(progress)));
+  state.authLoadingProgress = safeProgress;
+  $("authLoadingRing").style.setProperty("--auth-progress", `${safeProgress}%`);
+  $("authLoadingPercent").textContent = `${safeProgress}%`;
+}
+
+function setAuthLoadingText({
+  kicker = "",
+  title = "",
+  copy = "",
+  stage = ""
+} = {}) {
+  if (kicker) $("authLoadingKicker").textContent = kicker;
+  if (title) $("authLoadingTitle").textContent = title;
+  if (copy) $("authLoadingCopy").textContent = copy;
+  if (stage) $("authLoadingStage").textContent = stage;
+}
+
+function showAuthLoading({
+  kicker = "Authenticating",
+  title = "Signing in to DarkPulse",
+  copy = "Verifying your credentials and preparing the live console.",
+  stage = "Checking username and password...",
+  progress = 8,
+  cap = 72
+} = {}) {
+  state.authLoadingActive = true;
+  state.authLoadingCap = Math.max(progress, cap);
+  $("authLoadingOverlay").classList.remove("hidden");
+  $("authShell").classList.add("auth-shell-loading");
+  setAuthLoadingText({ kicker, title, copy, stage });
+  renderAuthLoading(progress);
+  clearAuthLoadingTimer();
+  state.authLoadingTimer = setInterval(() => {
+    if (!state.authLoadingActive || state.authLoadingProgress >= state.authLoadingCap) return;
+    const current = state.authLoadingProgress;
+    const step = current < 36 ? 4 : current < 64 ? 3 : current < 82 ? 2 : 1;
+    renderAuthLoading(Math.min(state.authLoadingCap, current + step));
+  }, AUTH_PROGRESS_TICK_MS);
+}
+
+async function advanceAuthLoading(target, stage = "", options = {}) {
+  if (!state.authLoadingActive) return;
+  state.authLoadingCap = Math.max(state.authLoadingCap, target);
+  setAuthLoadingText({
+    kicker: options.kicker || "",
+    title: options.title || "",
+    copy: options.copy || "",
+    stage
+  });
+  renderAuthLoading(Math.max(state.authLoadingProgress, target));
+  await sleep(options.delay ?? 140);
+}
+
+function hideAuthLoading() {
+  state.authLoadingActive = false;
+  state.authLoadingCap = 0;
+  clearAuthLoadingTimer();
+  $("authLoadingOverlay").classList.add("hidden");
+  $("authShell").classList.remove("auth-shell-loading");
+  renderAuthLoading(0);
+  setAuthLoadingText({
+    kicker: "Authenticating",
+    title: "Signing in to DarkPulse",
+    copy: "Verifying your credentials and preparing the live console.",
+    stage: "Checking username and password..."
+  });
+}
+
+function applyAuthenticatedIdentity(role, username, options = {}) {
+  $("currentUserName").textContent = username || localStorage.getItem(USER_NAME_KEY) || "User";
+  $("currentUserRole").textContent = role === "admin" ? "Administrator" : "Researcher";
+  $("sidebarNavItemUsers").style.display = role === "admin" ? "flex" : "none";
+  $("appWrapper").classList.remove("hidden");
+  if (!options.keepBackdrop) {
+    $("loginBackdrop").classList.add("hidden");
+  }
+}
+
+async function warmAuthenticatedWorkspace() {
+  const bootWarnings = [];
+
+  const healthTask = checkHealth();
+  const smartUpdateTask = pollSmartUpdateStatus(true);
+  const homepageTask = switchView("homepage");
+
+  const [healthResult, smartUpdateResult, homepageResult] = await Promise.allSettled([
+    healthTask,
+    smartUpdateTask,
+    homepageTask
+  ]);
+
+  if (healthResult.status === "rejected") {
+    console.error(healthResult.reason);
+    bootWarnings.push("health");
+  }
+
+  if (smartUpdateResult.status === "rejected") {
+    console.error(smartUpdateResult.reason);
+    bootWarnings.push("automation");
+  }
+
+  if (homepageResult.status === "rejected") {
+    console.error(homepageResult.reason);
+    bootWarnings.push("homepage");
+  }
+
+  setLastUpdated();
+  scheduleRefresh();
+
+  if (bootWarnings.length) {
+    showToast("Signed in. Some dashboard panels are still warming up in the background.", "info");
+  }
+}
+
+async function bootstrapAuthenticatedSession({ username, role }) {
+  applyAuthenticatedIdentity(role, username, { keepBackdrop: true });
+  await advanceAuthLoading(78, "Session accepted. Opening your console...", {
+    copy: "DarkPulse has verified your access. The dashboard will keep loading in the background.",
+    delay: 120
+  });
+  await advanceAuthLoading(100, "Access granted. Entering DarkPulse now.", {
+    copy: "You are signed in. Live cards, heatmap, and automation status are warming up.",
+    delay: 180
+  });
+
+  $("loginBackdrop").classList.add("hidden");
+  hideAuthLoading();
+  void warmAuthenticatedWorkspace().catch(error => {
+    console.error(error);
+    showToast("Signed in, but some dashboard sections are still loading.", "info");
+  });
+}
+
 async function checkAuth() {
   const token = getToken();
   const role = localStorage.getItem(USER_ROLE_KEY);
@@ -1701,11 +1850,7 @@ async function checkAuth() {
     return false;
   }
 
-  $("appWrapper").classList.remove("hidden");
-  $("loginBackdrop").classList.add("hidden");
-  $("currentUserName").textContent = localStorage.getItem(USER_NAME_KEY) || "User";
-  $("currentUserRole").textContent = role === "admin" ? "Administrator" : "Researcher";
-  $("sidebarNavItemUsers").style.display = role === "admin" ? "flex" : "none";
+  applyAuthenticatedIdentity(role, localStorage.getItem(USER_NAME_KEY) || "User");
   return true;
 }
 
@@ -1713,6 +1858,7 @@ function handleLogout(notice = "") {
   if (notice && typeof notice === "object") {
     notice = "";
   }
+  hideAuthLoading();
   clearTimeout(state.smartUpdateTimer);
   clearTimeout(state.mapRefreshTimer);
   clearTimeout(state.mapSpotlightTimer);
@@ -1859,6 +2005,15 @@ async function handleAuthSubmit() {
     }
 
     if (state.authStage === "mfa") {
+      button.textContent = "Verifying OTP...";
+      showAuthLoading({
+        kicker: "Two-Factor Verification",
+        title: "Confirming your one-time password",
+        copy: "DarkPulse is validating your OTP and restoring your approved analyst session.",
+        stage: "Checking the 6-digit code from your authenticator...",
+        progress: 18,
+        cap: 86
+      });
       const data = await apiFetch("/auth/login/verify-otp", true, {
         method: "POST",
         body: {
@@ -1871,11 +2026,23 @@ async function handleAuthSubmit() {
       localStorage.setItem(USER_ROLE_KEY, data.role);
       localStorage.setItem(USER_NAME_KEY, state.authPendingUsername || $("loginUsername").value.trim());
       sessionStorage.removeItem(AUTH_NOTICE_KEY);
-      window.location.reload();
+      await bootstrapAuthenticatedSession({
+        username: state.authPendingUsername || $("loginUsername").value.trim(),
+        role: data.role
+      });
       return;
     }
 
     const username = $("loginUsername").value.trim();
+    button.textContent = "Signing In...";
+    showAuthLoading({
+      kicker: "Authenticating",
+      title: "Signing in to DarkPulse",
+      copy: "We are verifying your credentials and preparing the local threat intelligence console.",
+      stage: "Checking username and password...",
+      progress: 12,
+      cap: 84
+    });
     const data = await apiFetch("/auth/login", true, {
       method: "POST",
       body: {
@@ -1885,6 +2052,11 @@ async function handleAuthSubmit() {
     });
 
     if (data.mfa_required) {
+      await advanceAuthLoading(100, "Two-factor verification required. Opening OTP step...", {
+        copy: "Your account needs an authenticator code before DarkPulse can finish signing you in.",
+        delay: 220
+      });
+      hideAuthLoading();
       prepareTwoFactorStage(data, username);
       return;
     }
@@ -1893,8 +2065,9 @@ async function handleAuthSubmit() {
     localStorage.setItem(USER_ROLE_KEY, data.role);
     localStorage.setItem(USER_NAME_KEY, username);
     sessionStorage.removeItem(AUTH_NOTICE_KEY);
-    window.location.reload();
+    await bootstrapAuthenticatedSession({ username, role: data.role });
   } catch (error) {
+    hideAuthLoading();
     const errorTarget = state.authStage === "register"
       ? "registerError"
       : state.authStage === "mfa"

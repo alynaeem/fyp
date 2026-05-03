@@ -1,4 +1,5 @@
 import re
+import os
 import asyncio
 from abc import ABC
 from dataclasses import dataclass
@@ -30,17 +31,15 @@ class _pakdb(api_collector_interface, ABC):
 
     BASE_URL = "https://pakistandatabase.com/databases/sim.php"
     ONION_URL = "http://pakdbwftdzn3xwslrzewbtsju63wep2xn37klmhqjuynp554vhjtdiad.onion/index.php"
-    TOR_SOCKS_PLAYWRIGHT = "socks5://127.0.0.1:9150"
-    TOR_SOCKS_REQUESTS = "socks5h://127.0.0.1:9150"
+    TOR_SOCKS_PLAYWRIGHT = os.getenv("TOR_PROXY_URL", "socks5://127.0.0.1:9150")
+    TOR_SOCKS_REQUESTS = TOR_SOCKS_PLAYWRIGHT.replace("socks5://", "socks5h://", 1)
 
     DEFAULT_TIMEOUT_SEC = 120000
 
-    # ---------- singleton ----------
     def __new__(cls, *args, **kwargs):
-        if cls._instance is None:
-            cls._instance = super(_pakdb, cls).__new__(cls)
-            cls._instance._initialized = False
-        return cls._instance
+        instance = super(_pakdb, cls).__new__(cls)
+        instance._initialized = False
+        return instance
 
     def __init__(self, developer_name: str = "Muhammad Abdullah", developer_note: str = ""):
         if getattr(self, "_initialized", False):

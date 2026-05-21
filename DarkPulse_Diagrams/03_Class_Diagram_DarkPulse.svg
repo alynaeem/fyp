@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1650" height="1180" viewBox="0 0 1650 1180">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eef2ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.16"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#2563eb"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1650" height="1180" fill="url(#bg)"/>
+  <text x="825.0" y="48" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800" fill="#0f172a">DarkPulse Class Diagram</text>
+  <text x="825.0" y="76" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="13" fill="#64748b">DarkPulse Design &amp; Test Specification Diagrams</text>
+<rect x="70" y="130" width="310" height="166" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="70" y="130" width="310" height="38" rx="12" fill="#0f766e"/>
+<path d="M70,158 Q70,168 82,168 L368,168 Q380,168 380,158 L380,168 L70,168 Z" fill="#0f766e"/>
+<text x="84" y="155" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">DarkPulseConfig</text>
+<text x="86" y="190" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">mongo_uri: str</text>
+<text x="86" y="208" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">mongo_db: str</text>
+<text x="86" y="226" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">api_key: str</text>
+<text x="86" y="244" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">tor_proxy_url: str</text>
+<text x="86" y="262" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+proxy()</text>
+<text x="86" y="280" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+requests_proxies()</text>
+<rect x="470" y="120" width="310" height="186" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="470" y="120" width="310" height="38" rx="12" fill="#2563eb"/>
+<path d="M470,148 Q470,158 482,158 L768,158 Q780,158 780,148 L780,158 L470,158 Z" fill="#2563eb"/>
+<text x="484" y="145" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">FastAPIServer</text>
+<text x="486" y="180" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+login()</text>
+<text x="486" y="198" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+register()</text>
+<text x="486" y="216" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+list_feed()</text>
+<text x="486" y="234" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+semantic_search()</text>
+<text x="486" y="252" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+trigger_smart_update()</text>
+<text x="486" y="270" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+pakdb_lookup()</text>
+<text x="486" y="288" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+github_scan()</text>
+<rect x="890" y="130" width="310" height="146" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="890" y="130" width="310" height="38" rx="12" fill="#7c3aed"/>
+<path d="M890,158 Q890,168 902,168 L1188,168 Q1200,168 1200,158 L1200,168 L890,168 Z" fill="#7c3aed"/>
+<text x="904" y="155" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">MongoPersistence</text>
+<text x="906" y="190" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+get_db()</text>
+<text x="906" y="208" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+serialise_document()</text>
+<text x="906" y="226" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+extract_model_documents()</text>
+<text x="906" y="244" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+persist_raw_documents()</text>
+<text x="906" y="262" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">-_dedupe_key()</text>
+<rect x="470" y="410" width="310" height="146" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="470" y="410" width="310" height="38" rx="12" fill="#9333ea"/>
+<path d="M470,438 Q470,448 482,448 L768,448 Q780,448 780,438 L780,448 L470,448 Z" fill="#9333ea"/>
+<text x="484" y="435" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">Orchestrator</text>
+<text x="486" y="470" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+run_all_collectors()</text>
+<text x="486" y="488" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+run_single_collector()</text>
+<text x="486" y="506" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">-_persist_model_data()</text>
+<text x="486" y="524" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">-_record_source_status()</text>
+<text x="486" y="542" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">-_cleanup_browsers()</text>
+<rect x="70" y="430" width="310" height="146" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="70" y="430" width="310" height="38" rx="12" fill="#ea580c"/>
+<path d="M70,458 Q70,468 82,468 L368,468 Q380,468 380,458 L380,468 L70,468 Z" fill="#ea580c"/>
+<text x="84" y="455" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">RequestParser</text>
+<text x="86" y="490" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+proxy</text>
+<text x="86" y="508" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+model</text>
+<text x="86" y="526" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+parse()</text>
+<text x="86" y="544" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">-_requests_fetch_seed()</text>
+<text x="86" y="562" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">-_wants_playwright()</text>
+<rect x="70" y="700" width="310" height="126" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="70" y="700" width="310" height="38" rx="12" fill="#ea580c"/>
+<path d="M70,728 Q70,738 82,738 L368,738 Q380,738 380,728 L380,738 L70,738 Z" fill="#ea580c"/>
+<text x="84" y="725" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">RequestManager</text>
+<text x="86" y="760" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+proxy</text>
+<text x="86" y="778" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+timeout</text>
+<text x="86" y="796" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+get(url)</text>
+<text x="86" y="814" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">-_init_session()</text>
+<rect x="470" y="700" width="310" height="166" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="470" y="700" width="310" height="38" rx="12" fill="#dc2626"/>
+<path d="M470,728 Q470,738 482,738 L768,738 Q780,738 780,728 L780,738 L470,738 Z" fill="#dc2626"/>
+<text x="484" y="725" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">BaseCollector</text>
+<text x="486" y="760" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+seed_url</text>
+<text x="486" y="778" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+base_url</text>
+<text x="486" y="796" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+card_data</text>
+<text x="486" y="814" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+entity_data</text>
+<text x="486" y="832" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+parse_leak_data()</text>
+<text x="486" y="850" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+run()</text>
+<rect x="890" y="430" width="310" height="166" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="890" y="430" width="310" height="38" rx="12" fill="#475569"/>
+<path d="M890,458 Q890,468 902,468 L1188,468 Q1200,468 1200,458 L1200,468 L890,468 Z" fill="#475569"/>
+<text x="904" y="455" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">HealingStatusService</text>
+<text x="906" y="490" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+discover_targets()</text>
+<text x="906" y="508" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+run_monitor()</text>
+<text x="906" y="526" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+run_target_check()</text>
+<text x="906" y="544" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+get_summary()</text>
+<text x="906" y="562" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+generate_repair()</text>
+<text x="906" y="580" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+apply_repair()</text>
+<rect x="1250" y="430" width="310" height="146" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="1250" y="430" width="310" height="38" rx="12" fill="#475569"/>
+<path d="M1250,458 Q1250,468 1262,468 L1548,468 Q1560,468 1560,458 L1560,468 L1250,468 Z" fill="#475569"/>
+<text x="1264" y="455" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">HealingStorage</text>
+<text x="1266" y="490" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+upsert_script()</text>
+<text x="1266" y="508" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+save_snapshot()</text>
+<text x="1266" y="526" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+save_event()</text>
+<text x="1266" y="544" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+save_repair_record()</text>
+<text x="1266" y="562" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">+list_scripts()</text>
+<rect x="340" y="970" width="230" height="58" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="340" y="970" width="230" height="38" rx="12" fill="#dc2626"/>
+<path d="M340,998 Q340,1008 352,1008 L558,1008 Q570,1008 570,998 L570,1008 L340,1008 Z" fill="#dc2626"/>
+<text x="354" y="995" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">NewsCollector</text>
+<text x="356" y="1030" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">inherits BaseCollector</text>
+<line x1="585" y1="850" x2="455" y2="970" stroke="#475569" stroke-width="2.2" stroke-dasharray="5 5" marker-end="url(#arrow)"/>
+<rect x="620" y="970" width="230" height="58" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="620" y="970" width="230" height="38" rx="12" fill="#dc2626"/>
+<path d="M620,998 Q620,1008 632,1008 L838,1008 Q850,1008 850,998 L850,1008 L620,1008 Z" fill="#dc2626"/>
+<text x="634" y="995" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">LeakCollector</text>
+<text x="636" y="1030" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">inherits BaseCollector</text>
+<line x1="585" y1="850" x2="735" y2="970" stroke="#475569" stroke-width="2.2" stroke-dasharray="5 5" marker-end="url(#arrow)"/>
+<rect x="900" y="970" width="230" height="58" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="900" y="970" width="230" height="38" rx="12" fill="#dc2626"/>
+<path d="M900,998 Q900,1008 912,1008 L1118,1008 Q1130,1008 1130,998 L1130,1008 L900,1008 Z" fill="#dc2626"/>
+<text x="914" y="995" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">DefacementCollector</text>
+<text x="916" y="1030" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">inherits BaseCollector</text>
+<line x1="585" y1="850" x2="1015" y2="970" stroke="#475569" stroke-width="2.2" stroke-dasharray="5 5" marker-end="url(#arrow)"/>
+<rect x="340" y="1062" width="230" height="58" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="340" y="1062" width="230" height="38" rx="12" fill="#dc2626"/>
+<path d="M340,1090 Q340,1100 352,1100 L558,1100 Q570,1100 570,1090 L570,1100 L340,1100 Z" fill="#dc2626"/>
+<text x="354" y="1087" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">SocialCollector</text>
+<text x="356" y="1122" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">inherits BaseCollector</text>
+<line x1="585" y1="850" x2="455" y2="1062" stroke="#475569" stroke-width="2.2" stroke-dasharray="5 5" marker-end="url(#arrow)"/>
+<rect x="620" y="1062" width="230" height="58" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="620" y="1062" width="230" height="38" rx="12" fill="#dc2626"/>
+<path d="M620,1090 Q620,1100 632,1100 L838,1100 Q850,1100 850,1090 L850,1100 L620,1100 Z" fill="#dc2626"/>
+<text x="634" y="1087" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">ExploitCollector</text>
+<text x="636" y="1122" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">inherits BaseCollector</text>
+<line x1="585" y1="850" x2="735" y2="1062" stroke="#475569" stroke-width="2.2" stroke-dasharray="5 5" marker-end="url(#arrow)"/>
+<rect x="900" y="1062" width="230" height="58" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="900" y="1062" width="230" height="38" rx="12" fill="#dc2626"/>
+<path d="M900,1090 Q900,1100 912,1100 L1118,1100 Q1130,1100 1130,1090 L1130,1100 L900,1100 Z" fill="#dc2626"/>
+<text x="914" y="1087" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#ffffff">ApiCollector</text>
+<text x="916" y="1122" text-anchor="start" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="400" fill="#334155">inherits BaseCollector</text>
+<line x1="585" y1="850" x2="1015" y2="1062" stroke="#475569" stroke-width="2.2" stroke-dasharray="5 5" marker-end="url(#arrow)"/>
+<line x1="225" y1="213" x2="625" y2="213" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="425" y="205" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#334155">config</text>
+<line x1="625" y1="213" x2="1045" y2="203" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="835" y="200" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#334155">persists</text>
+<line x1="625" y1="213" x2="625" y2="483" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="625" y="340" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#334155">triggers</text>
+<line x1="625" y1="483" x2="625" y2="783" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="625" y="625" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#334155">runs</text>
+<line x1="625" y1="783" x2="225" y2="503" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="425" y="635" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#334155">uses</text>
+<line x1="225" y1="503" x2="225" y2="763" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="225" y="625" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#334155">HTTP</text>
+<line x1="625" y1="213" x2="1045" y2="513" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="835" y="355" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#334155">healing APIs</text>
+<line x1="1045" y1="513" x2="1405" y2="503" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="1225" y="500" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#334155">stores</text>
+<line x1="625" y1="483" x2="1045" y2="203" stroke="#475569" stroke-width="2.2" marker-end="url(#arrow)"/>
+<text x="835" y="335" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#334155">upsert</text>
+</svg>

@@ -30,7 +30,7 @@ class _pakdb(api_collector_interface, ABC):
     _instance = None
 
     BASE_URL = "https://pakistandatabase.com/databases/sim.php"
-    ONION_URL = "http://pakdbwftdzn3xwslrzewbtsju63wep2xn37klmhqjuynp554vhjtdiad.onion/index.php"
+    ONION_URL = BASE_URL
     TOR_SOCKS_PLAYWRIGHT = os.getenv("TOR_PROXY_URL", "socks5://127.0.0.1:9150")
     TOR_SOCKS_REQUESTS = TOR_SOCKS_PLAYWRIGHT.replace("socks5://", "socks5h://", 1)
 
@@ -104,7 +104,7 @@ class _pakdb(api_collector_interface, ABC):
         self.callback = callback
 
     def contact_page(self) -> str:
-        return "https://pakistandatabase.com/"
+        return self.BASE_URL
 
     def reset_cache(self):
         self._apk_data.clear()
@@ -120,6 +120,9 @@ class _pakdb(api_collector_interface, ABC):
         self._proxy = proxy or {}
         server = (self._proxy or {}).get("server")
         if not server:
+            return
+        if not server.startswith(("socks5://", "socks5h://")):
+            print("[API] Ignoring non-Tor proxy for PakDB lookup.")
             return
         if server.startswith("socks5://"):
             server = server.replace("socks5://", "socks5h://", 1)
@@ -141,11 +144,13 @@ class _pakdb(api_collector_interface, ABC):
         n = re.sub(r"\D+", "", number or "")
         if not n:
             return ""
+        if n.startswith("0092"):
+            n = "92" + n[4:]
         if n.startswith("92"):
             return n
         if n.startswith("0"):
             return "92" + n[1:]
-        if len(n) == 10 and n.startswith("3"):
+        if n.startswith("3"):
             return "92" + n
         return n
 
@@ -184,8 +189,11 @@ class _pakdb(api_collector_interface, ABC):
                 page.goto(self.BASE_URL, wait_until="domcontentloaded", timeout=timeout_ms)
 
                 # Note: The user's screenshot of sim.php shows the same search structure
-                input_sel = "input[name='search_query']"
-                btn_sel = "form button[type='submit']"
+                input_sel = (
+                    "input[name='search_query'], input[name='number'], input[name='mobile'], "
+                    "input[type='tel'], input[type='search'], input[type='text']"
+                )
+                btn_sel = "form button[type='submit'], button[type='submit'], input[type='submit']"
 
                 page.wait_for_selector(input_sel, state="visible", timeout=60_000)
 
@@ -276,7 +284,7 @@ class _pakdb(api_collector_interface, ABC):
                 if not cleaned_cols: continue
 
                 # Skip Header
-                if "mobile" in cleaned_cols[0].lower() or "name" in cleaned_cols[1].lower():
+                if "mobile" in cleaned_cols[0].lower() or (len(cleaned_cols) > 1 and "name" in cleaned_cols[1].lower()):
                     continue
 
                 if len(cleaned_cols) >= 4:

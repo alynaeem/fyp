@@ -104,7 +104,9 @@ SCAN_LOCK_ID = "intelligence_scan_lock"
 SCAN_RECOVERY_GRACE_SECONDS = 10
 SOURCE_HIGHLIGHT_LIMIT = 5
 FEED_CACHE_TTL_SECONDS = 30
-_FEED_ITEMS_CACHE: dict[tuple[str, bool], tuple[float, list[dict]]] = {}
+FEED_PAGE_CANDIDATE_MULTIPLIER = 4
+FEED_PAGE_MAX_CANDIDATES = 500
+_FEED_ITEMS_CACHE: dict[tuple[Any, ...], tuple[float, list[dict]]] = {}
 MAP_STATS_CACHE_TTL_SECONDS = 120
 _MAP_STATS_CACHE: tuple[float, dict] | None = None
 _MAP_STATS_INFLIGHT: asyncio.Task | None = None
@@ -201,7 +203,7 @@ def _human_join(parts: list[str]) -> str:
     return ", ".join(parts[:-1]) + f", and {parts[-1]}"
 
 
-def _cache_get_feed_items(key: tuple[str, bool]) -> Optional[list[dict]]:
+def _cache_get_feed_items(key: tuple[Any, ...]) -> Optional[list[dict]]:
     cached = _FEED_ITEMS_CACHE.get(key)
     if not cached:
         return None
@@ -212,7 +214,7 @@ def _cache_get_feed_items(key: tuple[str, bool]) -> Optional[list[dict]]:
     return items
 
 
-def _cache_set_feed_items(key: tuple[str, bool], items: list[dict]) -> list[dict]:
+def _cache_set_feed_items(key: tuple[Any, ...], items: list[dict]) -> list[dict]:
     _FEED_ITEMS_CACHE[key] = (time.monotonic(), items)
     return items
 
@@ -1880,6 +1882,45 @@ async def intelligence_status():
             "updated_at": lock_doc.get("updated_at"),
         },
     }
+
+
+@app.post("/api/ai/query")
+async def ai_query(request: Request):
+    body = await request.json()
+    query = str(body.get("query", "")).strip()
+    if not query:
+        raise HTTPException(status_code=400, detail="Query is required")
+
+    collection = str(body.get("collection") or "redis_kv_store").strip() or "redis_kv_store"
+    try:
+        limit = min(max(int(body.get("limit") or 25), 1), 50)
+    except (TypeError, ValueError):
+        limit = 25
+
+    try:
+        from ollama_mongo_intelligence import answer_query_from_mongo
+
+        loop = asyncio.get_running_loop()
+        result = await loop.run_in_executor(
+            None,
+            lambda: answer_query_from_mongo(
+                query,
+                collection_name=collection,
+                limit=limit,
+            ),
+        )
+        return {
+            "status": "ok",
+            "query": result.query,
+            "collection": result.collection,
+            "count": result.count,
+            "context_word_count": result.context_word_count,
+            "answer": result.answer,
+            "documents": result.documents,
+        }
+    except Exception as exc:
+        log.error(f"AI query failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"AI query failed: {exc}")
 
 
 @app.get("/leaks/source-status")
@@ -3701,6 +3742,89 @@ async def _count_threat_items(source_type: str = "") -> int:
     return await kv_col.count_documents({"_id": {"$regex": regex_pattern}})
 
 
+def _threat_item_prefixes(source_type: str = "") -> list[str]:
+    if source_type:
+        return [prefix for prefix, category in _THREAT_PREFIXES.items() if category == source_type]
+    return [prefix for prefix, category in _THREAT_PREFIXES.items() if category is not None]
+
+
+async def _fetch_threat_items_page(source_type: str, limit: int, offset: int) -> tuple[int, list[dict]]:
+    prefixes = _threat_item_prefixes(source_type)
+    if not prefixes:
+        return 0, []
+
+    total = await _count_threat_items(source_type)
+    if offset > FEED_PAGE_MAX_CANDIDATES:
+        items = await _fetch_threat_items(source_type, include_raw=False)
+        return total, items[offset:offset + limit]
+
+    regex_pattern = "^(" + "|".join(prefixes) + "):"
+    candidate_limit = min(
+        max(offset + (limit * FEED_PAGE_CANDIDATE_MULTIPLIER), limit),
+        FEED_PAGE_MAX_CANDIDATES,
+    )
+    cache_key = ("threat-page", source_type or "all", limit, offset, candidate_limit)
+    cached = _cache_get_feed_items(cache_key)
+    if cached is not None:
+        return total, cached
+
+    docs = await (
+        kv_col.find({"_id": {"$regex": regex_pattern}})
+        .sort([("_id", -1)])
+        .limit(candidate_limit)
+        .to_list(length=candidate_limit)
+    )
+    suffixes = []
+    for doc in docs:
+        doc_id = str(doc.get("_id", ""))
+        suffixes.append(doc_id.split(":", 1)[1] if ":" in doc_id else doc_id)
+
+    entity_docs: list[dict] = []
+    if suffixes:
+        entity_ids = []
+        for prefix in prefixes:
+            entity_prefix = prefix.replace("_ITEMS", "_ENTITIES")
+            entity_ids.extend([f"{entity_prefix}:{suffix}" for suffix in suffixes])
+        entity_docs = await kv_col.find({"_id": {"$in": entity_ids}}).to_list(length=len(entity_ids))
+
+    entity_map: dict[str, dict] = {}
+    for entity_doc in entity_docs:
+        entity_id = str(entity_doc.get("_id", ""))
+        if ":" in entity_id:
+            entity_map[entity_id.split(":", 1)[1]] = entity_doc
+
+    items = []
+    for doc in docs:
+        doc_id = str(doc.get("_id", ""))
+        suffix = doc_id.split(":", 1)[1] if ":" in doc_id else doc_id
+        parsed = _parse_kv_item(doc, include_raw=False, entity_doc=entity_map.get(suffix))
+        if parsed:
+            items.append(parsed)
+
+    page_items = sorted(items, key=_feed_sort_key, reverse=True)[offset:offset + limit]
+    return total, _cache_set_feed_items(cache_key, page_items)
+
+
+async def _fetch_combined_feed_page(limit: int, offset: int) -> tuple[int, list[dict]]:
+    cache_key = ("feed-page", limit, offset)
+    cached = _cache_get_feed_items(cache_key)
+    total_news, total_threats = await asyncio.gather(
+        articles_col.count_documents({}),
+        _count_threat_items(),
+    )
+    if cached is not None:
+        return total_news + total_threats, cached
+
+    news_limit = min(
+        max(offset + (limit * FEED_PAGE_CANDIDATE_MULTIPLIER), limit),
+        FEED_PAGE_MAX_CANDIDATES,
+    )
+    _, news_items = await _fetch_news_page(news_limit, 0)
+    _, threat_items = await _fetch_threat_items_page("", news_limit, 0)
+    items = sorted(news_items + threat_items, key=_feed_sort_key, reverse=True)[offset:offset + limit]
+    return total_news + total_threats, _cache_set_feed_items(cache_key, items)
+
+
 async def _fetch_threat_items(source_type: str = "", include_raw: bool = False) -> list[dict]:
     cache_key = (f"threat:{source_type or 'all'}", include_raw)
     if not include_raw:
@@ -3869,13 +3993,12 @@ async def list_feed(
             items = await _fetch_news_items(include_raw=include_raw)
     elif canonical in {"exploit", "leak", "defacement", "social", "api"}:
         if not q and not include_raw and not topic and not start_date and not end_date:
-            total = await _count_threat_items(canonical)
-            items = await _fetch_threat_items(canonical, include_raw=False)
+            total, items = await _fetch_threat_items_page(canonical, limit, offset)
             return {
                 "total": total,
                 "offset": offset,
                 "limit": limit,
-                "items": [_public_feed_item(item) for item in items[offset:offset + limit]],
+                "items": [_public_feed_item(item) for item in items],
             }
         if q:
             items = await _search_threat_items(q, canonical, include_raw=include_raw)
@@ -3883,16 +4006,12 @@ async def list_feed(
             items = await _fetch_threat_items(canonical, include_raw=include_raw)
     else:
         if not q and not include_raw and not topic and not start_date and not end_date:
-            total_news, total_threats, items = await asyncio.gather(
-                articles_col.count_documents({}),
-                _count_threat_items(),
-                _fetch_combined_feed_items(include_raw=False),
-            )
+            total, items = await _fetch_combined_feed_page(limit, offset)
             return {
-                "total": total_news + total_threats,
+                "total": total,
                 "offset": offset,
                 "limit": limit,
-                "items": [_public_feed_item(item) for item in items[offset:offset + limit]],
+                "items": [_public_feed_item(item) for item in items],
             }
         if q:
             news_items, threat_items = await asyncio.gather(
@@ -3978,10 +4097,21 @@ async def stats():
 pakdb_col = db["pakdb_lookups"]
 
 
+def _normalize_pakdb_number(number: str) -> str:
+    cleaned = re.sub(r"\D+", "", number or "")
+    if cleaned.startswith("0092"):
+        cleaned = "92" + cleaned[4:]
+    elif cleaned.startswith("0"):
+        cleaned = "92" + cleaned[1:]
+    elif cleaned.startswith("3"):
+        cleaned = "92" + cleaned
+    return cleaned
+
+
 @app.post("/pakdb/lookup")
 async def pakdb_lookup(request: Request):
     """Run a PakDB phone number lookup via the Playwright + Tor scraper.
-    Accepts JSON body: {"number": "03001234567"}
+    Accepts JSON body: {"number": "03011234567"} or {"number": "923011234567"}
     Returns structured results or an error."""
     import asyncio
     from datetime import datetime, timezone
@@ -3991,13 +4121,11 @@ async def pakdb_lookup(request: Request):
     if not number:
         raise HTTPException(status_code=400, detail="Phone number is required")
 
-    # Validate: must look like a Pakistani phone number
-    import re
-    cleaned = re.sub(r"\D+", "", number)
-    if len(cleaned) < 10 or len(cleaned) > 13:
+    normalized_number = _normalize_pakdb_number(number)
+    if not normalized_number.startswith("92") or len(normalized_number) < 8 or len(normalized_number) > 13:
         raise HTTPException(status_code=400, detail="Invalid phone number format")
 
-    log.info(f"PakDB lookup requested for: {number}")
+    log.info(f"PakDB lookup requested for: {normalized_number}")
 
     try:
         from api_collector.scripts._pakdb import _pakdb
@@ -4008,7 +4136,7 @@ async def pakdb_lookup(request: Request):
         # Run the Playwright scraper in a thread pool (it's blocking)
         result = await loop.run_in_executor(
             None,
-            lambda: asyncio.run(scraper.parse_leak_data(query={"number": number}, context=None))
+            lambda: asyncio.run(scraper.parse_leak_data(query={"number": normalized_number}, context=None))
         )
 
         cards = list(getattr(result, "cards_data", []) or []) if result else []
@@ -4026,15 +4154,16 @@ async def pakdb_lookup(request: Request):
 
         # Persist to MongoDB for history
         doc = {
-            "query": number,
+            "query": normalized_number,
+            "input": number,
             "results": items,
             "count": len(items),
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
         await pakdb_col.insert_one(doc)
 
-        log.info(f"PakDB lookup complete: {len(items)} results for {number}")
-        return {"status": "ok", "query": number, "count": len(items), "results": items}
+        log.info(f"PakDB lookup complete: {len(items)} results for {normalized_number}")
+        return {"status": "ok", "query": normalized_number, "count": len(items), "results": items}
 
     except Exception as e:
         log.error(f"PakDB lookup failed: {e}", exc_info=True)

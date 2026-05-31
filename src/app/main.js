@@ -134,6 +134,9 @@ function getTranslateScopeRoot(scope = "view") {
   if (scope === "alert" && !$("alertSummaryBackdrop").classList.contains("hidden")) {
     return $("alertSummaryBackdrop");
   }
+  if (scope === "ai" && !$("aiChatBackdrop").classList.contains("hidden")) {
+    return $("aiChatBackdrop");
+  }
   return document.querySelector(".app-content");
 }
 
@@ -779,6 +782,158 @@ function openFeedFiltersModal() {
 
 function closeFeedFiltersModal() {
   $("feedFiltersBackdrop").classList.add("hidden");
+}
+
+function openAiChatModal() {
+  $("aiChatBackdrop").classList.remove("hidden");
+  setTimeout(() => $("aiChatInput").focus(), 0);
+}
+
+function closeAiChatModal() {
+  $("aiChatBackdrop").classList.add("hidden");
+}
+
+function clearAiChat() {
+  $("aiChatInput").value = "";
+  $("aiChatStatus").textContent = "Ollama model: llama3.1:8b preferred";
+  $("aiChatAnswer").classList.add("hidden");
+  $("aiChatAnswer").textContent = "";
+  $("aiChatSources").classList.add("hidden");
+  $("aiChatSources").innerHTML = "";
+}
+
+function splitAiSectionLines(content = "", forceList = false) {
+  const normalized = String(content || "")
+    .replace(/\s+(?=\d+\.\s+)/g, "\n")
+    .replace(/\s+-\s+/g, "\n")
+    .trim();
+  const lines = normalized
+    .split(/\n+/)
+    .map(line => line.replace(/^[-*•\d.)\s]+/, "").trim())
+    .filter(Boolean);
+  return forceList ? lines : (lines.length > 1 ? lines : [normalized]);
+}
+
+function renderAiChatAnswer(answer = "", query = "") {
+  const answerBox = $("aiChatAnswer");
+  const rawText = String(answer || "").trim();
+  if (!rawText) {
+    answerBox.classList.add("hidden");
+    answerBox.innerHTML = "";
+    return;
+  }
+
+  const fallbackMatch = rawText.match(/^Model fallback:[^\n]+/);
+  const fallbackNotice = fallbackMatch ? fallbackMatch[0] : "";
+  const bodyText = (fallbackNotice ? rawText.slice(fallbackNotice.length).trim() : rawText)
+    .replace(/\*\*(Summary|Key Findings|Relevant Records|Missing Values):?\*\*/g, "$1:")
+    .replace(/^#+\s*(Summary|Key Findings|Relevant Records|Missing Values):?/gm, "$1:")
+    .replace(/\s*(Summary|Key Findings|Relevant Records|Missing Values):\s*/g, "\n$1:\n")
+    .trim();
+  const sectionNames = ["Summary", "Key Findings", "Relevant Records", "Missing Values"];
+  const sectionPattern = new RegExp(`^(${sectionNames.join("|")}):?\\s*`, "gm");
+  const matches = [...bodyText.matchAll(sectionPattern)];
+
+  if (!matches.length) {
+    answerBox.classList.remove("hidden");
+    answerBox.innerHTML = `
+      <div class="ai-chat-thread">
+        <div class="ai-chat-bubble ai-chat-bubble-user">${escapeHtml(query || "Query")}</div>
+        <div class="ai-chat-bubble ai-chat-bubble-assistant">
+          ${fallbackNotice ? `<div class="ai-chat-fallback">${escapeHtml(fallbackNotice)}</div>` : ""}
+          <div class="ai-chat-section"><p>${escapeHtml(bodyText)}</p></div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const sections = matches.map((match, index) => {
+    const start = match.index + match[0].length;
+    const end = matches[index + 1]?.index ?? bodyText.length;
+    return {
+      title: match[1],
+      content: bodyText.slice(start, end).trim()
+    };
+  }).filter(section => section.content);
+
+  answerBox.classList.remove("hidden");
+  answerBox.innerHTML = `
+    <div class="ai-chat-thread">
+      <div class="ai-chat-bubble ai-chat-bubble-user">${escapeHtml(query || "Query")}</div>
+      <div class="ai-chat-bubble ai-chat-bubble-assistant">
+        ${fallbackNotice ? `<div class="ai-chat-fallback">${escapeHtml(fallbackNotice)}</div>` : ""}
+        ${sections.map(section => {
+      const forceList = section.title !== "Summary";
+      const lines = splitAiSectionLines(section.content, forceList);
+      const listMarkup = forceList || lines.length > 1
+        ? `<ul>${lines.map(line => `<li>${escapeHtml(line)}</li>`).join("")}</ul>`
+        : `<p>${escapeHtml(lines[0] || section.content)}</p>`;
+      return `
+        <section class="ai-chat-section">
+          <h3>${escapeHtml(section.title)}</h3>
+          ${listMarkup}
+        </section>
+      `;
+    }).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderAiChatSources(documents = []) {
+  const sourceBox = $("aiChatSources");
+  if (!Array.isArray(documents) || documents.length === 0) {
+    sourceBox.classList.add("hidden");
+    sourceBox.innerHTML = "";
+    return;
+  }
+
+  sourceBox.classList.remove("hidden");
+  sourceBox.innerHTML = `
+    <div class="ai-chat-sources-title">Source Records</div>
+    ${documents.slice(0, 5).map((doc, index) => `
+      <button type="button" class="ai-chat-source-item" ${doc.aid ? `data-ai-source-aid="${escapeHtml(doc.aid)}"` : "disabled"}>
+        <span class="ai-chat-source-index">${index + 1}</span>
+        <span class="ai-chat-source-main">
+          <strong>${escapeHtml(doc.field || "record")}</strong>
+          <small>${escapeHtml(doc.aid || doc._id || "Mongo record")}</small>
+        </span>
+        <span class="ai-chat-source-open">${escapeHtml(doc.open_label || (doc.aid ? "Open" : "Source only"))}</span>
+      </button>
+    `).join("")}
+  `;
+}
+
+async function runAiChatQuery() {
+  const query = $("aiChatInput").value.trim();
+  if (!query) {
+    $("aiChatStatus").textContent = "Enter a query first.";
+    return;
+  }
+
+  setActionButtonBusy("aiChatAskBtn", true, "Thinking...", "Ask");
+  $("aiChatStatus").textContent = "Searching MongoDB and asking local Ollama...";
+  $("aiChatAnswer").classList.add("hidden");
+  $("aiChatAnswer").textContent = "";
+  $("aiChatSources").classList.add("hidden");
+
+  try {
+    const data = await apiFetch("/api/ai/query", false, {
+      method: "POST",
+      body: { query, collection: "redis_kv_store", limit: 25 }
+    });
+
+    $("aiChatStatus").textContent = `${data.count || 0} record(s), ${data.context_word_count || 0} context words`;
+    renderAiChatAnswer(data.answer || "No answer returned.", query);
+    renderAiChatSources(data.documents || []);
+  } catch (error) {
+    $("aiChatStatus").textContent = error.message;
+    $("aiChatAnswer").classList.add("hidden");
+    showToast(`AI query failed: ${error.message}`, "error");
+  } finally {
+    setActionButtonBusy("aiChatAskBtn", false, "Thinking...", "Ask");
+  }
 }
 
 async function applyFeedFilters() {
@@ -1886,12 +2041,27 @@ function openMediaLightbox(src, title = "Evidence image") {
 
 async function showDetail(aid) {
   try {
-    let item = state.detailCache.get(aid);
-    if (!item || !item.raw) {
-      item = await apiFetch(`/feed/${encodeURIComponent(aid)}`);
+    const cachedItem = state.detailCache.get(aid);
+    if (cachedItem) {
+      renderDetail(cachedItem);
+      if (cachedItem.raw) {
+        return;
+      }
+    } else {
+      renderDetail({
+        aid,
+        title: "Loading record...",
+        description: "Fetching full intelligence detail.",
+        source_type: "intel",
+        raw: { status: "loading", aid }
+      });
     }
+
+    const item = await apiFetch(`/feed/${encodeURIComponent(aid)}`);
     state.detailCache.set(aid, item);
-    renderDetail(item);
+    if (state.currentDetailItem?.aid === aid) {
+      renderDetail(item);
+    }
   } catch (error) {
     showToast(`Failed to load detail: ${error.message}`, "error");
   }
@@ -1944,12 +2114,12 @@ function buildDetailExportPayload(item) {
 
 function buildPakdbExportPayload() {
   const entry = state.scanExports.pakdb || { query: "", items: [] };
-  if (!entry.items.length) throw new Error("Run a national identity search before exporting.");
+  if (!entry.items.length) throw new Error("Run a Pakistan SIM lookup before exporting.");
 
   return {
-    filenameBase: `national-identity-${entry.query || "lookup"}`,
+    filenameBase: `pakistan-sim-${entry.query || "lookup"}`,
     kicker: "DarkPulse Scan Export",
-    title: "National Identity Search",
+    title: "Pakistan SIM Lookup",
     subtitle: `Query: ${entry.query || "-"}`,
     metadata: [
       ["Query", entry.query || "-"],
@@ -1961,7 +2131,7 @@ function buildPakdbExportPayload() {
         title: "Result Set",
         cards: entry.items.map((item, index) => ({
           title: item.name || `Record ${index + 1}`,
-          subtitle: item.mobile || item.cnic || "National identity result",
+          subtitle: item.mobile || item.cnic || "Pakistan SIM result",
           text: item.address || "Address unavailable",
           fields: [
             ["CNIC", item.cnic || "-"],
@@ -2562,7 +2732,7 @@ function renderPakdbResultCard(item) {
           <h3 class="identity-name">${escapeHtml(normalizePreviewText(item.name || "Unknown Record", "Unknown Record"))}</h3>
           <p class="identity-address">${escapeHtml(normalizePreviewText(item.address || "Address unavailable", "Address unavailable"))}</p>
         </div>
-        <span class="identity-pill">National Identity</span>
+        <span class="identity-pill">Pakistan SIM</span>
       </div>
       <div class="identity-grid">
         <div class="identity-field">
@@ -2574,7 +2744,7 @@ function renderPakdbResultCard(item) {
           <span class="identity-field-value">${escapeHtml(item.mobile || "-")}</span>
         </div>
       </div>
-      <div class="identity-meta-line">Matched from the connected national identity lookup backend.</div>
+      <div class="identity-meta-line">Matched from the connected Pakistan SIM lookup backend.</div>
     </article>
   `;
 }
@@ -3344,7 +3514,7 @@ async function runPakdbLookup() {
   setActionButtonBusy("pakdbSearchBtn", true, "Searching...");
   clearPagination("pakdbPagination");
   setExportToolbarState("pakdbExportBar", false);
-  showListScanLoading("pakdbStatus", "pakdbHistoryList", "Searching national identity records...", "compact", 3);
+  showListScanLoading("pakdbStatus", "pakdbHistoryList", "Searching Pakistan SIM records...", "compact", 3);
 
   try {
     const data = await apiFetch("/pakdb/lookup", false, {
@@ -3356,7 +3526,7 @@ async function runPakdbLookup() {
     state.scanExports.pakdb = { query: number, items };
     $("pakdbStatus").textContent = items.length ? `${items.length} result(s) returned.` : "No PakDB results found.";
     setClientPaginatedItems("pakdb", items);
-    setExportToolbarState("pakdbExportBar", items.length > 0, `${items.length} national identity result(s) ready for export.`);
+    setExportToolbarState("pakdbExportBar", items.length > 0, `${items.length} Pakistan SIM result(s) ready for export.`);
     await renderClientPaginatedResults("pakdb", 1);
   } catch (error) {
     state.scanExports.pakdb = { query: number, items: [] };
@@ -3864,6 +4034,21 @@ function setupEventListeners() {
   $("feedFiltersClose").onclick = closeFeedFiltersModal;
   $("feedFiltersApplyBtn").onclick = applyFeedFilters;
   $("feedFiltersResetBtn").onclick = resetFeedFilters;
+  $("aiChatLaunchBtn").onclick = openAiChatModal;
+  $("aiChatClose").onclick = closeAiChatModal;
+  $("aiChatAskBtn").onclick = runAiChatQuery;
+  $("aiChatClearBtn").onclick = clearAiChat;
+  $("aiChatInput").addEventListener("keydown", event => {
+    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+      runAiChatQuery();
+    }
+  });
+  $("aiChatSources").addEventListener("click", event => {
+    const source = event.target.closest("[data-ai-source-aid]");
+    if (!source) return;
+    closeAiChatModal();
+    showDetail(source.dataset.aiSourceAid);
+  });
 
   window.onclick = e => {
     if (e.target === $("settingsBackdrop")) $("settingsBackdrop").classList.add("hidden");
@@ -3871,6 +4056,7 @@ function setupEventListeners() {
     if (e.target === $("mediaLightboxBackdrop")) closeMediaLightbox();
     if (e.target === $("translateBackdrop")) closeTranslateModal();
     if (e.target === $("feedFiltersBackdrop")) closeFeedFiltersModal();
+    if (e.target === $("aiChatBackdrop")) closeAiChatModal();
   };
 
   attachSettingsHandlers({ $, DEFAULT_API_BASE, API_BASE_KEY, STORAGE_KEY });

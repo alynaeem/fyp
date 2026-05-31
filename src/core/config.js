@@ -206,7 +206,7 @@ export const VIEW_META = {
 };
 
 export const TOOL_VIEWS = ["admin-users", "pakdb", "credential-checker", "confidential-data", "seo", "playstore", "software", "repo-scan", "healing", "leak-source-status", "docs", "account"];
-export const FEED_PREFETCH_VIEWS = ["all", "news", "leak", "defacement", "exploit", "social", "api"];
+export const FEED_PREFETCH_VIEWS = [];
 
 export const SMART_UPDATE_SOURCE_LABELS = {
   news: "Security Feeds",

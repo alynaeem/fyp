@@ -127,8 +127,8 @@
           <div class="nav-item" data-view="pakdb">
             <span class="nav-icon">PK</span>
             <div class="nav-copy">
-              <span class="nav-label">National Identity</span>
-              <span class="nav-meta">Entity and phone lookup workflow</span>
+              <span class="nav-label">Pakistan SIM Lookup</span>
+              <span class="nav-meta">Tor-only phone lookup workflow</span>
             </div>
           </div>
           <div class="nav-item" data-view="credential-checker" id="sidebarNavItemCredentialChecker">
@@ -307,11 +307,18 @@
                 <h2 class="section-title">Countries hit by leak and defacement activity</h2>
                 <p class="section-copy">Affected regions are highlighted in red across the live heat map, with the active country and leak total rotating automatically from the restored dataset.</p>
               </div>
-              <div class="impact-summary-grid">
-                <div class="mini-stat">
-                  <span class="mini-stat-label">Affected Countries</span>
-                  <span class="mini-stat-value" id="impactCountriesCount">0</span>
-                </div>
+            <div class="impact-summary-grid">
+              <button class="ai-chat-launch" id="aiChatLaunchBtn" type="button">
+                <span class="ai-chat-launch-icon">AI</span>
+                <span>
+                  <strong>Ask DarkPulse</strong>
+                  <small>Query Mongo with Ollama</small>
+                </span>
+              </button>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Affected Countries</span>
+                <span class="mini-stat-value" id="impactCountriesCount">0</span>
+              </div>
                 <div class="mini-stat">
                   <span class="mini-stat-label">Leak Coverage</span>
                   <span class="mini-stat-value" id="impactLeakCoverage">0</span>
@@ -457,12 +464,12 @@
           <div class="panel-header">
             <div>
               <p class="section-kicker">Lookup</p>
-              <h2 class="section-title">National Identity Search</h2>
+              <h2 class="section-title">Pakistan SIM Lookup</h2>
             </div>
           </div>
           <div class="lookup-shell">
             <div class="pakdb-search-row">
-              <input type="tel" id="pakdbInput" class="search-input" placeholder="CNIC or Phone..." />
+              <input type="tel" id="pakdbInput" class="search-input" placeholder="0301xxxxxxx or 92301xxxxxxx" />
               <button class="btn-primary" id="pakdbSearchBtn">Search</button>
             </div>
             <div id="pakdbStatus" class="pakdb-status"></div>
@@ -1234,7 +1241,7 @@
                   <div class="docs-card"><strong>Playstore Scanner</strong><p>Checks for modded APK signals from a Play Store URL.</p></div>
                   <div class="docs-card"><strong>PC Game Scan</strong><p>Looks for cracked or mirrored PC game/software results.</p></div>
                   <div class="docs-card"><strong>Repository Scan</strong><p>Trivy-backed repo posture grading with findings and remediation guidance.</p></div>
-                  <div class="docs-card"><strong>National Identity</strong><p>Local connected-DB lookup for CNIC or phone-based result retrieval.</p></div>
+                  <div class="docs-card"><strong>Pakistan SIM Lookup</strong><p>Tor-only lookup for Pakistani SIM records using local or 92-prefixed phone formats.</p></div>
                 </div>
               </section>
 
@@ -1710,6 +1717,33 @@
       <div class="modal-footer">
         <button class="btn-secondary" id="feedFiltersResetBtn" type="button">Reset Filters</button>
         <button class="btn-primary" id="feedFiltersApplyBtn" type="button">Apply Filters</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="aiChatBackdrop">
+    <div class="modal modal-ai-chat">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div class="modal-source">DarkPulse Local AI</div>
+          <div class="modal-top-tag">MongoDB and Ollama</div>
+        </div>
+        <button class="modal-close" id="aiChatClose">x</button>
+      </div>
+      <div class="modal-body modal-ai-chat-body">
+        <h2 class="modal-title">Ask DarkPulse</h2>
+        <div class="ai-chat-shell">
+          <div class="ai-chat-input-row">
+            <textarea id="aiChatInput" class="ai-chat-input" rows="3" placeholder="Show me leaks about Iran"></textarea>
+            <button class="btn-primary" id="aiChatAskBtn" type="button">Ask</button>
+          </div>
+          <div class="ai-chat-status" id="aiChatStatus">Ollama model: llama3.1:8b preferred</div>
+          <div class="ai-chat-answer hidden" id="aiChatAnswer"></div>
+          <div class="ai-chat-sources hidden" id="aiChatSources"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="aiChatClearBtn" type="button">Clear</button>
       </div>
     </div>
   </div>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Detailed Project Proposal - DarkPulse Live Intelligence Console</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 16mm 15mm 16mm 15mm;
+    }
+
+    :root {
+      --ink: #172033;
+      --muted: #5d6a7d;
+      --line: #d7deea;
+      --accent: #b91c1c;
+      --accent-soft: #fff1f1;
+      --panel: #f7f9fc;
+      --panel-strong: #eef3f8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10.2pt;
+      line-height: 1.36;
+      background: white;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 22pt;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #101828;
+    }
+
+    h2 {
+      margin-top: 13px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--line);
+      color: #101828;
+      font-size: 13.5pt;
+    }
+
+    h3 {
+      margin-top: 9px;
+      color: #1f2937;
+      font-size: 11.1pt;
+    }
+
+    p {
+      margin-top: 5px;
+    }
+
+    ul, ol {
+      margin: 5px 0 0 18px;
+      padding: 0;
+    }
+
+    li {
+      margin: 2.5px 0;
+    }
+
+    .cover {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 18px;
+      background:
+        linear-gradient(135deg, rgba(185, 28, 28, 0.08), transparent 34%),
+        var(--panel);
+    }
+
+    .kicker {
+      color: var(--accent);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 8.7pt;
+      margin-bottom: 7px;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 10.5pt;
+      max-width: 92%;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .meta-card {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 8px 10px;
+      background: white;
+    }
+
+    .label {
+      display: block;
+      color: var(--muted);
+      font-size: 7.8pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .value {
+      display: block;
+      margin-top: 3px;
+      font-weight: 700;
+    }
+
+    .section {
+      margin-top: 12px;
+      break-inside: avoid;
+    }
+
+    .callout {
+      margin-top: 8px;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: var(--accent-soft);
+    }
+
+    .compact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 7px;
+    }
+
+    .box {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 9px 10px;
+      background: var(--panel);
+      break-inside: avoid;
+    }
+
+    .box strong {
+      color: #111827;
+    }
+
+    .checklist li {
+      margin-bottom: 3px;
+    }
+
+    .references {
+      font-size: 9.4pt;
+    }
+
+    .references li {
+      margin-bottom: 4px;
+    }
+
+    .footer-note {
+      margin-top: 10px;
+      padding-top: 7px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 8.8pt;
+    }
+
+    .page-break {
+      break-before: page;
+    }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <p class="kicker">Detailed Project Proposal Submission</p>
+    <h1>DarkPulse Live Intelligence Console</h1>
+    <p class="subtitle">
+      A local cybersecurity intelligence dashboard for collecting, normalising, visualising, and analysing threat intelligence
+      signals from approved sources, with repository risk scanning and clear evidence review workflows.
+    </p>
+
+    <div class="meta-grid">
+      <div class="meta-card">
+        <span class="label">Module Code and Title</span>
+        <span class="value">7COM1039-0509-2025 - Advanced Computer Science</span>
+      </div>
+      <div class="meta-card">
+        <span class="label">Document Type</span>
+        <span class="value">Detailed Project Proposal (DPP)</span>
+      </div>
+      <div class="meta-card">
+        <span class="label">Student Name</span>
+        <span class="value">[Your Name]</span>
+      </div>
+      <div class="meta-card">
+        <span class="label">Student ID</span>
+        <span class="value">[Your Student ID]</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Suggested file name:</strong> <span>[StudentID]-[Your-Name]-DPP.pdf</span><br />
+      This proposal is prepared as a single A4 document and follows the required DPP sections shown in the assignment guidance.
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Aim of the Project</h2>
+    <p>
+      The aim of this project is to design and evaluate DarkPulse, a professional local intelligence console that helps analysts
+      monitor cyber incidents, breach reports, defacement activity, exploit signals, social-channel intelligence, and software
+      exposure indicators from authorised and locally controlled sources.
+    </p>
+    <p>
+      The system will emphasise responsible data handling, clear visualisation, reproducible scans, and safe integrations rather
+      than unauthorised scraping or bypassing protected services.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Research Question / Hypothesis</h2>
+    <p>
+      <strong>Research question:</strong> How effectively can a local integrated intelligence dashboard improve the organisation,
+      visibility, and triage of cyber-threat signals compared with separate scripts, raw JSON files, and manual source checking?
+    </p>
+    <p>
+      <strong>Hypothesis:</strong> A unified local dashboard with structured storage, category counts, search, visual summaries,
+      and targeted scan modules can reduce analyst effort and improve the clarity of threat triage while maintaining legal,
+      privacy-aware data boundaries.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Objectives</h2>
+    <ul>
+      <li>Build a web-based command centre with consistent dashboard views for news, leaks, defacement, exploits, social intelligence, and API outputs.</li>
+      <li>Store restored and collected intelligence records in MongoDB with clear counts, categories, timestamps, and searchable metadata.</li>
+      <li>Implement a global impact map and live feed interface that supports quick inspection of evidence and source records.</li>
+      <li>Provide controlled scan modules for SEO checks, GitHub repository vulnerability analysis, Play Store risk references, and authorised provider-based lookup workflows.</li>
+      <li>Improve system usability through professional UI consistency, loading states, error messages, export options, and responsive layout.</li>
+      <li>Evaluate the system using functional tests, response-time observations, sample scan results, and qualitative usability review.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Short Description of the Idea</h2>
+    <p>
+      DarkPulse will operate as a local cybersecurity SaaS-style console. It will combine backend collectors, MongoDB persistence,
+      and a dark-themed frontend dashboard. Analysts will be able to run an intelligence refresh, inspect live feed records, filter
+      content by category, view country-level impact, and use specialised tools such as repository scanning and app-risk discovery.
+    </p>
+    <p>
+      The project will not depend on bypassing Cloudflare, CAPTCHA, or protected third-party pages. Where sensitive lookup services
+      are involved, the system will use only authorised provider APIs configured through environment variables. If no authorised
+      provider is configured, the UI will show a clear configuration message instead of presenting fake results.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Research Methodology</h2>
+    <div class="compact-grid">
+      <div class="box">
+        <strong>1. Requirements and Background Reading</strong>
+        <p>Review threat intelligence sharing, vulnerability scanning, dashboard usability, and ethical data-handling guidance.</p>
+      </div>
+      <div class="box">
+        <strong>2. System Design</strong>
+        <p>Define the architecture: frontend console, FastAPI backend, MongoDB storage, collectors, scanner modules, and environment-based configuration.</p>
+      </div>
+      <div class="box">
+        <strong>3. Implementation</strong>
+        <p>Develop collectors, API routes, scan modules, result rendering, export features, loading states, and error handling.</p>
+      </div>
+      <div class="box">
+        <strong>4. Testing and Evaluation</strong>
+        <p>Test common workflows such as feed display, repository scan, Play Store scan, SEO report, provider configuration, and UI responsiveness.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Considerations</h2>
+    <ul>
+      <li><strong>Is data or code difficult to access?</strong> Some sources may be protected, unstable, or legally restricted. The project will use authorised APIs, public feeds, or local datasets only.</li>
+      <li><strong>Is it realistic in terms of time?</strong> The core system is realistic if the scope focuses on working dashboard flows, MongoDB persistence, and selected scanner modules.</li>
+      <li><strong>What will I learn and contribute?</strong> The work will demonstrate full-stack engineering, threat intelligence processing, secure configuration, UI design, and responsible data workflows.</li>
+      <li><strong>What is the research question?</strong> The project investigates whether an integrated dashboard improves cyber-threat triage and analyst workflow clarity.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Structuring and Flexibility</h2>
+    <p>
+      The proposal outlines the planned project, but implementation details may evolve after supervisor feedback. Some early answers
+      may remain provisional because data availability, source reliability, and evaluation depth can change during development.
+      Major changes will be discussed with the supervisor before the final project direction is locked.
+    </p>
+  </section>
+
+  <section class="section page-break">
+    <h2>Citations</h2>
+    <ol class="references">
+      <li>National Institute of Standards and Technology. 2016. <em>Guide to Cyber Threat Information Sharing</em>, Special Publication 800-150.</li>
+      <li>MITRE. <em>MITRE ATT&amp;CK Enterprise Matrix</em>. Used as a reference model for describing adversary tactics and techniques.</li>
+      <li>OWASP Foundation. 2021. <em>OWASP Top 10 Web Application Security Risks</em>. Used to inform security-risk categories and web-facing recommendations.</li>
+      <li>FIRST. 2022. <em>Traffic Light Protocol (TLP) Version 2.0</em>. Used to guide responsible sharing and handling of sensitive threat information.</li>
+    </ol>
+  </section>
+
+  <section class="section">
+    <h2>Assignment Guidance Covered</h2>
+    <div class="box">
+      <h3>Preparation Guidance</h3>
+      <ul>
+        <li>Start with extensive reading on the topic to inform the later literature review and research plan.</li>
+        <li>Clearly identify the subject area and intended project work; be as specific and detailed as possible.</li>
+        <li>Focus on answering key questions about the project.</li>
+        <li>Avoid broad overviews of the subject area or listing every research article.</li>
+        <li>Clearly explain the project topic, objective, and investigation method.</li>
+        <li>Reference only a few relevant articles and keep the focus on the project.</li>
+      </ul>
+    </div>
+
+    <div class="box">
+      <h3>Submission Requirements</h3>
+      <ul class="checklist">
+        <li>Name the file using the student registration number followed by the student name and DPP, for example: <strong>12003456-John-Smith DPP.docx</strong>.</li>
+        <li>Acceptable formats include Microsoft Word <strong>.doc, .docx, .rtf</strong>, OpenOffice Text <strong>.odt, .rtf</strong>, and Google Docs exported as <strong>.rtf</strong>.</li>
+        <li>Submit the proposal as a single document file. Valid file types shown in the guidance include <strong>doc, docx, txt, odt, and rtf</strong>.</li>
+        <li>Keep the DPP to approximately <strong>2-3 A4 pages</strong>.</li>
+        <li>Include project title, module code and title, student name and ID, aim, research question or hypothesis, objectives, idea description, methodology, and citations.</li>
+      </ul>
+    </div>
+
+    <p class="footer-note">
+      Further guidance should be checked in the module handbook via Units &gt; Module Information &gt; MSc Project Handbook,
+      and in Guidance Units &gt; Guidance Material &gt; DPP Guidance. It is acceptable for some early answers to be vague,
+      but major changes should be discussed with the supervisor.
+    </p>
+  </section>
+</body>
+</html>

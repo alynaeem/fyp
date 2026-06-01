@@ -1856,6 +1856,53 @@ async def intelligence_status():
     }
 
 
+<<<<<<< Updated upstream
+=======
+@app.post("/api/ai/query")
+async def ai_query(request: Request):
+    body = await request.json()
+    query = str(body.get("query", "")).strip()
+    if not query:
+        raise HTTPException(status_code=400, detail="Query is required")
+
+    collection = str(body.get("collection") or "redis_kv_store").strip() or "redis_kv_store"
+    try:
+        limit = min(max(int(body.get("limit") or 8), 1), 15)
+    except (TypeError, ValueError):
+        limit = 8
+    try:
+        max_context_words = min(max(int(body.get("max_context_words") or 1800), 300), 2500)
+    except (TypeError, ValueError):
+        max_context_words = 1800
+
+    try:
+        from ollama_mongo_intelligence import answer_query_from_mongo
+
+        loop = asyncio.get_running_loop()
+        result = await loop.run_in_executor(
+            None,
+            lambda: answer_query_from_mongo(
+                query,
+                collection_name=collection,
+                limit=limit,
+                max_context_words=max_context_words,
+            ),
+        )
+        return {
+            "status": "ok",
+            "query": result.query,
+            "collection": result.collection,
+            "count": result.count,
+            "context_word_count": result.context_word_count,
+            "answer": result.answer,
+            "documents": result.documents,
+        }
+    except Exception as exc:
+        log.error(f"AI query failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"AI query failed: {exc}")
+
+
+>>>>>>> Stashed changes
 @app.get("/leaks/source-status")
 async def leak_source_status(current_user: dict = Depends(get_current_user)):
     payload = await _build_leak_source_status_payload()
@@ -2408,6 +2455,25 @@ _THREAT_PREFIXES = {
     "API_ITEMS": "api",
     "API_ENTITIES": None,
 }
+
+_LEGACY_STATS_PATTERNS = (
+    (r"^HACKREAD:", "news"),
+    (r"^BLEEPING:", "news"),
+    (r"^KREBS:", "news"),
+    (r"^THERECORD:", "news"),
+    (r"^ACN:", "news"),
+    (r"^THN:", "news"),
+    (r"^CSO:", "news"),
+    (r"^CERTPL:", "exploit"),
+    (r"^CERTAT:", "exploit"),
+    (r"^CERTCN:", "exploit"),
+    (r"^CERTPK:", "exploit"),
+    (r"^CERTEU:", "exploit"),
+    (r"^CSA:", "exploit"),
+    (r"^PORTSWIGGER:", "exploit"),
+    (r"^DEFACER:", "defacement"),
+    (r"^RAW_LEAK_ITEMS", "leak"),
+)
 
 _FEED_SOURCE_ALIASES = {
     "all": "all",
@@ -3936,6 +4002,9 @@ async def stats():
     count_tasks = [articles_col.count_documents({})] + [
         kv_col.count_documents({"_id": {"$regex": f"^{pfx}:"}})
         for pfx, _cat in threat_prefixes
+    ] + [
+        kv_col.count_documents({"_id": {"$regex": pattern}})
+        for pattern, _cat in _LEGACY_STATS_PATTERNS
     ]
     counts = await asyncio.gather(*count_tasks)
 
@@ -3944,7 +4013,14 @@ async def stats():
     }
     for (pfx, cat), count in zip(threat_prefixes, counts[1:]):
         result[cat] = result.get(cat, 0) + count
-    result["total"] = sum(result.values())
+    legacy_counts = counts[1 + len(threat_prefixes):]
+    legacy_result: dict[str, int] = {}
+    for (_pattern, cat), count in zip(_LEGACY_STATS_PATTERNS, legacy_counts):
+        legacy_result[cat] = legacy_result.get(cat, 0) + count
+    for cat, count in legacy_result.items():
+        result[cat] = max(result.get(cat, 0), count)
+    category_total = sum(result.values())
+    result["total"] = category_total
     return _cache_set_stats({"counts": result, **result})
 
 
@@ -3952,6 +4028,7 @@ async def stats():
 pakdb_col = db["pakdb_lookups"]
 
 
+<<<<<<< Updated upstream
 @app.post("/pakdb/lookup")
 async def pakdb_lookup(request: Request):
     """Run a PakDB phone number lookup via the Playwright + Tor scraper.
@@ -3959,12 +4036,127 @@ async def pakdb_lookup(request: Request):
     Returns structured results or an error."""
     import asyncio
     from datetime import datetime, timezone
+=======
+def _normalize_pakdb_number(number: str) -> str:
+    cleaned = re.sub(r"\D+", "", number or "")
+    if cleaned.startswith("0092"):
+        cleaned = "92" + cleaned[4:]
+    elif cleaned.startswith("0"):
+        cleaned = "92" + cleaned[1:]
+    elif cleaned.startswith("3"):
+        cleaned = "92" + cleaned
+    return cleaned
+
+
+def _pakdb_error_response(message: str, number: str = "", normalized_number: str = "", provider: str = "unconfigured") -> dict[str, Any]:
+    return {
+        "status": "error",
+        "message": message,
+        "query": normalized_number,
+        "input": number,
+        "provider": provider,
+        "count": 0,
+        "results": [],
+    }
+
+
+def _extract_pakdb_records(payload: Any) -> list[dict[str, Any]]:
+    if isinstance(payload, list):
+        records = payload
+    elif isinstance(payload, dict):
+        records = None
+        for key in ("results", "items", "records", "data", "matches"):
+            value = payload.get(key)
+            if isinstance(value, list):
+                records = value
+                break
+        if records is None:
+            records = [payload] if payload else []
+    else:
+        records = []
+
+    allowed_records: list[dict[str, Any]] = []
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        clean: dict[str, Any] = {}
+        for key, value in record.items():
+            if value is None or isinstance(value, (dict, list)):
+                continue
+            clean[str(key)] = str(value)
+        if clean:
+            allowed_records.append(clean)
+    return allowed_records
+
+
+async def _call_authorized_pakdb_provider(number: str, normalized_number: str) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    import requests
+
+    provider_url = (cfg.pakdb_provider_api_url or os.environ.get("PAKDB_PROVIDER_API_URL", "")).strip()
+    provider_key = (cfg.pakdb_provider_api_key or os.environ.get("PAKDB_PROVIDER_API_KEY", "")).strip()
+    provider_name = urlparse(provider_url).netloc or "authorized-provider"
+
+    log.info(
+        "PakDB provider selected=%s configured_url=%s configured_key=%s",
+        provider_name,
+        bool(provider_url),
+        bool(provider_key),
+    )
+
+    if not provider_url:
+        raise ValueError("PakDB lookup source is not configured. Please connect an authorized data provider API.")
+    if not provider_key:
+        raise PermissionError("PakDB provider API key is missing. Please set PAKDB_PROVIDER_API_KEY in .env.")
+
+    def request_provider() -> tuple[int, Any]:
+        response = requests.post(
+            provider_url,
+            json={"number": normalized_number, "mobile": normalized_number, "input": number},
+            headers={
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {provider_key}",
+                "X-API-Key": provider_key,
+                "User-Agent": "DarkPulse-PakDB-Provider",
+            },
+            timeout=20,
+        )
+        try:
+            payload = response.json()
+        except ValueError:
+            payload = {"message": response.text.strip()}
+        return response.status_code, payload
+
+    status_code, payload = await asyncio.to_thread(request_provider)
+    log.info("PakDB provider response status=%s provider=%s", status_code, provider_name)
+
+    if status_code in (401, 403):
+        raise PermissionError("PakDB provider rejected the request. Please check provider API settings.")
+    if status_code in (408, 429, 500, 502, 503, 504):
+        raise ConnectionError("PakDB lookup failed. Please check provider API settings.")
+    if status_code >= 400:
+        raise RuntimeError("PakDB lookup failed. Please check provider API settings.")
+
+    records = _extract_pakdb_records(payload)
+    metadata = {
+        "provider": provider_name,
+        "provider_status": status_code,
+        "raw_count": len(records),
+    }
+    return records, metadata
+
+
+@app.post("/pakdb/lookup")
+async def pakdb_lookup(request: Request):
+    """Run a PakDB lookup through an authorized provider API only."""
+>>>>>>> Stashed changes
 
     body = await request.json()
     number = str(body.get("number", "")).strip()
     if not number:
-        raise HTTPException(status_code=400, detail="Phone number is required")
+        return _pakdb_error_response("Phone number is required")
 
+<<<<<<< Updated upstream
     # Validate: must look like a Pakistani phone number
     import re
     cleaned = re.sub(r"\D+", "", number)
@@ -3983,10 +4175,52 @@ async def pakdb_lookup(request: Request):
         result = await loop.run_in_executor(
             None,
             lambda: asyncio.run(scraper.parse_leak_data(query={"number": number}, context=None))
+=======
+    normalized_number = _normalize_pakdb_number(number)
+    log.info("PakDB lookup received input=%s normalized=%s", number, normalized_number)
+    if not re.fullmatch(r"923\d{9}", normalized_number):
+        log.warning("PakDB lookup invalid phone number: input=%s normalized=%s", number, normalized_number)
+        return _pakdb_error_response("Invalid phone number. Use 923xxxxxxxxx, +923xxxxxxxxx, or 03xxxxxxxxx.", number, normalized_number)
+
+    provider = "unconfigured"
+    items: list[dict[str, Any]] = []
+    message = ""
+    status = "ok"
+
+    try:
+        items, metadata = await asyncio.wait_for(
+            _call_authorized_pakdb_provider(number, normalized_number),
+            timeout=25,
+>>>>>>> Stashed changes
         )
+        provider = metadata.get("provider", "authorized-provider")
+        message = "No matching record found from the configured authorized provider." if not items else ""
+    except asyncio.TimeoutError:
+        status = "error"
+        message = "PakDB lookup failed. Please check provider API settings."
+        log.error("PakDB provider timeout for normalized=%s provider=%s", normalized_number, provider)
+    except (ValueError, PermissionError, ConnectionError, RuntimeError) as exc:
+        status = "error"
+        message = str(exc)
+        log.error("PakDB lookup error reason=%s normalized=%s", message, normalized_number)
+    except Exception as exc:
+        status = "error"
+        message = "PakDB lookup failed. Please check provider API settings."
+        log.error("PakDB lookup failed unexpectedly for %s: %s", normalized_number, exc, exc_info=True)
 
-        cards = list(getattr(result, "cards_data", []) or []) if result else []
+    doc = {
+        "query": normalized_number,
+        "input": number,
+        "provider": provider,
+        "status": status,
+        "message": message,
+        "results": items,
+        "count": len(items),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+    await pakdb_col.insert_one(doc)
 
+<<<<<<< Updated upstream
         items = []
         for card in cards:
             extra = getattr(card, "m_extra", {}) or {}
@@ -4013,6 +4247,18 @@ async def pakdb_lookup(request: Request):
     except Exception as e:
         log.error(f"PakDB lookup failed: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Lookup failed: {str(e)}")
+=======
+    log.info("PakDB lookup complete status=%s provider=%s count=%s normalized=%s", status, provider, len(items), normalized_number)
+    return {
+        "status": status,
+        "message": message,
+        "query": normalized_number,
+        "provider": provider,
+        "count": len(items),
+        "results": items,
+        "timestamp": doc["timestamp"],
+    }
+>>>>>>> Stashed changes
 
 
 @app.get("/pakdb/history")
@@ -4211,8 +4457,351 @@ async def github_scan(request: Request):
 
 apk_col = db["apk_scans"]
 
+APK_SUSPICIOUS_KEYWORDS = (
+    "mod apk",
+    "cracked apk",
+    "hacked apk",
+    "unlimited money",
+    "unlimited gems",
+    "premium unlocked",
+    "free download apk",
+    "apk mod",
+    "apk hack",
+    "modified version",
+    "hack apk",
+)
+
+APK_SUSPICIOUS_DOMAINS = {
+    "apkpure.com",
+    "happymod.com",
+    "apkcombo.com",
+    "apkdone.com",
+    "modyolo.com",
+    "liteapks.com",
+    "rexdl.com",
+    "apkmody.com",
+    "moddroid.com",
+    "apksoul.net",
+    "apkmodhere.com",
+    "getmodsapk.com",
+    "9mod.com",
+    "an1.com",
+}
+
+
+def _extract_playstore_package_id(playstore_url: str) -> str:
+    from urllib.parse import parse_qs
+
+    text = str(playstore_url or "").strip()
+    parsed = urlparse(text if "://" in text else f"https://{text}")
+    package_id = parse_qs(parsed.query).get("id", [""])[0].strip()
+    if package_id:
+        return package_id
+    if re.fullmatch(r"[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)+", text):
+        return text
+    return ""
+
+
+def _humanize_android_package(package_id: str) -> str:
+    tail = (package_id or "").split(".")[-1].strip()
+    known = {
+        "clashofclans": "Clash of Clans",
+        "clashroyale": "Clash Royale",
+        "subwaysurf": "Subway Surf",
+        "subwaysurfers": "Subway Surfers",
+        "candycrushsaga": "Candy Crush Saga",
+        "freefiremax": "Free Fire Max",
+    }
+    key = re.sub(r"[^a-z0-9]+", "", tail.lower())
+    if key in known:
+        return known[key]
+    tail = re.sub(r"([a-z])([A-Z])", r"\1 \2", tail).replace("_", " ").replace("-", " ")
+    return " ".join(part.capitalize() for part in re.findall(r"[A-Za-z0-9]+", tail)) or package_id
+
+
+def _resolve_playstore_title(playstore_url: str, package_id: str) -> tuple[str, str]:
+    import requests
+    from bs4 import BeautifulSoup
+
+    normalized_url = playstore_url if playstore_url.startswith(("http://", "https://")) else (
+        f"https://play.google.com/store/apps/details?id={package_id}"
+    )
+    fallback = _humanize_android_package(package_id)
+    try:
+        response = requests.get(
+            normalized_url,
+            timeout=12,
+            headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/123 Safari/537.36"},
+        )
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text or "", "lxml")
+        candidates = []
+        for selector, attr in [
+            ('meta[property="og:title"]', "content"),
+            ('meta[name="twitter:title"]', "content"),
+            ("title", ""),
+            ("h1", ""),
+        ]:
+            node = soup.select_one(selector)
+            if not node:
+                continue
+            value = node.get(attr, "") if attr else node.get_text(" ", strip=True)
+            value = re.sub(r"\s*-\s*Apps on Google Play\s*$", "", str(value or ""), flags=re.I).strip()
+            if value and "google play" not in value.lower():
+                candidates.append(value)
+        if candidates:
+            return candidates[0], normalized_url
+    except Exception as exc:
+        log.warning("Playstore title resolution failed for %s: %s", normalized_url, exc)
+    return fallback, normalized_url
+
+
+def _build_apk_search_queries(app_name: str, package_id: str) -> list[str]:
+    variants = [
+        f"{app_name} mod apk",
+        f"{app_name} cracked apk",
+        f"{app_name} unlimited gems apk",
+        f"{package_id} mod apk",
+        f"{package_id} cracked",
+        f"{app_name} hack apk",
+        f"{app_name} apk mod download",
+    ]
+    seen: set[str] = set()
+    queries: list[str] = []
+    for query in variants:
+        clean_query = re.sub(r"\s+", " ", query).strip()
+        if clean_query and clean_query.lower() not in seen:
+            seen.add(clean_query.lower())
+            queries.append(clean_query)
+    return queries
+
+
+def _apk_slug(value: str) -> str:
+    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", str(value or "").lower())).strip("-")
+
+
+def _source_domain(url: str) -> str:
+    return urlparse(url or "").netloc.lower().replace("www.", "")
+
+
+def _matched_apk_keyword(*values: str) -> str:
+    haystack = " ".join(str(value or "") for value in values).lower()
+    for keyword in APK_SUSPICIOUS_KEYWORDS:
+        if keyword in haystack:
+            return keyword
+    if "mod" in haystack and "apk" in haystack:
+        return "mod apk"
+    if "hack" in haystack and "apk" in haystack:
+        return "hack apk"
+    return ""
+
+
+def _risk_for_apk_result(domain: str, keyword: str, title: str, snippet: str) -> str:
+    haystack = f"{title} {snippet}".lower()
+    if any(term in haystack for term in ("unlimited gems", "unlimited money", "premium unlocked", "hack apk", "hacked apk", "cracked apk")):
+        return "high"
+    if domain in APK_SUSPICIOUS_DOMAINS or keyword in {"mod apk", "apk mod", "modified version"}:
+        return "medium"
+    return "low"
+
+
+def _dedupe_apk_results(results: list[dict[str, Any]], limit: int = 25) -> list[dict[str, Any]]:
+    deduped: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in results:
+        url = str(item.get("url") or "").strip()
+        key = re.sub(r"[?#].*$", "", url).rstrip("/").lower() or str(item.get("title") or "").lower()
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        deduped.append(item)
+        if len(deduped) >= limit:
+            break
+    return deduped
+
+
+def _decode_bing_url(raw_url: str) -> str:
+    from urllib.parse import parse_qs
+
+    parsed = urlparse(raw_url or "")
+    if "bing.com" not in parsed.netloc:
+        return raw_url
+    encoded = parse_qs(parsed.query).get("u", [""])[0]
+    if encoded.startswith("a1"):
+        try:
+            payload = encoded[2:]
+            padding = "=" * (-len(payload) % 4)
+            return base64.urlsafe_b64decode((payload + padding).encode()).decode("utf-8", "ignore")
+        except Exception:
+            return raw_url
+    return raw_url
+
+
+async def _search_apk_local_intelligence(app_name: str, package_id: str, queries: list[str]) -> list[dict[str, Any]]:
+    regexes = [
+        re.compile(re.escape(app_name), re.I),
+        re.compile(re.escape(package_id), re.I),
+        re.compile(r"mod\s+apk|apk\s+mod|cracked\s+apk|hack(?:ed)?\s+apk|unlimited\s+gems|premium\s+unlocked", re.I),
+    ]
+    mongo_query = {
+        "$and": [
+            {"$or": [{"value": regexes[0]}, {"value": regexes[1]}, {"_id": regexes[1]}]},
+            {"value": regexes[2]},
+        ]
+    }
+    docs = await kv_col.find(mongo_query, {"_id": 1, "value": 1}).limit(20).to_list(length=20)
+    results: list[dict[str, Any]] = []
+    for doc in docs:
+        text = re.sub(r"\s+", " ", str(doc.get("value") or "")).strip()
+        url_match = re.search(r"https?://[^\s\"'<>]+", text)
+        url = url_match.group(0) if url_match else ""
+        keyword = _matched_apk_keyword(text, str(doc.get("_id") or ""))
+        if not keyword:
+            continue
+        domain = _source_domain(url) if url else "local intelligence"
+        title = text[:90] or str(doc.get("_id"))
+        results.append({
+            "title": title,
+            "url": url,
+            "sourceDomain": domain,
+            "matchedKeyword": keyword,
+            "riskLevel": _risk_for_apk_result(domain, keyword, title, text),
+            "snippet": text[:260] or f"Local intelligence record {doc.get('_id')}",
+            "package_id": package_id,
+            "app_name": app_name,
+            "source": "local-intel",
+            "network": "mongodb",
+        })
+    return results
+
+
+def _search_apk_web(app_name: str, package_id: str, queries: list[str]) -> tuple[list[dict[str, Any]], list[str]]:
+    import requests
+    from bs4 import BeautifulSoup
+
+    errors: list[str] = []
+    results: list[dict[str, Any]] = []
+    session = requests.Session()
+    session.headers.update({
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/123 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9",
+    })
+
+    for query in queries[:5]:
+        try:
+            response = session.get("https://www.bing.com/search", params={"q": query}, timeout=12)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text or "", "lxml")
+            for node in soup.select("li.b_algo")[:8]:
+                anchor = node.select_one("h2 a")
+                if not anchor:
+                    continue
+                title = anchor.get_text(" ", strip=True)
+                url = _decode_bing_url(anchor.get("href") or "")
+                snippet_node = node.select_one(".b_caption p")
+                snippet = snippet_node.get_text(" ", strip=True) if snippet_node else ""
+                domain = _source_domain(url)
+                keyword = _matched_apk_keyword(title, url, snippet, query)
+                if not keyword:
+                    continue
+                if domain not in APK_SUSPICIOUS_DOMAINS and "apk" not in f"{title} {url} {snippet}".lower():
+                    continue
+                results.append({
+                    "title": title,
+                    "url": url,
+                    "sourceDomain": domain,
+                    "matchedKeyword": keyword,
+                    "riskLevel": _risk_for_apk_result(domain, keyword, title, snippet),
+                    "snippet": snippet or f"Search result matched query: {query}",
+                    "package_id": package_id,
+                    "app_name": app_name,
+                    "source": domain or "web-search",
+                    "network": "clearnet",
+                })
+        except Exception as exc:
+            errors.append(f"Bing search failed for '{query}': {exc}")
+    return results, errors
+
+
+def _known_apk_mirror_candidates(app_name: str, package_id: str) -> list[dict[str, Any]]:
+    slug = _apk_slug(app_name)
+    package_slug = _apk_slug(package_id)
+    candidates = [
+        ("HappyMod", f"https://www.happymod.com/{slug}-mod/{package_id}/", "mod apk"),
+        ("APKCombo", f"https://apkcombo.com/{slug}/{package_id}/", "free download apk"),
+        ("APKPure", f"https://apkpure.com/{slug}/{package_id}", "free download apk"),
+        ("MODYOLO", f"https://modyolo.com/{slug}.html", "mod apk"),
+        ("LiteAPKs", f"https://liteapks.com/{slug}.html", "apk mod"),
+        ("APKDone", f"https://apkdone.com/{slug}-mod/", "mod apk"),
+        ("RevDL/RexDL", f"https://rexdl.com/android/{slug}-apk.html/", "apk mod"),
+    ]
+    results = []
+    for source, url, keyword in candidates:
+        domain = _source_domain(url)
+        title = f"{app_name} {keyword}"
+        results.append({
+            "title": title,
+            "url": url,
+            "sourceDomain": domain,
+            "matchedKeyword": keyword,
+            "riskLevel": _risk_for_apk_result(domain, keyword, title, source),
+            "snippet": (
+                f"Known third-party APK mirror pattern for package {package_id}. "
+                "Open the page to verify availability and treat downloads as suspicious."
+            ),
+            "package_id": package_id,
+            "app_name": app_name,
+            "source": source,
+            "network": "clearnet",
+        })
+    if package_slug and package_slug != slug:
+        results.append({
+            "title": f"{package_id} mod apk",
+            "url": f"https://apkcombo.com/{package_slug}/{package_id}/",
+            "sourceDomain": "apkcombo.com",
+            "matchedKeyword": "mod apk",
+            "riskLevel": "medium",
+            "snippet": f"Package-ID based APK mirror candidate for {package_id}.",
+            "package_id": package_id,
+            "app_name": app_name,
+            "source": "APKCombo",
+            "network": "clearnet",
+        })
+    return results
+
+
+async def _collect_apk_reference_results(playstore_url: str) -> dict[str, Any]:
+    package_id = _extract_playstore_package_id(playstore_url)
+    if not package_id:
+        raise HTTPException(status_code=400, detail="Play Store URL must include an id= Android package parameter")
+
+    app_name, normalized_url = await asyncio.to_thread(_resolve_playstore_title, playstore_url, package_id)
+    queries = _build_apk_search_queries(app_name, package_id)
+    log.info("APK reference scan parsed package=%s app=%s queries=%s", package_id, app_name, queries)
+
+    local_results = await _search_apk_local_intelligence(app_name, package_id, queries)
+    web_results, search_errors = await asyncio.to_thread(_search_apk_web, app_name, package_id, queries)
+    candidate_results = _known_apk_mirror_candidates(app_name, package_id)
+    results = _dedupe_apk_results(local_results + web_results + candidate_results)
+
+    return {
+        "package_id": package_id,
+        "app_name": app_name,
+        "playstore_url": normalized_url,
+        "queries": queries,
+        "results": results,
+        "search_errors": search_errors,
+        "sources": {
+            "local_intelligence": len(local_results),
+            "web_search": len(web_results),
+            "known_mirror_candidates": len(candidate_results),
+        },
+    }
+
 
 async def _collect_apk_scan_results(playstore_url: str, proxy_url: Optional[str] = None, attempts: int = 2):
+    import asyncio
+
     from api_collector.scripts._apk_mod import _apk_mod
     from playwright.async_api import async_playwright
 
@@ -4233,8 +4822,9 @@ async def _collect_apk_scan_results(playstore_url: str, proxy_url: Optional[str]
                 browser = await p.chromium.launch(**browser_kwargs)
                 context = await browser.new_context(ignore_https_errors=True)
                 try:
-                    result = await scraper.parse_leak_data(
-                        query={"playstore": playstore_url}, context=context
+                    result = await asyncio.wait_for(
+                        scraper.parse_leak_data(query={"playstore": playstore_url}, context=context),
+                        timeout=25,
                     )
                 finally:
                     await browser.close()
@@ -4287,18 +4877,49 @@ async def apk_scan(request: Request):
     log.info(f"APK scan requested for: {playstore_url}")
 
     try:
-        results = await _collect_apk_scan_results(playstore_url, attempts=2)
+        scan = await _collect_apk_reference_results(playstore_url)
+        results = scan["results"]
 
         doc = {
             "query": playstore_url,
+            "playstore_url": scan["playstore_url"],
+            "package_id": scan["package_id"],
+            "app_name": scan["app_name"],
+            "queries": scan["queries"],
+            "sources": scan["sources"],
+            "search_errors": scan["search_errors"],
             "results": results,
             "count": len(results),
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
         await apk_col.insert_one(doc)
 
-        log.info(f"APK scan complete: {len(results)} items for {playstore_url}")
-        return {"status": "ok", "query": playstore_url, "count": len(results), "results": results}
+        log.info(
+            "APK scan complete: %s items for package=%s app=%s sources=%s errors=%s",
+            len(results),
+            scan["package_id"],
+            scan["app_name"],
+            scan["sources"],
+            len(scan["search_errors"]),
+        )
+        message = (
+            f"Searched {scan['package_id']} ({scan['app_name']}) across web and intelligence sources."
+            if results else
+            f"No cracked/modded references found for {scan['package_id']} ({scan['app_name']})."
+        )
+        return {
+            "status": "ok",
+            "query": playstore_url,
+            "playstore_url": scan["playstore_url"],
+            "package_id": scan["package_id"],
+            "app_name": scan["app_name"],
+            "queries": scan["queries"],
+            "sources": scan["sources"],
+            "search_errors": scan["search_errors"],
+            "count": len(results),
+            "results": results,
+            "message": message,
+        }
 
     except Exception as e:
         log.error(f"APK scan failed: {e}", exc_info=True)
@@ -4954,10 +5575,19 @@ async def analyze_seo(url: str):
         log.info(f"SEO analysis requested for: {url}")
         
         loop = asyncio.get_running_loop()
+        use_pagespeed = os.getenv("USE_PAGESPEED_SEO", "").lower() in {"1", "true", "yes"}
         pagespeed_key = cfg.pagespeed_api_key or os.environ.get("PAGESPEED_API_KEY", "")
-        data = await loop.run_in_executor(None, pagespeed_seo, url, pagespeed_key)
-        scan_source = "pagespeed"
-        scan_message = ""
+        scan_source = "local_fallback"
+        scan_message = "DarkPulse used the fast local SEO audit so the scanner stays responsive."
+        if use_pagespeed and pagespeed_key:
+            data = await asyncio.wait_for(
+                loop.run_in_executor(None, pagespeed_seo, url, pagespeed_key),
+                timeout=12,
+            )
+            scan_source = "pagespeed"
+            scan_message = ""
+        else:
+            data = await loop.run_in_executor(None, _local_seo_audit, url)
         
         if "error" in data:
             error_message = str(data.get("error") or "")
@@ -4989,8 +5619,9 @@ async def analyze_seo(url: str):
             if audit.get("score") != 1 and audit.get("title")
         ]
 
+        use_gemini = os.getenv("USE_GEMINI_SEO", "").lower() in {"1", "true", "yes"}
         gemini_key = cfg.gemini_api_key or os.environ.get("GEMINI_API_KEY", "")
-        if gemini_key and failing_audits:
+        if use_gemini and gemini_key and failing_audits:
             try:
                 from google import genai
                 from google.genai import types
@@ -5065,30 +5696,156 @@ async def analyze_seo(url: str):
 @app.post("/playstore/scan")
 async def playstore_scan(req: PlaystoreRequest):
     """
-    Search Playstore URL for cracked/modded versions using _apk_mod.
+    Search Playstore URL for cracked/modded third-party APK references.
     """
     try:
         import time
 
         log.info(f"Playstore scan requested for: {req.url}")
 
-        results = await _collect_apk_scan_results(
-            req.url,
-            proxy_url=cfg.tor_proxy_url or None,
-            attempts=2,
-        )
+        scan = await _collect_apk_reference_results(req.url)
+        results = scan["results"]
 
         return {
             "status": "ok",
             "query": req.url,
+            "playstore_url": scan["playstore_url"],
+            "package_id": scan["package_id"],
+            "app_name": scan["app_name"],
+            "queries": scan["queries"],
+            "sources": scan["sources"],
+            "search_errors": scan["search_errors"],
             "count": len(results),
             "results": results,
+            "message": f"Searched {scan['package_id']} ({scan['app_name']}) across web and intelligence sources.",
             "timestamp": time.strftime("%B %d, %Y")
         }
 
     except Exception as e:
         log.error(f"Playstore scan failed: {e}")
         return {"status": "error", "message": f"Scan failed: {str(e)}"}
+
+
+def _parse_github_repo_url(repo_url: str) -> tuple[str, str, str] | None:
+    text = str(repo_url or "").strip()
+    if not text:
+        return None
+
+    if re.fullmatch(r"[\w.-]+/[\w.-]+", text):
+        owner, repo = text.split("/", 1)
+        repo = repo.removesuffix(".git")
+        return owner, repo, f"https://github.com/{owner}/{repo}"
+
+    parsed = urlparse(text if "://" in text else f"https://{text}")
+    host = parsed.netloc.lower().replace("www.", "")
+    if host != "github.com":
+        return None
+
+    parts = [unquote(part) for part in parsed.path.strip("/").split("/") if part]
+    if len(parts) < 2:
+        return None
+    owner, repo = parts[0], parts[1].removesuffix(".git")
+    if not owner or not repo:
+        return None
+    return owner, repo, f"https://github.com/{owner}/{repo}"
+
+
+def _github_api_headers(token: str) -> dict[str, str]:
+    return {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "DarkPulse-Repository-Scanner",
+    }
+
+
+def _github_api_get(path: str, token: str, *, timeout: int = 20) -> tuple[int, dict[str, Any], dict[str, str]]:
+    import requests
+
+    response = requests.get(
+        f"https://api.github.com{path}",
+        headers=_github_api_headers(token),
+        timeout=timeout,
+    )
+    try:
+        payload = response.json()
+    except ValueError:
+        payload = {"message": response.text.strip()}
+    return response.status_code, payload, dict(response.headers)
+
+
+def _github_error_message(status_code: int, payload: dict[str, Any], headers: dict[str, str]) -> str:
+    message = str(payload.get("message") or "").lower()
+    remaining = headers.get("x-ratelimit-remaining")
+    if status_code == 401 or "bad credentials" in message:
+        return "GitHub token is invalid or expired. Please update GITHUB_TOKEN in .env and restart the server."
+    if status_code == 403 and remaining == "0":
+        return "GitHub API rate limit reached. Try again later or use a valid token."
+    if status_code == 403:
+        return "GitHub token does not have permission to access this repository or API endpoint."
+    if status_code == 404:
+        return "Repository is private or not accessible with the current token."
+    return f"GitHub API request failed with status {status_code}: {payload.get('message') or 'Unknown error'}"
+
+
+async def _inspect_github_repository(owner: str, repo: str, token: str) -> dict[str, Any]:
+    loop = asyncio.get_running_loop()
+    repo_path = f"/repos/{owner}/{repo}"
+    status_code, repo_payload, headers = await loop.run_in_executor(
+        None,
+        lambda: _github_api_get(repo_path, token),
+    )
+    log.info("GitHub API repo status for %s/%s: %s", owner, repo, status_code)
+    if status_code != 200:
+        raise ValueError(_github_error_message(status_code, repo_payload, headers))
+
+    default_branch = str(repo_payload.get("default_branch") or "HEAD")
+    contents_to_check = [
+        "package.json",
+        "package-lock.json",
+        "requirements.txt",
+        "Dockerfile",
+        "docker-compose.yml",
+        ".env.example",
+        ".github/workflows",
+    ]
+    discovered_files: list[str] = []
+    inaccessible_paths: list[str] = []
+
+    async def check_content_path(path: str) -> tuple[str, int, Any]:
+        api_path = f"/repos/{owner}/{repo}/contents/{quote(path)}?ref={quote(default_branch)}"
+        status, payload, _headers = await loop.run_in_executor(
+            None,
+            lambda api_path=api_path: _github_api_get(api_path, token, timeout=12),
+        )
+        log.info("GitHub API content status for %s/%s %s: %s", owner, repo, path, status)
+        return path, status, payload
+
+    for path, status, payload in await asyncio.gather(*(check_content_path(path) for path in contents_to_check)):
+        if status == 200:
+            if isinstance(payload, list):
+                discovered_files.extend(item.get("path", path) for item in payload if isinstance(item, dict))
+            else:
+                discovered_files.append(str(payload.get("path") or path))
+        elif status not in (404,):
+            inaccessible_paths.append(f"{path}: {status}")
+
+    return {
+        "owner": owner,
+        "repo": repo,
+        "full_name": repo_payload.get("full_name") or f"{owner}/{repo}",
+        "html_url": repo_payload.get("html_url") or f"https://github.com/{owner}/{repo}",
+        "default_branch": default_branch,
+        "private": bool(repo_payload.get("private")),
+        "archived": bool(repo_payload.get("archived")),
+        "pushed_at": repo_payload.get("pushed_at"),
+        "language": repo_payload.get("language"),
+        "open_issues_count": repo_payload.get("open_issues_count", 0),
+        "discovered_files": sorted(set(discovered_files))[:20],
+        "inaccessible_paths": inaccessible_paths[:10],
+    }
+
+
 @app.post("/scan/repo")
 async def scan_repo(request: Request):
     """
@@ -5097,30 +5854,92 @@ async def scan_repo(request: Request):
     try:
         from api_collector.scripts.github_trivy_checker import github_trivy_checker
         import time
-        import asyncio
 
         body = await request.json()
-        repo_url = body.get("url", "").strip()
-        git_token = body.get("token", "").strip() or body.get("git_token", "").strip()
+        repo_url = str(body.get("url", "")).strip()
+        git_token = (
+            str(body.get("token", "")).strip()
+            or str(body.get("git_token", "")).strip()
+            or cfg.github_token
+            or os.environ.get("GITHUB_TOKEN", "")
+        ).strip()
         
         if not repo_url:
             raise HTTPException(status_code=400, detail="Repository URL is required")
 
-        log.info(f"Repository scan requested for: {repo_url} (Token provided: {'Yes' if git_token else 'No'})")
+        parsed_repo = _parse_github_repo_url(repo_url)
+        if not parsed_repo:
+            return {"status": "error", "message": "Please enter a valid GitHub repository URL."}
+
+        owner, repo, normalized_repo_url = parsed_repo
+        log.info("Repository scan requested for URL=%s owner=%s repo=%s", repo_url, owner, repo)
+
+        if not git_token:
+            log.warning("Repository scan cannot start: GITHUB_TOKEN is missing")
+            return {
+                "status": "error",
+                "message": "GitHub token is missing. Please set GITHUB_TOKEN in .env and restart the server.",
+            }
+
+        cached_scan = await github_col.find_one(
+            {
+                "scanner": "scan_repo",
+                "query": normalized_repo_url,
+                "created_at": {"$gte": datetime.now(timezone.utc) - timedelta(hours=6)},
+            },
+            sort=[("created_at", -1)],
+        )
+        if cached_scan and isinstance(cached_scan.get("response"), dict):
+            cached_response = dict(cached_scan["response"])
+            cached_response["cached"] = True
+            cached_summary = dict(cached_response.get("summary") or {})
+            cached_summary["scan_status"] = "cached"
+            cached_summary["note"] = (
+                cached_summary.get("note")
+                or "Repository analysis loaded from the recent local scan cache."
+            )
+            cached_response["summary"] = cached_summary
+            log.info("Repository scan cache hit for %s/%s", owner, repo)
+            return cached_response
+
+        try:
+            github_meta = await asyncio.wait_for(
+                _inspect_github_repository(owner, repo, git_token),
+                timeout=45,
+            )
+        except asyncio.TimeoutError:
+            log.error("GitHub API validation timed out for %s/%s", owner, repo)
+            return {"status": "error", "message": "GitHub API request timed out. Try again later."}
+        except ValueError as exc:
+            log.error("GitHub API validation failed for %s/%s: %s", owner, repo, exc)
+            return {"status": "error", "message": str(exc)}
         
         scanner = github_trivy_checker()
         
         # run the scan
         scan_query = {
-            "github": repo_url,
-            "timeout": 900,
+            "github": normalized_repo_url,
+            "git_token": git_token,
+            "timeout": 55,
             "print_details": False,
             "keep_workdir": False,
         }
-        if git_token:
-            scan_query["git_token"] = git_token
 
-        result = await scanner.parse_leak_data(query=scan_query, context=None)
+        try:
+            loop = asyncio.get_running_loop()
+            result = await asyncio.wait_for(
+                loop.run_in_executor(
+                    None,
+                    lambda: asyncio.run(scanner.parse_leak_data(query=scan_query, context=None)),
+                ),
+                timeout=65,
+            )
+        except asyncio.TimeoutError:
+            log.error("Repository scan timed out for %s/%s", owner, repo)
+            return {
+                "status": "error",
+                "message": "Repository scan timed out. Try a smaller repository or run again later.",
+            }
         
         # The result of parse_leak_data is an apk_data_model
         raw_data = getattr(result, "raw_data", {}) or {}
@@ -5130,9 +5949,12 @@ async def scan_repo(request: Request):
             err_msg = raw_data.get("error")
             if err_msg == "git clone failed":
                 stderr = str(raw_data.get("stderr") or "")
-                if "could not read Username" in stderr or "Authentication failed" in stderr or "Repository not found" in stderr:
-                    err_msg = "GitHub repository is not accessible. Check that the repo URL is correct and public, or provide a GitHub token for a private repository."
-            log.error(f"Scanner internal error: {err_msg}")
+                stderr_lower = stderr.lower()
+                if "authentication failed" in stderr_lower or "bad credentials" in stderr_lower:
+                    err_msg = "GitHub token is invalid or expired. Please update GITHUB_TOKEN in .env and restart the server."
+                elif "could not read Username" in stderr or "Repository not found" in stderr:
+                    err_msg = "Repository is private or not accessible with the current token."
+            log.error("Scanner internal error for %s/%s: %s", owner, repo, err_msg)
             return {"status": "error", "message": f"Scan failed: {err_msg}"}
 
         # Flatten Results from Trivy (Targets -> Findings)
@@ -5181,12 +6003,30 @@ async def scan_repo(request: Request):
                 })
 
         summary_data = raw_data.get("DarkpulseSummary", {}) or {}
-        repo_path = (urlparse(repo_url).path or "").strip("/")
+        repo_path = f"{owner}/{repo}"
+        coverage = summary_data.get("coverage", {}) or {}
+        coverage["github_api"] = {
+            "default_branch": github_meta.get("default_branch"),
+            "discovered_files": github_meta.get("discovered_files", []),
+            "open_issues_count": github_meta.get("open_issues_count", 0),
+            "language": github_meta.get("language"),
+        }
+        summary_data["coverage"] = coverage
         
         # Prepare final response formatted for the UI
-        return {
+        log.info(
+            "Repository scan completed for %s/%s: vulns=%s secrets=%s misconfigs=%s grade=%s",
+            owner,
+            repo,
+            len(vulnerabilities),
+            len(secrets),
+            len(misconfigs),
+            summary_data.get("grade", "A"),
+        )
+        response_payload = {
             "status": "ok",
-            "query": repo_url,
+            "query": normalized_repo_url,
+            "repository": github_meta,
             "summary": {
                 "grade": summary_data.get("grade", "A"),
                 "risk_score": summary_data.get("risk_score", 0),
@@ -5196,8 +6036,8 @@ async def scan_repo(request: Request):
                 "note": summary_data.get("note", "Repository analysis complete."),
                 "coverage": summary_data.get("coverage", {}),
                 "recommendations": summary_data.get("recommendations", []),
-                "host": urlparse(repo_url).hostname or "github.com",
-                "repo_name": repo_path or (urlparse(repo_url).hostname or "github.com"),
+                "host": "github.com",
+                "repo_name": repo_path,
                 "port": "443",
                 "scanned_by": "DarkPulse / Trivy"
             },
@@ -5207,6 +6047,15 @@ async def scan_repo(request: Request):
             "results": vulnerabilities + secrets + misconfigs, # fallback
             "timestamp": time.strftime("%B %d, %Y")
         }
+        await github_col.insert_one({
+            "scanner": "scan_repo",
+            "query": normalized_repo_url,
+            "owner": owner,
+            "repo": repo,
+            "created_at": datetime.now(timezone.utc),
+            "response": response_payload,
+        })
+        return response_payload
 
     except Exception as e:
         log.error(f"Repository scan failed: {e}", exc_info=True)

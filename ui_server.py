@@ -4150,6 +4150,9 @@ async def _call_authorized_pakdb_provider(number: str, normalized_number: str) -
 async def pakdb_lookup(request: Request):
     """Run a PakDB lookup through an authorized provider API only."""
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -4159,6 +4162,7 @@ async def pakdb_lookup(request: Request):
     if not number:
         return _pakdb_error_response("Phone number is required")
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
     # Validate: must look like a Pakistani phone number
@@ -4179,6 +4183,23 @@ async def pakdb_lookup(request: Request):
         result = await loop.run_in_executor(
             None,
             lambda: asyncio.run(scraper.parse_leak_data(query={"number": number}, context=None))
+=======
+    normalized_number = _normalize_pakdb_number(number)
+    log.info("PakDB lookup received input=%s normalized=%s", number, normalized_number)
+    if not re.fullmatch(r"923\d{9}", normalized_number):
+        log.warning("PakDB lookup invalid phone number: input=%s normalized=%s", number, normalized_number)
+        return _pakdb_error_response("Invalid phone number. Use 923xxxxxxxxx, +923xxxxxxxxx, or 03xxxxxxxxx.", number, normalized_number)
+
+    provider = "unconfigured"
+    items: list[dict[str, Any]] = []
+    message = ""
+    status = "ok"
+
+    try:
+        items, metadata = await asyncio.wait_for(
+            _call_authorized_pakdb_provider(number, normalized_number),
+            timeout=25,
+>>>>>>> Stashed changes
 =======
     normalized_number = _normalize_pakdb_number(number)
     log.info("PakDB lookup received input=%s normalized=%s", number, normalized_number)
@@ -4243,6 +4264,7 @@ async def pakdb_lookup(request: Request):
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         items = []
         for card in cards:
             extra = getattr(card, "m_extra", {}) or {}
@@ -4272,6 +4294,8 @@ async def pakdb_lookup(request: Request):
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     log.info("PakDB lookup complete status=%s provider=%s count=%s normalized=%s", status, provider, len(items), normalized_number)
     return {
         "status": status,
@@ -4283,6 +4307,9 @@ async def pakdb_lookup(request: Request):
         "timestamp": doc["timestamp"],
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

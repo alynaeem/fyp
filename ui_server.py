@@ -1855,9 +1855,6 @@ async def intelligence_status():
         },
     }
 
-
-<<<<<<< Updated upstream
-=======
 @app.post("/api/ai/query")
 async def ai_query(request: Request):
     body = await request.json()
@@ -1902,7 +1899,6 @@ async def ai_query(request: Request):
         raise HTTPException(status_code=500, detail=f"AI query failed: {exc}")
 
 
->>>>>>> Stashed changes
 @app.get("/leaks/source-status")
 async def leak_source_status(current_user: dict = Depends(get_current_user)):
     payload = await _build_leak_source_status_payload()
@@ -4028,15 +4024,6 @@ async def stats():
 pakdb_col = db["pakdb_lookups"]
 
 
-<<<<<<< Updated upstream
-@app.post("/pakdb/lookup")
-async def pakdb_lookup(request: Request):
-    """Run a PakDB phone number lookup via the Playwright + Tor scraper.
-    Accepts JSON body: {"number": "03001234567"}
-    Returns structured results or an error."""
-    import asyncio
-    from datetime import datetime, timezone
-=======
 def _normalize_pakdb_number(number: str) -> str:
     cleaned = re.sub(r"\D+", "", number or "")
     if cleaned.startswith("0092"):
@@ -4149,41 +4136,12 @@ async def _call_authorized_pakdb_provider(number: str, normalized_number: str) -
 @app.post("/pakdb/lookup")
 async def pakdb_lookup(request: Request):
     """Run a PakDB lookup through an authorized provider API only."""
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
     body = await request.json()
     number = str(body.get("number", "")).strip()
     if not number:
         return _pakdb_error_response("Phone number is required")
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    # Validate: must look like a Pakistani phone number
-    import re
-    cleaned = re.sub(r"\D+", "", number)
-    if len(cleaned) < 10 or len(cleaned) > 13:
-        raise HTTPException(status_code=400, detail="Invalid phone number format")
-
-    log.info(f"PakDB lookup requested for: {number}")
-
-    try:
-        from api_collector.scripts._pakdb import _pakdb
-
-        scraper = _pakdb()
-        loop = asyncio.get_running_loop()
-
-        # Run the Playwright scraper in a thread pool (it's blocking)
-        result = await loop.run_in_executor(
-            None,
-            lambda: asyncio.run(scraper.parse_leak_data(query={"number": number}, context=None))
-=======
     normalized_number = _normalize_pakdb_number(number)
     log.info("PakDB lookup received input=%s normalized=%s", number, normalized_number)
     if not re.fullmatch(r"923\d{9}", normalized_number):
@@ -4199,41 +4157,6 @@ async def pakdb_lookup(request: Request):
         items, metadata = await asyncio.wait_for(
             _call_authorized_pakdb_provider(number, normalized_number),
             timeout=25,
->>>>>>> Stashed changes
-=======
-    normalized_number = _normalize_pakdb_number(number)
-    log.info("PakDB lookup received input=%s normalized=%s", number, normalized_number)
-    if not re.fullmatch(r"923\d{9}", normalized_number):
-        log.warning("PakDB lookup invalid phone number: input=%s normalized=%s", number, normalized_number)
-        return _pakdb_error_response("Invalid phone number. Use 923xxxxxxxxx, +923xxxxxxxxx, or 03xxxxxxxxx.", number, normalized_number)
-
-    provider = "unconfigured"
-    items: list[dict[str, Any]] = []
-    message = ""
-    status = "ok"
-
-    try:
-        items, metadata = await asyncio.wait_for(
-            _call_authorized_pakdb_provider(number, normalized_number),
-            timeout=25,
->>>>>>> Stashed changes
-=======
-    normalized_number = _normalize_pakdb_number(number)
-    log.info("PakDB lookup received input=%s normalized=%s", number, normalized_number)
-    if not re.fullmatch(r"923\d{9}", normalized_number):
-        log.warning("PakDB lookup invalid phone number: input=%s normalized=%s", number, normalized_number)
-        return _pakdb_error_response("Invalid phone number. Use 923xxxxxxxxx, +923xxxxxxxxx, or 03xxxxxxxxx.", number, normalized_number)
-
-    provider = "unconfigured"
-    items: list[dict[str, Any]] = []
-    message = ""
-    status = "ok"
-
-    try:
-        items, metadata = await asyncio.wait_for(
-            _call_authorized_pakdb_provider(number, normalized_number),
-            timeout=25,
->>>>>>> Stashed changes
         )
         provider = metadata.get("provider", "authorized-provider")
         message = "No matching record found from the configured authorized provider." if not items else ""
@@ -4262,40 +4185,6 @@ async def pakdb_lookup(request: Request):
     }
     await pakdb_col.insert_one(doc)
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        items = []
-        for card in cards:
-            extra = getattr(card, "m_extra", {}) or {}
-            item = {
-                "name": extra.get("name") or getattr(card, "m_app_name", ""),
-                "cnic": extra.get("cnic", ""),
-                "mobile": extra.get("mobile", ""),
-                "address": extra.get("address", ""),
-            }
-            items.append(item)
-
-        # Persist to MongoDB for history
-        doc = {
-            "query": number,
-            "results": items,
-            "count": len(items),
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        }
-        await pakdb_col.insert_one(doc)
-
-        log.info(f"PakDB lookup complete: {len(items)} results for {number}")
-        return {"status": "ok", "query": number, "count": len(items), "results": items}
-
-    except Exception as e:
-        log.error(f"PakDB lookup failed: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Lookup failed: {str(e)}")
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     log.info("PakDB lookup complete status=%s provider=%s count=%s normalized=%s", status, provider, len(items), normalized_number)
     return {
         "status": status,
@@ -4306,13 +4195,6 @@ async def pakdb_lookup(request: Request):
         "results": items,
         "timestamp": doc["timestamp"],
     }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
 
 @app.get("/pakdb/history")
@@ -6117,7 +5999,11 @@ async def scan_repo(request: Request):
 
 
 async def _sync_credential_datasets(force: bool = False) -> dict[str, Any]:
-    from api_collector.stealer_log_scan import build_documents_from_file, discover_credential_files
+    from api_collector.stealer_log_scan import (
+        CREDENTIAL_DOCUMENT_SCHEMA_VERSION,
+        build_documents_from_file,
+        discover_credential_files,
+    )
 
     dataset_paths = await asyncio.to_thread(discover_credential_files)
     dataset_path_strings = {str(path.resolve()) for path in dataset_paths}
@@ -6143,9 +6029,20 @@ async def _sync_credential_datasets(force: bool = False) -> dict[str, Any]:
 
         should_sync = force or not existing
         if existing and not force:
+            stale_redacted_docs = await credential_exposures_col.count_documents({
+                "dataset_path": resolved_path,
+                "$or": [
+                    {"password": {"$regex": r"\[redacted_", "$options": "i"}},
+                    {"raw_trace": {"$regex": r"\[redacted_", "$options": "i"}},
+                    {"credential_identifier": {"$regex": r"\[redacted_", "$options": "i"}},
+                    {"email_username": {"$regex": r"\[redacted_", "$options": "i"}},
+                ],
+            })
             should_sync = (
                 existing.get("mtime_ns") != stat.st_mtime_ns
                 or existing.get("size_bytes") != stat.st_size
+                or existing.get("schema_version") != CREDENTIAL_DOCUMENT_SCHEMA_VERSION
+                or stale_redacted_docs > 0
             )
 
         if should_sync:
@@ -6162,6 +6059,7 @@ async def _sync_credential_datasets(force: bool = False) -> dict[str, Any]:
                     "path": resolved_path,
                     "size_bytes": stat.st_size,
                     "mtime_ns": stat.st_mtime_ns,
+                    "schema_version": CREDENTIAL_DOCUMENT_SCHEMA_VERSION,
                     "modified_at": datetime.utcfromtimestamp(stat.st_mtime).isoformat() + "Z",
                     "records_count": len(docs),
                     "synced_at": datetime.utcnow().isoformat() + "Z",

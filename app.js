@@ -3471,7 +3471,7 @@ async function buildCredentialExportPayload() {
             ["File Type", item.file_type || "-"],
             ["Domain", item.domain || "-"],
             ["IP", item.ip || "-"],
-            ["Password", item.password_present ? "Present (redacted)" : (item.password || "-")],
+            ["Password", item.password || "-"],
             ["Source File", item.source_file || "-"]
           ]
         }))

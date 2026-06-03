@@ -2217,7 +2217,7 @@ async function buildCredentialExportPayload() {
             ["File Type", item.file_type || "-"],
             ["Domain", item.domain || "-"],
             ["IP", item.ip || "-"],
-            ["Password", item.password_present ? "Present (redacted)" : (item.password || "-")],
+            ["Password", item.password_present ? "Present" : "Not present"],
             ["Source File", item.source_file || "-"]
           ]
         }))
@@ -3747,7 +3747,7 @@ function renderCredentialResultItem(item, index) {
             </div>
             <div class="credential-detail-card">
               <span class="credential-detail-label">Password</span>
-              <span class="credential-detail-value">${escapeHtml(item.password || "-")}</span>
+              <span class="credential-detail-value">${escapeHtml(item.password_present ? "Present" : "Not present")}</span>
             </div>
           </div>
         </div>

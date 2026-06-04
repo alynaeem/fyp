@@ -2917,9 +2917,23 @@ function renderCard(item) {
   const description = normalizePreviewText(firstNonEmpty(item.description, item.summary, "No description available."), "No description available.");
   const aiSummary = normalizePreviewText(item.ai_summary || buildLocalAiSummary(item), buildLocalAiSummary(item));
   const collectedAt = formatDate(item.scraped_at || item.date);
+  const media = collectDetailMedia(item);
+  const generatedScreenshot = item.aid ? `/feed-screenshot?aid=${encodeURIComponent(item.aid)}` : "";
+  const thumbnail = media[0] || generatedScreenshot;
+  if (thumbnail) {
+    card.classList.add("has-media");
+  }
 
   card.innerHTML = `
-    <div class="card-orbit" aria-hidden="true"></div>
+    <div class="card-media ${thumbnail ? "" : "image-failed"}">
+      ${thumbnail
+        ? `<img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(title)} evidence screenshot" loading="lazy" onerror="this.closest('.card-media').classList.add('image-failed')" onload="this.closest('.card-media').classList.remove('image-failed')" />`
+        : ""}
+      <div class="card-media-fallback">
+        <span>${escapeHtml((item.source_type || "intel").toUpperCase())}</span>
+        <strong>${escapeHtml(sourceSite || sourceLabel || "Source preview")}</strong>
+      </div>
+    </div>
     <div class="card-header">
       <span class="card-source">${escapeHtml(item.source_type || "intel")}</span>
       <span class="card-status">${escapeHtml(statusLabel)}</span>

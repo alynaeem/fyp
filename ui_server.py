@@ -14,7 +14,7 @@ import hmac
 import secrets
 import struct
 from typing import Any, Dict, List, Optional
-from urllib.parse import quote, unquote, urlencode, urlparse
+from urllib.parse import parse_qs, quote, unquote, urlencode, urlparse
 from uuid import uuid4
 from fastapi import FastAPI, Query, Request, HTTPException, Depends, WebSocket, WebSocketDisconnect, UploadFile, File
 import bcrypt
@@ -51,6 +51,8 @@ automation_state_col = db["automation_state"]
 credential_exposures_col = db["credential_exposures"]
 credential_datasets_col = db["credential_datasets"]
 _LEAK_SOURCE_SCRIPT_DIR = pathlib.Path(__file__).resolve().parent / "leak_collector" / "scripts" / "leak"
+_FEED_SCREENSHOT_DIR = pathlib.Path(__file__).resolve().parent / "data" / "feed_screenshots"
+_FEED_SCREENSHOT_SEMAPHORE = asyncio.Semaphore(2)
 
 
 INTELLIGENCE_SCAN_SOURCES = {
@@ -2734,6 +2736,23 @@ def _title_from_url(value: Any) -> str:
         return ""
 
 
+def _unwrap_redirect_url(value: Any) -> str:
+    text = _clean_text_candidate(value)
+    if not text:
+        return ""
+    try:
+        parsed = urlparse(text)
+        params = parse_qs(parsed.query)
+        for key in ("q", "url", "u", "target"):
+            for candidate in params.get(key, []):
+                candidate = unquote(str(candidate or "").strip())
+                if candidate.startswith(("http://", "https://")):
+                    return candidate
+    except Exception:
+        return text
+    return text
+
+
 _IP_ADDRESS_RE = re.compile(
     r"(?<![\w:])(?:25[0-5]|2[0-4]\d|1?\d?\d)(?:\.(?:25[0-5]|2[0-4]\d|1?\d?\d)){3}(?![\w:])"
 )
@@ -2819,6 +2838,75 @@ def _extract_field(data: dict, *fields: str) -> str:
         if value:
             return value
     return ""
+
+
+_BLOCKED_ARTICLE_TITLES = {"403 error", "403 forbidden", "access denied"}
+_LOW_QUALITY_ARTICLE_TITLES = {"infosecurity news"}
+_BLOCKED_ARTICLE_PHRASES = (
+    "this website uses a security service to protect against malicious bots",
+    "this page is displayed while the website verifies you are not a bot",
+    "request could not be satisfied",
+)
+
+
+def _is_blocked_article_doc(doc: dict) -> bool:
+    title = _clean_text_candidate(_extract_field(doc, "title", "m_title", "headline", "name")).lower()
+    url = _clean_text_candidate(_extract_field(doc, "url", "m_url", "weblink", "m_weblink")).lower()
+    description = _clean_text_candidate(
+        _extract_field(doc, "description", "m_description", "summary", "m_important_content", "important_content")
+    ).lower()
+    content = _clean_text_candidate(_extract_field(doc, "content", "m_content")).lower()
+    status_raw = _extract_field(doc, "http_status", "status_code")
+
+    try:
+        http_status = int(float(status_raw)) if status_raw else 0
+    except (TypeError, ValueError):
+        http_status = 0
+
+    if http_status and http_status >= 400:
+        return True
+    if title in _BLOCKED_ARTICLE_TITLES or description in _BLOCKED_ARTICLE_TITLES:
+        return True
+    if any(phrase in description or phrase in content for phrase in _BLOCKED_ARTICLE_PHRASES):
+        return True
+    if title in _LOW_QUALITY_ARTICLE_TITLES and re.search(r"/news/(page-\d+/?)?$", url):
+        return True
+    if title in _LOW_QUALITY_ARTICLE_TITLES and len(description) < 80:
+        return True
+    return False
+
+
+def _visible_news_query(extra_filter: Optional[dict] = None) -> dict:
+    blocked_title_pattern = r"^\s*(403\s+error|403\s+forbidden|access\s+denied)\s*$"
+    low_quality_title_pattern = r"^\s*infosecurity\s+news\s*$"
+    bot_check_pattern = r"(security service to protect against malicious bots|verifies you are not a bot|request could not be satisfied)"
+    visibility_filter = {
+        "$and": [
+            {
+                "$nor": [
+                    {"title": {"$regex": blocked_title_pattern, "$options": "i"}},
+                    {"m_title": {"$regex": blocked_title_pattern, "$options": "i"}},
+                    {"description": {"$regex": blocked_title_pattern, "$options": "i"}},
+                    {"m_description": {"$regex": blocked_title_pattern, "$options": "i"}},
+                    {"description": {"$regex": bot_check_pattern, "$options": "i"}},
+                    {"m_description": {"$regex": bot_check_pattern, "$options": "i"}},
+                    {"content": {"$regex": bot_check_pattern, "$options": "i"}},
+                    {"m_content": {"$regex": bot_check_pattern, "$options": "i"}},
+                    {
+                        "$and": [
+                            {"title": {"$regex": low_quality_title_pattern, "$options": "i"}},
+                            {"url": {"$regex": r"/news/(page-\d+/?)?$", "$options": "i"}},
+                        ]
+                    },
+                ]
+            },
+            {"http_status": {"$nin": [403, "403", 401, "401", 429, "429"]}},
+            {"m_extra.http_status": {"$nin": [403, "403", 401, "401", 429, "429"]}},
+        ]
+    }
+    if not extra_filter:
+        return visibility_filter
+    return {"$and": [visibility_filter, extra_filter]}
 
 
 def _merge_threat_payloads(item_data: dict, entity_data: Optional[dict]) -> dict:
@@ -3290,7 +3378,7 @@ def _build_article_item(doc: dict, include_raw: bool = False) -> dict:
         _meaningful_description(item.get("summary"))
         or _excerpt_text(_extract_field(raw_doc, "summary", "m_important_content", "important_content", "m_content", "content"))
         or item["description"]
-    )[:400]
+    )[:900]
 
     categories = item.get("categories", [])
     if not categories:
@@ -3410,6 +3498,9 @@ def _build_threat_item(key: str, data: dict, include_raw: bool = False) -> dict 
         )
         raw_url = _coerce_list(links)[0] if _coerce_list(links) else ""
 
+    raw_url = _unwrap_redirect_url(raw_url) or raw_url
+    if raw_url and _clean_text_candidate(title).lower() in {"", "url", "website", "target", "untitled", "unknown"}:
+        title = _title_from_url(raw_url) or _extract_hostname(raw_url) or raw_url
     if not title and raw_url:
         title = _title_from_url(raw_url) or _extract_hostname(raw_url) or raw_url
     if not title:
@@ -3606,11 +3697,13 @@ async def _fetch_news_items(include_raw: bool = False) -> list[dict]:
         if cached is not None:
             return cached
 
-    processed_docs = await articles_col.find({}).to_list(length=None)
-    raw_docs = await news_items_col.find({}).to_list(length=None) if include_raw else []
+    processed_docs = await articles_col.find(_visible_news_query()).to_list(length=None)
+    raw_docs = await news_items_col.find(_visible_news_query()).to_list(length=None) if include_raw else []
 
     merged: dict[str, dict] = {}
     for doc in processed_docs + raw_docs:
+        if _is_blocked_article_doc(doc):
+            continue
         item = _build_article_item(doc, include_raw=include_raw)
         key = _news_merge_key(item)
         if not key:
@@ -3624,9 +3717,10 @@ async def _fetch_news_items(include_raw: bool = False) -> list[dict]:
 
 
 async def _fetch_news_page(limit: int, offset: int) -> tuple[int, list[dict]]:
-    total = await articles_col.count_documents({})
+    query = _visible_news_query()
+    total = await articles_col.count_documents(query)
     cursor = (
-        articles_col.find({})
+        articles_col.find(query)
         .sort([
             ("scraped_at", -1),
             ("date", -1),
@@ -3637,7 +3731,7 @@ async def _fetch_news_page(limit: int, offset: int) -> tuple[int, list[dict]]:
         .limit(limit)
     )
     docs = await cursor.to_list(length=limit)
-    return total, [_build_article_item(doc, include_raw=False) for doc in docs]
+    return total, [_build_article_item(doc, include_raw=False) for doc in docs if not _is_blocked_article_doc(doc)]
 
 
 async def _search_news_items(query: str, include_raw: bool = False, limit: int = SEARCH_CANDIDATE_LIMIT) -> list[dict]:
@@ -3660,7 +3754,7 @@ async def _search_news_items(query: str, include_raw: bool = False, limit: int =
         return []
 
     cursor = (
-        articles_col.find(search_filter)
+        articles_col.find(_visible_news_query(search_filter))
         .sort([
             ("scraped_at", -1),
             ("date", -1),
@@ -3670,7 +3764,7 @@ async def _search_news_items(query: str, include_raw: bool = False, limit: int =
         .limit(limit)
     )
     docs = await cursor.to_list(length=limit)
-    return [_build_article_item(doc, include_raw=include_raw) for doc in docs]
+    return [_build_article_item(doc, include_raw=include_raw) for doc in docs if not _is_blocked_article_doc(doc)]
 
 
 async def _find_news_doc(aid: str) -> dict | None:
@@ -3952,6 +4046,75 @@ async def list_feed(
         "limit": limit,
         "items": [_public_feed_item(item) for item in items[offset:offset + limit]],
     }
+
+
+async def _find_feed_item_for_screenshot(aid: str) -> dict:
+    if any(aid.startswith(f"{prefix}:") for prefix in _THREAT_PREFIXES):
+        doc = await kv_col.find_one({"_id": aid})
+        entity_doc = None
+        if aid.startswith(("EXPLOIT_ITEMS:", "LEAK_ITEMS:", "DEFACEMENT_ITEMS:", "SOCIAL_ITEMS:", "API_ITEMS:")):
+            entity_doc = await kv_col.find_one({"_id": aid.replace("_ITEMS:", "_ENTITIES:", 1)})
+        parsed = _parse_kv_item(doc, include_raw=False, entity_doc=entity_doc) if doc else None
+        if parsed:
+            return parsed
+
+    doc = await _find_news_doc(aid)
+    if doc:
+        return _build_article_item(doc, include_raw=False)
+
+    raise HTTPException(status_code=404, detail="Feed item not found")
+
+
+def _feed_screenshot_cache_path(aid: str, url: str) -> pathlib.Path:
+    digest = hashlib.sha256(f"{aid}\n{url}".encode("utf-8", errors="ignore")).hexdigest()
+    return _FEED_SCREENSHOT_DIR / f"{digest}.jpg"
+
+
+def _capture_feed_screenshot(url: str, output_path: pathlib.Path) -> None:
+    from playwright.sync_api import sync_playwright
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
+        context = browser.new_context(
+            viewport={"width": 1280, "height": 720},
+            device_scale_factor=1,
+            ignore_https_errors=True,
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+            ),
+        )
+        page = context.new_page()
+        try:
+            page.goto(url, wait_until="domcontentloaded", timeout=20000)
+            page.wait_for_timeout(1200)
+            page.screenshot(path=str(output_path), type="jpeg", quality=72, full_page=False)
+        finally:
+            context.close()
+            browser.close()
+
+
+@app.get("/feed-screenshot")
+async def get_feed_screenshot(aid: str = Query(...)):
+    item = await _find_feed_item_for_screenshot(aid)
+    url = _unwrap_redirect_url(first_non_empty := _extract_field(item, "url", "website", "seed_url")) or first_non_empty
+    parsed = urlparse(url or "")
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise HTTPException(status_code=404, detail="No screenshot-capable URL for this item")
+
+    cache_path = _feed_screenshot_cache_path(aid, url)
+    if not cache_path.exists() or cache_path.stat().st_size < 1024:
+        async with _FEED_SCREENSHOT_SEMAPHORE:
+            if not cache_path.exists() or cache_path.stat().st_size < 1024:
+                loop = asyncio.get_running_loop()
+                try:
+                    await loop.run_in_executor(None, _capture_feed_screenshot, url, cache_path)
+                except Exception as exc:
+                    log.warning("Feed screenshot capture failed aid=%s url=%s error=%s", aid, url, exc)
+                    raise HTTPException(status_code=404, detail="Screenshot capture failed") from exc
+
+    return FileResponse(cache_path, media_type="image/jpeg")
 
 
 @app.get("/feed/{aid:path}")

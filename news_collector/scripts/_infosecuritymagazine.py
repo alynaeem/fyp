@@ -230,6 +230,16 @@ class _infosecuritymagazine(leak_extractor_interface, ABC):
         except Exception:
             return ""
 
+    @staticmethod
+    def _is_blocked_response(http_status: int, title: str = "", content_text: str = "") -> bool:
+        title_norm = re.sub(r"\s+", " ", (title or "").strip()).lower()
+        content_norm = re.sub(r"\s+", " ", (content_text or "").strip()).lower()
+        if http_status and not (200 <= http_status < 300):
+            return True
+        if title_norm in {"403 error", "403 forbidden", "access denied"}:
+            return True
+        return "request could not be satisfied" in content_norm and "cloudfront" in content_norm
+
     # ---------------- store raw card ------------------
 
     def _store_raw_card(self, card: news_model) -> str:
@@ -518,6 +528,9 @@ class _infosecuritymagazine(leak_extractor_interface, ABC):
 
                     content_html = str(entry_el) if entry_el else ""
                     content_text = entry_el.get_text(" ", strip=True) if entry_el else ""
+                    if self._is_blocked_response(http_status, title, content_text):
+                        print(f"[INFOSEC] Skipping blocked article {link} (status={http_status}, title={title!r})")
+                        continue
                     important_text = " ".join(content_text.split()[:150]) if content_text else ""
 
                     author, date_raw, iso_dt, content_type = self._extract_meta(s)
@@ -659,6 +672,9 @@ class _infosecuritymagazine(leak_extractor_interface, ABC):
 
                 content_html = str(entry_el) if entry_el else ""
                 content_text = entry_el.get_text(" ", strip=True) if entry_el else ""
+                if self._is_blocked_response(http_status, title, content_text):
+                    print(f"[INFOSEC] Skipping blocked article {link} (requests, status={http_status}, title={title!r})")
+                    continue
                 important_text = " ".join(content_text.split()[:150]) if content_text else ""
 
                 author, date_raw, iso_dt, content_type = self._extract_meta(s)

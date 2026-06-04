@@ -288,11 +288,14 @@ const state = {
   scanExports: {
     pakdb: { query: "", items: [] },
     credential: null,
+    confidential: null,
     playstore: { query: "", items: [] },
     software: { query: "", items: [] },
     seo: null,
     repo: null
   },
+  confidentialFindings: [],
+  confidentialSelectedRecordId: "",
   translationLanguage: localStorage.getItem(TRANSLATION_LANGUAGE_KEY) || "en",
   translationLabel: localStorage.getItem(TRANSLATION_LABEL_KEY) || "English",
   translationScope: "view",
@@ -3573,6 +3576,51 @@ async function buildCredentialExportPayload() {
   };
 }
 
+function buildConfidentialExportPayload() {
+  const data = state.scanExports.confidential;
+  const results = Array.isArray(data?.results) ? data.results : [];
+  if (!results.length) throw new Error("Run a confidential data analysis before exporting.");
+
+  return {
+    filenameBase: `confidential-masked-analysis-${data.analysis_id || "results"}`,
+    kicker: "DarkPulse Defensive Export",
+    title: "Confidential Data Analysis",
+    subtitle: "Masked local file analysis for potential exposed payment-card-like and credential indicators.",
+    metadata: [
+      ["Analysis ID", data.analysis_id || "-"],
+      ["Findings", results.length],
+      ["Elapsed", `${Number(data.elapsed_ms || 0)} ms`],
+      ["Disclaimer", data.disclaimer || "Sensitive values are masked and raw secrets are never displayed or stored."]
+    ],
+    sections: [
+      {
+        title: "Masked Findings",
+        cards: results.map(item => ({
+          title: `${item.detected_type || "Finding"} • ${item.record_id || "-"}`,
+          subtitle: `${item.risk_level || "Risk"} • ${item.detection_confidence || "Confidence"} confidence`,
+          text: item.context_snippet || "",
+          tags: [item.status || "New", item.card_brand_guess || "N/A"].filter(Boolean),
+          fields: [
+            ["Record ID", item.record_id || "-"],
+            ["Detected Type", item.detected_type || "-"],
+            ["Masked Value", item.masked_value || "-"],
+            ["Card Brand Guess", item.card_brand_guess || "N/A"],
+            ["Expiry Date", getConfidentialParsedField(item, "expiry_date")],
+            ["Reason", item.reason_for_detection || "-"],
+            ["Timestamp", item.timestamp_of_analysis || "-"],
+            ["Analyst Notes", item.analyst_notes || "-"],
+            ...getConfidentialParsedFieldRows(item)
+          ]
+        }))
+      }
+    ],
+    data: {
+      ...data,
+      results
+    }
+  };
+}
+
 function buildPlaystoreExportPayload() {
   const entry = state.scanExports.playstore || { query: "", items: [] };
   const items = Array.isArray(entry.items) ? entry.items : [];
@@ -3758,6 +3806,8 @@ async function resolveExportPayload(target) {
       return buildPakdbExportPayload();
     case "credential":
       return buildCredentialExportPayload();
+    case "confidential":
+      return buildConfidentialExportPayload();
     case "playstore":
       return buildPlaystoreExportPayload();
     case "software":
@@ -4899,6 +4949,208 @@ async function uploadCredentialDatasets(fileList) {
   }
 }
 
+function getConfidentialFilteredFindings() {
+  const typeFilter = $("confidentialTypeFilter").value;
+  const riskFilter = $("confidentialRiskFilter").value;
+  const confidenceFilter = $("confidentialConfidenceFilter").value;
+  const statusFilter = $("confidentialStatusFilter").value;
+  return state.confidentialFindings.filter(item => {
+    if (typeFilter && item.detected_type !== typeFilter) return false;
+    if (riskFilter && item.risk_level !== riskFilter) return false;
+    if (confidenceFilter && item.detection_confidence !== confidenceFilter) return false;
+    if (statusFilter && item.status !== statusFilter) return false;
+    return true;
+  });
+}
+
+function renderConfidentialTypeOptions(items) {
+  const select = $("confidentialTypeFilter");
+  const current = select.value;
+  const types = [...new Set((items || []).map(item => item.detected_type).filter(Boolean))].sort();
+  select.innerHTML = `<option value="">All Types</option>${types.map(type => `<option value="${escapeHtml(type)}">${escapeHtml(type)}</option>`).join("")}`;
+  if (types.includes(current)) select.value = current;
+}
+
+function riskBadgeClass(value) {
+  const risk = String(value || "").toLowerCase();
+  if (risk === "high") return "status-error";
+  if (risk === "medium") return "status-running";
+  return "status-ok";
+}
+
+const CONFIDENTIAL_PARSED_FIELD_LABELS = [
+  ["masked_card_number", "Masked Card Number"],
+  ["expiry_date", "Expiry Date"],
+  ["cvv", "CVV"],
+  ["cardholder_name", "Cardholder Name"],
+  ["address_line_1", "Address Line 1"],
+  ["address_line_2", "Address Line 2"],
+  ["city", "City"],
+  ["state_region", "State / Region"],
+  ["postal_code", "Postal Code"],
+  ["country", "Country"],
+  ["masked_phone", "Masked Phone"],
+  ["masked_email", "Masked Email"],
+  ["extra_field", "Extra Field"],
+  ["masked_ip_address", "Masked IP Address"],
+  ["masked_user_agent", "Masked User Agent"]
+];
+
+function getConfidentialParsedField(item, key) {
+  const value = item?.parsed_fields?.[key];
+  return value && String(value).trim() ? String(value) : "N/A";
+}
+
+function getConfidentialParsedFieldRows(item) {
+  return CONFIDENTIAL_PARSED_FIELD_LABELS.map(([key, label]) => [label, getConfidentialParsedField(item, key)]);
+}
+
+function formatConfidentialTimestamp(value) {
+  if (!value) return "-";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value);
+  return date.toLocaleString();
+}
+
+function renderConfidentialResults() {
+  const allItems = state.confidentialFindings || [];
+  const items = getConfidentialFilteredFindings();
+  const tbody = $("confidentialResultsBody");
+  renderConfidentialTypeOptions(allItems);
+
+  if (!allItems.length) {
+    tbody.innerHTML = `<tr><td colspan="10">Upload a local file to begin masked defensive analysis.</td></tr>`;
+    setExportToolbarState("confidentialExportBar", false);
+    return;
+  }
+
+  if (!items.length) {
+    tbody.innerHTML = `<tr><td colspan="10">No masked findings match the selected filters.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = items.map(item => `
+    <tr>
+      <td>${escapeHtml(item.record_id || "-")}</td>
+      <td>${escapeHtml(item.detected_type || "-")}</td>
+      <td><code>${escapeHtml(item.masked_value || "-")}</code></td>
+      <td>${escapeHtml(item.card_brand_guess || "N/A")}</td>
+      <td>${escapeHtml(getConfidentialParsedField(item, "expiry_date"))}</td>
+      <td>${escapeHtml(item.detection_confidence || "-")}</td>
+      <td><span class="status-badge ${riskBadgeClass(item.risk_level)}">${escapeHtml(item.risk_level || "-")}</span></td>
+      <td>
+        <select class="confidential-status-select" data-confidential-status="${escapeHtml(item.record_id || "")}">
+          ${["New", "Reviewed", "False Positive", "Confirmed"].map(status => `<option value="${escapeHtml(status)}" ${status === item.status ? "selected" : ""}>${escapeHtml(status)}</option>`).join("")}
+        </select>
+      </td>
+      <td>${escapeHtml(formatConfidentialTimestamp(item.timestamp_of_analysis))}</td>
+      <td><button class="btn-secondary compact-btn" type="button" data-confidential-detail="${escapeHtml(item.record_id || "")}">Inspect</button></td>
+    </tr>
+  `).join("");
+  setExportToolbarState("confidentialExportBar", true, `${allItems.length} masked finding(s) ready for export.`);
+}
+
+function updateConfidentialStats(data) {
+  const items = Array.isArray(data.results) ? data.results : [];
+  $("confidentialStats").classList.remove("hidden");
+  $("confidentialElapsed").textContent = `${Number(data.elapsed_ms || 0)} ms`;
+  $("confidentialCount").textContent = String(items.length);
+  $("confidentialHighRisk").textContent = String((data.risk_counts && data.risk_counts.High) || items.filter(item => item.risk_level === "High").length);
+}
+
+async function runConfidentialAnalysis() {
+  const input = $("confidentialFileInput");
+  const file = input.files && input.files[0];
+  if (!file) {
+    $("confidentialStatus").textContent = "Choose a .txt, .csv, .json, or .log file first.";
+    return;
+  }
+
+  setActionButtonBusy("confidentialAnalyzeBtn", true, "Analysing...");
+  $("confidentialStatus").textContent = "Analysing local file with masking controls...";
+  $("confidentialStats").classList.add("hidden");
+  setExportToolbarState("confidentialExportBar", false);
+  $("confidentialResultsBody").innerHTML = `<tr><td colspan="10">Processing file locally. Raw secrets will not be returned to the browser.</td></tr>`;
+
+  try {
+    const headers = {};
+    const token = getToken();
+    const apiKey = localStorage.getItem(STORAGE_KEY) || "";
+    if (token) headers.Authorization = `Bearer ${token}`;
+    if (apiKey) headers["X-API-Key"] = apiKey;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await fetch(`${getBase()}/confidential/analyze`, {
+      method: "POST",
+      headers,
+      body: formData
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.detail || data.message || `HTTP ${response.status}`);
+    }
+
+    state.confidentialFindings = Array.isArray(data.results) ? data.results : [];
+    state.scanExports.confidential = data;
+    $("confidentialStatus").textContent = data.message || "Analysis complete. Review masked findings below.";
+    updateConfidentialStats(data);
+    renderConfidentialResults();
+    await maybeApplyActiveTranslation("view");
+  } catch (error) {
+    state.confidentialFindings = [];
+    state.scanExports.confidential = null;
+    $("confidentialStatus").textContent = `Analysis failed: ${error.message}`;
+    $("confidentialResultsBody").innerHTML = `<tr><td colspan="10">${escapeHtml(error.message)}</td></tr>`;
+    $("confidentialStats").classList.add("hidden");
+    setExportToolbarState("confidentialExportBar", false);
+  } finally {
+    setActionButtonBusy("confidentialAnalyzeBtn", false, "Analysing...", "Analyse File");
+    input.value = "";
+  }
+}
+
+function showConfidentialDetail(recordId) {
+  const item = state.confidentialFindings.find(entry => entry.record_id === recordId);
+  if (!item) return;
+  state.confidentialSelectedRecordId = recordId;
+  $("confidentialDetailTopTag").textContent = `${item.detected_type || "Finding"} • ${item.risk_level || "Risk"}`;
+  $("confidentialDetailTitle").textContent = item.masked_value || "Masked Finding";
+  $("confidentialDetailMeta").innerHTML = `
+    <span>Record ID: ${escapeHtml(item.record_id || "-")}</span>
+    <span>Location: ${escapeHtml(item.location || "-")}</span>
+  `;
+  $("confidentialDetailFacts").innerHTML = [
+    ["Detected Type", item.detected_type || "-"],
+    ["Card Brand Guess", item.card_brand_guess || "N/A"],
+    ["Confidence", item.detection_confidence || "-"],
+    ["Risk Level", item.risk_level || "-"],
+    ["Status", item.status || "New"],
+    ["Analysis Timestamp", item.timestamp_of_analysis || "-"]
+  ].map(([label, value]) => `
+    <div class="fact-item">
+      <span class="fact-label">${escapeHtml(label)}</span>
+      <span class="fact-value">${escapeHtml(value)}</span>
+    </div>
+  `).join("");
+  $("confidentialParsedFields").innerHTML = getConfidentialParsedFieldRows(item).map(([label, value]) => `
+    <div class="confidential-field-item">
+      <span class="confidential-field-label">${escapeHtml(label)}</span>
+      <span class="confidential-field-value">${escapeHtml(value)}</span>
+    </div>
+  `).join("");
+  $("confidentialDetailReason").textContent = item.reason_for_detection || "-";
+  $("confidentialDetailContext").textContent = item.context_snippet || "-";
+  $("confidentialDetailNotes").textContent = item.analyst_notes || "No analyst notes recorded.";
+  $("confidentialDetailBackdrop").classList.remove("hidden");
+}
+
+function closeConfidentialDetailModal() {
+  $("confidentialDetailBackdrop").classList.add("hidden");
+  state.confidentialSelectedRecordId = "";
+}
+
 async function checkHealth() {
   try {
     const data = await apiFetch("/health", true);
@@ -5233,6 +5485,32 @@ function setupEventListeners() {
   $("credentialRefreshBtn").addEventListener("click", () => refreshCredentialDatasets(true));
   $("credentialFileInput").addEventListener("change", event => {
     uploadCredentialDatasets(event.target.files);
+  });
+  $("confidentialAnalyzeBtn").addEventListener("click", runConfidentialAnalysis);
+  ["confidentialTypeFilter", "confidentialRiskFilter", "confidentialConfidenceFilter", "confidentialStatusFilter"].forEach(id => {
+    $(id).addEventListener("change", renderConfidentialResults);
+  });
+  $("confidentialResultsBody").addEventListener("click", event => {
+    const button = event.target.closest("[data-confidential-detail]");
+    if (!button) return;
+    showConfidentialDetail(button.dataset.confidentialDetail || "");
+  });
+  $("confidentialResultsBody").addEventListener("change", event => {
+    const select = event.target.closest("[data-confidential-status]");
+    if (!select) return;
+    const recordId = select.dataset.confidentialStatus || "";
+    const item = state.confidentialFindings.find(entry => entry.record_id === recordId);
+    if (!item) return;
+    item.status = select.value;
+    if (state.scanExports.confidential && Array.isArray(state.scanExports.confidential.results)) {
+      const exported = state.scanExports.confidential.results.find(entry => entry.record_id === recordId);
+      if (exported) exported.status = select.value;
+    }
+  });
+  $("confidentialDetailClose").addEventListener("click", closeConfidentialDetailModal);
+  $("confidentialDetailDismiss").addEventListener("click", closeConfidentialDetailModal);
+  $("confidentialDetailBackdrop").addEventListener("click", event => {
+    if (event.target === $("confidentialDetailBackdrop")) closeConfidentialDetailModal();
   });
   $("playstoreSearchBtn").addEventListener("click", runPlaystoreScan);
   $("playstoreInput").addEventListener("keydown", event => {

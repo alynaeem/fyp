@@ -49,6 +49,8 @@ class DarkPulseConfig:
     github_token: str = ""
     gemini_api_key: str = ""
     pagespeed_api_key: str = ""
+    pakdb_provider_api_url: str = ""
+    pakdb_provider_api_key: str = ""
 
     # ── Collector defaults ───────────────────────────────────────────────────
     max_pages: int = 5
@@ -118,6 +120,8 @@ def _load() -> DarkPulseConfig:
         github_token=os.getenv("GITHUB_TOKEN", ""),
         gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
         pagespeed_api_key=os.getenv("PAGESPEED_API_KEY", ""),
+        pakdb_provider_api_url=os.getenv("PAKDB_PROVIDER_API_URL", ""),
+        pakdb_provider_api_key=os.getenv("PAKDB_PROVIDER_API_KEY", ""),
         max_pages=_int(os.getenv("MAX_PAGES", "5"), 5),
         max_articles=_int(os.getenv("MAX_ARTICLES", "50"), 50),
         schedule_interval_hours=_int(os.getenv("SCHEDULE_INTERVAL_HOURS", "6"), 6),

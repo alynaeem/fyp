@@ -56,6 +56,10 @@ services:
       MONGO_URI: "mongodb://mongodb:27017" # override .env — use service name inside Docker network
       MONGO_DB: "${MONGO_DB:-darkpulse}"
       TOR_PROXY_URL: "${DOCKER_TOR_PROXY_URL:-socks5://tor:9050}"
+      OLLAMA_URL: "http://host.docker.internal:11434/api/generate"
+      OLLAMA_MODEL: "${OLLAMA_MODEL:-llama3.1:8b}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "${API_PORT:-8000}:8000"
     depends_on:
@@ -86,6 +90,9 @@ services:
       MONGO_URI: "mongodb://mongodb:27017"
       MONGO_DB: "${MONGO_DB:-darkpulse}"
       TOR_PROXY_URL: "${DOCKER_TOR_PROXY_URL:-socks5://tor:9050}"
+      OLLAMA_URL: "http://host.docker.internal:11434/api/generate"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: ["python", "orchestrator.py", "--schedule"]
     depends_on:
       mongodb:

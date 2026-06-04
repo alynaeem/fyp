@@ -14,7 +14,7 @@ import hmac
 import secrets
 import struct
 from typing import Any, Dict, List, Optional
-from urllib.parse import quote, unquote, urlencode, urlparse
+from urllib.parse import parse_qs, quote, unquote, urlencode, urlparse
 from uuid import uuid4
 from fastapi import FastAPI, Query, Request, HTTPException, Depends, WebSocket, WebSocketDisconnect, UploadFile, File
 import bcrypt
@@ -22,7 +22,7 @@ from datetime import date, datetime, timedelta, timezone
 from jose import JWTError, jwt
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader, HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import ReturnDocument
@@ -51,6 +51,8 @@ automation_state_col = db["automation_state"]
 credential_exposures_col = db["credential_exposures"]
 credential_datasets_col = db["credential_datasets"]
 _LEAK_SOURCE_SCRIPT_DIR = pathlib.Path(__file__).resolve().parent / "leak_collector" / "scripts" / "leak"
+_FEED_SCREENSHOT_DIR = pathlib.Path(__file__).resolve().parent / "data" / "feed_screenshots"
+_FEED_SCREENSHOT_SEMAPHORE = asyncio.Semaphore(2)
 
 
 INTELLIGENCE_SCAN_SOURCES = {
@@ -105,6 +107,8 @@ SCAN_RECOVERY_GRACE_SECONDS = 10
 SOURCE_HIGHLIGHT_LIMIT = 5
 FEED_CACHE_TTL_SECONDS = 30
 _FEED_ITEMS_CACHE: dict[tuple[str, bool], tuple[float, list[dict]]] = {}
+FEED_PAGE_CACHE_TTL_SECONDS = 180
+_FEED_PAGE_CACHE: dict[tuple[Any, ...], tuple[float, dict]] = {}
 MAP_STATS_CACHE_TTL_SECONDS = 120
 _MAP_STATS_CACHE: tuple[float, dict] | None = None
 _MAP_STATS_INFLIGHT: asyncio.Task | None = None
@@ -154,6 +158,23 @@ _LEAK_SOURCE_STATUS_ORDER = {
     "import_error": 4,
     "empty": 5,
     "not_run": 6,
+}
+_NEWS_FEED_PROJECTION = {
+    "content": 0,
+    "content_html": 0,
+    "raw": 0,
+    "raw_text_snippet": 0,
+    "embedding": 0,
+}
+_THREAT_FEED_PROJECTION = {
+    "value.content": 0,
+    "value.content_html": 0,
+    "value.raw": 0,
+    "value.raw_text_snippet": 0,
+    "value.embedding": 0,
+    "value.m_content": 0,
+    "value.m_ref_html": 0,
+    "value.ref_html": 0,
 }
 
 
@@ -208,6 +229,22 @@ def _cache_get_feed_items(key: tuple[str, bool]) -> Optional[list[dict]]:
 def _cache_set_feed_items(key: tuple[str, bool], items: list[dict]) -> list[dict]:
     _FEED_ITEMS_CACHE[key] = (time.monotonic(), items)
     return items
+
+
+def _cache_get_feed_page(key: tuple[Any, ...]) -> Optional[dict]:
+    cached = _FEED_PAGE_CACHE.get(key)
+    if not cached:
+        return None
+    cached_at, payload = cached
+    if time.monotonic() - cached_at > FEED_PAGE_CACHE_TTL_SECONDS:
+        _FEED_PAGE_CACHE.pop(key, None)
+        return None
+    return payload
+
+
+def _cache_set_feed_page(key: tuple[Any, ...], payload: dict) -> dict:
+    _FEED_PAGE_CACHE[key] = (time.monotonic(), payload)
+    return payload
 
 
 def _cache_get_map_stats() -> Optional[dict]:
@@ -351,6 +388,7 @@ def _build_mongo_text_search(query: str, fields: list[str]) -> dict:
 def _clear_feed_cache() -> None:
     global _MAP_STATS_CACHE, _STATS_CACHE
     _FEED_ITEMS_CACHE.clear()
+    _FEED_PAGE_CACHE.clear()
     _MAP_STATS_CACHE = None
     _STATS_CACHE = None
     _SEMANTIC_SEARCH_CACHE.clear()
@@ -1544,13 +1582,44 @@ async def startup_warm_map_stats():
 
 
 async def _warm_feed_cache() -> None:
-    await asyncio.sleep(1.5)
+    await asyncio.sleep(30.0)
     try:
-        await asyncio.gather(
-            stats(),
-            _fetch_combined_feed_items(include_raw=False),
-        )
-        log.info("Feed and stats cache warmed on startup.")
+        await stats()
+        warm_tasks = []
+        for source_key in ("all", "news", "leak", "defacement", "exploit", "social", "api"):
+            cache_key = ("feed", source_key, 30, 0, "", "", "", "", False)
+            if source_key == "all":
+                async def warm_all(key=cache_key):
+                    total, items = await _fetch_combined_feed_page(30, 0)
+                    _cache_set_feed_page(key, {
+                        "total": total,
+                        "offset": 0,
+                        "limit": 30,
+                        "items": [_public_feed_item(item) for item in items],
+                    })
+                warm_tasks.append(warm_all())
+            elif source_key == "news":
+                async def warm_news(key=cache_key):
+                    total, items = await _fetch_news_page(30, 0)
+                    _cache_set_feed_page(key, {
+                        "total": total,
+                        "offset": 0,
+                        "limit": 30,
+                        "items": [_public_feed_item(item) for item in items],
+                    })
+                warm_tasks.append(warm_news())
+            else:
+                async def warm_threat(source=source_key, key=cache_key):
+                    total, items = await _fetch_threat_page(source, 30, 0)
+                    _cache_set_feed_page(key, {
+                        "total": total,
+                        "offset": 0,
+                        "limit": 30,
+                        "items": [_public_feed_item(item) for item in items],
+                    })
+                warm_tasks.append(warm_threat())
+        await asyncio.gather(*warm_tasks)
+        log.info("Page-level feed and stats cache warmed on startup.")
     except Exception as exc:
         log.error(f"Feed cache warmup failed: {exc}", exc_info=True)
 
@@ -1854,6 +1923,49 @@ async def intelligence_status():
             "updated_at": lock_doc.get("updated_at"),
         },
     }
+
+@app.post("/api/ai/query")
+async def ai_query(request: Request):
+    body = await request.json()
+    query = str(body.get("query", "")).strip()
+    if not query:
+        raise HTTPException(status_code=400, detail="Query is required")
+
+    collection = str(body.get("collection") or "redis_kv_store").strip() or "redis_kv_store"
+    try:
+        limit = min(max(int(body.get("limit") or 8), 1), 15)
+    except (TypeError, ValueError):
+        limit = 8
+    try:
+        max_context_words = min(max(int(body.get("max_context_words") or 1800), 300), 2500)
+    except (TypeError, ValueError):
+        max_context_words = 1800
+
+    try:
+        from ollama_mongo_intelligence import answer_query_from_mongo
+
+        loop = asyncio.get_running_loop()
+        result = await loop.run_in_executor(
+            None,
+            lambda: answer_query_from_mongo(
+                query,
+                collection_name=collection,
+                limit=limit,
+                max_context_words=max_context_words,
+            ),
+        )
+        return {
+            "status": "ok",
+            "query": result.query,
+            "collection": result.collection,
+            "count": result.count,
+            "context_word_count": result.context_word_count,
+            "answer": result.answer,
+            "documents": result.documents,
+        }
+    except Exception as exc:
+        log.error(f"AI query failed: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"AI query failed: {exc}")
 
 
 @app.get("/leaks/source-status")
@@ -2409,6 +2521,25 @@ _THREAT_PREFIXES = {
     "API_ENTITIES": None,
 }
 
+_LEGACY_STATS_PATTERNS = (
+    (r"^HACKREAD:", "news"),
+    (r"^BLEEPING:", "news"),
+    (r"^KREBS:", "news"),
+    (r"^THERECORD:", "news"),
+    (r"^ACN:", "news"),
+    (r"^THN:", "news"),
+    (r"^CSO:", "news"),
+    (r"^CERTPL:", "exploit"),
+    (r"^CERTAT:", "exploit"),
+    (r"^CERTCN:", "exploit"),
+    (r"^CERTPK:", "exploit"),
+    (r"^CERTEU:", "exploit"),
+    (r"^CSA:", "exploit"),
+    (r"^PORTSWIGGER:", "exploit"),
+    (r"^DEFACER:", "defacement"),
+    (r"^RAW_LEAK_ITEMS", "leak"),
+)
+
 _FEED_SOURCE_ALIASES = {
     "all": "all",
     "news": "news",
@@ -2672,6 +2803,23 @@ def _title_from_url(value: Any) -> str:
         return ""
 
 
+def _unwrap_redirect_url(value: Any) -> str:
+    text = _clean_text_candidate(value)
+    if not text:
+        return ""
+    try:
+        parsed = urlparse(text)
+        params = parse_qs(parsed.query)
+        for key in ("q", "url", "u", "target"):
+            for candidate in params.get(key, []):
+                candidate = unquote(str(candidate or "").strip())
+                if candidate.startswith(("http://", "https://")):
+                    return candidate
+    except Exception:
+        return text
+    return text
+
+
 _IP_ADDRESS_RE = re.compile(
     r"(?<![\w:])(?:25[0-5]|2[0-4]\d|1?\d?\d)(?:\.(?:25[0-5]|2[0-4]\d|1?\d?\d)){3}(?![\w:])"
 )
@@ -2757,6 +2905,75 @@ def _extract_field(data: dict, *fields: str) -> str:
         if value:
             return value
     return ""
+
+
+_BLOCKED_ARTICLE_TITLES = {"403 error", "403 forbidden", "access denied"}
+_LOW_QUALITY_ARTICLE_TITLES = {"infosecurity news"}
+_BLOCKED_ARTICLE_PHRASES = (
+    "this website uses a security service to protect against malicious bots",
+    "this page is displayed while the website verifies you are not a bot",
+    "request could not be satisfied",
+)
+
+
+def _is_blocked_article_doc(doc: dict) -> bool:
+    title = _clean_text_candidate(_extract_field(doc, "title", "m_title", "headline", "name")).lower()
+    url = _clean_text_candidate(_extract_field(doc, "url", "m_url", "weblink", "m_weblink")).lower()
+    description = _clean_text_candidate(
+        _extract_field(doc, "description", "m_description", "summary", "m_important_content", "important_content")
+    ).lower()
+    content = _clean_text_candidate(_extract_field(doc, "content", "m_content")).lower()
+    status_raw = _extract_field(doc, "http_status", "status_code")
+
+    try:
+        http_status = int(float(status_raw)) if status_raw else 0
+    except (TypeError, ValueError):
+        http_status = 0
+
+    if http_status and http_status >= 400:
+        return True
+    if title in _BLOCKED_ARTICLE_TITLES or description in _BLOCKED_ARTICLE_TITLES:
+        return True
+    if any(phrase in description or phrase in content for phrase in _BLOCKED_ARTICLE_PHRASES):
+        return True
+    if title in _LOW_QUALITY_ARTICLE_TITLES and re.search(r"/news/(page-\d+/?)?$", url):
+        return True
+    if title in _LOW_QUALITY_ARTICLE_TITLES and len(description) < 80:
+        return True
+    return False
+
+
+def _visible_news_query(extra_filter: Optional[dict] = None) -> dict:
+    blocked_title_pattern = r"^\s*(403\s+error|403\s+forbidden|access\s+denied)\s*$"
+    low_quality_title_pattern = r"^\s*infosecurity\s+news\s*$"
+    bot_check_pattern = r"(security service to protect against malicious bots|verifies you are not a bot|request could not be satisfied)"
+    visibility_filter = {
+        "$and": [
+            {
+                "$nor": [
+                    {"title": {"$regex": blocked_title_pattern, "$options": "i"}},
+                    {"m_title": {"$regex": blocked_title_pattern, "$options": "i"}},
+                    {"description": {"$regex": blocked_title_pattern, "$options": "i"}},
+                    {"m_description": {"$regex": blocked_title_pattern, "$options": "i"}},
+                    {"description": {"$regex": bot_check_pattern, "$options": "i"}},
+                    {"m_description": {"$regex": bot_check_pattern, "$options": "i"}},
+                    {"content": {"$regex": bot_check_pattern, "$options": "i"}},
+                    {"m_content": {"$regex": bot_check_pattern, "$options": "i"}},
+                    {
+                        "$and": [
+                            {"title": {"$regex": low_quality_title_pattern, "$options": "i"}},
+                            {"url": {"$regex": r"/news/(page-\d+/?)?$", "$options": "i"}},
+                        ]
+                    },
+                ]
+            },
+            {"http_status": {"$nin": [403, "403", 401, "401", 429, "429"]}},
+            {"m_extra.http_status": {"$nin": [403, "403", 401, "401", 429, "429"]}},
+        ]
+    }
+    if not extra_filter:
+        return visibility_filter
+    return {"$and": [visibility_filter, extra_filter]}
 
 
 def _merge_threat_payloads(item_data: dict, entity_data: Optional[dict]) -> dict:
@@ -2983,7 +3200,21 @@ def _infer_country_codes(item: dict, raw_data: dict) -> list[str]:
     return sorted(codes)
 
 
-def _feed_sort_key(item: dict) -> str:
+def _feed_sort_key(item: dict) -> tuple[str, str, str]:
+    return (
+        str(
+            item.get("scraped_at")
+            or item.get("date")
+            or item.get("published_at")
+            or item.get("created_at")
+            or ""
+        ),
+        str(item.get("source_type") or ""),
+        str(item.get("aid") or item.get("url") or item.get("title") or ""),
+    )
+
+
+def _feed_date_sort_key(item: dict) -> str:
     return (
         item.get("scraped_at")
         or item.get("date")
@@ -3194,10 +3425,30 @@ def _build_ai_summary(item: dict) -> str:
 
 
 def _public_feed_item(item: dict) -> dict:
-    if "_search_blob" not in item:
-        return item
     sanitized = dict(item)
-    sanitized.pop("_search_blob", None)
+    for key in (
+        "_search_blob",
+        "content",
+        "raw_text_snippet",
+        "embedding",
+        "raw",
+        "content_html",
+        "m_content",
+        "m_ref_html",
+        "ref_html",
+    ):
+        sanitized.pop(key, None)
+    aid = str(sanitized.get("aid") or "")
+    for image_key in ("screenshot", "hero_image", "og_image"):
+        value = str(sanitized.get(image_key) or "")
+        if aid and len(value) > 2000 and not value.startswith(("http://", "https://", "/")):
+            sanitized[image_key] = f"/feed-screenshot?aid={quote(aid)}"
+    screenshot_links = sanitized.get("screenshot_links")
+    if aid and isinstance(screenshot_links, list):
+        sanitized["screenshot_links"] = [
+            f"/feed-screenshot?aid={quote(aid)}" if len(str(link or "")) > 2000 and not str(link).startswith(("http://", "https://", "/")) else link
+            for link in screenshot_links[:4]
+        ]
     return sanitized
 
 
@@ -3228,7 +3479,7 @@ def _build_article_item(doc: dict, include_raw: bool = False) -> dict:
         _meaningful_description(item.get("summary"))
         or _excerpt_text(_extract_field(raw_doc, "summary", "m_important_content", "important_content", "m_content", "content"))
         or item["description"]
-    )[:400]
+    )[:900]
 
     categories = item.get("categories", [])
     if not categories:
@@ -3348,6 +3599,9 @@ def _build_threat_item(key: str, data: dict, include_raw: bool = False) -> dict 
         )
         raw_url = _coerce_list(links)[0] if _coerce_list(links) else ""
 
+    raw_url = _unwrap_redirect_url(raw_url) or raw_url
+    if raw_url and _clean_text_candidate(title).lower() in {"", "url", "website", "target", "untitled", "unknown"}:
+        title = _title_from_url(raw_url) or _extract_hostname(raw_url) or raw_url
     if not title and raw_url:
         title = _title_from_url(raw_url) or _extract_hostname(raw_url) or raw_url
     if not title:
@@ -3544,11 +3798,13 @@ async def _fetch_news_items(include_raw: bool = False) -> list[dict]:
         if cached is not None:
             return cached
 
-    processed_docs = await articles_col.find({}).to_list(length=None)
-    raw_docs = await news_items_col.find({}).to_list(length=None) if include_raw else []
+    processed_docs = await articles_col.find(_visible_news_query()).to_list(length=None)
+    raw_docs = await news_items_col.find(_visible_news_query()).to_list(length=None) if include_raw else []
 
     merged: dict[str, dict] = {}
     for doc in processed_docs + raw_docs:
+        if _is_blocked_article_doc(doc):
+            continue
         item = _build_article_item(doc, include_raw=include_raw)
         key = _news_merge_key(item)
         if not key:
@@ -3562,20 +3818,40 @@ async def _fetch_news_items(include_raw: bool = False) -> list[dict]:
 
 
 async def _fetch_news_page(limit: int, offset: int) -> tuple[int, list[dict]]:
-    total = await articles_col.count_documents({})
-    cursor = (
-        articles_col.find({})
-        .sort([
-            ("scraped_at", -1),
-            ("date", -1),
-            ("published_at", -1),
-            ("_id", -1),
-        ])
-        .skip(offset)
-        .limit(limit)
-    )
-    docs = await cursor.to_list(length=limit)
-    return total, [_build_article_item(doc, include_raw=False) for doc in docs]
+    try:
+        total_future = asyncio.ensure_future(articles_col.estimated_document_count())
+    except Exception:
+        total_future = asyncio.ensure_future(articles_col.count_documents({}))
+    safe_limit = max(min(int(limit or 30), 500), 1)
+    safe_offset = max(int(offset or 0), 0)
+    candidates: list[dict] = []
+    seen_keys: set[str] = set()
+    scanned = 0
+    batch_limit = min(max(safe_limit * 6, 180), 300)
+    max_scan = max((safe_offset + safe_limit) * 24, 8000)
+    while scanned < max_scan:
+        docs = await (
+            articles_col.find({}, _NEWS_FEED_PROJECTION)
+            .sort([("$natural", -1)])
+            .skip(scanned)
+            .limit(batch_limit)
+            .to_list(length=batch_limit)
+        )
+        if not docs:
+            break
+        scanned += len(docs)
+        for doc in docs:
+            if _is_blocked_article_doc(doc):
+                continue
+            item = _build_article_item(doc, include_raw=False)
+            dedupe_key = _news_merge_key(item).strip().lower()
+            if not dedupe_key or dedupe_key in seen_keys:
+                continue
+            seen_keys.add(dedupe_key)
+            candidates.append(item)
+    items = sorted(candidates, key=_feed_sort_key, reverse=True)[safe_offset:safe_offset + safe_limit]
+    total = await total_future
+    return total, items
 
 
 async def _search_news_items(query: str, include_raw: bool = False, limit: int = SEARCH_CANDIDATE_LIMIT) -> list[dict]:
@@ -3598,7 +3874,7 @@ async def _search_news_items(query: str, include_raw: bool = False, limit: int =
         return []
 
     cursor = (
-        articles_col.find(search_filter)
+        articles_col.find(_visible_news_query(search_filter))
         .sort([
             ("scraped_at", -1),
             ("date", -1),
@@ -3608,7 +3884,7 @@ async def _search_news_items(query: str, include_raw: bool = False, limit: int =
         .limit(limit)
     )
     docs = await cursor.to_list(length=limit)
-    return [_build_article_item(doc, include_raw=include_raw) for doc in docs]
+    return [_build_article_item(doc, include_raw=include_raw) for doc in docs if not _is_blocked_article_doc(doc)]
 
 
 async def _find_news_doc(aid: str) -> dict | None:
@@ -3710,6 +3986,109 @@ async def _fetch_threat_items(source_type: str = "", include_raw: bool = False) 
             items.append(parsed)
     items = sorted(items, key=_feed_sort_key, reverse=True)
     return _cache_set_feed_items(cache_key, items) if not include_raw else items
+
+
+async def _fetch_threat_page(source_type: str, limit: int, offset: int, *, include_total: bool = True) -> tuple[int, list[dict]]:
+    prefixes = [prefix for prefix, category in _THREAT_PREFIXES.items() if category == source_type]
+    if not prefixes:
+        return 0, []
+
+    regex_pattern = "^(" + "|".join(prefixes) + "):"
+    query_doc = {"_id": {"$regex": regex_pattern}}
+    total_task = asyncio.ensure_future(kv_col.count_documents(query_doc)) if include_total else None
+    docs = await (
+        kv_col.find(query_doc, _THREAT_FEED_PROJECTION)
+        .sort([("_id", -1)])
+        .skip(offset)
+        .limit(limit)
+        .to_list(length=limit)
+    )
+
+    suffixes = []
+    for doc in docs:
+        doc_id = str(doc.get("_id", ""))
+        suffixes.append(doc_id.split(":", 1)[1] if ":" in doc_id else doc_id)
+
+    entity_map: dict[str, dict] = {}
+    if suffixes:
+        entity_ids = []
+        for prefix in prefixes:
+            entity_prefix = prefix.replace("_ITEMS", "_ENTITIES")
+            entity_ids.extend([f"{entity_prefix}:{suffix}" for suffix in suffixes])
+        entity_docs = await kv_col.find({"_id": {"$in": entity_ids}}, _THREAT_FEED_PROJECTION).to_list(length=None)
+        for entity_doc in entity_docs:
+            entity_id = str(entity_doc.get("_id", ""))
+            if ":" in entity_id:
+                entity_map[entity_id.split(":", 1)[1]] = entity_doc
+
+    items = []
+    for doc in docs:
+        doc_id = str(doc.get("_id", ""))
+        suffix = doc_id.split(":", 1)[1] if ":" in doc_id else doc_id
+        parsed = _parse_kv_item(doc, include_raw=False, entity_doc=entity_map.get(suffix))
+        if parsed:
+            items.append(parsed)
+
+    items = sorted(items, key=_feed_sort_key, reverse=True)
+    total = await total_task if total_task else 0
+    return total, items
+
+
+def _cached_feed_total() -> int:
+    cached_stats = _cache_get_stats()
+    if not cached_stats:
+        return 0
+    counts = cached_stats.get("counts") if isinstance(cached_stats.get("counts"), dict) else cached_stats
+    try:
+        return int(counts.get("total") or 0)
+    except Exception:
+        return 0
+
+
+async def _feed_total_from_stats() -> int:
+    total = _cached_feed_total()
+    if total:
+        return total
+    try:
+        stats_payload = await stats()
+        counts = stats_payload.get("counts") if isinstance(stats_payload.get("counts"), dict) else stats_payload
+        return int(counts.get("total") or 0)
+    except Exception:
+        return 0
+
+
+async def _fetch_combined_feed_page(limit: int, offset: int) -> tuple[int, list[dict]]:
+    safe_limit = max(min(int(limit or 30), 500), 1)
+    safe_offset = max(int(offset or 0), 0)
+    source_types = ("leak", "defacement", "exploit", "social", "api")
+
+    # Keep the dashboard path page-sized. The older all-feed route built every
+    # item first, which made the first paint wait on tens of thousands of docs.
+    if safe_offset <= 900:
+        candidate_limit = 1000
+        source_offset = 0
+        slice_offset = safe_offset
+    else:
+        candidate_limit = min(max(safe_limit, 30), 80)
+        source_offset = max((safe_offset // (len(source_types) + 1)) - safe_limit, 0)
+        slice_offset = 0
+
+    results = await asyncio.gather(
+        _fetch_news_page(candidate_limit, source_offset),
+        *[
+            _fetch_threat_page(source_type, candidate_limit, source_offset, include_total=False)
+            for source_type in source_types
+        ],
+    )
+
+    candidates: list[dict] = []
+    for _source_total, source_items in results:
+        candidates.extend(source_items)
+
+    candidates = sorted(candidates, key=_feed_sort_key, reverse=True)
+    total = await _feed_total_from_stats()
+    total = total or max(len(candidates), safe_offset + len(candidates))
+    return total, candidates[slice_offset:slice_offset + safe_limit]
 
 
 async def _fetch_combined_feed_items(include_raw: bool = False) -> list[dict]:
@@ -3827,47 +4206,57 @@ async def list_feed(
     include_raw: bool = Query(False),
 ):
     canonical = _canonical_source_type(source_type)
+    fast_cache_key = (
+        "feed",
+        canonical,
+        limit,
+        offset,
+        q.strip().lower(),
+        topic.strip().lower(),
+        start_date.strip(),
+        end_date.strip(),
+        bool(include_raw),
+    )
+    if not include_raw:
+        cached_page = _cache_get_feed_page(fast_cache_key)
+        if cached_page is not None:
+            return cached_page
 
     if canonical == "news":
         if not q and not include_raw and not topic and not start_date and not end_date:
             total, items = await _fetch_news_page(limit, offset)
-            return {
+            return _cache_set_feed_page(fast_cache_key, {
                 "total": total,
                 "offset": offset,
                 "limit": limit,
                 "items": [_public_feed_item(item) for item in items],
-            }
+            })
         if q:
             items = await _search_news_items(q, include_raw=include_raw)
         else:
             items = await _fetch_news_items(include_raw=include_raw)
     elif canonical in {"exploit", "leak", "defacement", "social", "api"}:
         if not q and not include_raw and not topic and not start_date and not end_date:
-            total = await _count_threat_items(canonical)
-            items = await _fetch_threat_items(canonical, include_raw=False)
-            return {
+            total, items = await _fetch_threat_page(canonical, limit, offset)
+            return _cache_set_feed_page(fast_cache_key, {
                 "total": total,
                 "offset": offset,
                 "limit": limit,
-                "items": [_public_feed_item(item) for item in items[offset:offset + limit]],
-            }
+                "items": [_public_feed_item(item) for item in items],
+            })
         if q:
             items = await _search_threat_items(q, canonical, include_raw=include_raw)
         else:
             items = await _fetch_threat_items(canonical, include_raw=include_raw)
     else:
         if not q and not include_raw and not topic and not start_date and not end_date:
-            total_news, total_threats, items = await asyncio.gather(
-                articles_col.count_documents({}),
-                _count_threat_items(),
-                _fetch_combined_feed_items(include_raw=False),
-            )
-            return {
-                "total": total_news + total_threats,
+            total, items = await _fetch_combined_feed_page(limit, offset)
+            return _cache_set_feed_page(fast_cache_key, {
+                "total": total,
                 "offset": offset,
                 "limit": limit,
-                "items": [_public_feed_item(item) for item in items[offset:offset + limit]],
-            }
+                "items": [_public_feed_item(item) for item in items],
+            })
         if q:
             news_items, threat_items = await asyncio.gather(
                 _search_news_items(q, include_raw=include_raw),
@@ -3884,12 +4273,117 @@ async def list_feed(
     if q:
         items = _filter_feed_items(items, q)
     items = _apply_feed_filters(items, topic=topic, start_date=start_date, end_date=end_date)
-    return {
+    return _cache_set_feed_page(fast_cache_key, {
         "total": len(items),
         "offset": offset,
         "limit": limit,
         "items": [_public_feed_item(item) for item in items[offset:offset + limit]],
-    }
+    })
+
+
+async def _find_feed_item_for_screenshot(aid: str) -> dict:
+    if any(aid.startswith(f"{prefix}:") for prefix in _THREAT_PREFIXES):
+        doc = await kv_col.find_one({"_id": aid})
+        entity_doc = None
+        if aid.startswith(("EXPLOIT_ITEMS:", "LEAK_ITEMS:", "DEFACEMENT_ITEMS:", "SOCIAL_ITEMS:", "API_ITEMS:")):
+            entity_doc = await kv_col.find_one({"_id": aid.replace("_ITEMS:", "_ENTITIES:", 1)})
+        parsed = _parse_kv_item(doc, include_raw=False, entity_doc=entity_doc) if doc else None
+        if parsed:
+            return parsed
+
+    doc = await _find_news_doc(aid)
+    if doc:
+        return _build_article_item(doc, include_raw=False)
+
+    raise HTTPException(status_code=404, detail="Feed item not found")
+
+
+def _feed_screenshot_cache_path(aid: str, url: str) -> pathlib.Path:
+    digest = hashlib.sha256(f"{aid}\n{url}".encode("utf-8", errors="ignore")).hexdigest()
+    return _FEED_SCREENSHOT_DIR / f"{digest}.jpg"
+
+
+def _capture_feed_screenshot(url: str, output_path: pathlib.Path) -> None:
+    from playwright.sync_api import sync_playwright
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
+        context = browser.new_context(
+            viewport={"width": 1280, "height": 720},
+            device_scale_factor=1,
+            ignore_https_errors=True,
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+            ),
+        )
+        page = context.new_page()
+        try:
+            page.goto(url, wait_until="domcontentloaded", timeout=20000)
+            page.wait_for_timeout(1200)
+            page.screenshot(path=str(output_path), type="jpeg", quality=72, full_page=False)
+        finally:
+            context.close()
+            browser.close()
+
+
+def _response_from_embedded_image(value: Any) -> Response | None:
+    text = str(value or "").strip()
+    if not text:
+        return None
+    media_type = "image/jpeg"
+    if text.startswith("data:image/"):
+        header, _, payload = text.partition(",")
+        if not payload:
+            return None
+        media_type = (header.split(";", 1)[0].replace("data:", "") or media_type).strip()
+        text = payload.strip()
+    if len(text) < 2000 or not re.fullmatch(r"[A-Za-z0-9+/=\s]+", text):
+        return None
+    try:
+        image_bytes = base64.b64decode(re.sub(r"\s+", "", text), validate=False)
+    except Exception:
+        return None
+    if len(image_bytes) < 1024:
+        return None
+    if image_bytes.startswith(b"\x89PNG"):
+        media_type = "image/png"
+    elif image_bytes.startswith(b"GIF"):
+        media_type = "image/gif"
+    elif image_bytes.startswith(b"\xff\xd8"):
+        media_type = "image/jpeg"
+    return Response(content=image_bytes, media_type=media_type)
+
+
+@app.get("/feed-screenshot")
+async def get_feed_screenshot(aid: str = Query(...)):
+    item = await _find_feed_item_for_screenshot(aid)
+    embedded_refs = [item.get("screenshot")]
+    if isinstance(item.get("screenshot_links"), list):
+        embedded_refs.extend(item.get("screenshot_links") or [])
+    for ref in embedded_refs:
+        response = _response_from_embedded_image(ref)
+        if response is not None:
+            return response
+
+    url = _unwrap_redirect_url(first_non_empty := _extract_field(item, "url", "website", "seed_url")) or first_non_empty
+    parsed = urlparse(url or "")
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise HTTPException(status_code=404, detail="No screenshot-capable URL for this item")
+
+    cache_path = _feed_screenshot_cache_path(aid, url)
+    if not cache_path.exists() or cache_path.stat().st_size < 1024:
+        async with _FEED_SCREENSHOT_SEMAPHORE:
+            if not cache_path.exists() or cache_path.stat().st_size < 1024:
+                loop = asyncio.get_running_loop()
+                try:
+                    await loop.run_in_executor(None, _capture_feed_screenshot, url, cache_path)
+                except Exception as exc:
+                    log.warning("Feed screenshot capture failed aid=%s url=%s error=%s", aid, url, exc)
+                    raise HTTPException(status_code=404, detail="Screenshot capture failed") from exc
+
+    return FileResponse(cache_path, media_type="image/jpeg")
 
 
 @app.get("/feed/{aid:path}")
@@ -3936,6 +4430,9 @@ async def stats():
     count_tasks = [articles_col.count_documents({})] + [
         kv_col.count_documents({"_id": {"$regex": f"^{pfx}:"}})
         for pfx, _cat in threat_prefixes
+    ] + [
+        kv_col.count_documents({"_id": {"$regex": pattern}})
+        for pattern, _cat in _LEGACY_STATS_PATTERNS
     ]
     counts = await asyncio.gather(*count_tasks)
 
@@ -3944,7 +4441,14 @@ async def stats():
     }
     for (pfx, cat), count in zip(threat_prefixes, counts[1:]):
         result[cat] = result.get(cat, 0) + count
-    result["total"] = sum(result.values())
+    legacy_counts = counts[1 + len(threat_prefixes):]
+    legacy_result: dict[str, int] = {}
+    for (_pattern, cat), count in zip(_LEGACY_STATS_PATTERNS, legacy_counts):
+        legacy_result[cat] = legacy_result.get(cat, 0) + count
+    for cat, count in legacy_result.items():
+        result[cat] = max(result.get(cat, 0), count)
+    category_total = sum(result.values())
+    result["total"] = category_total
     return _cache_set_stats({"counts": result, **result})
 
 
@@ -3952,67 +4456,177 @@ async def stats():
 pakdb_col = db["pakdb_lookups"]
 
 
+def _normalize_pakdb_number(number: str) -> str:
+    cleaned = re.sub(r"\D+", "", number or "")
+    if cleaned.startswith("0092"):
+        cleaned = "92" + cleaned[4:]
+    elif cleaned.startswith("0"):
+        cleaned = "92" + cleaned[1:]
+    elif cleaned.startswith("3"):
+        cleaned = "92" + cleaned
+    return cleaned
+
+
+def _pakdb_error_response(message: str, number: str = "", normalized_number: str = "", provider: str = "unconfigured") -> dict[str, Any]:
+    return {
+        "status": "error",
+        "message": message,
+        "query": normalized_number,
+        "input": number,
+        "provider": provider,
+        "count": 0,
+        "results": [],
+    }
+
+
+def _extract_pakdb_records(payload: Any) -> list[dict[str, Any]]:
+    if isinstance(payload, list):
+        records = payload
+    elif isinstance(payload, dict):
+        records = None
+        for key in ("results", "items", "records", "data", "matches"):
+            value = payload.get(key)
+            if isinstance(value, list):
+                records = value
+                break
+        if records is None:
+            records = [payload] if payload else []
+    else:
+        records = []
+
+    allowed_records: list[dict[str, Any]] = []
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        clean: dict[str, Any] = {}
+        for key, value in record.items():
+            if value is None or isinstance(value, (dict, list)):
+                continue
+            clean[str(key)] = str(value)
+        if clean:
+            allowed_records.append(clean)
+    return allowed_records
+
+
+async def _call_authorized_pakdb_provider(number: str, normalized_number: str) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    import requests
+
+    provider_url = (cfg.pakdb_provider_api_url or os.environ.get("PAKDB_PROVIDER_API_URL", "")).strip()
+    provider_key = (cfg.pakdb_provider_api_key or os.environ.get("PAKDB_PROVIDER_API_KEY", "")).strip()
+    provider_name = urlparse(provider_url).netloc or "authorized-provider"
+
+    log.info(
+        "PakDB provider selected=%s configured_url=%s configured_key=%s",
+        provider_name,
+        bool(provider_url),
+        bool(provider_key),
+    )
+
+    if not provider_url:
+        raise ValueError("PakDB lookup source is not configured. Please connect an authorized data provider API.")
+    if not provider_key:
+        raise PermissionError("PakDB provider API key is missing. Please set PAKDB_PROVIDER_API_KEY in .env.")
+
+    def request_provider() -> tuple[int, Any]:
+        response = requests.post(
+            provider_url,
+            json={"number": normalized_number, "mobile": normalized_number, "input": number},
+            headers={
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {provider_key}",
+                "X-API-Key": provider_key,
+                "User-Agent": "DarkPulse-PakDB-Provider",
+            },
+            timeout=20,
+        )
+        try:
+            payload = response.json()
+        except ValueError:
+            payload = {"message": response.text.strip()}
+        return response.status_code, payload
+
+    status_code, payload = await asyncio.to_thread(request_provider)
+    log.info("PakDB provider response status=%s provider=%s", status_code, provider_name)
+
+    if status_code in (401, 403):
+        raise PermissionError("PakDB provider rejected the request. Please check provider API settings.")
+    if status_code in (408, 429, 500, 502, 503, 504):
+        raise ConnectionError("PakDB lookup failed. Please check provider API settings.")
+    if status_code >= 400:
+        raise RuntimeError("PakDB lookup failed. Please check provider API settings.")
+
+    records = _extract_pakdb_records(payload)
+    metadata = {
+        "provider": provider_name,
+        "provider_status": status_code,
+        "raw_count": len(records),
+    }
+    return records, metadata
+
+
 @app.post("/pakdb/lookup")
 async def pakdb_lookup(request: Request):
-    """Run a PakDB phone number lookup via the Playwright + Tor scraper.
-    Accepts JSON body: {"number": "03001234567"}
-    Returns structured results or an error."""
-    import asyncio
-    from datetime import datetime, timezone
+    """Run a PakDB lookup through an authorized provider API only."""
 
     body = await request.json()
     number = str(body.get("number", "")).strip()
     if not number:
-        raise HTTPException(status_code=400, detail="Phone number is required")
+        return _pakdb_error_response("Phone number is required")
 
-    # Validate: must look like a Pakistani phone number
-    import re
-    cleaned = re.sub(r"\D+", "", number)
-    if len(cleaned) < 10 or len(cleaned) > 13:
-        raise HTTPException(status_code=400, detail="Invalid phone number format")
+    normalized_number = _normalize_pakdb_number(number)
+    log.info("PakDB lookup received input=%s normalized=%s", number, normalized_number)
+    if not re.fullmatch(r"923\d{9}", normalized_number):
+        log.warning("PakDB lookup invalid phone number: input=%s normalized=%s", number, normalized_number)
+        return _pakdb_error_response("Invalid phone number. Use 923xxxxxxxxx, +923xxxxxxxxx, or 03xxxxxxxxx.", number, normalized_number)
 
-    log.info(f"PakDB lookup requested for: {number}")
+    provider = "unconfigured"
+    items: list[dict[str, Any]] = []
+    message = ""
+    status = "ok"
 
     try:
-        from api_collector.scripts._pakdb import _pakdb
-
-        scraper = _pakdb()
-        loop = asyncio.get_running_loop()
-
-        # Run the Playwright scraper in a thread pool (it's blocking)
-        result = await loop.run_in_executor(
-            None,
-            lambda: asyncio.run(scraper.parse_leak_data(query={"number": number}, context=None))
+        items, metadata = await asyncio.wait_for(
+            _call_authorized_pakdb_provider(number, normalized_number),
+            timeout=25,
         )
+        provider = metadata.get("provider", "authorized-provider")
+        message = "No matching record found from the configured authorized provider." if not items else ""
+    except asyncio.TimeoutError:
+        status = "error"
+        message = "PakDB lookup failed. Please check provider API settings."
+        log.error("PakDB provider timeout for normalized=%s provider=%s", normalized_number, provider)
+    except (ValueError, PermissionError, ConnectionError, RuntimeError) as exc:
+        status = "error"
+        message = str(exc)
+        log.error("PakDB lookup error reason=%s normalized=%s", message, normalized_number)
+    except Exception as exc:
+        status = "error"
+        message = "PakDB lookup failed. Please check provider API settings."
+        log.error("PakDB lookup failed unexpectedly for %s: %s", normalized_number, exc, exc_info=True)
 
-        cards = list(getattr(result, "cards_data", []) or []) if result else []
+    doc = {
+        "query": normalized_number,
+        "input": number,
+        "provider": provider,
+        "status": status,
+        "message": message,
+        "results": items,
+        "count": len(items),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+    await pakdb_col.insert_one(doc)
 
-        items = []
-        for card in cards:
-            extra = getattr(card, "m_extra", {}) or {}
-            item = {
-                "name": extra.get("name") or getattr(card, "m_app_name", ""),
-                "cnic": extra.get("cnic", ""),
-                "mobile": extra.get("mobile", ""),
-                "address": extra.get("address", ""),
-            }
-            items.append(item)
-
-        # Persist to MongoDB for history
-        doc = {
-            "query": number,
-            "results": items,
-            "count": len(items),
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        }
-        await pakdb_col.insert_one(doc)
-
-        log.info(f"PakDB lookup complete: {len(items)} results for {number}")
-        return {"status": "ok", "query": number, "count": len(items), "results": items}
-
-    except Exception as e:
-        log.error(f"PakDB lookup failed: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Lookup failed: {str(e)}")
+    log.info("PakDB lookup complete status=%s provider=%s count=%s normalized=%s", status, provider, len(items), normalized_number)
+    return {
+        "status": status,
+        "message": message,
+        "query": normalized_number,
+        "provider": provider,
+        "count": len(items),
+        "results": items,
+        "timestamp": doc["timestamp"],
+    }
 
 
 @app.get("/pakdb/history")
@@ -4211,8 +4825,351 @@ async def github_scan(request: Request):
 
 apk_col = db["apk_scans"]
 
+APK_SUSPICIOUS_KEYWORDS = (
+    "mod apk",
+    "cracked apk",
+    "hacked apk",
+    "unlimited money",
+    "unlimited gems",
+    "premium unlocked",
+    "free download apk",
+    "apk mod",
+    "apk hack",
+    "modified version",
+    "hack apk",
+)
+
+APK_SUSPICIOUS_DOMAINS = {
+    "apkpure.com",
+    "happymod.com",
+    "apkcombo.com",
+    "apkdone.com",
+    "modyolo.com",
+    "liteapks.com",
+    "rexdl.com",
+    "apkmody.com",
+    "moddroid.com",
+    "apksoul.net",
+    "apkmodhere.com",
+    "getmodsapk.com",
+    "9mod.com",
+    "an1.com",
+}
+
+
+def _extract_playstore_package_id(playstore_url: str) -> str:
+    from urllib.parse import parse_qs
+
+    text = str(playstore_url or "").strip()
+    parsed = urlparse(text if "://" in text else f"https://{text}")
+    package_id = parse_qs(parsed.query).get("id", [""])[0].strip()
+    if package_id:
+        return package_id
+    if re.fullmatch(r"[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)+", text):
+        return text
+    return ""
+
+
+def _humanize_android_package(package_id: str) -> str:
+    tail = (package_id or "").split(".")[-1].strip()
+    known = {
+        "clashofclans": "Clash of Clans",
+        "clashroyale": "Clash Royale",
+        "subwaysurf": "Subway Surf",
+        "subwaysurfers": "Subway Surfers",
+        "candycrushsaga": "Candy Crush Saga",
+        "freefiremax": "Free Fire Max",
+    }
+    key = re.sub(r"[^a-z0-9]+", "", tail.lower())
+    if key in known:
+        return known[key]
+    tail = re.sub(r"([a-z])([A-Z])", r"\1 \2", tail).replace("_", " ").replace("-", " ")
+    return " ".join(part.capitalize() for part in re.findall(r"[A-Za-z0-9]+", tail)) or package_id
+
+
+def _resolve_playstore_title(playstore_url: str, package_id: str) -> tuple[str, str]:
+    import requests
+    from bs4 import BeautifulSoup
+
+    normalized_url = playstore_url if playstore_url.startswith(("http://", "https://")) else (
+        f"https://play.google.com/store/apps/details?id={package_id}"
+    )
+    fallback = _humanize_android_package(package_id)
+    try:
+        response = requests.get(
+            normalized_url,
+            timeout=12,
+            headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/123 Safari/537.36"},
+        )
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text or "", "lxml")
+        candidates = []
+        for selector, attr in [
+            ('meta[property="og:title"]', "content"),
+            ('meta[name="twitter:title"]', "content"),
+            ("title", ""),
+            ("h1", ""),
+        ]:
+            node = soup.select_one(selector)
+            if not node:
+                continue
+            value = node.get(attr, "") if attr else node.get_text(" ", strip=True)
+            value = re.sub(r"\s*-\s*Apps on Google Play\s*$", "", str(value or ""), flags=re.I).strip()
+            if value and "google play" not in value.lower():
+                candidates.append(value)
+        if candidates:
+            return candidates[0], normalized_url
+    except Exception as exc:
+        log.warning("Playstore title resolution failed for %s: %s", normalized_url, exc)
+    return fallback, normalized_url
+
+
+def _build_apk_search_queries(app_name: str, package_id: str) -> list[str]:
+    variants = [
+        f"{app_name} mod apk",
+        f"{app_name} cracked apk",
+        f"{app_name} unlimited gems apk",
+        f"{package_id} mod apk",
+        f"{package_id} cracked",
+        f"{app_name} hack apk",
+        f"{app_name} apk mod download",
+    ]
+    seen: set[str] = set()
+    queries: list[str] = []
+    for query in variants:
+        clean_query = re.sub(r"\s+", " ", query).strip()
+        if clean_query and clean_query.lower() not in seen:
+            seen.add(clean_query.lower())
+            queries.append(clean_query)
+    return queries
+
+
+def _apk_slug(value: str) -> str:
+    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", str(value or "").lower())).strip("-")
+
+
+def _source_domain(url: str) -> str:
+    return urlparse(url or "").netloc.lower().replace("www.", "")
+
+
+def _matched_apk_keyword(*values: str) -> str:
+    haystack = " ".join(str(value or "") for value in values).lower()
+    for keyword in APK_SUSPICIOUS_KEYWORDS:
+        if keyword in haystack:
+            return keyword
+    if "mod" in haystack and "apk" in haystack:
+        return "mod apk"
+    if "hack" in haystack and "apk" in haystack:
+        return "hack apk"
+    return ""
+
+
+def _risk_for_apk_result(domain: str, keyword: str, title: str, snippet: str) -> str:
+    haystack = f"{title} {snippet}".lower()
+    if any(term in haystack for term in ("unlimited gems", "unlimited money", "premium unlocked", "hack apk", "hacked apk", "cracked apk")):
+        return "high"
+    if domain in APK_SUSPICIOUS_DOMAINS or keyword in {"mod apk", "apk mod", "modified version"}:
+        return "medium"
+    return "low"
+
+
+def _dedupe_apk_results(results: list[dict[str, Any]], limit: int = 25) -> list[dict[str, Any]]:
+    deduped: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in results:
+        url = str(item.get("url") or "").strip()
+        key = re.sub(r"[?#].*$", "", url).rstrip("/").lower() or str(item.get("title") or "").lower()
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        deduped.append(item)
+        if len(deduped) >= limit:
+            break
+    return deduped
+
+
+def _decode_bing_url(raw_url: str) -> str:
+    from urllib.parse import parse_qs
+
+    parsed = urlparse(raw_url or "")
+    if "bing.com" not in parsed.netloc:
+        return raw_url
+    encoded = parse_qs(parsed.query).get("u", [""])[0]
+    if encoded.startswith("a1"):
+        try:
+            payload = encoded[2:]
+            padding = "=" * (-len(payload) % 4)
+            return base64.urlsafe_b64decode((payload + padding).encode()).decode("utf-8", "ignore")
+        except Exception:
+            return raw_url
+    return raw_url
+
+
+async def _search_apk_local_intelligence(app_name: str, package_id: str, queries: list[str]) -> list[dict[str, Any]]:
+    regexes = [
+        re.compile(re.escape(app_name), re.I),
+        re.compile(re.escape(package_id), re.I),
+        re.compile(r"mod\s+apk|apk\s+mod|cracked\s+apk|hack(?:ed)?\s+apk|unlimited\s+gems|premium\s+unlocked", re.I),
+    ]
+    mongo_query = {
+        "$and": [
+            {"$or": [{"value": regexes[0]}, {"value": regexes[1]}, {"_id": regexes[1]}]},
+            {"value": regexes[2]},
+        ]
+    }
+    docs = await kv_col.find(mongo_query, {"_id": 1, "value": 1}).limit(20).to_list(length=20)
+    results: list[dict[str, Any]] = []
+    for doc in docs:
+        text = re.sub(r"\s+", " ", str(doc.get("value") or "")).strip()
+        url_match = re.search(r"https?://[^\s\"'<>]+", text)
+        url = url_match.group(0) if url_match else ""
+        keyword = _matched_apk_keyword(text, str(doc.get("_id") or ""))
+        if not keyword:
+            continue
+        domain = _source_domain(url) if url else "local intelligence"
+        title = text[:90] or str(doc.get("_id"))
+        results.append({
+            "title": title,
+            "url": url,
+            "sourceDomain": domain,
+            "matchedKeyword": keyword,
+            "riskLevel": _risk_for_apk_result(domain, keyword, title, text),
+            "snippet": text[:260] or f"Local intelligence record {doc.get('_id')}",
+            "package_id": package_id,
+            "app_name": app_name,
+            "source": "local-intel",
+            "network": "mongodb",
+        })
+    return results
+
+
+def _search_apk_web(app_name: str, package_id: str, queries: list[str]) -> tuple[list[dict[str, Any]], list[str]]:
+    import requests
+    from bs4 import BeautifulSoup
+
+    errors: list[str] = []
+    results: list[dict[str, Any]] = []
+    session = requests.Session()
+    session.headers.update({
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/123 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9",
+    })
+
+    for query in queries[:5]:
+        try:
+            response = session.get("https://www.bing.com/search", params={"q": query}, timeout=12)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text or "", "lxml")
+            for node in soup.select("li.b_algo")[:8]:
+                anchor = node.select_one("h2 a")
+                if not anchor:
+                    continue
+                title = anchor.get_text(" ", strip=True)
+                url = _decode_bing_url(anchor.get("href") or "")
+                snippet_node = node.select_one(".b_caption p")
+                snippet = snippet_node.get_text(" ", strip=True) if snippet_node else ""
+                domain = _source_domain(url)
+                keyword = _matched_apk_keyword(title, url, snippet, query)
+                if not keyword:
+                    continue
+                if domain not in APK_SUSPICIOUS_DOMAINS and "apk" not in f"{title} {url} {snippet}".lower():
+                    continue
+                results.append({
+                    "title": title,
+                    "url": url,
+                    "sourceDomain": domain,
+                    "matchedKeyword": keyword,
+                    "riskLevel": _risk_for_apk_result(domain, keyword, title, snippet),
+                    "snippet": snippet or f"Search result matched query: {query}",
+                    "package_id": package_id,
+                    "app_name": app_name,
+                    "source": domain or "web-search",
+                    "network": "clearnet",
+                })
+        except Exception as exc:
+            errors.append(f"Bing search failed for '{query}': {exc}")
+    return results, errors
+
+
+def _known_apk_mirror_candidates(app_name: str, package_id: str) -> list[dict[str, Any]]:
+    slug = _apk_slug(app_name)
+    package_slug = _apk_slug(package_id)
+    candidates = [
+        ("HappyMod", f"https://www.happymod.com/{slug}-mod/{package_id}/", "mod apk"),
+        ("APKCombo", f"https://apkcombo.com/{slug}/{package_id}/", "free download apk"),
+        ("APKPure", f"https://apkpure.com/{slug}/{package_id}", "free download apk"),
+        ("MODYOLO", f"https://modyolo.com/{slug}.html", "mod apk"),
+        ("LiteAPKs", f"https://liteapks.com/{slug}.html", "apk mod"),
+        ("APKDone", f"https://apkdone.com/{slug}-mod/", "mod apk"),
+        ("RevDL/RexDL", f"https://rexdl.com/android/{slug}-apk.html/", "apk mod"),
+    ]
+    results = []
+    for source, url, keyword in candidates:
+        domain = _source_domain(url)
+        title = f"{app_name} {keyword}"
+        results.append({
+            "title": title,
+            "url": url,
+            "sourceDomain": domain,
+            "matchedKeyword": keyword,
+            "riskLevel": _risk_for_apk_result(domain, keyword, title, source),
+            "snippet": (
+                f"Known third-party APK mirror pattern for package {package_id}. "
+                "Open the page to verify availability and treat downloads as suspicious."
+            ),
+            "package_id": package_id,
+            "app_name": app_name,
+            "source": source,
+            "network": "clearnet",
+        })
+    if package_slug and package_slug != slug:
+        results.append({
+            "title": f"{package_id} mod apk",
+            "url": f"https://apkcombo.com/{package_slug}/{package_id}/",
+            "sourceDomain": "apkcombo.com",
+            "matchedKeyword": "mod apk",
+            "riskLevel": "medium",
+            "snippet": f"Package-ID based APK mirror candidate for {package_id}.",
+            "package_id": package_id,
+            "app_name": app_name,
+            "source": "APKCombo",
+            "network": "clearnet",
+        })
+    return results
+
+
+async def _collect_apk_reference_results(playstore_url: str) -> dict[str, Any]:
+    package_id = _extract_playstore_package_id(playstore_url)
+    if not package_id:
+        raise HTTPException(status_code=400, detail="Play Store URL must include an id= Android package parameter")
+
+    app_name, normalized_url = await asyncio.to_thread(_resolve_playstore_title, playstore_url, package_id)
+    queries = _build_apk_search_queries(app_name, package_id)
+    log.info("APK reference scan parsed package=%s app=%s queries=%s", package_id, app_name, queries)
+
+    local_results = await _search_apk_local_intelligence(app_name, package_id, queries)
+    web_results, search_errors = await asyncio.to_thread(_search_apk_web, app_name, package_id, queries)
+    candidate_results = _known_apk_mirror_candidates(app_name, package_id)
+    results = _dedupe_apk_results(local_results + web_results + candidate_results)
+
+    return {
+        "package_id": package_id,
+        "app_name": app_name,
+        "playstore_url": normalized_url,
+        "queries": queries,
+        "results": results,
+        "search_errors": search_errors,
+        "sources": {
+            "local_intelligence": len(local_results),
+            "web_search": len(web_results),
+            "known_mirror_candidates": len(candidate_results),
+        },
+    }
+
 
 async def _collect_apk_scan_results(playstore_url: str, proxy_url: Optional[str] = None, attempts: int = 2):
+    import asyncio
+
     from api_collector.scripts._apk_mod import _apk_mod
     from playwright.async_api import async_playwright
 
@@ -4233,8 +5190,9 @@ async def _collect_apk_scan_results(playstore_url: str, proxy_url: Optional[str]
                 browser = await p.chromium.launch(**browser_kwargs)
                 context = await browser.new_context(ignore_https_errors=True)
                 try:
-                    result = await scraper.parse_leak_data(
-                        query={"playstore": playstore_url}, context=context
+                    result = await asyncio.wait_for(
+                        scraper.parse_leak_data(query={"playstore": playstore_url}, context=context),
+                        timeout=25,
                     )
                 finally:
                     await browser.close()
@@ -4287,18 +5245,49 @@ async def apk_scan(request: Request):
     log.info(f"APK scan requested for: {playstore_url}")
 
     try:
-        results = await _collect_apk_scan_results(playstore_url, attempts=2)
+        scan = await _collect_apk_reference_results(playstore_url)
+        results = scan["results"]
 
         doc = {
             "query": playstore_url,
+            "playstore_url": scan["playstore_url"],
+            "package_id": scan["package_id"],
+            "app_name": scan["app_name"],
+            "queries": scan["queries"],
+            "sources": scan["sources"],
+            "search_errors": scan["search_errors"],
             "results": results,
             "count": len(results),
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
         await apk_col.insert_one(doc)
 
-        log.info(f"APK scan complete: {len(results)} items for {playstore_url}")
-        return {"status": "ok", "query": playstore_url, "count": len(results), "results": results}
+        log.info(
+            "APK scan complete: %s items for package=%s app=%s sources=%s errors=%s",
+            len(results),
+            scan["package_id"],
+            scan["app_name"],
+            scan["sources"],
+            len(scan["search_errors"]),
+        )
+        message = (
+            f"Searched {scan['package_id']} ({scan['app_name']}) across web and intelligence sources."
+            if results else
+            f"No cracked/modded references found for {scan['package_id']} ({scan['app_name']})."
+        )
+        return {
+            "status": "ok",
+            "query": playstore_url,
+            "playstore_url": scan["playstore_url"],
+            "package_id": scan["package_id"],
+            "app_name": scan["app_name"],
+            "queries": scan["queries"],
+            "sources": scan["sources"],
+            "search_errors": scan["search_errors"],
+            "count": len(results),
+            "results": results,
+            "message": message,
+        }
 
     except Exception as e:
         log.error(f"APK scan failed: {e}", exc_info=True)
@@ -4954,10 +5943,19 @@ async def analyze_seo(url: str):
         log.info(f"SEO analysis requested for: {url}")
         
         loop = asyncio.get_running_loop()
+        use_pagespeed = os.getenv("USE_PAGESPEED_SEO", "").lower() in {"1", "true", "yes"}
         pagespeed_key = cfg.pagespeed_api_key or os.environ.get("PAGESPEED_API_KEY", "")
-        data = await loop.run_in_executor(None, pagespeed_seo, url, pagespeed_key)
-        scan_source = "pagespeed"
-        scan_message = ""
+        scan_source = "local_fallback"
+        scan_message = "DarkPulse used the fast local SEO audit so the scanner stays responsive."
+        if use_pagespeed and pagespeed_key:
+            data = await asyncio.wait_for(
+                loop.run_in_executor(None, pagespeed_seo, url, pagespeed_key),
+                timeout=12,
+            )
+            scan_source = "pagespeed"
+            scan_message = ""
+        else:
+            data = await loop.run_in_executor(None, _local_seo_audit, url)
         
         if "error" in data:
             error_message = str(data.get("error") or "")
@@ -4989,8 +5987,9 @@ async def analyze_seo(url: str):
             if audit.get("score") != 1 and audit.get("title")
         ]
 
+        use_gemini = os.getenv("USE_GEMINI_SEO", "").lower() in {"1", "true", "yes"}
         gemini_key = cfg.gemini_api_key or os.environ.get("GEMINI_API_KEY", "")
-        if gemini_key and failing_audits:
+        if use_gemini and gemini_key and failing_audits:
             try:
                 from google import genai
                 from google.genai import types
@@ -5065,30 +6064,156 @@ async def analyze_seo(url: str):
 @app.post("/playstore/scan")
 async def playstore_scan(req: PlaystoreRequest):
     """
-    Search Playstore URL for cracked/modded versions using _apk_mod.
+    Search Playstore URL for cracked/modded third-party APK references.
     """
     try:
         import time
 
         log.info(f"Playstore scan requested for: {req.url}")
 
-        results = await _collect_apk_scan_results(
-            req.url,
-            proxy_url=cfg.tor_proxy_url or None,
-            attempts=2,
-        )
+        scan = await _collect_apk_reference_results(req.url)
+        results = scan["results"]
 
         return {
             "status": "ok",
             "query": req.url,
+            "playstore_url": scan["playstore_url"],
+            "package_id": scan["package_id"],
+            "app_name": scan["app_name"],
+            "queries": scan["queries"],
+            "sources": scan["sources"],
+            "search_errors": scan["search_errors"],
             "count": len(results),
             "results": results,
+            "message": f"Searched {scan['package_id']} ({scan['app_name']}) across web and intelligence sources.",
             "timestamp": time.strftime("%B %d, %Y")
         }
 
     except Exception as e:
         log.error(f"Playstore scan failed: {e}")
         return {"status": "error", "message": f"Scan failed: {str(e)}"}
+
+
+def _parse_github_repo_url(repo_url: str) -> tuple[str, str, str] | None:
+    text = str(repo_url or "").strip()
+    if not text:
+        return None
+
+    if re.fullmatch(r"[\w.-]+/[\w.-]+", text):
+        owner, repo = text.split("/", 1)
+        repo = repo.removesuffix(".git")
+        return owner, repo, f"https://github.com/{owner}/{repo}"
+
+    parsed = urlparse(text if "://" in text else f"https://{text}")
+    host = parsed.netloc.lower().replace("www.", "")
+    if host != "github.com":
+        return None
+
+    parts = [unquote(part) for part in parsed.path.strip("/").split("/") if part]
+    if len(parts) < 2:
+        return None
+    owner, repo = parts[0], parts[1].removesuffix(".git")
+    if not owner or not repo:
+        return None
+    return owner, repo, f"https://github.com/{owner}/{repo}"
+
+
+def _github_api_headers(token: str) -> dict[str, str]:
+    return {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "DarkPulse-Repository-Scanner",
+    }
+
+
+def _github_api_get(path: str, token: str, *, timeout: int = 20) -> tuple[int, dict[str, Any], dict[str, str]]:
+    import requests
+
+    response = requests.get(
+        f"https://api.github.com{path}",
+        headers=_github_api_headers(token),
+        timeout=timeout,
+    )
+    try:
+        payload = response.json()
+    except ValueError:
+        payload = {"message": response.text.strip()}
+    return response.status_code, payload, dict(response.headers)
+
+
+def _github_error_message(status_code: int, payload: dict[str, Any], headers: dict[str, str]) -> str:
+    message = str(payload.get("message") or "").lower()
+    remaining = headers.get("x-ratelimit-remaining")
+    if status_code == 401 or "bad credentials" in message:
+        return "GitHub token is invalid or expired. Please update GITHUB_TOKEN in .env and restart the server."
+    if status_code == 403 and remaining == "0":
+        return "GitHub API rate limit reached. Try again later or use a valid token."
+    if status_code == 403:
+        return "GitHub token does not have permission to access this repository or API endpoint."
+    if status_code == 404:
+        return "Repository is private or not accessible with the current token."
+    return f"GitHub API request failed with status {status_code}: {payload.get('message') or 'Unknown error'}"
+
+
+async def _inspect_github_repository(owner: str, repo: str, token: str) -> dict[str, Any]:
+    loop = asyncio.get_running_loop()
+    repo_path = f"/repos/{owner}/{repo}"
+    status_code, repo_payload, headers = await loop.run_in_executor(
+        None,
+        lambda: _github_api_get(repo_path, token),
+    )
+    log.info("GitHub API repo status for %s/%s: %s", owner, repo, status_code)
+    if status_code != 200:
+        raise ValueError(_github_error_message(status_code, repo_payload, headers))
+
+    default_branch = str(repo_payload.get("default_branch") or "HEAD")
+    contents_to_check = [
+        "package.json",
+        "package-lock.json",
+        "requirements.txt",
+        "Dockerfile",
+        "docker-compose.yml",
+        ".env.example",
+        ".github/workflows",
+    ]
+    discovered_files: list[str] = []
+    inaccessible_paths: list[str] = []
+
+    async def check_content_path(path: str) -> tuple[str, int, Any]:
+        api_path = f"/repos/{owner}/{repo}/contents/{quote(path)}?ref={quote(default_branch)}"
+        status, payload, _headers = await loop.run_in_executor(
+            None,
+            lambda api_path=api_path: _github_api_get(api_path, token, timeout=12),
+        )
+        log.info("GitHub API content status for %s/%s %s: %s", owner, repo, path, status)
+        return path, status, payload
+
+    for path, status, payload in await asyncio.gather(*(check_content_path(path) for path in contents_to_check)):
+        if status == 200:
+            if isinstance(payload, list):
+                discovered_files.extend(item.get("path", path) for item in payload if isinstance(item, dict))
+            else:
+                discovered_files.append(str(payload.get("path") or path))
+        elif status not in (404,):
+            inaccessible_paths.append(f"{path}: {status}")
+
+    return {
+        "owner": owner,
+        "repo": repo,
+        "full_name": repo_payload.get("full_name") or f"{owner}/{repo}",
+        "html_url": repo_payload.get("html_url") or f"https://github.com/{owner}/{repo}",
+        "default_branch": default_branch,
+        "private": bool(repo_payload.get("private")),
+        "archived": bool(repo_payload.get("archived")),
+        "pushed_at": repo_payload.get("pushed_at"),
+        "language": repo_payload.get("language"),
+        "open_issues_count": repo_payload.get("open_issues_count", 0),
+        "discovered_files": sorted(set(discovered_files))[:20],
+        "inaccessible_paths": inaccessible_paths[:10],
+    }
+
+
 @app.post("/scan/repo")
 async def scan_repo(request: Request):
     """
@@ -5097,30 +6222,92 @@ async def scan_repo(request: Request):
     try:
         from api_collector.scripts.github_trivy_checker import github_trivy_checker
         import time
-        import asyncio
 
         body = await request.json()
-        repo_url = body.get("url", "").strip()
-        git_token = body.get("token", "").strip() or body.get("git_token", "").strip()
+        repo_url = str(body.get("url", "")).strip()
+        git_token = (
+            str(body.get("token", "")).strip()
+            or str(body.get("git_token", "")).strip()
+            or cfg.github_token
+            or os.environ.get("GITHUB_TOKEN", "")
+        ).strip()
         
         if not repo_url:
             raise HTTPException(status_code=400, detail="Repository URL is required")
 
-        log.info(f"Repository scan requested for: {repo_url} (Token provided: {'Yes' if git_token else 'No'})")
+        parsed_repo = _parse_github_repo_url(repo_url)
+        if not parsed_repo:
+            return {"status": "error", "message": "Please enter a valid GitHub repository URL."}
+
+        owner, repo, normalized_repo_url = parsed_repo
+        log.info("Repository scan requested for URL=%s owner=%s repo=%s", repo_url, owner, repo)
+
+        if not git_token:
+            log.warning("Repository scan cannot start: GITHUB_TOKEN is missing")
+            return {
+                "status": "error",
+                "message": "GitHub token is missing. Please set GITHUB_TOKEN in .env and restart the server.",
+            }
+
+        cached_scan = await github_col.find_one(
+            {
+                "scanner": "scan_repo",
+                "query": normalized_repo_url,
+                "created_at": {"$gte": datetime.now(timezone.utc) - timedelta(hours=6)},
+            },
+            sort=[("created_at", -1)],
+        )
+        if cached_scan and isinstance(cached_scan.get("response"), dict):
+            cached_response = dict(cached_scan["response"])
+            cached_response["cached"] = True
+            cached_summary = dict(cached_response.get("summary") or {})
+            cached_summary["scan_status"] = "cached"
+            cached_summary["note"] = (
+                cached_summary.get("note")
+                or "Repository analysis loaded from the recent local scan cache."
+            )
+            cached_response["summary"] = cached_summary
+            log.info("Repository scan cache hit for %s/%s", owner, repo)
+            return cached_response
+
+        try:
+            github_meta = await asyncio.wait_for(
+                _inspect_github_repository(owner, repo, git_token),
+                timeout=45,
+            )
+        except asyncio.TimeoutError:
+            log.error("GitHub API validation timed out for %s/%s", owner, repo)
+            return {"status": "error", "message": "GitHub API request timed out. Try again later."}
+        except ValueError as exc:
+            log.error("GitHub API validation failed for %s/%s: %s", owner, repo, exc)
+            return {"status": "error", "message": str(exc)}
         
         scanner = github_trivy_checker()
         
         # run the scan
         scan_query = {
-            "github": repo_url,
-            "timeout": 900,
+            "github": normalized_repo_url,
+            "git_token": git_token,
+            "timeout": 55,
             "print_details": False,
             "keep_workdir": False,
         }
-        if git_token:
-            scan_query["git_token"] = git_token
 
-        result = await scanner.parse_leak_data(query=scan_query, context=None)
+        try:
+            loop = asyncio.get_running_loop()
+            result = await asyncio.wait_for(
+                loop.run_in_executor(
+                    None,
+                    lambda: asyncio.run(scanner.parse_leak_data(query=scan_query, context=None)),
+                ),
+                timeout=65,
+            )
+        except asyncio.TimeoutError:
+            log.error("Repository scan timed out for %s/%s", owner, repo)
+            return {
+                "status": "error",
+                "message": "Repository scan timed out. Try a smaller repository or run again later.",
+            }
         
         # The result of parse_leak_data is an apk_data_model
         raw_data = getattr(result, "raw_data", {}) or {}
@@ -5130,9 +6317,12 @@ async def scan_repo(request: Request):
             err_msg = raw_data.get("error")
             if err_msg == "git clone failed":
                 stderr = str(raw_data.get("stderr") or "")
-                if "could not read Username" in stderr or "Authentication failed" in stderr or "Repository not found" in stderr:
-                    err_msg = "GitHub repository is not accessible. Check that the repo URL is correct and public, or provide a GitHub token for a private repository."
-            log.error(f"Scanner internal error: {err_msg}")
+                stderr_lower = stderr.lower()
+                if "authentication failed" in stderr_lower or "bad credentials" in stderr_lower:
+                    err_msg = "GitHub token is invalid or expired. Please update GITHUB_TOKEN in .env and restart the server."
+                elif "could not read Username" in stderr or "Repository not found" in stderr:
+                    err_msg = "Repository is private or not accessible with the current token."
+            log.error("Scanner internal error for %s/%s: %s", owner, repo, err_msg)
             return {"status": "error", "message": f"Scan failed: {err_msg}"}
 
         # Flatten Results from Trivy (Targets -> Findings)
@@ -5181,12 +6371,30 @@ async def scan_repo(request: Request):
                 })
 
         summary_data = raw_data.get("DarkpulseSummary", {}) or {}
-        repo_path = (urlparse(repo_url).path or "").strip("/")
+        repo_path = f"{owner}/{repo}"
+        coverage = summary_data.get("coverage", {}) or {}
+        coverage["github_api"] = {
+            "default_branch": github_meta.get("default_branch"),
+            "discovered_files": github_meta.get("discovered_files", []),
+            "open_issues_count": github_meta.get("open_issues_count", 0),
+            "language": github_meta.get("language"),
+        }
+        summary_data["coverage"] = coverage
         
         # Prepare final response formatted for the UI
-        return {
+        log.info(
+            "Repository scan completed for %s/%s: vulns=%s secrets=%s misconfigs=%s grade=%s",
+            owner,
+            repo,
+            len(vulnerabilities),
+            len(secrets),
+            len(misconfigs),
+            summary_data.get("grade", "A"),
+        )
+        response_payload = {
             "status": "ok",
-            "query": repo_url,
+            "query": normalized_repo_url,
+            "repository": github_meta,
             "summary": {
                 "grade": summary_data.get("grade", "A"),
                 "risk_score": summary_data.get("risk_score", 0),
@@ -5196,8 +6404,8 @@ async def scan_repo(request: Request):
                 "note": summary_data.get("note", "Repository analysis complete."),
                 "coverage": summary_data.get("coverage", {}),
                 "recommendations": summary_data.get("recommendations", []),
-                "host": urlparse(repo_url).hostname or "github.com",
-                "repo_name": repo_path or (urlparse(repo_url).hostname or "github.com"),
+                "host": "github.com",
+                "repo_name": repo_path,
                 "port": "443",
                 "scanned_by": "DarkPulse / Trivy"
             },
@@ -5207,6 +6415,15 @@ async def scan_repo(request: Request):
             "results": vulnerabilities + secrets + misconfigs, # fallback
             "timestamp": time.strftime("%B %d, %Y")
         }
+        await github_col.insert_one({
+            "scanner": "scan_repo",
+            "query": normalized_repo_url,
+            "owner": owner,
+            "repo": repo,
+            "created_at": datetime.now(timezone.utc),
+            "response": response_payload,
+        })
+        return response_payload
 
     except Exception as e:
         log.error(f"Repository scan failed: {e}", exc_info=True)
@@ -5214,7 +6431,11 @@ async def scan_repo(request: Request):
 
 
 async def _sync_credential_datasets(force: bool = False) -> dict[str, Any]:
-    from api_collector.stealer_log_scan import build_documents_from_file, discover_credential_files
+    from api_collector.stealer_log_scan import (
+        CREDENTIAL_DOCUMENT_SCHEMA_VERSION,
+        build_documents_from_file,
+        discover_credential_files,
+    )
 
     dataset_paths = await asyncio.to_thread(discover_credential_files)
     dataset_path_strings = {str(path.resolve()) for path in dataset_paths}
@@ -5240,9 +6461,20 @@ async def _sync_credential_datasets(force: bool = False) -> dict[str, Any]:
 
         should_sync = force or not existing
         if existing and not force:
+            stale_redacted_docs = await credential_exposures_col.count_documents({
+                "dataset_path": resolved_path,
+                "$or": [
+                    {"password": {"$regex": r"\[redacted_", "$options": "i"}},
+                    {"raw_trace": {"$regex": r"\[redacted_", "$options": "i"}},
+                    {"credential_identifier": {"$regex": r"\[redacted_", "$options": "i"}},
+                    {"email_username": {"$regex": r"\[redacted_", "$options": "i"}},
+                ],
+            })
             should_sync = (
                 existing.get("mtime_ns") != stat.st_mtime_ns
                 or existing.get("size_bytes") != stat.st_size
+                or existing.get("schema_version") != CREDENTIAL_DOCUMENT_SCHEMA_VERSION
+                or stale_redacted_docs > 0
             )
 
         if should_sync:
@@ -5259,6 +6491,7 @@ async def _sync_credential_datasets(force: bool = False) -> dict[str, Any]:
                     "path": resolved_path,
                     "size_bytes": stat.st_size,
                     "mtime_ns": stat.st_mtime_ns,
+                    "schema_version": CREDENTIAL_DOCUMENT_SCHEMA_VERSION,
                     "modified_at": datetime.utcfromtimestamp(stat.st_mtime).isoformat() + "Z",
                     "records_count": len(docs),
                     "synced_at": datetime.utcnow().isoformat() + "Z",

@@ -1,379 +1,117 @@
-const DEFAULT_API_BASE = window.location.origin && window.location.origin !== "null"
-  ? window.location.origin
-  : "http://localhost:8200";
+import {
+  API_BASE_KEY,
+  AUTH_NOTICE_KEY,
+  AUTH_PROGRESS_TICK_MS,
+  DEFAULT_API_BASE,
+  FEED_PREFETCH_DELAY_MS,
+  FEED_PREFETCH_VIEWS,
+  FEED_SNAPSHOT_TTL_MS,
+  HEALING_CACHE_KEY,
+  MAP_LIVE_REFRESH_MS,
+  MAP_SPOTLIGHT_MS,
+  MIN_GLOBAL_SEARCH_LENGTH,
+  PAGE_SIZE,
+  PAGINATION_WINDOW,
+  REFRESH_MS,
+  SEARCH_DEBOUNCE_MS,
+  SEMANTIC_CACHE_TTL_MS,
+  SMART_UPDATE_POLL_MS,
+  SMART_UPDATE_SOURCE_LABELS,
+  STORAGE_KEY,
+  TAB_SOURCE_MAP,
+  TOKEN_KEY,
+  TOOL_VIEWS,
+  TRANSLATABLE_SELECTORS,
+  TRANSLATION_LABEL_KEY,
+  TRANSLATION_LANGUAGE_KEY,
+  TRANSLATION_OPTIONS,
+  USER_NAME_KEY,
+  USER_ROLE_KEY,
+  VIEW_META
+} from "../core/config.js";
+import { state } from "../state/appState.js";
+import {
+  $,
+  buildFeedSnapshotKey,
+  buildFeedSnapshotKeyFor,
+  currentSourceType,
+  debounce,
+  escapeHtml,
+  firstNonEmpty,
+  formatDate,
+  formatExportTimestamp,
+  formatExportValue,
+  formatShortDate,
+  getBlankFeedFilters,
+  getTranslationLabel,
+  hostFromValue,
+  humanViewName,
+  normalizeFeedFilters,
+  normalizePreviewText,
+  shouldTranslateText,
+  sleep,
+  slugifyFilename
+} from "../utils/index.js";
+import {
+  exportPayloadAsJson,
+  exportPayloadAsPdf,
+  renderExportCards,
+  renderExportFields,
+  renderExportSection
+} from "../services/exportService.js";
+import { apiFetch, getBase, getToken } from "../services/apiClient.js";
+import { createAuthLoadingModule } from "../features/auth/authLoading.js";
+import { createHealingMonitorModule } from "../features/healing/healingMonitor.js";
+import { createSessionBootstrapModule } from "../features/session/sessionBootstrap.js";
+import { createAuthManager } from "../features/auth/authManager.js";
+import { createAuthUIModule, attachAuthUIHandlers } from "../features/auth/authUI.js";
+import { createHeaderSearchModule, attachHeaderSearchHandlers } from "../features/search/headerSearch.js";
+import { attachSettingsHandlers } from "../components/settings/settingsUI.js";
+import { attachUIDelegates } from "../components/delegates/uiDelegates.js";
+import { createHeaderSearchUIModule } from "../features/search/headerSearchUI.js";
 
-const STORAGE_KEY = "darkpulse_api_key";
-const TOKEN_KEY = "darkpulse_token";
-const USER_ROLE_KEY = "darkpulse_role";
-const USER_NAME_KEY = "darkpulse_name";
-const API_BASE_KEY = "darkpulse_base";
-const AUTH_NOTICE_KEY = "darkpulse_auth_notice";
-const PAGE_SIZE = 30;
-const PAGINATION_WINDOW = 5;
-const REFRESH_MS = 2 * 60 * 1000;
-const SMART_UPDATE_POLL_MS = 5 * 1000;
-const MAP_LIVE_REFRESH_MS = 15 * 1000;
-const MAP_SPOTLIGHT_MS = 2200;
-const SEARCH_DEBOUNCE_MS = 550;
-const AUTH_PROGRESS_TICK_MS = 140;
-const MIN_GLOBAL_SEARCH_LENGTH = 2;
-const FEED_SNAPSHOT_TTL_MS = 90 * 1000;
-const FEED_PREFETCH_DELAY_MS = 120;
-const SEMANTIC_CACHE_TTL_MS = 60 * 1000;
-const TRANSLATION_LANGUAGE_KEY = "darkpulse_translation_language";
-const TRANSLATION_LABEL_KEY = "darkpulse_translation_label";
-const HEALING_CACHE_KEY = "darkpulse_healing_cache";
+const authLoading = createAuthLoadingModule({
+  state,
+  $,
+  sleep,
+  AUTH_PROGRESS_TICK_MS
+});
 
-const TRANSLATION_OPTIONS = [
-  { code: "en", label: "English" },
-  { code: "ur", label: "Urdu" },
-  { code: "ar", label: "Arabic" },
-  { code: "es", label: "Spanish" },
-  { code: "fr", label: "French" },
-  { code: "de", label: "German" },
-  { code: "tr", label: "Turkish" },
-  { code: "ru", label: "Russian" },
-  { code: "hi", label: "Hindi" },
-  { code: "pt", label: "Portuguese" },
-  { code: "it", label: "Italian" },
-  { code: "ja", label: "Japanese" },
-  { code: "zh-CN", label: "Chinese (Simplified)" }
-];
+const healingMonitor = createHealingMonitorModule({
+  state,
+  $,
+  apiFetch,
+  formatDate,
+  hostFromValue,
+  escapeHtml,
+  HEALING_CACHE_KEY,
+  maybeApplyActiveTranslation,
+  showToast
+});
 
-const TRANSLATABLE_SELECTORS = [
-  ".view-title",
-  ".view-subtitle",
-  ".section-title",
-  ".section-copy",
-  ".feed-summary",
-  ".badge-outline",
-  ".grade-label",
-  ".intel-notification-title",
-  ".intel-notification-message",
-  ".country-name",
-  ".compact-title",
-  ".compact-meta",
-  ".card-title",
-  ".card-desc",
-  ".card-summary-title",
-  ".card-summary-text",
-  ".identity-pill",
-  ".identity-field-label",
-  ".identity-name",
-  ".identity-meta-line",
-  ".identity-address",
-  ".mini-card-label",
-  ".result-card-title",
-  ".result-card-desc",
-  ".result-card-field-label",
-  ".result-card-field-value",
-  ".result-card-note-label",
-  ".result-card-note-copy",
-  ".software-summary-title strong",
-  ".field-label",
-  ".field-value",
-  ".seo-report-subtitle",
-  ".suggestions-title",
-  ".suggestions-note",
-  ".suggestions-body li",
-  ".repo-clean-title",
-  ".repo-clean-copy",
-  ".repo-finding-title",
-  ".repo-finding-desc",
-  ".credential-section-title",
-  ".credential-detail-label",
-  ".credential-detail-value",
-  ".credential-tag-chip",
-  ".credential-empty-copy",
-  ".modal-title",
-  ".modal-section label",
-  ".fact-label",
-  ".modal-summary",
-  ".modal-ai-summary",
-  ".entity-tag",
-  ".summary-source-title",
-  ".summary-source-empty",
-  ".summary-empty",
-  ".summary-highlight-title"
-  ,
-  ".healing-toolbar-title",
-  ".healing-toolbar-note",
-  ".healing-explainer-title",
-  ".healing-explainer-copy",
-  ".healing-step-title",
-  ".healing-step-copy",
-  ".healing-explainer-note",
-  ".healing-pill-label",
-  ".healing-change-list li",
-  ".healing-suggestion-list li",
-  ".healing-empty-copy",
-  ".docs-title",
-  ".docs-copy",
-  ".docs-card strong",
-  ".docs-card p",
-  ".docs-list li",
-  ".docs-note",
-  ".auth-panel-copy",
-  ".auth-guide-step p"
-].join(",");
-
-const TAB_SOURCE_MAP = {
-  all: "all",
-  news: "news",
-  leak: "leak",
-  defacement: "defacement",
-  social: "social",
-  exploit: "exploit",
-  api: "api",
-  forums: "social",
-  marketplaces: "leak",
-  github: "api",
-  apk: "api"
-};
-
-const VIEW_META = {
-  homepage: {
-    title: "Command Center",
-    subtitle: "Leaks and defacement activity are highlighted in red with restored MongoDB data behind the feed."
-  },
-  all: {
-    title: "Live Feed",
-    subtitle: "Every restored DarkPulse record across news, leaks, defacement, exploits, social, and API outputs."
-  },
-  news: {
-    title: "News Feed",
-    subtitle: "Security reporting and advisories with author data and raw JSON preserved."
-  },
-  leak: {
-    title: "Leak Feed",
-    subtitle: "Breach tracking, dumps, and disclosure activity with full record details."
-  },
-  defacement: {
-    title: "Defacement Feed",
-    subtitle: "Affected targets, attacker context, infrastructure hints, and raw record payloads."
-  },
-  exploit: {
-    title: "Exploit Feed",
-    subtitle: "Exploit publications, weaponization notes, and supporting metadata."
-  },
-  social: {
-    title: "Social Monitoring",
-    subtitle: "Forum and channel collection with actor, team, and linked source context."
-  },
-  api: {
-    title: "API and Scanner Output",
-    subtitle: "Collected API records and scanner artifacts from the restored database."
-  },
-  playstore: {
-    title: "Playstore Scanner",
-    subtitle: "Search for cracked/modded versions of Android apps."
-  },
-  software: {
-    title: "PC Game Scan",
-    subtitle: "Search for PC games and mods"
-  },
-  "repo-scan": {
-    title: "Repository Scan",
-    subtitle: "GitHub vulnerability analysis"
-  },
-  healing: {
-    title: "Healing Monitor",
-    subtitle: "HTML drift detection, selector health checks, and self-healing visibility across collector scripts."
-  },
-  "leak-source-status": {
-    title: "Leak Source Status",
-    subtitle: "Track every leak script, its MongoDB footprint, and what is already visible on localhost."
-  },
-  docs: {
-    title: "Documentation",
-    subtitle: "Feature guides, operator workflows, search behavior, auth flows, and system notes."
-  },
-  pakdb: {
-    title: "PakDB Lookup",
-    subtitle: "Search entity and phone data live from the connected backend."
-  },
-  "credential-checker": {
-    title: "Credential Checker",
-    subtitle: "Review redacted exposure matches from locally saved stealer-log JSON files."
-  },
-  "confidential-data": {
-    title: "Confidential Data",
-    subtitle: "Guarded review for sensitive document evidence with a withheld in-app preview."
-  },
-  "admin-users": {
-    title: "User Management",
-    subtitle: "Approve, reject, and review dashboard access."
-  }
-};
-
-const TOOL_VIEWS = ["admin-users", "pakdb", "credential-checker", "confidential-data", "seo", "playstore", "software", "repo-scan", "healing", "leak-source-status", "docs", "account"];
-const FEED_PREFETCH_VIEWS = ["all", "news", "leak", "defacement", "exploit", "social", "api"];
-
-const SMART_UPDATE_SOURCE_LABELS = {
-  news: "Security Feeds",
-  leaks: "Ransomware Leaks",
-  social: "Social Monitoring",
-  defacement: "Defacement Tracking"
-};
-
-const state = {
-  activeTab: "all",
-  currentView: "homepage",
-  offset: 0,
-  total: 0,
-  feedPage: 1,
-  feedSnapshots: new Map(),
-  feedPrefetchPromises: new Map(),
-  feedWarmupPromise: null,
-  semanticGuideCache: new Map(),
-  paginatedResults: {
-    pakdb: { items: [], page: 1 },
-    playstore: { items: [], page: 1 },
-    software: { items: [], page: 1 }
-  },
-  credentialPager: {
-    query: "",
-    page: 1,
-    totalPages: 0,
-    totalItems: 0
-  },
-  leakSourceStatus: {
-    items: [],
-    summary: {}
-  },
-  healingMonitor: {
-    summary: {},
-    collectors: [],
-    scripts: [],
-    events: [],
-    selectedScriptId: "",
-    scriptDetail: null
-  },
-  feedFilters: {
-    startDate: "",
-    endDate: "",
-    topic: ""
-  },
-  feedAbortController: null,
-  isRegistering: false,
-  authStage: "login",
-  authChallengeToken: "",
-  authChallengeType: "",
-  authPendingUsername: "",
-  authPendingRole: "",
-  authQrCodeUrl: "",
-  authManualSecret: "",
-  authLoadingActive: false,
-  authLoadingProgress: 0,
-  authLoadingCap: 0,
-  authLoadingTimer: null,
-  semanticSearch: null,
-  refreshTimer: null,
-  smartUpdateTimer: null,
-  mapRefreshTimer: null,
-  mapSpotlightTimer: null,
-  mapSpotlightIndex: 0,
-  mapSpotlightCode: "",
-  mapSpotlightCountries: [],
-  mapInstance: null,
-  detailCache: new Map(),
-  countryStatsByCode: {},
-  smartUpdatePayload: null,
-  smartUpdateJobId: "",
-  smartUpdateStatus: "idle",
-  headerSearchBusy: false,
-  mediaLightboxSrc: "",
-  mediaLightboxTitle: "",
-  currentDetailItem: null,
-  scanExports: {
-    pakdb: { query: "", items: [] },
-    credential: null,
-    playstore: { query: "", items: [] },
-    software: { query: "", items: [] },
-    seo: null,
-    repo: null
-  },
-  translationLanguage: localStorage.getItem(TRANSLATION_LANGUAGE_KEY) || "en",
-  translationLabel: localStorage.getItem(TRANSLATION_LABEL_KEY) || "English",
-  translationScope: "view",
-  translationCache: new Map()
-};
+const sessionBootstrap = createSessionBootstrapModule({
+  state,
+  $,
+  showToast,
+  checkHealth,
+  pollSmartUpdateStatus,
+  switchView,
+  scheduleRefresh,
+  setLastUpdated,
+  applyAuthenticatedIdentity,
+  advanceAuthLoading: authLoading.advanceAuthLoading,
+  hideAuthLoading: authLoading.hideAuthLoading
+});
 
 const scanReportTemplates = {};
 
-const $ = id => document.getElementById(id);
-
-function debounce(fn, wait) {
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn(...args), wait);
-  };
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  }[char]));
-}
-
-function normalizePreviewText(value, fallback = "") {
-  const raw = String(value ?? fallback ?? "").replace(/\r/g, "\n");
-  if (!raw.trim()) return String(fallback || "").trim();
-  const lines = raw
-    .split("\n")
-    .map(line => line.replace(/\s+/g, " ").trim())
-    .filter(Boolean)
-    .filter(line => {
-      const compact = line.replace(/\s+/g, "");
-      if (!compact) return false;
-      const alphaCount = (compact.match(/[A-Za-z0-9]/g) || []).length;
-      return compact.length < 12 || alphaCount / compact.length > 0.28;
-    });
-  return (lines.join(" ").replace(/\s+/g, " ").trim() || String(fallback || "").trim());
-}
-
-function getBlankFeedFilters() {
-  return {
-    startDate: "",
-    endDate: "",
-    topic: ""
-  };
-}
-
-function normalizeFeedFilters(filters = {}) {
-  return {
-    startDate: String(filters.startDate || "").trim(),
-    endDate: String(filters.endDate || "").trim(),
-    topic: String(filters.topic || "").trim()
-  };
-}
-
-function buildFeedSnapshotKeyFor(sourceType = currentSourceType(), query = "", filters = getBlankFeedFilters(), page = state.feedPage || 1) {
-  const normalizedFilters = normalizeFeedFilters(filters);
-  const filterKey = [
-    normalizedFilters.startDate,
-    normalizedFilters.endDate,
-    normalizedFilters.topic
-  ].join("|");
-  return `${String(sourceType || "all").trim().toLowerCase()}::${String(query || "").trim().toLowerCase()}::filters:${filterKey}::page:${page}`;
-}
-
-function buildFeedSnapshotKey(page = state.feedPage || 1) {
-  const query = $("searchInput")?.value.trim().toLowerCase() || "";
-  return buildFeedSnapshotKeyFor(currentSourceType(), query, state.feedFilters, page);
-}
-
-function getTranslationLabel(code) {
-  return TRANSLATION_OPTIONS.find(option => option.code === code)?.label || code.toUpperCase();
+function cacheScanTemplates() {
+  if (!scanReportTemplates.seo && $("seoReport")) {
+    scanReportTemplates.seo = $("seoReport").innerHTML;
+  }
+  if (!scanReportTemplates.repo && $("repoScanReport")) {
+    scanReportTemplates.repo = $("repoScanReport").innerHTML;
+  }
 }
 
 function refreshLanguageIndicator() {
@@ -389,27 +127,15 @@ function refreshLanguageIndicator() {
   }
 }
 
-function shouldTranslateText(text) {
-  const value = String(text || "").replace(/\s+/g, " ").trim();
-  if (!value || value.length < 2 || value.length > 1400) return false;
-  if (/^(https?:\/\/|www\.)/i.test(value)) return false;
-  if (/^(?:[a-z0-9-]+\.)+[a-z]{2,}$/i.test(value)) return false;
-  if (/^[\d\s:./\-]+$/.test(value)) return false;
-  if (/\b\d{1,3}(?:\.\d{1,3}){3}\b/.test(value)) return false;
-  if (/\b[a-f0-9]{24,}\b/i.test(value)) return false;
-  if (/^(json endpoint|open source)$/i.test(value)) return false;
-  const alphaChars = (value.match(/[A-Za-z\u00C0-\u024F\u0400-\u04FF\u0600-\u06FF\u0900-\u097F\u4E00-\u9FFF]/g) || []).length;
-  if (!alphaChars) return false;
-  if (value.length > 50 && alphaChars / value.length < 0.2) return false;
-  return true;
-}
-
 function getTranslateScopeRoot(scope = "view") {
   if (scope === "detail" && !$("detailBackdrop").classList.contains("hidden")) {
     return $("detailBackdrop");
   }
   if (scope === "alert" && !$("alertSummaryBackdrop").classList.contains("hidden")) {
     return $("alertSummaryBackdrop");
+  }
+  if (scope === "ai" && !$("aiChatBackdrop").classList.contains("hidden")) {
+    return $("aiChatBackdrop");
   }
   return document.querySelector(".app-content");
 }
@@ -427,7 +153,7 @@ function collectTranslatableNodes(scope = "view") {
     : [root];
 
   return roots.flatMap(scopeRoot => Array.from(scopeRoot.querySelectorAll(TRANSLATABLE_SELECTORS)))
-    .filter(node => node && !node.closest("[data-no-translate]"))
+    .filter(node => node && !node.closest("[data-no-translate]") )
     .map(node => {
       if (!node.dataset.originalText) {
         node.dataset.originalText = node.textContent || "";
@@ -563,824 +289,6 @@ function resetTranslationToEnglish() {
   $("translateStatus").textContent = "Original English content restored.";
   closeTranslateModal();
   showToast("Restored original content", "info");
-}
-
-function cacheScanTemplates() {
-  if (!scanReportTemplates.seo && $("seoReport")) {
-    scanReportTemplates.seo = $("seoReport").innerHTML;
-  }
-  if (!scanReportTemplates.repo && $("repoScanReport")) {
-    scanReportTemplates.repo = $("repoScanReport").innerHTML;
-  }
-}
-
-function setActionButtonBusy(buttonId, isBusy, busyLabel, idleLabel) {
-  const button = $(buttonId);
-  if (!button) return;
-  if (!button.dataset.defaultLabel) {
-    button.dataset.defaultLabel = idleLabel || button.textContent || "Search";
-  }
-  button.disabled = isBusy;
-  button.textContent = isBusy ? busyLabel : (idleLabel || button.dataset.defaultLabel || "Search");
-}
-
-function setInlineButtonBusy(button, isBusy, busyLabel) {
-  if (!button) return;
-  if (!button.dataset.defaultLabel) {
-    button.dataset.defaultLabel = button.textContent || "Action";
-  }
-  button.disabled = isBusy;
-  button.textContent = isBusy ? busyLabel : button.dataset.defaultLabel;
-}
-
-function setScanStatusLoading(statusId, message) {
-  const node = $(statusId);
-  if (!node) return;
-  node.innerHTML = `
-    <span class="scan-status-loading">
-      <span class="scan-status-pulse"></span>
-      ${escapeHtml(message)}
-    </span>
-  `;
-}
-
-function renderLoadingSkeleton(variant = "cards", count = 3) {
-  if (variant === "report") {
-    return `
-      <div class="scan-loading-shell">
-        <div class="scan-loading-progress-copy">Queued: preparing structured scan output...</div>
-        <div class="scan-loading-progress-track"><span></span></div>
-        <div class="scan-loading-report-head">
-          <div class="scan-line w-18"></div>
-          <div class="scan-line w-42"></div>
-          <div class="scan-line w-28"></div>
-        </div>
-        <div class="scan-loading-report-top">
-          <div class="scan-loading-card scan-loading-card-wide">
-            <div class="scan-line w-22"></div>
-            <div class="scan-line w-65"></div>
-            <div class="scan-line w-48"></div>
-          </div>
-          <div class="scan-loading-grade">
-            <div class="scan-square"></div>
-            <div class="scan-line w-16 centered"></div>
-          </div>
-        </div>
-        <div class="scan-loading-mini-grid">
-          ${Array.from({ length: 6 }).map(() => `
-            <div class="scan-loading-stat">
-              <div class="scan-line w-28"></div>
-              <div class="scan-line w-55"></div>
-            </div>
-          `).join("")}
-        </div>
-        <div class="scan-loading-card scan-loading-card-full">
-          <div class="scan-line w-18"></div>
-          <div class="scan-line w-90"></div>
-          <div class="scan-line w-80"></div>
-          <div class="scan-line w-72"></div>
-        </div>
-        <div class="scan-loading-card scan-loading-card-full">
-          <div class="scan-line w-20"></div>
-          <div class="scan-line w-94"></div>
-          <div class="scan-line w-89"></div>
-          <div class="scan-line w-76"></div>
-        </div>
-      </div>
-    `;
-  }
-
-  if (variant === "feed") {
-    return Array.from({ length: count }).map(() => `
-      <div class="scan-loading-card scan-loading-card-feed">
-        <div class="scan-line w-18"></div>
-        <div class="scan-line w-62"></div>
-        <div class="scan-line w-84"></div>
-        <div class="scan-line w-72"></div>
-        <div class="scan-line w-46"></div>
-        <div class="scan-line w-28"></div>
-      </div>
-    `).join("");
-  }
-
-  const cardClass = variant === "compact"
-    ? "scan-loading-card scan-loading-card-compact"
-    : variant === "accordion"
-      ? "scan-loading-card scan-loading-card-accordion"
-      : "scan-loading-card";
-
-  return `
-    <div class="scan-loading-shell scan-loading-shell-list">
-      <div class="scan-loading-progress-copy">Queued: waiting for scanner availability...</div>
-      <div class="scan-loading-progress-track"><span></span></div>
-      <div class="scan-loading-list">
-        ${Array.from({ length: count }).map(() => `
-          <div class="${cardClass}">
-            <div class="scan-line w-18"></div>
-            <div class="scan-line w-62"></div>
-            <div class="scan-line w-84"></div>
-            <div class="scan-line w-46"></div>
-          </div>
-        `).join("")}
-      </div>
-    </div>
-  `;
-}
-
-function showListScanLoading(statusId, containerId, message, variant = "cards", count = 3) {
-  setScanStatusLoading(statusId, message);
-  const container = $(containerId);
-  if (container) container.innerHTML = renderLoadingSkeleton(variant, count);
-}
-
-function getPaginationMetrics(totalItems, page, pageSize = PAGE_SIZE) {
-  const total = Math.max(0, Number(totalItems) || 0);
-  const totalPages = total ? Math.ceil(total / pageSize) : 0;
-  const safePage = totalPages ? Math.min(Math.max(1, Number(page) || 1), totalPages) : 1;
-  const startIndex = total ? (safePage - 1) * pageSize : 0;
-  const endIndex = total ? Math.min(startIndex + pageSize, total) : 0;
-
-  return {
-    page: safePage,
-    totalItems: total,
-    totalPages,
-    startIndex,
-    endIndex,
-    startLabel: total ? startIndex + 1 : 0,
-    endLabel: endIndex
-  };
-}
-
-function buildPaginationPageList(page, totalPages) {
-  if (totalPages <= 1) return [1];
-
-  let start = Math.max(1, page - Math.floor(PAGINATION_WINDOW / 2));
-  let end = Math.min(totalPages, start + PAGINATION_WINDOW - 1);
-  start = Math.max(1, end - PAGINATION_WINDOW + 1);
-
-  const pages = [];
-  if (start > 1) {
-    pages.push(1);
-    if (start > 2) pages.push("ellipsis-start");
-  }
-
-  for (let current = start; current <= end; current += 1) {
-    pages.push(current);
-  }
-
-  if (end < totalPages) {
-    if (end < totalPages - 1) pages.push("ellipsis-end");
-    pages.push(totalPages);
-  }
-
-  return pages;
-}
-
-function buildPaginationMarkup(target, metrics) {
-  const pageItems = buildPaginationPageList(metrics.page, metrics.totalPages);
-  return `
-    <div class="pagination-meta">
-      <span>Page ${escapeHtml(String(metrics.page))} of ${escapeHtml(String(metrics.totalPages))}</span>
-      <span>Showing ${escapeHtml(String(metrics.startLabel))}-${escapeHtml(String(metrics.endLabel))} of ${escapeHtml(String(metrics.totalItems))}</span>
-    </div>
-    <div class="pagination-controls">
-      <button class="pagination-btn pagination-nav" type="button" data-pagination-target="${escapeHtml(target)}" data-pagination-page="${escapeHtml(String(metrics.page - 1))}" ${metrics.page <= 1 ? "disabled" : ""}>Previous</button>
-      ${pageItems.map(item => {
-        if (typeof item !== "number") {
-          return `<span class="pagination-ellipsis">...</span>`;
-        }
-        return `<button class="pagination-btn ${item === metrics.page ? "is-active" : ""}" type="button" data-pagination-target="${escapeHtml(target)}" data-pagination-page="${escapeHtml(String(item))}">${escapeHtml(String(item))}</button>`;
-      }).join("")}
-      <button class="pagination-btn pagination-nav" type="button" data-pagination-target="${escapeHtml(target)}" data-pagination-page="${escapeHtml(String(metrics.page + 1))}" ${metrics.page >= metrics.totalPages ? "disabled" : ""}>Next</button>
-    </div>
-  `;
-}
-
-function renderPagination(containerId, target, metrics) {
-  const container = $(containerId);
-  if (!container) return;
-  if (!metrics.totalPages || metrics.totalPages <= 1) {
-    container.classList.add("hidden");
-    container.innerHTML = "";
-    return;
-  }
-  container.classList.remove("hidden");
-  container.innerHTML = buildPaginationMarkup(target, metrics);
-}
-
-function clearPagination(containerId) {
-  const container = $(containerId);
-  if (!container) return;
-  container.classList.add("hidden");
-  container.innerHTML = "";
-}
-
-function setExportToolbarState(toolbarId, visible, note = "") {
-  const toolbar = $(toolbarId);
-  if (!toolbar) return;
-  toolbar.classList.toggle("hidden", !visible);
-  const noteNode = toolbar.querySelector(".export-toolbar-note");
-  if (noteNode && note) {
-    noteNode.textContent = note;
-  }
-}
-
-function getClientPaginationConfig(target) {
-  switch (target) {
-    case "pakdb":
-      return {
-        containerId: "pakdbHistoryList",
-        paginationId: "pakdbPagination",
-        renderItem: renderPakdbResultCard
-      };
-    case "playstore":
-      return {
-        containerId: "playstoreResults",
-        paginationId: "playstorePagination",
-        renderItem: renderPlaystoreCard
-      };
-    case "software":
-      return {
-        containerId: "softwareResults",
-        paginationId: "softwarePagination",
-        renderItem: renderSoftwareAccordion
-      };
-    default:
-      return null;
-  }
-}
-
-function getPaginationAnchorId(target) {
-  switch (target) {
-    case "feed":
-      return "cardsGrid";
-    case "credential":
-      return "credentialResults";
-    case "pakdb":
-      return "pakdbHistoryList";
-    case "playstore":
-      return "playstoreResults";
-    case "software":
-      return "softwareResults";
-    default:
-      return "";
-  }
-}
-
-function scrollPaginationAnchor(target) {
-  const anchorId = getPaginationAnchorId(target);
-  const anchor = anchorId ? $(anchorId) : null;
-  if (!anchor) return;
-  const top = anchor.getBoundingClientRect().top + window.scrollY - 120;
-  window.scrollTo({
-    top: Math.max(0, top),
-    behavior: "smooth"
-  });
-}
-
-function setClientPaginatedItems(target, items) {
-  state.paginatedResults[target] = {
-    items: Array.isArray(items) ? items.slice() : [],
-    page: 1
-  };
-}
-
-async function renderClientPaginatedResults(target, page = 1) {
-  const config = getClientPaginationConfig(target);
-  if (!config) return;
-
-  const entry = state.paginatedResults[target] || { items: [], page: 1 };
-  const metrics = getPaginationMetrics(entry.items.length, page);
-  const pageItems = entry.items.slice(metrics.startIndex, metrics.endIndex);
-
-  state.paginatedResults[target] = {
-    items: entry.items,
-    page: metrics.page
-  };
-
-  const container = $(config.containerId);
-  if (container) {
-    container.innerHTML = pageItems.map((item, index) => config.renderItem(item, metrics.startIndex + index + 1)).join("");
-  }
-
-  renderPagination(config.paginationId, target, metrics);
-  await maybeApplyActiveTranslation("view");
-}
-
-async function handlePaginationChange(target, page) {
-  const nextPage = Math.max(1, Number(page) || 1);
-  if (target === "feed") {
-    await loadArticles(true, nextPage);
-    scrollPaginationAnchor(target);
-    return;
-  }
-  if (target === "credential") {
-    await runCredentialCheck(nextPage);
-    scrollPaginationAnchor(target);
-    return;
-  }
-  if (state.paginatedResults[target]) {
-    await renderClientPaginatedResults(target, nextPage);
-    scrollPaginationAnchor(target);
-  }
-}
-
-function showReportScanLoading(statusId, reportId, templateKey, message) {
-  cacheScanTemplates();
-  setScanStatusLoading(statusId, message);
-  const container = $(reportId);
-  if (!container) return;
-  container.classList.remove("hidden");
-  container.innerHTML = renderLoadingSkeleton("report");
-}
-
-function restoreReportTemplate(reportId, templateKey) {
-  cacheScanTemplates();
-  const container = $(reportId);
-  if (!container) return;
-  if (scanReportTemplates[templateKey]) {
-    container.innerHTML = scanReportTemplates[templateKey];
-  }
-}
-
-function getBase() {
-  return localStorage.getItem(API_BASE_KEY) || DEFAULT_API_BASE;
-}
-
-function getToken() {
-  return localStorage.getItem(TOKEN_KEY) || "";
-}
-
-function currentSourceType() {
-  return TAB_SOURCE_MAP[state.activeTab] || state.activeTab || "all";
-}
-
-function formatDate(value) {
-  if (!value) return "Unknown";
-  const numeric = typeof value === "number" ? value : Number(value);
-  if (!Number.isNaN(numeric) && String(value).trim() !== "") {
-    const millis = numeric > 1_000_000_000_000 ? numeric : numeric * 1000;
-    const asDate = new Date(millis);
-    if (!Number.isNaN(asDate.getTime()) && asDate.getFullYear() > 2000) {
-      return asDate.toLocaleString();
-    }
-  }
-  const parsed = new Date(value);
-  if (!Number.isNaN(parsed.getTime())) return parsed.toLocaleString();
-  return String(value);
-}
-
-function humanViewName(viewName) {
-  const meta = VIEW_META[viewName];
-  return meta ? meta.title : "DarkPulse Feed";
-}
-
-function firstNonEmpty(...values) {
-  return values.find(value => String(value ?? "").trim()) || "";
-}
-
-function hostFromValue(value) {
-  const text = String(value ?? "").trim();
-  if (!text) return "";
-  try {
-    return new URL(text).hostname || text;
-  } catch {
-    return text;
-  }
-}
-
-function formatShortDate(value) {
-  const text = String(value ?? "").trim();
-  if (!text) return "";
-  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
-  const parsed = new Date(text);
-  if (!Number.isNaN(parsed.getTime())) return parsed.toLocaleDateString();
-  return text;
-}
-
-function slugifyFilename(value, fallback = "darkpulse-export") {
-  const normalized = String(value ?? "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-  return normalized || fallback;
-}
-
-function formatExportTimestamp(date = new Date()) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const seconds = String(date.getSeconds()).padStart(2, "0");
-  return `${year}${month}${day}-${hours}${minutes}${seconds}`;
-}
-
-function triggerFileDownload(filename, content, mimeType = "application/octet-stream") {
-  const blob = new Blob([content], { type: mimeType });
-  const objectUrl = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = objectUrl;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
-}
-
-function formatExportValue(value) {
-  if (Array.isArray(value)) {
-    return value.map(item => formatExportValue(item)).filter(Boolean).join(", ");
-  }
-  if (value && typeof value === "object") {
-    return JSON.stringify(value);
-  }
-  if (typeof value === "boolean") {
-    return value ? "Yes" : "No";
-  }
-  const text = String(value ?? "").trim();
-  return text || "-";
-}
-
-function renderExportFields(fields) {
-  const rows = (Array.isArray(fields) ? fields : Object.entries(fields || {}))
-    .filter(([_, value]) => String(formatExportValue(value)).trim() && String(formatExportValue(value)).trim() !== "-");
-
-  if (!rows.length) return "";
-
-  return `
-    <div class="export-field-grid">
-      ${rows.map(([label, value]) => `
-        <div class="export-field-item">
-          <span class="export-field-label">${escapeHtml(label)}</span>
-          <span class="export-field-value">${escapeHtml(formatExportValue(value))}</span>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-function renderExportCards(cards = []) {
-  if (!Array.isArray(cards) || !cards.length) return "";
-
-  return `
-    <div class="export-card-grid">
-      ${cards.map(card => `
-        <article class="export-card">
-          <div class="export-card-head">
-            <div>
-              <h4>${escapeHtml(card.title || "Record")}</h4>
-              ${card.subtitle ? `<p>${escapeHtml(card.subtitle)}</p>` : ""}
-            </div>
-            ${Array.isArray(card.tags) && card.tags.length ? `
-              <div class="export-card-tags">
-                ${card.tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join("")}
-              </div>
-            ` : ""}
-          </div>
-          ${card.text ? `<p class="export-card-text">${escapeHtml(card.text)}</p>` : ""}
-          ${renderExportFields(card.fields)}
-        </article>
-      `).join("")}
-    </div>
-  `;
-}
-
-function renderExportSection(section) {
-  if (!section) return "";
-
-  let body = "";
-  if (Array.isArray(section.images) && section.images.length) {
-    body += `
-      <div class="export-image-grid">
-        ${section.images.map((image, index) => {
-          const src = typeof image === "string" ? image : image.src;
-          const label = typeof image === "string" ? `Screenshot ${index + 1}` : (image.label || `Screenshot ${index + 1}`);
-          return `
-            <figure class="export-image-card">
-              <img src="${escapeHtml(absoluteAssetUrl(src))}" alt="${escapeHtml(label)}" />
-              <figcaption>${escapeHtml(label)}</figcaption>
-            </figure>
-          `;
-        }).join("")}
-      </div>
-    `;
-  }
-  if (section.text) {
-    body += `<p class="export-section-text">${escapeHtml(section.text)}</p>`;
-  }
-  if (section.list && section.list.length) {
-    body += `<ul class="export-list">${section.list.map(item => `<li>${escapeHtml(formatExportValue(item))}</li>`).join("")}</ul>`;
-  }
-  if (section.fields) {
-    body += renderExportFields(section.fields);
-  }
-  if (section.cards) {
-    body += renderExportCards(section.cards);
-  }
-  if (section.pre) {
-    body += `<pre class="export-pre">${escapeHtml(section.pre)}</pre>`;
-  }
-
-  if (!body) return "";
-
-  return `
-    <section class="export-section">
-      <h3>${escapeHtml(section.title || "Section")}</h3>
-      ${body}
-    </section>
-  `;
-}
-
-function buildExportDocumentHtml(payload, options = {}) {
-  const autoPrint = options.autoPrint !== false;
-  const metadata = Array.isArray(payload.metadata) ? payload.metadata : Object.entries(payload.metadata || {});
-  const metadataRows = metadata.filter(([_, value]) => String(formatExportValue(value)).trim());
-  const sectionsHtml = (payload.sections || []).map(section => renderExportSection(section)).join("");
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${escapeHtml(payload.title || "DarkPulse Export")}</title>
-  <style>
-    :root {
-      color-scheme: light;
-    }
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      font-family: "Outfit", Arial, sans-serif;
-      background: #edf2f7;
-      color: #0f172a;
-      padding: 32px;
-    }
-    .export-shell {
-      max-width: 1040px;
-      margin: 0 auto;
-      background: #ffffff;
-      border: 1px solid #dbe4ee;
-      border-radius: 28px;
-      padding: 32px;
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
-    }
-    .export-kicker {
-      margin: 0 0 8px;
-      color: #ff5a3d;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      font-size: 12px;
-      font-weight: 800;
-    }
-    .export-shell h1 {
-      margin: 0;
-      font-size: 32px;
-      line-height: 1.15;
-    }
-    .export-subtitle {
-      margin: 10px 0 0;
-      color: #475569;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-    .export-meta {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 14px;
-      margin: 24px 0 0;
-    }
-    .export-meta-item,
-    .export-field-item {
-      border: 1px solid #e2e8f0;
-      border-radius: 18px;
-      padding: 14px 16px;
-      background: #f8fafc;
-    }
-    .export-meta-label,
-    .export-field-label {
-      display: block;
-      color: #64748b;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .export-meta-value,
-    .export-field-value {
-      display: block;
-      color: #0f172a;
-      font-size: 15px;
-      line-height: 1.55;
-      word-break: break-word;
-    }
-    .export-section {
-      margin-top: 28px;
-      padding-top: 24px;
-      border-top: 1px solid #e2e8f0;
-    }
-    .export-print-note {
-      margin: 18px 0 0;
-      padding: 14px 16px;
-      border-radius: 16px;
-      border: 1px solid #dbe4ee;
-      background: #f8fafc;
-      color: #475569;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    .export-section h3 {
-      margin: 0 0 14px;
-      font-size: 18px;
-    }
-    .export-section-text,
-    .export-card-text {
-      color: #334155;
-      line-height: 1.7;
-      white-space: pre-wrap;
-    }
-    .export-list {
-      margin: 0;
-      padding-left: 20px;
-      color: #334155;
-      line-height: 1.7;
-    }
-    .export-image-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-    .export-image-card {
-      margin: 0;
-      border: 1px solid #dbe4ee;
-      border-radius: 20px;
-      overflow: hidden;
-      background: #f8fafc;
-      break-inside: avoid;
-    }
-    .export-image-card img {
-      display: block;
-      width: 100%;
-      max-height: 360px;
-      object-fit: cover;
-      background: #e2e8f0;
-    }
-    .export-image-card figcaption {
-      padding: 10px 14px;
-      color: #475569;
-      font-size: 12px;
-      font-weight: 700;
-    }
-    .export-field-grid,
-    .export-card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 14px;
-    }
-    .export-card {
-      border: 1px solid #dbe4ee;
-      border-radius: 20px;
-      padding: 18px;
-      background: #fff;
-      break-inside: avoid;
-    }
-    .export-card-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 12px;
-    }
-    .export-card h4 {
-      margin: 0;
-      font-size: 17px;
-    }
-    .export-card-head p {
-      margin: 6px 0 0;
-      color: #64748b;
-      font-size: 13px;
-    }
-    .export-card-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: flex-end;
-    }
-    .export-card-tags span {
-      border: 1px solid #dbe4ee;
-      border-radius: 999px;
-      padding: 5px 10px;
-      font-size: 12px;
-      color: #334155;
-      background: #f8fafc;
-    }
-    .export-pre {
-      margin: 0;
-      padding: 18px;
-      background: #0f172a;
-      color: #e2e8f0;
-      border-radius: 20px;
-      overflow: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-      font-size: 12px;
-      line-height: 1.6;
-    }
-    @media print {
-      body {
-        background: #fff;
-        padding: 0;
-      }
-      .export-shell {
-        max-width: none;
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
-        padding: 0;
-      }
-      .export-section,
-      .export-card,
-      .export-meta-item,
-      .export-field-item {
-        break-inside: avoid;
-      }
-    }
-  </style>
-</head>
-<body>
-  <article class="export-shell">
-    <p class="export-kicker">${escapeHtml(payload.kicker || "DarkPulse Export")}</p>
-    <h1>${escapeHtml(payload.title || "DarkPulse Export")}</h1>
-    ${payload.subtitle ? `<p class="export-subtitle">${escapeHtml(payload.subtitle)}</p>` : ""}
-    ${metadataRows.length ? `
-      <div class="export-meta">
-        ${metadataRows.map(([label, value]) => `
-          <div class="export-meta-item">
-            <span class="export-meta-label">${escapeHtml(label)}</span>
-            <span class="export-meta-value">${escapeHtml(formatExportValue(value))}</span>
-          </div>
-        `).join("")}
-      </div>
-    ` : ""}
-    <div class="export-print-note">DarkPulse prepared this printable export for PDF saving. If the print dialog does not open automatically, use <strong>Ctrl+P</strong> or your browser Print action.</div>
-    ${sectionsHtml}
-  </article>
-  ${autoPrint ? `
-  <script>
-    window.addEventListener("load", function () {
-      var images = Array.prototype.slice.call(document.images || []);
-      var waits = images.map(function (img) {
-        if (img.complete) return Promise.resolve();
-        return new Promise(function (resolve) {
-          img.addEventListener("load", resolve, { once: true });
-          img.addEventListener("error", resolve, { once: true });
-        });
-      });
-      Promise.race([
-        Promise.all(waits),
-        new Promise(function (resolve) { setTimeout(resolve, 4200); })
-      ]).then(function () {
-        window.focus();
-        window.print();
-      });
-    });
-  </script>
-  ` : ""}
-</body>
-</html>`;
-}
-
-function createPrintWindowShell() {
-  const printWindow = window.open("", "_blank");
-  if (!printWindow) return null;
-  printWindow.document.write(`<!DOCTYPE html><html><head><title>Preparing PDF export</title></head><body style="font-family: Arial, sans-serif; padding: 24px; color: #0f172a; background: #f8fafc;">Preparing DarkPulse PDF export...</body></html>`);
-  printWindow.document.close();
-  return printWindow;
-}
-
-function exportPayloadAsJson(payload) {
-  const fileBase = slugifyFilename(payload.filenameBase || payload.title || "darkpulse-export");
-  triggerFileDownload(
-    `${fileBase}-${formatExportTimestamp()}.json`,
-    JSON.stringify(payload.data, null, 2),
-    "application/json"
-  );
-}
-
-function exportPayloadAsPdf(payload, printWindow = null) {
-  const exportWindow = printWindow || createPrintWindowShell();
-  if (!exportWindow) {
-    throw new Error("Popup was blocked. Allow popups to save PDF exports.");
-  }
-
-  const html = buildExportDocumentHtml(payload, { autoPrint: true });
-  const blob = new Blob([html], { type: "text/html" });
-  const objectUrl = URL.createObjectURL(blob);
-  exportWindow.location.replace(objectUrl);
-  setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
 }
 
 function updateHeader(viewName) {
@@ -1658,7 +566,7 @@ async function refreshAfterSmartUpdate() {
   } else if (state.currentView === "admin-users") {
     await refreshUserList();
   } else if (state.currentView === "healing") {
-    await loadHealingMonitor(true);
+    await healingMonitor.loadHealingMonitor(true);
   } else if (!TOOL_VIEWS.includes(state.currentView)) {
     await loadArticles(true, state.feedPage || 1);
   }
@@ -1725,109 +633,6 @@ async function pollSmartUpdateStatus(silent = false) {
   }
 }
 
-async function apiFetch(path, noAuth = false, options = {}) {
-  const headers = {
-    Accept: "application/json",
-    "Content-Type": "application/json"
-  };
-
-  const token = getToken();
-  const apiKey = localStorage.getItem(STORAGE_KEY) || "";
-  if (!noAuth && token) headers.Authorization = `Bearer ${token}`;
-  if (apiKey) headers["X-API-Key"] = apiKey;
-
-  const response = await fetch(getBase() + path, {
-    method: options.method || "GET",
-    headers,
-    body: options.body ? JSON.stringify(options.body) : undefined,
-    signal: options.signal
-  });
-
-  if (response.status === 401 && !noAuth) {
-    handleLogout();
-    throw new Error("Session expired");
-  }
-
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.detail || `HTTP ${response.status}`);
-  return data;
-}
-
-function clearAuthLoadingTimer() {
-  clearInterval(state.authLoadingTimer);
-  state.authLoadingTimer = null;
-}
-
-function renderAuthLoading(progress = state.authLoadingProgress) {
-  const safeProgress = Math.max(0, Math.min(100, Math.round(progress)));
-  state.authLoadingProgress = safeProgress;
-  $("authLoadingRing").style.setProperty("--auth-progress", `${safeProgress}%`);
-  $("authLoadingPercent").textContent = `${safeProgress}%`;
-}
-
-function setAuthLoadingText({
-  kicker = "",
-  title = "",
-  copy = "",
-  stage = ""
-} = {}) {
-  if (kicker) $("authLoadingKicker").textContent = kicker;
-  if (title) $("authLoadingTitle").textContent = title;
-  if (copy) $("authLoadingCopy").textContent = copy;
-  if (stage) $("authLoadingStage").textContent = stage;
-}
-
-function showAuthLoading({
-  kicker = "Authenticating",
-  title = "Signing in to DarkPulse",
-  copy = "Verifying your credentials and preparing the live console.",
-  stage = "Checking username and password...",
-  progress = 8,
-  cap = 72
-} = {}) {
-  state.authLoadingActive = true;
-  state.authLoadingCap = Math.max(progress, cap);
-  $("authLoadingOverlay").classList.remove("hidden");
-  $("authShell").classList.add("auth-shell-loading");
-  setAuthLoadingText({ kicker, title, copy, stage });
-  renderAuthLoading(progress);
-  clearAuthLoadingTimer();
-  state.authLoadingTimer = setInterval(() => {
-    if (!state.authLoadingActive || state.authLoadingProgress >= state.authLoadingCap) return;
-    const current = state.authLoadingProgress;
-    const step = current < 36 ? 4 : current < 64 ? 3 : current < 82 ? 2 : 1;
-    renderAuthLoading(Math.min(state.authLoadingCap, current + step));
-  }, AUTH_PROGRESS_TICK_MS);
-}
-
-async function advanceAuthLoading(target, stage = "", options = {}) {
-  if (!state.authLoadingActive) return;
-  state.authLoadingCap = Math.max(state.authLoadingCap, target);
-  setAuthLoadingText({
-    kicker: options.kicker || "",
-    title: options.title || "",
-    copy: options.copy || "",
-    stage
-  });
-  renderAuthLoading(Math.max(state.authLoadingProgress, target));
-  await sleep(options.delay ?? 140);
-}
-
-function hideAuthLoading() {
-  state.authLoadingActive = false;
-  state.authLoadingCap = 0;
-  clearAuthLoadingTimer();
-  $("authLoadingOverlay").classList.add("hidden");
-  $("authShell").classList.remove("auth-shell-loading");
-  renderAuthLoading(0);
-  setAuthLoadingText({
-    kicker: "Authenticating",
-    title: "Signing in to DarkPulse",
-    copy: "Verifying your credentials and preparing the live console.",
-    stage: "Checking username and password..."
-  });
-}
-
 function applyAuthenticatedIdentity(role, username, options = {}) {
   $("currentUserName").textContent = username || localStorage.getItem(USER_NAME_KEY) || "User";
   $("currentUserRole").textContent = role === "admin" ? "Administrator" : "Researcher";
@@ -1839,58 +644,11 @@ function applyAuthenticatedIdentity(role, username, options = {}) {
 }
 
 async function warmAuthenticatedWorkspace() {
-  const bootWarnings = [];
-
-  const healthTask = checkHealth();
-  const smartUpdateTask = pollSmartUpdateStatus(true);
-  const homepageTask = switchView("homepage");
-
-  const [healthResult, smartUpdateResult, homepageResult] = await Promise.allSettled([
-    healthTask,
-    smartUpdateTask,
-    homepageTask
-  ]);
-
-  if (healthResult.status === "rejected") {
-    console.error(healthResult.reason);
-    bootWarnings.push("health");
-  }
-
-  if (smartUpdateResult.status === "rejected") {
-    console.error(smartUpdateResult.reason);
-    bootWarnings.push("automation");
-  }
-
-  if (homepageResult.status === "rejected") {
-    console.error(homepageResult.reason);
-    bootWarnings.push("homepage");
-  }
-
-  setLastUpdated();
-  scheduleRefresh();
-
-  if (bootWarnings.length) {
-    showToast("Signed in. Some dashboard panels are still warming up in the background.", "info");
-  }
+  return sessionBootstrap.warmAuthenticatedWorkspace();
 }
 
 async function bootstrapAuthenticatedSession({ username, role }) {
-  applyAuthenticatedIdentity(role, username, { keepBackdrop: true });
-  await advanceAuthLoading(78, "Session accepted. Opening your console...", {
-    copy: "DarkPulse has verified your access. The dashboard will keep loading in the background.",
-    delay: 120
-  });
-  await advanceAuthLoading(100, "Access granted. Entering DarkPulse now.", {
-    copy: "You are signed in. Live cards, heatmap, and automation status are warming up.",
-    delay: 180
-  });
-
-  $("loginBackdrop").classList.add("hidden");
-  hideAuthLoading();
-  void warmAuthenticatedWorkspace().catch(error => {
-    console.error(error);
-    showToast("Signed in, but some dashboard sections are still loading.", "info");
-  });
+  return sessionBootstrap.bootstrapAuthenticatedSession({ username, role });
 }
 
 async function checkAuth() {
@@ -1912,7 +670,7 @@ function handleLogout(notice = "") {
   if (notice && typeof notice === "object") {
     notice = "";
   }
-  hideAuthLoading();
+  authLoading.hideAuthLoading();
   clearTimeout(state.smartUpdateTimer);
   clearTimeout(state.mapRefreshTimer);
   clearTimeout(state.mapSpotlightTimer);
@@ -1927,222 +685,29 @@ function handleLogout(notice = "") {
   window.location.reload();
 }
 
-function setAuthStage(stage) {
-  state.authStage = stage;
-  state.isRegistering = stage === "register";
-  $("loginForm").classList.toggle("hidden", stage !== "login");
-  $("registerForm").classList.toggle("hidden", stage !== "register");
-  $("forgotForm").classList.toggle("hidden", stage !== "forgot");
-  $("approvalForm").classList.toggle("hidden", stage !== "approval");
-  $("mfaForm").classList.toggle("hidden", stage !== "mfa");
-  $("authSubmitBtn").classList.toggle("hidden", stage === "approval");
-  $("authSubmitBtn").textContent = stage === "register"
-    ? "Request Access"
-    : stage === "mfa"
-      ? "Verify OTP"
-      : stage === "forgot"
-        ? "Request Reset"
-        : "Sign In";
-}
+window.handleLogout = handleLogout;
 
-function clearAuthChallenge() {
-  state.authChallengeToken = "";
-  state.authChallengeType = "";
-  state.authPendingUsername = "";
-  state.authPendingRole = "";
-  state.authQrCodeUrl = "";
-  state.authManualSecret = "";
-  $("mfaOtpInput").value = "";
-  $("mfaQrImage").src = "";
-  $("mfaManualSecret").textContent = "-";
-  $("mfaQrSection").classList.add("hidden");
-}
+const authUI = createAuthUIModule({ state, $, AUTH_NOTICE_KEY });
+const { setAuthStage, clearAuthChallenge, toggleAuthMode, restoreAuthNotice, prepareTwoFactorStage, showError, clearErrors } = authUI;
 
-function toggleAuthMode() {
-  clearErrors();
-  clearAuthChallenge();
-  setAuthStage(state.isRegistering ? "login" : "register");
-}
-
-function restoreAuthNotice() {
-  const notice = sessionStorage.getItem(AUTH_NOTICE_KEY);
-  if (!notice) return;
-  sessionStorage.removeItem(AUTH_NOTICE_KEY);
-  $("loginInfo").textContent = notice;
-  $("loginInfo").classList.remove("hidden");
-}
-
-function prepareTwoFactorStage(payload, username) {
-  clearErrors();
-  clearAuthChallenge();
-  state.authChallengeToken = payload.challenge_token || "";
-  state.authChallengeType = payload.challenge_type || (payload.setup_required ? "setup" : "otp");
-  state.authPendingUsername = username || payload.username || "";
-  state.authPendingRole = payload.role || "";
-  state.authQrCodeUrl = payload.qr_code_url || "";
-  state.authManualSecret = payload.manual_secret || "";
-
-  $("mfaTitle").textContent = payload.setup_required ? "Set up your authenticator" : "Enter your verification code";
-  $("mfaCopy").textContent = payload.setup_required
-    ? "Scan this QR code once in Google Authenticator, Authy, or another app, then enter the 6-digit code to finish signing in."
-    : "2FA is enabled for this account. Enter the current 6-digit code from your authenticator app to continue.";
-  $("mfaSecretHint").textContent = payload.setup_required
-    ? "If the QR code does not load, type this key manually into your authenticator app."
-    : "This setup has already been completed before, so only the OTP is required now.";
-  $("mfaManualSecret").textContent = state.authManualSecret || "-";
-  $("mfaQrSection").classList.toggle("hidden", !payload.setup_required);
-  $("mfaQrImage").src = state.authQrCodeUrl || "";
-  $("mfaOtpInput").value = "";
-  setAuthStage("mfa");
-}
-
-function showError(id, message) {
-  const element = $(id);
-  element.textContent = message;
-  element.classList.remove("hidden");
-}
-
-function clearErrors() {
-  ["loginError", "registerError", "forgotError", "mfaError"].forEach(id => {
-    $(id).textContent = "";
-    $(id).classList.add("hidden");
-  });
-  $("loginInfo").textContent = "";
-  $("loginInfo").classList.add("hidden");
-}
+const authManager = createAuthManager({
+  apiFetch,
+  authLoading,
+  prepareTwoFactorStage,
+  bootstrapAuthenticatedSession: (...args) => sessionBootstrap.bootstrapAuthenticatedSession(...args),
+  showError,
+  clearErrors,
+  setAuthStage,
+  state,
+  $,
+  TOKEN_KEY,
+  USER_ROLE_KEY,
+  USER_NAME_KEY,
+  AUTH_NOTICE_KEY
+});
 
 async function handleAuthSubmit() {
-  clearErrors();
-  const button = $("authSubmitBtn");
-  const originalLabel = button.textContent;
-  button.disabled = true;
-
-  try {
-    if (state.authStage === "register") {
-      const requestedUsername = $("regUsername").value.trim();
-      await apiFetch("/auth/register", true, {
-        method: "POST",
-        body: {
-          username: requestedUsername,
-          password: $("regPassword").value,
-          email: $("regEmail").value.trim(),
-          name: $("regName").value.trim()
-        }
-      });
-      $("regName").value = "";
-      $("regEmail").value = "";
-      $("regUsername").value = "";
-      $("regPassword").value = "";
-      setAuthStage("login");
-      $("loginUsername").value = requestedUsername;
-      $("loginPassword").value = "";
-      $("loginInfo").textContent = "Registration submitted. Wait for admin approval before signing in.";
-      $("loginInfo").classList.remove("hidden");
-      return;
-    }
-
-    if (state.authStage === "forgot") {
-      const data = await apiFetch("/auth/password-reset-request", true, {
-        method: "POST",
-        body: {
-          identity: $("forgotIdentity").value.trim(),
-          message: $("forgotMessage").value.trim()
-        }
-      });
-      clearErrors();
-      setAuthStage("login");
-      $("forgotIdentity").value = "";
-      $("forgotMessage").value = "";
-      $("loginInfo").textContent = data.message || "Reset request submitted for review.";
-      $("loginInfo").classList.remove("hidden");
-      return;
-    }
-
-    if (state.authStage === "mfa") {
-      button.textContent = "Verifying OTP...";
-      showAuthLoading({
-        kicker: "Two-Factor Verification",
-        title: "Confirming your one-time password",
-        copy: "DarkPulse is validating your OTP and restoring your approved analyst session.",
-        stage: "Checking the 6-digit code from your authenticator...",
-        progress: 18,
-        cap: 86
-      });
-      const data = await apiFetch("/auth/login/verify-otp", true, {
-        method: "POST",
-        body: {
-          challenge_token: state.authChallengeToken,
-          otp: $("mfaOtpInput").value.trim()
-        }
-      });
-
-      localStorage.setItem(TOKEN_KEY, data.access_token);
-      localStorage.setItem(USER_ROLE_KEY, data.role);
-      localStorage.setItem(USER_NAME_KEY, state.authPendingUsername || $("loginUsername").value.trim());
-      sessionStorage.removeItem(AUTH_NOTICE_KEY);
-      await bootstrapAuthenticatedSession({
-        username: state.authPendingUsername || $("loginUsername").value.trim(),
-        role: data.role
-      });
-      return;
-    }
-
-    const username = $("loginUsername").value.trim();
-    button.textContent = "Signing In...";
-    showAuthLoading({
-      kicker: "Authenticating",
-      title: "Signing in to DarkPulse",
-      copy: "We are verifying your credentials and preparing the local threat intelligence console.",
-      stage: "Checking username and password...",
-      progress: 12,
-      cap: 84
-    });
-    const data = await apiFetch("/auth/login", true, {
-      method: "POST",
-      body: {
-        username,
-        password: $("loginPassword").value
-      }
-    });
-
-    if (data.mfa_required) {
-      await advanceAuthLoading(100, "Two-factor verification required. Opening OTP step...", {
-        copy: "Your account needs an authenticator code before DarkPulse can finish signing you in.",
-        delay: 220
-      });
-      hideAuthLoading();
-      prepareTwoFactorStage(data, username);
-      return;
-    }
-
-    localStorage.setItem(TOKEN_KEY, data.access_token);
-    localStorage.setItem(USER_ROLE_KEY, data.role);
-    localStorage.setItem(USER_NAME_KEY, username);
-    sessionStorage.removeItem(AUTH_NOTICE_KEY);
-    await bootstrapAuthenticatedSession({ username, role: data.role });
-  } catch (error) {
-    hideAuthLoading();
-    const errorTarget = state.authStage === "register"
-      ? "registerError"
-      : state.authStage === "mfa"
-        ? "mfaError"
-        : state.authStage === "forgot"
-          ? "forgotError"
-          : "loginError";
-    showError(errorTarget, error.message);
-  } finally {
-    button.disabled = false;
-    button.textContent = originalLabel;
-    if (state.authStage === "login") {
-      button.textContent = "Sign In";
-    } else if (state.authStage === "register") {
-      button.textContent = "Request Access";
-    } else if (state.authStage === "forgot") {
-      button.textContent = "Request Reset";
-    } else if (state.authStage === "mfa") {
-      button.textContent = "Verify OTP";
-    }
-  }
+  return authManager.handleAuthSubmit();
 }
 
 function setActiveNavigation(target) {
@@ -2204,24 +769,8 @@ function renderFeedFilterState() {
   bar.classList.remove("hidden");
 }
 
-function setHeaderSearchBusy(isBusy, label = "Searching local intelligence...") {
-  state.headerSearchBusy = isBusy;
-  const bar = $("headerSearchBar");
-  const status = $("searchBarStatus");
-  const icon = $("headerSearchIcon");
-
-  if (bar) {
-    bar.classList.toggle("is-busy", isBusy);
-    bar.setAttribute("aria-busy", isBusy ? "true" : "false");
-  }
-  if (status) {
-    status.textContent = label;
-    status.classList.toggle("hidden", !isBusy);
-  }
-  if (icon) {
-    icon.textContent = isBusy ? "..." : "/";
-  }
-}
+const headerSearchUI = createHeaderSearchUIModule({ state, $ });
+const { setHeaderSearchBusy } = headerSearchUI;
 
 function openFeedFiltersModal() {
   $("feedFilterStartDate").value = state.feedFilters.startDate || "";
@@ -2233,6 +782,158 @@ function openFeedFiltersModal() {
 
 function closeFeedFiltersModal() {
   $("feedFiltersBackdrop").classList.add("hidden");
+}
+
+function openAiChatModal() {
+  $("aiChatBackdrop").classList.remove("hidden");
+  setTimeout(() => $("aiChatInput").focus(), 0);
+}
+
+function closeAiChatModal() {
+  $("aiChatBackdrop").classList.add("hidden");
+}
+
+function clearAiChat() {
+  $("aiChatInput").value = "";
+  $("aiChatStatus").textContent = "Ollama model: llama3.1:8b preferred";
+  $("aiChatAnswer").classList.add("hidden");
+  $("aiChatAnswer").textContent = "";
+  $("aiChatSources").classList.add("hidden");
+  $("aiChatSources").innerHTML = "";
+}
+
+function splitAiSectionLines(content = "", forceList = false) {
+  const normalized = String(content || "")
+    .replace(/\s+(?=\d+\.\s+)/g, "\n")
+    .replace(/\s+-\s+/g, "\n")
+    .trim();
+  const lines = normalized
+    .split(/\n+/)
+    .map(line => line.replace(/^[-*•\d.)\s]+/, "").trim())
+    .filter(Boolean);
+  return forceList ? lines : (lines.length > 1 ? lines : [normalized]);
+}
+
+function renderAiChatAnswer(answer = "", query = "") {
+  const answerBox = $("aiChatAnswer");
+  const rawText = String(answer || "").trim();
+  if (!rawText) {
+    answerBox.classList.add("hidden");
+    answerBox.innerHTML = "";
+    return;
+  }
+
+  const fallbackMatch = rawText.match(/^Model fallback:[^\n]+/);
+  const fallbackNotice = fallbackMatch ? fallbackMatch[0] : "";
+  const bodyText = (fallbackNotice ? rawText.slice(fallbackNotice.length).trim() : rawText)
+    .replace(/\*\*(Summary|Key Findings|Relevant Records|Missing Values):?\*\*/g, "$1:")
+    .replace(/^#+\s*(Summary|Key Findings|Relevant Records|Missing Values):?/gm, "$1:")
+    .replace(/\s*(Summary|Key Findings|Relevant Records|Missing Values):\s*/g, "\n$1:\n")
+    .trim();
+  const sectionNames = ["Summary", "Key Findings", "Relevant Records", "Missing Values"];
+  const sectionPattern = new RegExp(`^(${sectionNames.join("|")}):?\\s*`, "gm");
+  const matches = [...bodyText.matchAll(sectionPattern)];
+
+  if (!matches.length) {
+    answerBox.classList.remove("hidden");
+    answerBox.innerHTML = `
+      <div class="ai-chat-thread">
+        <div class="ai-chat-bubble ai-chat-bubble-user">${escapeHtml(query || "Query")}</div>
+        <div class="ai-chat-bubble ai-chat-bubble-assistant">
+          ${fallbackNotice ? `<div class="ai-chat-fallback">${escapeHtml(fallbackNotice)}</div>` : ""}
+          <div class="ai-chat-section"><p>${escapeHtml(bodyText)}</p></div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const sections = matches.map((match, index) => {
+    const start = match.index + match[0].length;
+    const end = matches[index + 1]?.index ?? bodyText.length;
+    return {
+      title: match[1],
+      content: bodyText.slice(start, end).trim()
+    };
+  }).filter(section => section.content);
+
+  answerBox.classList.remove("hidden");
+  answerBox.innerHTML = `
+    <div class="ai-chat-thread">
+      <div class="ai-chat-bubble ai-chat-bubble-user">${escapeHtml(query || "Query")}</div>
+      <div class="ai-chat-bubble ai-chat-bubble-assistant">
+        ${fallbackNotice ? `<div class="ai-chat-fallback">${escapeHtml(fallbackNotice)}</div>` : ""}
+        ${sections.map(section => {
+      const forceList = section.title !== "Summary";
+      const lines = splitAiSectionLines(section.content, forceList);
+      const listMarkup = forceList || lines.length > 1
+        ? `<ul>${lines.map(line => `<li>${escapeHtml(line)}</li>`).join("")}</ul>`
+        : `<p>${escapeHtml(lines[0] || section.content)}</p>`;
+      return `
+        <section class="ai-chat-section">
+          <h3>${escapeHtml(section.title)}</h3>
+          ${listMarkup}
+        </section>
+      `;
+    }).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderAiChatSources(documents = []) {
+  const sourceBox = $("aiChatSources");
+  if (!Array.isArray(documents) || documents.length === 0) {
+    sourceBox.classList.add("hidden");
+    sourceBox.innerHTML = "";
+    return;
+  }
+
+  sourceBox.classList.remove("hidden");
+  sourceBox.innerHTML = `
+    <div class="ai-chat-sources-title">Source Records</div>
+    ${documents.slice(0, 5).map((doc, index) => `
+      <button type="button" class="ai-chat-source-item" ${doc.aid ? `data-ai-source-aid="${escapeHtml(doc.aid)}"` : "disabled"}>
+        <span class="ai-chat-source-index">${index + 1}</span>
+        <span class="ai-chat-source-main">
+          <strong>${escapeHtml(doc.field || "record")}</strong>
+          <small>${escapeHtml(doc.aid || doc._id || "Mongo record")}</small>
+        </span>
+        <span class="ai-chat-source-open">${escapeHtml(doc.open_label || (doc.aid ? "Open" : "Source only"))}</span>
+      </button>
+    `).join("")}
+  `;
+}
+
+async function runAiChatQuery() {
+  const query = $("aiChatInput").value.trim();
+  if (!query) {
+    $("aiChatStatus").textContent = "Enter a query first.";
+    return;
+  }
+
+  setActionButtonBusy("aiChatAskBtn", true, "Thinking...", "Ask");
+  $("aiChatStatus").textContent = "Searching MongoDB and asking local Ollama...";
+  $("aiChatAnswer").classList.add("hidden");
+  $("aiChatAnswer").textContent = "";
+  $("aiChatSources").classList.add("hidden");
+
+  try {
+    const data = await apiFetch("/api/ai/query", false, {
+      method: "POST",
+      body: { query, collection: "redis_kv_store", limit: 8, max_context_words: 1800 }
+    });
+
+    $("aiChatStatus").textContent = `${data.count || 0} record(s), ${data.context_word_count || 0} context words`;
+    renderAiChatAnswer(data.answer || "No answer returned.", query);
+    renderAiChatSources(data.documents || []);
+  } catch (error) {
+    $("aiChatStatus").textContent = error.message;
+    $("aiChatAnswer").classList.add("hidden");
+    showToast(`AI query failed: ${error.message}`, "error");
+  } finally {
+    setActionButtonBusy("aiChatAskBtn", false, "Thinking...", "Ask");
+  }
 }
 
 async function applyFeedFilters() {
@@ -2490,55 +1191,22 @@ async function routeHomepageSearch(query) {
   await feedPromise;
 }
 
+const headerSearch = createHeaderSearchModule({
+  state,
+  $,
+  renderSearchInsight,
+  setHeaderSearchBusy,
+  loadArticles,
+  routeHomepageSearch,
+  fetchSemanticGuide,
+  switchView,
+  showToast,
+  TOOL_VIEWS,
+  MIN_GLOBAL_SEARCH_LENGTH
+});
+
 async function handleHeaderSearch(force = false) {
-  const query = $("searchInput").value.trim();
-  if (!query) {
-    state.semanticSearch = null;
-    renderSearchInsight();
-    setHeaderSearchBusy(false);
-    if (!TOOL_VIEWS.includes(state.currentView) && state.currentView !== "homepage") {
-      await loadArticles(true, 1);
-    }
-    return;
-  }
-
-  if (query.length < MIN_GLOBAL_SEARCH_LENGTH) {
-    if (force) showToast(`Enter at least ${MIN_GLOBAL_SEARCH_LENGTH} characters to search intelligence.`, "info");
-    return;
-  }
-
-  if (TOOL_VIEWS.includes(state.currentView) && state.currentView !== "docs") {
-    return;
-  }
-
-  try {
-    setHeaderSearchBusy(true, state.currentView === "homepage" || state.currentView === "docs"
-      ? "Routing semantic search..."
-      : "Searching restored intelligence...");
-
-    if (state.currentView === "homepage" || state.currentView === "docs") {
-      await routeHomepageSearch(query);
-      return;
-    }
-
-    await fetchSemanticGuide(query);
-    if (!TOOL_VIEWS.includes(state.currentView)) {
-      await loadArticles(true, 1);
-    }
-  } catch (error) {
-    console.error(error);
-    state.semanticSearch = null;
-    renderSearchInsight();
-    if (state.currentView === "homepage" || state.currentView === "docs") {
-      await switchView("all");
-      return;
-    }
-    if (!TOOL_VIEWS.includes(state.currentView)) {
-      await loadArticles(true, 1);
-    }
-  } finally {
-    setHeaderSearchBusy(false);
-  }
+  return headerSearch.handleHeaderSearch(force);
 }
 
 function normalizeEntities(entities) {
@@ -2687,17 +1355,19 @@ function applyMapRegionVisual(code, country, spotlight = false) {
   const element = getMapRegionElement(code);
   if (!element) return;
   const style = getMapRegionStyle(country, spotlight);
-  element.classList.toggle("map-region-affected", !spotlight && Number(country?.total || 0) > 0);
-  element.classList.toggle("map-region-spotlight", spotlight);
-  element.style.setProperty("fill", style.fill, "important");
-  element.style.setProperty("stroke", style.stroke, "important");
-  element.style.setProperty("stroke-width", style.strokeWidth, "important");
-  if (style.filter) {
-    element.style.setProperty("filter", style.filter, "important");
-  } else {
-    element.style.removeProperty("filter");
+  element.classList?.toggle("map-region-affected", !spotlight && Number(country?.total || 0) > 0);
+  element.classList?.toggle("map-region-spotlight", spotlight);
+  if (element.style && typeof element.style.setProperty === "function") {
+    element.style.setProperty("fill", style.fill, "important");
+    element.style.setProperty("stroke", style.stroke, "important");
+    element.style.setProperty("stroke-width", style.strokeWidth, "important");
+    if (style.filter) {
+      element.style.setProperty("filter", style.filter, "important");
+    } else {
+      element.style.removeProperty("filter");
+    }
+    element.style.setProperty("opacity", "1", "important");
   }
-  element.style.setProperty("opacity", "1", "important");
 }
 
 function syncAffectedRegions(countries) {
@@ -2859,18 +1529,25 @@ async function initHeatmap() {
       },
       onRegionTooltipShow(event, tooltip, code) {
         const stats = state.countryStatsByCode[code];
-        if (!stats) {
-          tooltip.html(buildCountryTooltip({
-            name: tooltip.text(),
-            leak_count: 0,
-            defacement_count: 0,
-            total: 0,
-            examples: []
-          }));
-          return;
+        const html = !stats ? buildCountryTooltip({
+          name: typeof tooltip.text === 'function' ? tooltip.text() : (tooltip.textContent || 'Unknown'),
+          leak_count: 0,
+          defacement_count: 0,
+          total: 0,
+          examples: []
+        }) : buildCountryTooltip(stats);
+
+        if (typeof tooltip.html === 'function') {
+          tooltip.html(html);
+        } else if (tooltip.innerHTML !== undefined) {
+          tooltip.innerHTML = html;
+        } else if (tooltip.textContent !== undefined) {
+          tooltip.textContent = html;
         }
-        setMapSpotlight(code);
-        tooltip.html(buildCountryTooltip(stats));
+
+        if (stats) {
+          setMapSpotlight(code);
+        }
       },
       onRegionClick(event, code) {
         const stats = state.countryStatsByCode[code];
@@ -2971,22 +1648,9 @@ function renderCard(item) {
   const description = normalizePreviewText(firstNonEmpty(item.description, item.summary, "No description available."), "No description available.");
   const aiSummary = normalizePreviewText(item.ai_summary || buildLocalAiSummary(item), buildLocalAiSummary(item));
   const collectedAt = formatDate(item.scraped_at || item.date);
-  const media = collectDetailMedia(item);
-  const thumbnail = media[0];
-  if (thumbnail) {
-    card.classList.add("has-media");
-  }
 
   card.innerHTML = `
-    <div class="card-media ${thumbnail ? "" : "image-failed"}">
-      ${thumbnail
-        ? `<img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(title)} evidence screenshot" loading="lazy" onerror="this.closest('.card-media').classList.add('image-failed')" onload="this.closest('.card-media').classList.remove('image-failed')" />`
-        : ""}
-      <div class="card-media-fallback">
-        <span>${escapeHtml((item.source_type || "intel").toUpperCase())}</span>
-        <strong>${escapeHtml(sourceSite || sourceLabel || "Source preview")}</strong>
-      </div>
-    </div>
+    <div class="card-orbit" aria-hidden="true"></div>
     <div class="card-header">
       <span class="card-source">${escapeHtml(item.source_type || "intel")}</span>
       <span class="card-status">${escapeHtml(statusLabel)}</span>
@@ -3192,27 +1856,11 @@ function toMediaSource(value) {
   const text = String(value || "").trim();
   if (!text) return "";
   if (text.startsWith("data:image/")) return text;
-  if (text.startsWith("/")) return text;
   if (text.startsWith("http://") || text.startsWith("https://")) return text;
   if (looksLikeBase64Image(text)) {
     return `data:image/jpeg;base64,${text.replace(/\s+/g, "")}`;
   }
   return "";
-}
-
-function absoluteAssetUrl(src) {
-  const text = String(src || "").trim();
-  if (!text || text.startsWith("data:")) return text;
-  try {
-    return new URL(text, window.location.origin).href;
-  } catch {
-    return text;
-  }
-}
-
-function generatedScreenshotSource(item) {
-  const aid = String(item?.aid || "").trim();
-  return aid ? `/feed-screenshot?aid=${encodeURIComponent(aid)}` : "";
 }
 
 function collectDetailMedia(item) {
@@ -3235,8 +1883,7 @@ function collectDetailMedia(item) {
     ...normalizeStringList(raw.extra && raw.extra.og_image),
     ...normalizeStringList(raw.m_extra && raw.m_extra.original_screenshot_url),
     ...normalizeStringList(raw.m_extra && raw.m_extra.hero_image),
-    ...normalizeStringList(raw.m_extra && raw.m_extra.og_image),
-    generatedScreenshotSource(item)
+    ...normalizeStringList(raw.m_extra && raw.m_extra.og_image)
   ];
   return dedupeText(refs.map(toMediaSource).filter(Boolean));
 }
@@ -3394,12 +2041,27 @@ function openMediaLightbox(src, title = "Evidence image") {
 
 async function showDetail(aid) {
   try {
-    let item = state.detailCache.get(aid);
-    if (!item || !item.raw) {
-      item = await apiFetch(`/feed/${encodeURIComponent(aid)}`);
+    const cachedItem = state.detailCache.get(aid);
+    if (cachedItem) {
+      renderDetail(cachedItem);
+      if (cachedItem.raw) {
+        return;
+      }
+    } else {
+      renderDetail({
+        aid,
+        title: "Loading record...",
+        description: "Fetching full intelligence detail.",
+        source_type: "intel",
+        raw: { status: "loading", aid }
+      });
     }
+
+    const item = await apiFetch(`/feed/${encodeURIComponent(aid)}`);
     state.detailCache.set(aid, item);
-    renderDetail(item);
+    if (state.currentDetailItem?.aid === aid) {
+      renderDetail(item);
+    }
   } catch (error) {
     showToast(`Failed to load detail: ${error.message}`, "error");
   }
@@ -3419,7 +2081,6 @@ function closeMediaLightbox() {
 
 function buildDetailExportPayload(item) {
   const evidenceLinks = collectEvidenceLinks(item);
-  const media = collectDetailMedia(item);
   const entities = normalizeEntities(item.entities).map(entity => `${entity.label || "entity"}: ${entity.text || ""}`);
   const categories = (Array.isArray(item.categories) ? item.categories : []).map(category => {
     const score = typeof category.score === "number" ? ` (${Math.round(category.score * 100)}%)` : "";
@@ -3440,13 +2101,6 @@ function buildDetailExportPayload(item) {
       ["Source URL", item.url || item.website || item.seed_url || "Unavailable"]
     ],
     sections: [
-      media.length ? {
-        title: "Evidence Screenshots",
-        images: media.slice(0, 4).map((src, index) => ({
-          src,
-          label: `${title} screenshot ${index + 1}`
-        }))
-      } : null,
       { title: "Key Facts", fields: getDetailFacts(item) },
       { title: "AI Summary", text: normalizePreviewText(item.ai_summary || buildLocalAiSummary(item), buildLocalAiSummary(item)) },
       evidenceLinks.length ? { title: "Evidence Links", list: evidenceLinks } : null,
@@ -3460,12 +2114,12 @@ function buildDetailExportPayload(item) {
 
 function buildPakdbExportPayload() {
   const entry = state.scanExports.pakdb || { query: "", items: [] };
-  if (!entry.items.length) throw new Error("Run a national identity search before exporting.");
+  if (!entry.items.length) throw new Error("Run a Pakistan SIM lookup before exporting.");
 
   return {
-    filenameBase: `national-identity-${entry.query || "lookup"}`,
+    filenameBase: `pakistan-sim-${entry.query || "lookup"}`,
     kicker: "DarkPulse Scan Export",
-    title: "National Identity Search",
+    title: "Pakistan SIM Lookup",
     subtitle: `Query: ${entry.query || "-"}`,
     metadata: [
       ["Query", entry.query || "-"],
@@ -3477,7 +2131,7 @@ function buildPakdbExportPayload() {
         title: "Result Set",
         cards: entry.items.map((item, index) => ({
           title: item.name || `Record ${index + 1}`,
-          subtitle: item.mobile || item.cnic || "National identity result",
+          subtitle: item.mobile || item.cnic || "Pakistan SIM result",
           text: item.address || "Address unavailable",
           fields: [
             ["CNIC", item.cnic || "-"],
@@ -3563,7 +2217,7 @@ async function buildCredentialExportPayload() {
             ["File Type", item.file_type || "-"],
             ["Domain", item.domain || "-"],
             ["IP", item.ip || "-"],
-            ["Password", item.password || "-"],
+            ["Password", item.password_present ? "Present" : "Not present"],
             ["Source File", item.source_file || "-"]
           ]
         }))
@@ -3795,31 +2449,336 @@ async function handleExportAction(target, format, button) {
   }
 }
 
+function renderLoadingSkeleton(kind = "feed", count = 3) {
+  const total = Math.max(1, Number(count) || 1);
+
+  if (kind === "feed") {
+    return Array.from({ length: total }, () => `
+      <article class="card scan-loading-card scan-loading-card-wide" aria-hidden="true">
+        <div class="scan-loading-mini-grid">
+          <div class="scan-loading-stat"><div class="scan-line w-42"></div></div>
+          <div class="scan-loading-stat"><div class="scan-line w-28"></div></div>
+          <div class="scan-loading-stat"><div class="scan-line w-20"></div></div>
+        </div>
+        <div class="scan-loading-card scan-loading-card-full">
+          <div class="scan-line w-80"></div>
+          <div class="scan-line w-62"></div>
+          <div class="scan-line w-90"></div>
+          <div class="scan-line w-65"></div>
+        </div>
+      </article>
+    `).join("");
+  }
+
+  if (kind === "accordion") {
+    return Array.from({ length: total }, () => `
+      <div class="scan-loading-card scan-loading-card-accordion" aria-hidden="true">
+        <div class="scan-line w-48"></div>
+        <div class="scan-line w-84"></div>
+        <div class="scan-line w-72"></div>
+        <div class="scan-line w-55"></div>
+      </div>
+    `).join("");
+  }
+
+  if (kind === "cards") {
+    return Array.from({ length: total }, () => `
+      <article class="result-card scan-loading-card" aria-hidden="true">
+        <div class="scan-line w-42"></div>
+        <div class="scan-line w-90"></div>
+        <div class="scan-line w-72"></div>
+        <div class="scan-line w-84"></div>
+      </article>
+    `).join("");
+  }
+
+  return Array.from({ length: total }, () => `
+    <div class="scan-loading-card scan-loading-card-compact" aria-hidden="true">
+      <div class="scan-line w-42"></div>
+      <div class="scan-line w-80"></div>
+      <div class="scan-line w-55"></div>
+    </div>
+  `).join("");
+}
+
+function getPaginationMetrics(totalItems, currentPage = 1, pageSize = PAGE_SIZE) {
+  const total = Math.max(0, Number(totalItems) || 0);
+  const size = Math.max(1, Number(pageSize) || PAGE_SIZE);
+  const totalPages = total > 0 ? Math.max(1, Math.ceil(total / size)) : 0;
+  const page = totalPages ? Math.min(Math.max(1, Number(currentPage) || 1), totalPages) : 1;
+  const startIndex = totalPages ? (page - 1) * size : 0;
+  const endIndex = totalPages ? Math.min(startIndex + size, total) : 0;
+  const windowSize = Math.max(1, Number(PAGINATION_WINDOW) || 5);
+  const windowOffset = Math.floor(windowSize / 2);
+  let windowStart = Math.max(1, page - windowOffset);
+  let windowEnd = Math.min(totalPages, windowStart + windowSize - 1);
+  windowStart = Math.max(1, windowEnd - windowSize + 1);
+
+  return {
+    page,
+    pageSize: size,
+    totalItems: total,
+    totalPages,
+    startIndex,
+    endIndex,
+    startLabel: total ? startIndex + 1 : 0,
+    endLabel: endIndex,
+    windowStart,
+    windowEnd
+  };
+}
+
+function clearPagination(containerId) {
+  const container = $(containerId);
+  if (!container) return;
+  container.innerHTML = "";
+  container.classList.add("hidden");
+}
+
+function setActionButtonBusy(buttonId, isBusy, busyLabel, readyLabel = busyLabel) {
+  const button = $(buttonId);
+  if (!button) return;
+
+  if (isBusy) {
+    if (!button.dataset.defaultLabel) {
+      button.dataset.defaultLabel = button.textContent || readyLabel || busyLabel || "";
+    }
+    button.disabled = true;
+    button.textContent = busyLabel;
+    return;
+  }
+
+  button.disabled = false;
+  button.textContent = button.dataset.defaultLabel || readyLabel || button.textContent || "";
+}
+
+function setInlineButtonBusy(button, isBusy, label) {
+  if (!button) return;
+
+  if (isBusy) {
+    if (!button.dataset.defaultLabel) {
+      button.dataset.defaultLabel = button.textContent || label || "";
+    }
+    button.disabled = true;
+    button.textContent = label;
+    return;
+  }
+
+  button.disabled = false;
+  button.textContent = button.dataset.defaultLabel || button.textContent || "";
+}
+
+function setExportToolbarState(barId, isEnabled, message = "") {
+  const bar = $(barId);
+  if (!bar) return;
+
+  if (isEnabled) {
+    bar.classList.remove("hidden");
+    const msgEl = bar.querySelector(".export-toolbar-message");
+    if (msgEl && message) {
+      msgEl.textContent = message;
+    }
+    return;
+  }
+
+  bar.classList.add("hidden");
+}
+
+function showListScanLoading(statusId, listId, message, kind = "compact", count = 3) {
+  const statusEl = $(statusId);
+  const listEl = $(listId);
+
+  if (statusEl) {
+    statusEl.textContent = message;
+  }
+
+  if (listEl) {
+    listEl.innerHTML = renderLoadingSkeleton(kind, count);
+  }
+}
+
+function restoreReportTemplate(reportId, templateKey) {
+  const reportEl = $(reportId);
+  if (!reportEl) return;
+
+  const cachedTemplate = scanReportTemplates[templateKey];
+  if (cachedTemplate) {
+    reportEl.innerHTML = cachedTemplate;
+  }
+}
+
+function showReportScanLoading(statusId, reportId, templateKey, message) {
+  const statusEl = $(statusId);
+  const reportEl = $(reportId);
+
+  if (statusEl) {
+    statusEl.textContent = message;
+  }
+  if (!reportEl) return;
+
+  restoreReportTemplate(reportId, templateKey);
+  reportEl.classList.remove("hidden");
+  reportEl.innerHTML = renderLoadingSkeleton("accordion", 3);
+}
+
+function renderPagination(containerId, target, metrics = {}) {
+  const container = $(containerId);
+  if (!container) return;
+
+  const totalPages = Math.max(0, Number(metrics.totalPages) || 0);
+  if (totalPages <= 1) {
+    clearPagination(containerId);
+    return;
+  }
+
+  const currentPage = Math.max(1, Number(metrics.page) || 1);
+  const startPage = Math.max(1, Number(metrics.windowStart) || 1);
+  const endPage = Math.min(totalPages, Number(metrics.windowEnd) || totalPages);
+
+  const pageButtons = [];
+  pageButtons.push(`
+    <button type="button" class="pagination-btn pagination-nav" data-pagination-target="${escapeHtml(target)}" data-pagination-page="${Math.max(1, currentPage - 1)}" ${currentPage <= 1 ? "disabled" : ""}>Prev</button>
+  `);
+
+  if (startPage > 1) {
+    pageButtons.push(`
+      <button type="button" class="pagination-btn" data-pagination-target="${escapeHtml(target)}" data-pagination-page="1">1</button>
+    `);
+    if (startPage > 2) {
+      pageButtons.push(`<span class="pagination-ellipsis">...</span>`);
+    }
+  }
+
+  for (let page = startPage; page <= endPage; page += 1) {
+    pageButtons.push(`
+      <button type="button" class="pagination-btn ${page === currentPage ? "pagination-current" : ""}" data-pagination-target="${escapeHtml(target)}" data-pagination-page="${page}" ${page === currentPage ? "disabled" : ""}>${page}</button>
+    `);
+  }
+
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      pageButtons.push(`<span class="pagination-ellipsis">...</span>`);
+    }
+    pageButtons.push(`
+      <button type="button" class="pagination-btn" data-pagination-target="${escapeHtml(target)}" data-pagination-page="${totalPages}">${totalPages}</button>
+    `);
+  }
+
+  pageButtons.push(`
+    <button type="button" class="pagination-btn pagination-nav" data-pagination-target="${escapeHtml(target)}" data-pagination-page="${Math.min(totalPages, currentPage + 1)}" ${currentPage >= totalPages ? "disabled" : ""}>Next</button>
+  `);
+
+  container.innerHTML = `
+    <div class="pagination-shell-inner">
+      ${pageButtons.join("")}
+    </div>
+  `;
+  container.classList.remove("hidden");
+}
+
+function setClientPaginatedItems(target, items) {
+  const key = String(target || "");
+  state.paginatedResults[key] = {
+    items: Array.isArray(items) ? items.slice() : [],
+    page: 1,
+    pageSize: PAGE_SIZE
+  };
+}
+
+async function renderClientPaginatedResults(target, page = 1) {
+  const key = String(target || "");
+  const store = state.paginatedResults[key] || { items: [], page: 1, pageSize: PAGE_SIZE };
+  const items = Array.isArray(store.items) ? store.items : [];
+  const pageSize = Math.max(1, Number(store.pageSize || PAGE_SIZE) || PAGE_SIZE);
+  const metrics = getPaginationMetrics(items.length, page, pageSize);
+  const start = metrics.startIndex;
+  const slice = items.slice(start, start + pageSize);
+
+  state.paginatedResults[key] = {
+    ...store,
+    page: metrics.page,
+    pageSize
+  };
+
+  if (key === "pakdb") {
+    $("pakdbHistoryList").innerHTML = slice.map(renderPakdbResultCard).join("");
+    renderPagination("pakdbPagination", "pakdb", metrics);
+    return;
+  }
+
+  if (key === "playstore") {
+    $("playstoreResults").innerHTML = slice.map(renderPlaystoreCard).join("");
+    renderPagination("playstorePagination", "playstore", metrics);
+    return;
+  }
+
+  if (key === "software") {
+    $("softwareResults").innerHTML = slice.map(renderSoftwareAccordion).join("");
+    renderPagination("softwarePagination", "software", metrics);
+    return;
+  }
+
+  if (key === "credential") {
+    renderPagination("credentialPagination", "credential", metrics);
+  }
+}
+
+async function handlePaginationChange(target, page) {
+  const currentPage = Math.max(1, Number(page) || 1);
+
+  if (target === "feed") {
+    await loadArticles(true, currentPage);
+    return;
+  }
+
+  if (target === "credential") {
+    await runCredentialCheck(currentPage);
+    return;
+  }
+
+  if (target === "pakdb" || target === "playstore" || target === "software") {
+    await renderClientPaginatedResults(target, currentPage);
+    return;
+  }
+
+  console.warn(`Unknown pagination target: ${target}`);
+}
+
 function closeAlertSummaryModal() {
   $("alertSummaryBackdrop").classList.add("hidden");
 }
 
 function renderPakdbResultCard(item) {
+  const entries = Object.entries(item || {})
+    .filter(([key, value]) => value !== null && value !== undefined && value !== "" && !["source", "provider", "timestamp"].includes(String(key).toLowerCase()))
+    .slice(0, 8);
+  const title = item.name || item.mobile || item.number || item.phone || "Authorized Provider Record";
+  const provider = item.provider || item.source || "Authorized Provider";
+  const timestamp = item.timestamp || item.updated_at || item.created_at || "";
+
   return `
     <article class="identity-card">
       <div class="identity-header">
         <div>
-          <h3 class="identity-name">${escapeHtml(normalizePreviewText(item.name || "Unknown Record", "Unknown Record"))}</h3>
-          <p class="identity-address">${escapeHtml(normalizePreviewText(item.address || "Address unavailable", "Address unavailable"))}</p>
+          <h3 class="identity-name">${escapeHtml(normalizePreviewText(title, "Authorized Provider Record"))}</h3>
+          <p class="identity-address">${escapeHtml(normalizePreviewText(provider, "Authorized Provider"))}</p>
         </div>
-        <span class="identity-pill">National Identity</span>
+        <span class="identity-pill">PakDB Provider</span>
       </div>
       <div class="identity-grid">
-        <div class="identity-field">
-          <span class="identity-field-label">CNIC</span>
-          <span class="identity-field-value">${escapeHtml(item.cnic || "-")}</span>
-        </div>
-        <div class="identity-field">
-          <span class="identity-field-label">Mobile</span>
-          <span class="identity-field-value">${escapeHtml(item.mobile || "-")}</span>
-        </div>
+        ${entries.length ? entries.map(([key, value]) => `
+          <div class="identity-field">
+            <span class="identity-field-label">${escapeHtml(String(key).replace(/_/g, " ").toUpperCase())}</span>
+            <span class="identity-field-value">${escapeHtml(String(value))}</span>
+          </div>
+        `).join("") : `
+          <div class="identity-field">
+            <span class="identity-field-label">Record</span>
+            <span class="identity-field-value">No display fields returned</span>
+          </div>
+        `}
       </div>
-      <div class="identity-meta-line">Matched from the connected national identity lookup backend.</div>
+      <div class="identity-meta-line">Matched from the configured authorized provider${timestamp ? ` on ${escapeHtml(formatDate(timestamp))}` : ""}.</div>
     </article>
   `;
 }
@@ -4589,28 +3548,44 @@ async function runPakdbLookup() {
   setActionButtonBusy("pakdbSearchBtn", true, "Searching...");
   clearPagination("pakdbPagination");
   setExportToolbarState("pakdbExportBar", false);
-  showListScanLoading("pakdbStatus", "pakdbHistoryList", "Searching national identity records...", "compact", 3);
+  showListScanLoading("pakdbStatus", "pakdbHistoryList", "Searching Pakistan SIM records...", "compact", 3);
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
 
   try {
     const data = await apiFetch("/pakdb/lookup", false, {
       method: "POST",
-      body: { number }
+      body: { number },
+      signal: controller.signal
     });
 
     const items = data.results || [];
-    state.scanExports.pakdb = { query: number, items };
-    $("pakdbStatus").textContent = items.length ? `${items.length} result(s) returned.` : "No PakDB results found.";
+    state.scanExports.pakdb = { query: data.query || number, provider: data.provider || "", items };
+    if (data.status === "error") {
+      $("pakdbStatus").textContent = data.message || "PakDB lookup failed. Please check provider API settings.";
+      $("pakdbHistoryList").innerHTML = "";
+      clearPagination("pakdbPagination");
+      setExportToolbarState("pakdbExportBar", false);
+      return;
+    }
+    $("pakdbStatus").textContent = items.length
+      ? `${items.length} result(s) returned from ${data.provider || "authorized provider"}.`
+      : (data.message || "No matching record found from the configured authorized provider.");
     setClientPaginatedItems("pakdb", items);
-    setExportToolbarState("pakdbExportBar", items.length > 0, `${items.length} national identity result(s) ready for export.`);
+    setExportToolbarState("pakdbExportBar", items.length > 0, `${items.length} Pakistan SIM result(s) ready for export.`);
     await renderClientPaginatedResults("pakdb", 1);
   } catch (error) {
     state.scanExports.pakdb = { query: number, items: [] };
-    $("pakdbStatus").textContent = error.message;
+    $("pakdbStatus").textContent = error.name === "AbortError"
+      ? "PakDB lookup failed. Please check provider API settings."
+      : error.message;
     $("pakdbHistoryList").innerHTML = "";
     clearPagination("pakdbPagination");
     setExportToolbarState("pakdbExportBar", false);
   } finally {
-    setActionButtonBusy("pakdbSearchBtn", false, "Searching...");
+    clearTimeout(timeoutId);
+    setActionButtonBusy("pakdbSearchBtn", false, "Searching...", "Search");
   }
 }
 
@@ -4772,7 +3747,7 @@ function renderCredentialResultItem(item, index) {
             </div>
             <div class="credential-detail-card">
               <span class="credential-detail-label">Password</span>
-              <span class="credential-detail-value">${escapeHtml(item.password || "-")}</span>
+              <span class="credential-detail-value">${escapeHtml(item.password_present ? "Present" : "Not present")}</span>
             </div>
           </div>
         </div>
@@ -4980,13 +3955,13 @@ async function switchView(target, options = {}) {
   }
   if (target === "healing") {
     $("viewHealing").classList.remove("hidden");
-    await loadHealingMonitor();
+    await healingMonitor.loadHealingMonitor();
     maybeApplyActiveTranslation("view");
     return;
   }
   if (target === "leak-source-status") {
     $("viewLeakSourceStatus").classList.remove("hidden");
-    await loadLeakSourceStatus();
+    await healingMonitor.loadLeakSourceStatus();
     maybeApplyActiveTranslation("view");
     return;
   }
@@ -5021,9 +3996,9 @@ function scheduleRefresh() {
       } else if (state.currentView === "admin-users") {
         await Promise.all([refreshUserList(), refreshPasswordResetRequests()]);
       } else if (state.currentView === "healing") {
-        await loadHealingMonitor(true);
+        await healingMonitor.loadHealingMonitor(true);
       } else if (state.currentView === "leak-source-status") {
-        await loadLeakSourceStatus(true);
+        await healingMonitor.loadLeakSourceStatus(true);
       } else if (!TOOL_VIEWS.includes(state.currentView)) {
         await loadArticles(true, state.feedPage || 1);
       }
@@ -5081,7 +4056,7 @@ function setupEventListeners() {
     openMediaLightbox(card.dataset.mediaSrc || "", card.dataset.mediaTitle || "Evidence image");
   });
   $("mediaLightboxClose").addEventListener("click", closeMediaLightbox);
-  $("leakSourceRefreshBtn").addEventListener("click", () => loadLeakSourceStatus(false));
+  $("leakSourceRefreshBtn").addEventListener("click", () => healingMonitor.loadLeakSourceStatus(false));
   $("mediaLightboxBackdrop").addEventListener("click", event => {
     if (event.target === $("mediaLightboxBackdrop")) closeMediaLightbox();
   });
@@ -5109,6 +4084,21 @@ function setupEventListeners() {
   $("feedFiltersClose").onclick = closeFeedFiltersModal;
   $("feedFiltersApplyBtn").onclick = applyFeedFilters;
   $("feedFiltersResetBtn").onclick = resetFeedFilters;
+  $("aiChatLaunchBtn").onclick = openAiChatModal;
+  $("aiChatClose").onclick = closeAiChatModal;
+  $("aiChatAskBtn").onclick = runAiChatQuery;
+  $("aiChatClearBtn").onclick = clearAiChat;
+  $("aiChatInput").addEventListener("keydown", event => {
+    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+      runAiChatQuery();
+    }
+  });
+  $("aiChatSources").addEventListener("click", event => {
+    const source = event.target.closest("[data-ai-source-aid]");
+    if (!source) return;
+    closeAiChatModal();
+    showDetail(source.dataset.aiSourceAid);
+  });
 
   window.onclick = e => {
     if (e.target === $("settingsBackdrop")) $("settingsBackdrop").classList.add("hidden");
@@ -5116,110 +4106,23 @@ function setupEventListeners() {
     if (e.target === $("mediaLightboxBackdrop")) closeMediaLightbox();
     if (e.target === $("translateBackdrop")) closeTranslateModal();
     if (e.target === $("feedFiltersBackdrop")) closeFeedFiltersModal();
+    if (e.target === $("aiChatBackdrop")) closeAiChatModal();
   };
 
-  $("saveSettingsBtn").addEventListener("click", () => {
-    localStorage.setItem(API_BASE_KEY, $("apiBaseInput").value.trim() || DEFAULT_API_BASE);
-    localStorage.setItem(STORAGE_KEY, $("apiKeyInput").value.trim());
-    window.location.reload();
+  attachSettingsHandlers({ $, DEFAULT_API_BASE, API_BASE_KEY, STORAGE_KEY });
+
+  attachAuthUIHandlers({ $, handleAuthSubmit: authManager.handleAuthSubmit, authUI });
+
+  attachHeaderSearchHandlers({
+    $,
+    debounce,
+    handleHeaderSearch,
+    state,
+    TOOL_VIEWS,
+    SEARCH_DEBOUNCE_MS
   });
 
-  $("testConnBtn").addEventListener("click", async () => {
-    const base = $("apiBaseInput").value.trim() || DEFAULT_API_BASE;
-    const result = $("testResult");
-    result.textContent = "Testing connection...";
-    try {
-      const response = await fetch(`${base}/health`);
-      const data = await response.json();
-      result.textContent = data.status === "ok" ? "Connection successful." : "Connection reachable but degraded.";
-    } catch {
-      result.textContent = "Connection failed.";
-    }
-  });
-
-  $("authSubmitBtn").addEventListener("click", handleAuthSubmit);
-  $("showRegisterLink").addEventListener("click", event => {
-    event.preventDefault();
-    toggleAuthMode();
-  });
-  $("showApprovalLink").addEventListener("click", event => {
-    event.preventDefault();
-    clearErrors();
-    clearAuthChallenge();
-    setAuthStage("approval");
-  });
-  $("showForgotLink").addEventListener("click", event => {
-    event.preventDefault();
-    clearErrors();
-    clearAuthChallenge();
-    setAuthStage("forgot");
-  });
-  $("showLoginLink").addEventListener("click", event => {
-    event.preventDefault();
-    toggleAuthMode();
-  });
-  $("forgotBackToLogin").addEventListener("click", event => {
-    event.preventDefault();
-    clearErrors();
-    setAuthStage("login");
-  });
-  $("approvalBackToLogin").addEventListener("click", event => {
-    event.preventDefault();
-    clearErrors();
-    setAuthStage("login");
-  });
-  $("approvalOpenRegister").addEventListener("click", event => {
-    event.preventDefault();
-    clearErrors();
-    setAuthStage("register");
-  });
-  $("mfaBackToLogin").addEventListener("click", event => {
-    event.preventDefault();
-    clearErrors();
-    clearAuthChallenge();
-    setAuthStage("login");
-  });
-  ["loginUsername", "loginPassword", "mfaOtpInput", "regName", "regEmail", "regUsername", "regPassword", "forgotIdentity", "forgotMessage"].forEach(id => {
-    $(id).addEventListener("keydown", event => {
-      if (event.key !== "Enter") return;
-      event.preventDefault();
-      handleAuthSubmit();
-    });
-  });
-
-  $("searchInput").addEventListener("input", debounce(() => {
-    const query = $("searchInput").value.trim();
-    if (!query) {
-      handleHeaderSearch(false);
-      return;
-    }
-    if (state.currentView === "homepage" || state.currentView === "docs") return;
-    if (!TOOL_VIEWS.includes(state.currentView)) {
-      handleHeaderSearch(false);
-    }
-  }, SEARCH_DEBOUNCE_MS));
-
-  $("searchInput").addEventListener("keydown", event => {
-    if (event.key !== "Enter") return;
-    event.preventDefault();
-    handleHeaderSearch(true);
-  });
-
-  document.addEventListener("click", async event => {
-    const button = event.target.closest("[data-pagination-target]");
-    if (!button) return;
-    event.preventDefault();
-    if (button.disabled) return;
-    await handlePaginationChange(button.dataset.paginationTarget || "", button.dataset.paginationPage || "1");
-  });
-
-  document.addEventListener("click", async event => {
-    const button = event.target.closest("[data-export-target]");
-    if (!button) return;
-    event.preventDefault();
-    if (button.disabled) return;
-    await handleExportAction(button.dataset.exportTarget || "", button.dataset.exportFormat || "json", button);
-  });
+  attachUIDelegates({ $, handlePaginationChange, handleExportAction });
 
   $("pakdbSearchBtn").addEventListener("click", runPakdbLookup);
   $("pakdbInput").addEventListener("keydown", event => {
@@ -5250,9 +4153,9 @@ function setupEventListeners() {
   $("repoScanInput").addEventListener("keydown", event => {
     if (event.key === "Enter") runRepoScan();
   });
-  $("healingDiscoverBtn").addEventListener("click", runHealingDiscover);
-  $("healingRunBtn").addEventListener("click", () => runHealingMonitor());
-  $("healingRefreshBtn").addEventListener("click", () => loadHealingMonitor());
+  $("healingDiscoverBtn").addEventListener("click", () => healingMonitor.runHealingDiscover());
+  $("healingRunBtn").addEventListener("click", () => healingMonitor.runHealingMonitor());
+  $("healingRefreshBtn").addEventListener("click", () => healingMonitor.loadHealingMonitor());
   $("healingCollectorFilter").addEventListener("change", () => {
     $("healingScriptsSummary").textContent = `${getFilteredHealingScripts().length} script(s) in current view`;
     $("healingScriptsTableBody").innerHTML = renderHealingScriptRows(getFilteredHealingScripts());
@@ -5264,22 +4167,22 @@ function setupEventListeners() {
   $("healingScriptsTableBody").addEventListener("click", event => {
     const checkButton = event.target.closest("[data-healing-check]");
     if (checkButton) {
-      runHealingMonitor(checkButton.dataset.healingCheck || "", checkButton);
+      healingMonitor.runHealingMonitor(checkButton.dataset.healingCheck || "", checkButton);
       return;
     }
     const detailButton = event.target.closest("[data-healing-detail]");
     if (detailButton) {
-      loadHealingScriptDetail(detailButton.dataset.healingDetail || "", detailButton.dataset.healingFocus || "");
+      healingMonitor.loadHealingScriptDetail(detailButton.dataset.healingDetail || "", detailButton.dataset.healingFocus || "");
       return;
     }
     const repairButton = event.target.closest("[data-healing-repair]");
     if (repairButton) {
-      generateHealingRepair(repairButton.dataset.healingRepair || "", repairButton);
+      healingMonitor.generateHealingRepair(repairButton.dataset.healingRepair || "", repairButton);
       return;
     }
     const applyButton = event.target.closest("[data-healing-apply]");
     if (applyButton) {
-      applyHealingRepair(applyButton.dataset.healingApply || "", applyButton);
+      healingMonitor.applyHealingRepair(applyButton.dataset.healingApply || "", applyButton);
     }
   });
 
@@ -5555,13 +4458,16 @@ async function runPlaystoreScan() {
     }
     const items = data.results || [];
     state.scanExports.playstore = { query: url, items };
-    $("playstoreStatus").textContent = items.length ? `${items.length} result(s) returned.` : "No cracked versions found.";
+    const scanLabel = data.package_id ? `${data.app_name || data.package_id} (${data.package_id})` : url;
+    $("playstoreStatus").textContent = items.length
+      ? `${items.length} cracked/modded reference(s) found for ${scanLabel}.`
+      : (data.message || "No cracked/modded versions found.");
     if (items.length) {
       $("playstoreResultsHeader").classList.remove("hidden");
-      $("playstoreQueryLabel").textContent = url.length > 30 ? url.substring(0, 27) + "..." : url;
+      $("playstoreQueryLabel").textContent = scanLabel.length > 42 ? scanLabel.substring(0, 39) + "..." : scanLabel;
       $("playstoreCount").textContent = items.length;
       setClientPaginatedItems("playstore", items);
-      setExportToolbarState("playstoreExportBar", true, `${items.length} Playstore result(s) ready for export.`);
+      setExportToolbarState("playstoreExportBar", true, `${items.length} Playstore scanner result(s) ready for export.`);
       await renderClientPaginatedResults("playstore", 1);
     } else {
       $("playstoreResults").innerHTML = "";
@@ -5580,36 +4486,43 @@ async function runPlaystoreScan() {
 }
 
 function renderPlaystoreCard(item) {
+  const title = item.title || item.app_name || "Suspicious APK reference";
+  const domain = item.sourceDomain || item.source || item.network || "clearnet";
+  const risk = String(item.riskLevel || (item.version ? "medium" : "low")).toLowerCase();
+  const riskClass = risk === "high" ? "is-danger" : (risk === "medium" ? "is-warning" : "is-muted");
+  const snippet = item.snippet || item.description || "Suspicious third-party APK reference discovered by the scanner.";
+  const matchedKeyword = item.matchedKeyword || item.mod_features || "apk reference";
+
   return `
     <article class="result-card">
       <div class="result-card-header">
         <div class="result-card-headline">
-          <span class="result-card-eyebrow">${escapeHtml(item.source || item.network || "clearnet")}</span>
-          <h3 class="result-card-title">${escapeHtml(normalizePreviewText(item.app_name || "Unknown Application", "Unknown Application"))}</h3>
+          <span class="result-card-eyebrow">${escapeHtml(domain)}</span>
+          <h3 class="result-card-title">${escapeHtml(normalizePreviewText(title, "Suspicious APK reference"))}</h3>
         </div>
-        <span class="result-status-pill ${item.version ? "is-good" : "is-muted"}">${escapeHtml(item.version || "Unknown Version")}</span>
+        <span class="result-status-pill ${riskClass}">${escapeHtml(risk.toUpperCase())}</span>
       </div>
-      <p class="result-card-desc">${escapeHtml(normalizePreviewText((item.description || "").trim() || "Description not available from the source page.", "Description not available from the source page."))}</p>
+      <p class="result-card-desc">${escapeHtml(normalizePreviewText(snippet, "Suspicious third-party APK reference discovered by the scanner."))}</p>
       <div class="result-card-grid">
         <div class="result-card-field">
           <span class="result-card-field-label">Package</span>
           <span class="result-card-field-value">${escapeHtml(item.package_id || "N/A")}</span>
         </div>
         <div class="result-card-field">
-          <span class="result-card-field-label">Updated</span>
-          <span class="result-card-field-value">${escapeHtml(item.latest_date || "N/A")}</span>
+          <span class="result-card-field-label">Domain</span>
+          <span class="result-card-field-value">${escapeHtml(domain)}</span>
         </div>
         <div class="result-card-field">
-          <span class="result-card-field-label">Size</span>
-          <span class="result-card-field-value">${escapeHtml(item.apk_size || "N/A")}</span>
+          <span class="result-card-field-label">Matched Keyword</span>
+          <span class="result-card-field-value">${escapeHtml(matchedKeyword)}</span>
         </div>
         <div class="result-card-field">
-          <span class="result-card-field-label">Type</span>
-          <span class="result-card-field-value">${escapeHtml(item.content_type || "apk")}</span>
+          <span class="result-card-field-label">Risk</span>
+          <span class="result-card-field-value">${escapeHtml(risk)}</span>
         </div>
         <div class="result-card-field">
-          <span class="result-card-field-label">Publisher</span>
-          <span class="result-card-field-value">${escapeHtml(item.publisher || "N/A")}</span>
+          <span class="result-card-field-label">App</span>
+          <span class="result-card-field-value">${escapeHtml(item.app_name || "N/A")}</span>
         </div>
         <div class="result-card-field">
           <span class="result-card-field-label">Network</span>
@@ -5617,12 +4530,11 @@ function renderPlaystoreCard(item) {
         </div>
       </div>
       <div class="result-card-note">
-        <span class="result-card-note-label">Mod Features</span>
-        <p class="result-card-note-copy">${escapeHtml(normalizePreviewText(item.mod_features || "Standard features info not provided.", "Standard features info not provided."))}</p>
+        <span class="result-card-note-label">Why flagged</span>
+        <p class="result-card-note-copy">${escapeHtml(normalizePreviewText(`Matched suspicious APK wording: ${matchedKeyword}. ${snippet}`, "Suspicious APK reference."))}</p>
       </div>
       <div class="result-card-actions">
         <a href="${escapeHtml(item.url || "#")}" target="_blank" rel="noopener noreferrer" class="btn-action">View Page</a>
-        ${item.download_link ? `<a href="${escapeHtml(item.download_link)}" target="_blank" rel="noopener noreferrer" class="btn-action btn-action-primary">Download APK</a>` : ""}
       </div>
     </article>
   `;
@@ -5715,10 +4627,14 @@ async function runRepoScan() {
   setExportToolbarState("repoExportBar", false);
   showReportScanLoading("repoScanStatus", "repoScanReport", "repo", "Queued: analyzing repository posture and dependency coverage...");
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 70000);
+
   try {
     const data = await apiFetch("/scan/repo", false, {
       method: "POST",
-      body: { url: url }
+      body: { url: url },
+      signal: controller.signal
     });
     if (data.status === "error") {
       state.scanExports.repo = null;
@@ -5740,10 +4656,14 @@ async function runRepoScan() {
     state.scanExports.repo = null;
     restoreReportTemplate("repoScanReport", "repo");
     $("repoScanReport").classList.add("hidden");
-    $("repoScanStatus").textContent = `Scan failed: ${error.message}`;
+    const message = error.name === "AbortError"
+      ? "Scan failed: Repository scan timed out after 70 seconds. Try again later or use a smaller repository."
+      : `Scan failed: ${error.message}`;
+    $("repoScanStatus").textContent = message;
     setExportToolbarState("repoExportBar", false);
   } finally {
-    setActionButtonBusy("repoScanSearchBtn", false, "Scanning...");
+    clearTimeout(timeoutId);
+    setActionButtonBusy("repoScanSearchBtn", false, "Scanning...", "Search");
   }
 }
 

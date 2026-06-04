@@ -16,6 +16,7 @@ KNOWN_STEALER_FILENAMES = {
 }
 ALLOWED_DATASET_SUFFIXES = {".json", ".jsonl", ".ndjson"}
 MAX_RENDERED_RESULTS = 500
+CREDENTIAL_DOCUMENT_SCHEMA_VERSION = 3
 _DATASET_CACHE: dict[tuple[str, int, int], list[dict[str, Any]]] = {}
 
 HOST_KEYS = {
@@ -357,28 +358,11 @@ def _mask_email(value: str) -> str:
     return value
 
 def _mask_token(value: str) -> str:
-    value = _normalize_text(value)
-    if not value or value == "-":
-        return "-"
-    if "@" in value:
-        return _mask_email(value)
-    if len(value) <= 4:
-        return value[:1] + "***"
-    return f"{value[:2]}***{value[-1:]}"
+    return value
 
 
 def _mask_ip(value: str) -> str:
-    value = _normalize_text(value)
-    if not value:
-        return "-"
-    if "." in value:
-        parts = value.split(".")
-        if len(parts) == 4:
-            return f"{parts[0]}.{parts[1]}.x.x"
-    if ":" in value:
-        parts = value.split(":")
-        return ":".join(parts[:2] + ["x", "x"])
-    return "-"
+    return value
 
 
 def _format_date(value: Any) -> str:
@@ -439,32 +423,9 @@ def _build_tags(record: dict[str, Any], source_file: str) -> list[dict[str, Any]
     return tags[:6]
 
 
-def _redacted_trace(record: dict[str, Any], host: str, identifier: str, password_present: bool) -> str:
-    trace = _first_value(record, RAW_TRACE_KEYS)
-    if not trace:
-        if host:
-            trace = f"https://{host}/:[redacted_user]"
-            if password_present:
-                trace += ":[redacted_secret]"
-        else:
-            trace = "Credential evidence available in source record (redacted)."
-
-    redacted = trace
-    if identifier:
-        redacted = redacted.replace(identifier, "[redacted_user]")
-    email = _find_email(record)
-    if email:
-        redacted = redacted.replace(email, "[redacted_email]")
-    if password_present:
-        password = _first_value(record, PASSWORD_KEYS)
-        if password:
-            redacted = redacted.replace(password, "[redacted_secret]")
-    redacted = re.sub(r"[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}", "[redacted_email]", redacted, flags=re.IGNORECASE)
-    return redacted[:420]
-
-
 def _normalize_match(record: dict[str, Any], source_file: Path) -> dict[str, Any] | None:
-    identifier = _first_value(record, IDENTIFIER_KEYS) or _find_email(record)
+    email = _find_email(record)
+    identifier = email or _first_value(record, IDENTIFIER_KEYS)
     host = _extract_host(record, identifier=identifier)
     if not host and not identifier:
         return None
@@ -472,15 +433,16 @@ def _normalize_match(record: dict[str, Any], source_file: Path) -> dict[str, Any
     date_label = _format_date(_first_value(record, DATE_KEYS))
     password = _first_value(record, PASSWORD_KEYS)
     password_present = bool(password)
-    email_or_username = _first_value(record, {"email", "email_address", "mail", "username", "user", "user_name", "login"})
+    email_or_username = email or _first_value(record, {"email", "email_address", "mail", "username", "user", "user_name", "login"})
     source_domain = _first_value(record, SOURCE_DOMAIN_KEYS) or host or "-"
     url_value = _safe_source_url(record)
+    raw_trace = _first_value(record, RAW_TRACE_KEYS)
     domain_from_identifier = identifier.split("@", 1)[1].lower() if "@" in identifier else ""
     normalized_domain = domain_from_identifier or host or "-"
 
     result = {
         "domain_host": host or "-",
-        "credential_identifier": _mask_email(identifier) if "" in identifier else _mask_token(identifier),
+        "credential_identifier": _mask_email(identifier) if "@" in identifier else _mask_token(identifier),
         "date": date_label,
         "source_domain": source_domain,
         "channel": _first_value(record, CHANNEL_KEYS) or "-",
@@ -492,7 +454,7 @@ def _normalize_match(record: dict[str, Any], source_file: Path) -> dict[str, Any
         "password": password if password else "-",
         "password_present": password_present,
         "metadata_tags": _build_tags(record, source_file.name),
-        "raw_trace": _redacted_trace(record, host or normalized_domain, identifier, password_present),
+        "raw_trace": raw_trace or "-",
         "source_file": _first_value(record, FILE_NAME_KEYS) or source_file.name,
         "source_url": url_value or "-",
     }
@@ -561,6 +523,7 @@ def build_documents_from_file(path: Path) -> list[dict[str, Any]]:
         doc = dict(normalized)
         doc.update({
             "ingest_key": ingest_key,
+            "schema_version": CREDENTIAL_DOCUMENT_SCHEMA_VERSION,
             "dataset_name": path.name,
             "dataset_path": str(dataset_path),
             "dataset_size_bytes": stat.st_size,

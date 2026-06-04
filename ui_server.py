@@ -106,6 +106,17 @@ TERMINAL_SCAN_STATUSES = {
 SCAN_LOCK_ID = "intelligence_scan_lock"
 SCAN_RECOVERY_GRACE_SECONDS = 10
 SOURCE_HIGHLIGHT_LIMIT = 5
+SMART_UPDATE_SCAN_MODE = "fast_headless_incremental"
+SMART_UPDATE_SOURCE_TIMEOUT_SECONDS = int(os.getenv("SMART_UPDATE_SOURCE_TIMEOUT_SECONDS", "360"))
+SMART_UPDATE_BASE_ENV = {
+    "DARKPULSE_FAST_SCAN": "1",
+    "DARKPULSE_INCREMENTAL_SCAN": "1",
+    "DARKPULSE_HEADLESS": "1",
+    "HEADLESS": "1",
+    "PLAYWRIGHT_HEADLESS": "1",
+    "PWDEBUG": "0",
+    "CI": "1",
+}
 FEED_CACHE_TTL_SECONDS = 30
 _FEED_ITEMS_CACHE: dict[tuple[str, bool], tuple[float, list[dict]]] = {}
 FEED_PAGE_CACHE_TTL_SECONDS = 180
@@ -482,10 +493,9 @@ def _build_notification_payload(
     source_breakdown = [f"{item['label']} {item.get('new_records', 0)}" for item in source_results]
 
     if status == "running":
-        title = "Automated intelligence update is running"
+        title = "Fast background intelligence sync is running"
         message = (
-            "Scanning security feeds, ransomware leak sources, channel monitoring, "
-            "and defacement tracking. MongoDB will refresh when the run completes."
+            "Cached dashboard records stay visible while headless collectors check for new dated intelligence and upsert it into MongoDB."
         )
     elif status == "cancelling":
         title = "Stopping the automated intelligence update"
@@ -533,6 +543,7 @@ def _build_notification_payload(
         "_id": job_id,
         "job_id": job_id,
         "status": status,
+        "scan_mode": SMART_UPDATE_SCAN_MODE,
         "level": _notification_level(status),
         "title": title,
         "message": message,
@@ -554,6 +565,7 @@ def _build_source_result(source_key: str, before_count: int) -> dict[str, Any]:
         "label": source_meta["label"],
         "collector": source_meta["collector"],
         "status": "queued",
+        "scan_mode": SMART_UPDATE_SCAN_MODE,
         "pid": None,
         "before_count": before_count,
         "current_count": before_count,
@@ -662,13 +674,22 @@ def _extract_source_highlights_from_doc(source_key: str, doc: dict[str, Any]) ->
     return []
 
 
-async def _fetch_source_highlights(source_key: str, limit: int) -> list[dict[str, str]]:
+async def _fetch_source_highlights(source_key: str, limit: int, *, since: str | None = None) -> list[dict[str, str]]:
     safe_limit = max(min(int(limit or 0), SOURCE_HIGHLIGHT_LIMIT), 0)
     if safe_limit <= 0:
         return []
 
     collection_name = INTELLIGENCE_SCAN_SOURCES[source_key]["collection_name"]
-    docs = await db[collection_name].find().sort([("$natural", -1)]).limit(max(safe_limit * 3, safe_limit)).to_list(length=max(safe_limit * 3, safe_limit))
+    query: dict[str, Any] = {}
+    if since:
+        # Raw collector docs use ISO strings for created_at. Filtering here makes
+        # the run summary show records inserted during this scan, not stale cache.
+        query["$or"] = [
+            {"created_at": {"$gte": since}},
+            {"updated_at": {"$gte": since}},
+            {"synced_at": {"$gte": since}},
+        ]
+    docs = await db[collection_name].find(query).sort([("created_at", -1), ("updated_at", -1), ("_id", -1)]).limit(max(safe_limit * 3, safe_limit)).to_list(length=max(safe_limit * 3, safe_limit))
     highlights: list[dict[str, str]] = []
     seen: set[tuple[str, str]] = set()
 
@@ -702,12 +723,13 @@ async def _build_final_source_result(
 ) -> dict[str, Any]:
     source_meta = INTELLIGENCE_SCAN_SOURCES[source_key]
     new_records = max(int(current_count) - int(before_count), 0)
-    highlights = await _fetch_source_highlights(source_key, min(new_records, SOURCE_HIGHLIGHT_LIMIT))
+    highlights = await _fetch_source_highlights(source_key, min(new_records, SOURCE_HIGHLIGHT_LIMIT), since=started_at)
     payload = {
         "source": source_key,
         "label": source_meta["label"],
         "collector": source_meta["collector"],
         "status": status,
+        "scan_mode": SMART_UPDATE_SCAN_MODE,
         "pid": pid,
         "before_count": before_count,
         "current_count": current_count,
@@ -786,6 +808,22 @@ async def _fetch_latest_run() -> Optional[dict[str, Any]]:
 
 async def _fetch_latest_notification() -> Optional[dict[str, Any]]:
     return await intelligence_notifications_col.find_one(sort=[("updated_at", -1)])
+
+
+async def _ensure_intelligence_indexes() -> None:
+    index_jobs = [
+        intelligence_runs_col.create_index([("started_at", -1)]),
+        intelligence_notifications_col.create_index([("updated_at", -1)]),
+        automation_state_col.create_index([("updated_at", -1)]),
+    ]
+    for source_meta in INTELLIGENCE_SCAN_SOURCES.values():
+        collection = db[source_meta["collection_name"]]
+        index_jobs.extend([
+            collection.create_index([("dedupe_key", 1)]),
+            collection.create_index([("created_at", -1)]),
+            collection.create_index([("updated_at", -1)]),
+        ])
+    await asyncio.gather(*index_jobs, return_exceptions=True)
 
 
 async def _acquire_scan_lock(job_id: str, triggered_by: str, sources: list[str]) -> Optional[dict[str, Any]]:
@@ -1122,6 +1160,13 @@ async def _run_source_scan(job_id: str, source_key: str) -> dict[str, Any]:
 
     started_at = _utcnow_iso()
     env = os.environ.copy()
+    env.update(SMART_UPDATE_BASE_ENV)
+    env.update({
+        "DARKPULSE_SCAN_JOB_ID": job_id,
+        "DARKPULSE_SCAN_SOURCE": source_key,
+        "DARKPULSE_SCAN_STARTED_AT": started_at,
+        "SMART_UPDATE_SCAN_MODE": SMART_UPDATE_SCAN_MODE,
+    })
     env.update({key: str(value) for key, value in source_meta.get("env_overrides", {}).items() if str(value).strip()})
     process = await asyncio.create_subprocess_exec(
         sys.executable,
@@ -1156,6 +1201,16 @@ async def _run_source_scan(job_id: str, source_key: str) -> dict[str, Any]:
             returncode = await asyncio.wait_for(process.wait(), timeout=1.0)
             break
         except asyncio.TimeoutError:
+            if SMART_UPDATE_SOURCE_TIMEOUT_SECONDS > 0 and _seconds_since(started_at) >= SMART_UPDATE_SOURCE_TIMEOUT_SECONDS:
+                _kill_pid_group(process.pid, force=False)
+                stop_signal_sent = True
+                stop_deadline = asyncio.get_running_loop().time() + 5
+                await _update_source_result(
+                    job_id,
+                    source_key,
+                    status="cancelling",
+                    error=f"Fast headless scan timeout after {SMART_UPDATE_SOURCE_TIMEOUT_SECONDS} seconds.",
+                )
             current_count = await _count_source_documents(source_key)
             await _update_source_result(
                 job_id,
@@ -1223,6 +1278,7 @@ async def _execute_intelligence_update(job_id: str) -> None:
                 "job_id": job_id,
                 "triggered_by": triggered_by,
                 "started_at": started_at,
+                "scan_mode": SMART_UPDATE_SCAN_MODE,
                 "sources": [
                     {
                         "source": source_key,
@@ -1274,6 +1330,7 @@ async def _execute_intelligence_update(job_id: str) -> None:
             "new_records_total": new_records_total,
             "delivery": delivery,
             "stop_requested": stop_requested,
+            "scan_mode": SMART_UPDATE_SCAN_MODE,
         }
         await intelligence_runs_col.update_one({"_id": job_id}, {"$set": update_doc})
         _clear_feed_cache()
@@ -1533,6 +1590,7 @@ async def create_default_admin():
         },
         upsert=True,
     )
+    await _ensure_intelligence_indexes()
 
 
 async def _run_healing_discovery() -> dict[str, Any]:
@@ -1792,6 +1850,7 @@ async def trigger_smart_update(current_user: dict = Depends(get_current_user)):
         "_id": job_id,
         "job_id": job_id,
         "status": "queued",
+        "scan_mode": SMART_UPDATE_SCAN_MODE,
         "triggered_by": triggered_by,
         "sources": sources,
         "started_at": started_at,
@@ -1825,7 +1884,7 @@ async def trigger_smart_update(current_user: dict = Depends(get_current_user)):
 
     return {
         "status": "ok",
-        "message": f"Automated intelligence update started. Arya delivery: {delivery_mode}.",
+        "message": f"Fast headless background sync started. Old cached records remain visible; new unique records will be upserted. Arya delivery: {delivery_mode}.",
         "job": run_doc,
         "notification": notification,
     }
@@ -1914,6 +1973,23 @@ async def intelligence_status():
 
     latest_run = await _fetch_latest_run()
     latest_notification = await _fetch_latest_notification()
+    if (
+        not active_run
+        and latest_notification
+        and latest_notification.get("status") in RUNNING_SCAN_STATUSES
+    ):
+        resolved_status = (
+            latest_run.get("status")
+            if latest_run and latest_run.get("status") not in RUNNING_SCAN_STATUSES
+            else "completed_no_new"
+        )
+        latest_notification = {
+            **latest_notification,
+            "status": resolved_status,
+            "title": "No active scan is running",
+            "message": "The previous scan is no longer active. Press Scan Now to start a fresh hidden background sync.",
+            "completed_at": (latest_run or {}).get("completed_at") or latest_notification.get("completed_at"),
+        }
     return {
         "active_run": active_run,
         "latest_run": latest_run,
@@ -4422,7 +4498,7 @@ async def list_threats(
 
 @app.get("/stats")
 async def stats():
-    """Return counts per collector type for the dashboard stats bar."""
+    """Return live MongoDB-backed counts for every dashboard count card."""
     cached = _cache_get_stats()
     if cached is not None:
         return cached
@@ -4434,6 +4510,10 @@ async def stats():
     ] + [
         kv_col.count_documents({"_id": {"$regex": pattern}})
         for pattern, _cat in _LEGACY_STATS_PATTERNS
+    ] + [
+        credential_exposures_col.count_documents({}),
+        credential_datasets_col.count_documents({}),
+        confidential_analysis_col.count_documents({}),
     ]
     counts = await asyncio.gather(*count_tasks)
 
@@ -4448,8 +4528,25 @@ async def stats():
         legacy_result[cat] = legacy_result.get(cat, 0) + count
     for cat, count in legacy_result.items():
         result[cat] = max(result.get(cat, 0), count)
+    extra_offset = 1 + len(threat_prefixes) + len(_LEGACY_STATS_PATTERNS)
+    result["credentials"] = counts[extra_offset]
+    result["credential_datasets"] = counts[extra_offset + 1]
+    result["confidential"] = counts[extra_offset + 2]
+
+    try:
+        map_payload = await get_map_stats()
+        map_summary = map_payload.get("summary", {}) if isinstance(map_payload, dict) else {}
+    except Exception:
+        map_summary = {}
+    result["affected_countries"] = int(map_summary.get("affected_countries") or 0)
+    result["leak_coverage"] = int(map_summary.get("leak_items_with_country") or 0)
+    result["defacement_coverage"] = int(map_summary.get("defacement_items_with_country") or 0)
+
     category_total = sum(result.values())
-    result["total"] = category_total
+    result["total"] = sum(
+        int(result.get(key, 0) or 0)
+        for key in ("news", "leak", "defacement", "exploit", "social", "api")
+    ) or category_total
     return _cache_set_stats({"counts": result, **result})
 
 

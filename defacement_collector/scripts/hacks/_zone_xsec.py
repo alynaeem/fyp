@@ -81,7 +81,7 @@ class _zone_xsec(leak_extractor_interface, ABC):
 
         # Playwright controls
         self._proxy: dict = {}     # set by set_proxy()
-        self._headless: bool = False  # USER: want to see browser
+        self._headless: bool = True
         self._chromium_exe = None  # optional
 
         # raw index

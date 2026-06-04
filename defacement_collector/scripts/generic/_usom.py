@@ -86,7 +86,7 @@ class _usom(leak_extractor_interface, ABC):
         self._max_rows: Optional[int] = None  # None = unlimited
         self._proxy: dict = {}
         self._chromium_exe = None  # optional local chromium path
-        self._headless: bool = False
+        self._headless: bool = True
 
         # redis indices (pipe-delimited, not json)
         self._raw_index_key = "USOM:raw_index"

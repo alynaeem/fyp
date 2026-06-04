@@ -40,7 +40,7 @@
           <div class="sidebar-scan-copy">
             <span class="sidebar-scan-kicker">Automation</span>
             <strong class="sidebar-scan-title">One-Click Intelligence Update</strong>
-            <p class="sidebar-scan-meta">Run security feeds, ransomware leaks, channel monitoring, and MongoDB sync in one action.</p>
+            <p class="sidebar-scan-meta">Start a hidden fast sync. Cached records stay visible while new dated intelligence is added to MongoDB.</p>
           </div>
           <div class="sidebar-scan-actions">
             <button class="scan-now-btn" id="smartUpdateBtn" title="Scan Now">Scan Now</button>
@@ -262,7 +262,7 @@
             <div class="intel-notification-copy">
               <span class="intel-notification-label" id="intelNotificationLabel">Automation Idle</span>
               <h2 class="intel-notification-title" id="intelNotificationTitle">No intelligence update is running</h2>
-              <p class="intel-notification-message" id="intelNotificationMessage">Press Scan Now to refresh MongoDB and check for new intelligence across the dashboard sources.</p>
+              <p class="intel-notification-message" id="intelNotificationMessage">Press Scan Now to run a headless background sync while existing dashboard records stay available.</p>
             </div>
           </div>
           <div class="intel-notification-meta" id="intelNotificationMeta"></div>
@@ -296,6 +296,30 @@
           <div class="stat-pill" data-tab="api">
             <span class="stat-label">API</span>
             <span class="stat-value" id="statVulnCount">0</span>
+          </div>
+          <div class="stat-pill stat-pill-support">
+            <span class="stat-label">Affected Countries</span>
+            <span class="stat-value" id="statCountryCount">0</span>
+          </div>
+          <div class="stat-pill stat-pill-support">
+            <span class="stat-label">Leak Coverage</span>
+            <span class="stat-value" id="statLeakCoverageCount">0</span>
+          </div>
+          <div class="stat-pill stat-pill-support">
+            <span class="stat-label">Deface Coverage</span>
+            <span class="stat-value" id="statDefaceCoverageCount">0</span>
+          </div>
+          <div class="stat-pill stat-pill-support">
+            <span class="stat-label">Credential Matches</span>
+            <span class="stat-value" id="statCredentialCount">0</span>
+          </div>
+          <div class="stat-pill stat-pill-support">
+            <span class="stat-label">Credential Files</span>
+            <span class="stat-value" id="statCredentialDatasetCount">0</span>
+          </div>
+          <div class="stat-pill stat-pill-support">
+            <span class="stat-label">Confidential Findings</span>
+            <span class="stat-value" id="statConfidentialCount">0</span>
           </div>
         </section>
 

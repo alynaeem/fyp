@@ -1050,6 +1050,22 @@ function renderExportSection(section) {
   if (!section) return "";
 
   let body = "";
+  if (Array.isArray(section.images) && section.images.length) {
+    body += `
+      <div class="export-image-grid">
+        ${section.images.map((image, index) => {
+          const src = typeof image === "string" ? image : image.src;
+          const label = typeof image === "string" ? `Screenshot ${index + 1}` : (image.label || `Screenshot ${index + 1}`);
+          return `
+            <figure class="export-image-card">
+              <img src="${escapeHtml(absoluteAssetUrl(src))}" alt="${escapeHtml(label)}" />
+              <figcaption>${escapeHtml(label)}</figcaption>
+            </figure>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
   if (section.text) {
     body += `<p class="export-section-text">${escapeHtml(section.text)}</p>`;
   }
@@ -1192,6 +1208,33 @@ function buildExportDocumentHtml(payload, options = {}) {
       color: #334155;
       line-height: 1.7;
     }
+    .export-image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .export-image-card {
+      margin: 0;
+      border: 1px solid #dbe4ee;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #f8fafc;
+      break-inside: avoid;
+    }
+    .export-image-card img {
+      display: block;
+      width: 100%;
+      max-height: 360px;
+      object-fit: cover;
+      background: #e2e8f0;
+    }
+    .export-image-card figcaption {
+      padding: 10px 14px;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 700;
+    }
     .export-field-grid,
     .export-card-grid {
       display: grid;
@@ -1288,10 +1331,21 @@ function buildExportDocumentHtml(payload, options = {}) {
   ${autoPrint ? `
   <script>
     window.addEventListener("load", function () {
-      setTimeout(function () {
+      var images = Array.prototype.slice.call(document.images || []);
+      var waits = images.map(function (img) {
+        if (img.complete) return Promise.resolve();
+        return new Promise(function (resolve) {
+          img.addEventListener("load", resolve, { once: true });
+          img.addEventListener("error", resolve, { once: true });
+        });
+      });
+      Promise.race([
+        Promise.all(waits),
+        new Promise(function (resolve) { setTimeout(resolve, 4200); })
+      ]).then(function () {
         window.focus();
         window.print();
-      }, 280);
+      });
     });
   </script>
   ` : ""}
@@ -2918,8 +2972,7 @@ function renderCard(item) {
   const aiSummary = normalizePreviewText(item.ai_summary || buildLocalAiSummary(item), buildLocalAiSummary(item));
   const collectedAt = formatDate(item.scraped_at || item.date);
   const media = collectDetailMedia(item);
-  const generatedScreenshot = item.aid ? `/feed-screenshot?aid=${encodeURIComponent(item.aid)}` : "";
-  const thumbnail = media[0] || generatedScreenshot;
+  const thumbnail = media[0];
   if (thumbnail) {
     card.classList.add("has-media");
   }
@@ -3139,11 +3192,27 @@ function toMediaSource(value) {
   const text = String(value || "").trim();
   if (!text) return "";
   if (text.startsWith("data:image/")) return text;
+  if (text.startsWith("/")) return text;
   if (text.startsWith("http://") || text.startsWith("https://")) return text;
   if (looksLikeBase64Image(text)) {
     return `data:image/jpeg;base64,${text.replace(/\s+/g, "")}`;
   }
   return "";
+}
+
+function absoluteAssetUrl(src) {
+  const text = String(src || "").trim();
+  if (!text || text.startsWith("data:")) return text;
+  try {
+    return new URL(text, window.location.origin).href;
+  } catch {
+    return text;
+  }
+}
+
+function generatedScreenshotSource(item) {
+  const aid = String(item?.aid || "").trim();
+  return aid ? `/feed-screenshot?aid=${encodeURIComponent(aid)}` : "";
 }
 
 function collectDetailMedia(item) {
@@ -3166,7 +3235,8 @@ function collectDetailMedia(item) {
     ...normalizeStringList(raw.extra && raw.extra.og_image),
     ...normalizeStringList(raw.m_extra && raw.m_extra.original_screenshot_url),
     ...normalizeStringList(raw.m_extra && raw.m_extra.hero_image),
-    ...normalizeStringList(raw.m_extra && raw.m_extra.og_image)
+    ...normalizeStringList(raw.m_extra && raw.m_extra.og_image),
+    generatedScreenshotSource(item)
   ];
   return dedupeText(refs.map(toMediaSource).filter(Boolean));
 }
@@ -3349,6 +3419,7 @@ function closeMediaLightbox() {
 
 function buildDetailExportPayload(item) {
   const evidenceLinks = collectEvidenceLinks(item);
+  const media = collectDetailMedia(item);
   const entities = normalizeEntities(item.entities).map(entity => `${entity.label || "entity"}: ${entity.text || ""}`);
   const categories = (Array.isArray(item.categories) ? item.categories : []).map(category => {
     const score = typeof category.score === "number" ? ` (${Math.round(category.score * 100)}%)` : "";
@@ -3369,6 +3440,13 @@ function buildDetailExportPayload(item) {
       ["Source URL", item.url || item.website || item.seed_url || "Unavailable"]
     ],
     sections: [
+      media.length ? {
+        title: "Evidence Screenshots",
+        images: media.slice(0, 4).map((src, index) => ({
+          src,
+          label: `${title} screenshot ${index + 1}`
+        }))
+      } : null,
       { title: "Key Facts", fields: getDetailFacts(item) },
       { title: "AI Summary", text: normalizePreviewText(item.ai_summary || buildLocalAiSummary(item), buildLocalAiSummary(item)) },
       evidenceLinks.length ? { title: "Evidence Links", list: evidenceLinks } : null,

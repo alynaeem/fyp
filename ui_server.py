@@ -22,7 +22,7 @@ from datetime import date, datetime, timedelta, timezone
 from jose import JWTError, jwt
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader, HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import ReturnDocument
@@ -107,6 +107,8 @@ SCAN_RECOVERY_GRACE_SECONDS = 10
 SOURCE_HIGHLIGHT_LIMIT = 5
 FEED_CACHE_TTL_SECONDS = 30
 _FEED_ITEMS_CACHE: dict[tuple[str, bool], tuple[float, list[dict]]] = {}
+FEED_PAGE_CACHE_TTL_SECONDS = 180
+_FEED_PAGE_CACHE: dict[tuple[Any, ...], tuple[float, dict]] = {}
 MAP_STATS_CACHE_TTL_SECONDS = 120
 _MAP_STATS_CACHE: tuple[float, dict] | None = None
 _MAP_STATS_INFLIGHT: asyncio.Task | None = None
@@ -156,6 +158,23 @@ _LEAK_SOURCE_STATUS_ORDER = {
     "import_error": 4,
     "empty": 5,
     "not_run": 6,
+}
+_NEWS_FEED_PROJECTION = {
+    "content": 0,
+    "content_html": 0,
+    "raw": 0,
+    "raw_text_snippet": 0,
+    "embedding": 0,
+}
+_THREAT_FEED_PROJECTION = {
+    "value.content": 0,
+    "value.content_html": 0,
+    "value.raw": 0,
+    "value.raw_text_snippet": 0,
+    "value.embedding": 0,
+    "value.m_content": 0,
+    "value.m_ref_html": 0,
+    "value.ref_html": 0,
 }
 
 
@@ -210,6 +229,22 @@ def _cache_get_feed_items(key: tuple[str, bool]) -> Optional[list[dict]]:
 def _cache_set_feed_items(key: tuple[str, bool], items: list[dict]) -> list[dict]:
     _FEED_ITEMS_CACHE[key] = (time.monotonic(), items)
     return items
+
+
+def _cache_get_feed_page(key: tuple[Any, ...]) -> Optional[dict]:
+    cached = _FEED_PAGE_CACHE.get(key)
+    if not cached:
+        return None
+    cached_at, payload = cached
+    if time.monotonic() - cached_at > FEED_PAGE_CACHE_TTL_SECONDS:
+        _FEED_PAGE_CACHE.pop(key, None)
+        return None
+    return payload
+
+
+def _cache_set_feed_page(key: tuple[Any, ...], payload: dict) -> dict:
+    _FEED_PAGE_CACHE[key] = (time.monotonic(), payload)
+    return payload
 
 
 def _cache_get_map_stats() -> Optional[dict]:
@@ -353,6 +388,7 @@ def _build_mongo_text_search(query: str, fields: list[str]) -> dict:
 def _clear_feed_cache() -> None:
     global _MAP_STATS_CACHE, _STATS_CACHE
     _FEED_ITEMS_CACHE.clear()
+    _FEED_PAGE_CACHE.clear()
     _MAP_STATS_CACHE = None
     _STATS_CACHE = None
     _SEMANTIC_SEARCH_CACHE.clear()
@@ -1546,13 +1582,44 @@ async def startup_warm_map_stats():
 
 
 async def _warm_feed_cache() -> None:
-    await asyncio.sleep(1.5)
+    await asyncio.sleep(30.0)
     try:
-        await asyncio.gather(
-            stats(),
-            _fetch_combined_feed_items(include_raw=False),
-        )
-        log.info("Feed and stats cache warmed on startup.")
+        await stats()
+        warm_tasks = []
+        for source_key in ("all", "news", "leak", "defacement", "exploit", "social", "api"):
+            cache_key = ("feed", source_key, 30, 0, "", "", "", "", False)
+            if source_key == "all":
+                async def warm_all(key=cache_key):
+                    total, items = await _fetch_combined_feed_page(30, 0)
+                    _cache_set_feed_page(key, {
+                        "total": total,
+                        "offset": 0,
+                        "limit": 30,
+                        "items": [_public_feed_item(item) for item in items],
+                    })
+                warm_tasks.append(warm_all())
+            elif source_key == "news":
+                async def warm_news(key=cache_key):
+                    total, items = await _fetch_news_page(30, 0)
+                    _cache_set_feed_page(key, {
+                        "total": total,
+                        "offset": 0,
+                        "limit": 30,
+                        "items": [_public_feed_item(item) for item in items],
+                    })
+                warm_tasks.append(warm_news())
+            else:
+                async def warm_threat(source=source_key, key=cache_key):
+                    total, items = await _fetch_threat_page(source, 30, 0)
+                    _cache_set_feed_page(key, {
+                        "total": total,
+                        "offset": 0,
+                        "limit": 30,
+                        "items": [_public_feed_item(item) for item in items],
+                    })
+                warm_tasks.append(warm_threat())
+        await asyncio.gather(*warm_tasks)
+        log.info("Page-level feed and stats cache warmed on startup.")
     except Exception as exc:
         log.error(f"Feed cache warmup failed: {exc}", exc_info=True)
 
@@ -3133,7 +3200,21 @@ def _infer_country_codes(item: dict, raw_data: dict) -> list[str]:
     return sorted(codes)
 
 
-def _feed_sort_key(item: dict) -> str:
+def _feed_sort_key(item: dict) -> tuple[str, str, str]:
+    return (
+        str(
+            item.get("scraped_at")
+            or item.get("date")
+            or item.get("published_at")
+            or item.get("created_at")
+            or ""
+        ),
+        str(item.get("source_type") or ""),
+        str(item.get("aid") or item.get("url") or item.get("title") or ""),
+    )
+
+
+def _feed_date_sort_key(item: dict) -> str:
     return (
         item.get("scraped_at")
         or item.get("date")
@@ -3344,10 +3425,30 @@ def _build_ai_summary(item: dict) -> str:
 
 
 def _public_feed_item(item: dict) -> dict:
-    if "_search_blob" not in item:
-        return item
     sanitized = dict(item)
-    sanitized.pop("_search_blob", None)
+    for key in (
+        "_search_blob",
+        "content",
+        "raw_text_snippet",
+        "embedding",
+        "raw",
+        "content_html",
+        "m_content",
+        "m_ref_html",
+        "ref_html",
+    ):
+        sanitized.pop(key, None)
+    aid = str(sanitized.get("aid") or "")
+    for image_key in ("screenshot", "hero_image", "og_image"):
+        value = str(sanitized.get(image_key) or "")
+        if aid and len(value) > 2000 and not value.startswith(("http://", "https://", "/")):
+            sanitized[image_key] = f"/feed-screenshot?aid={quote(aid)}"
+    screenshot_links = sanitized.get("screenshot_links")
+    if aid and isinstance(screenshot_links, list):
+        sanitized["screenshot_links"] = [
+            f"/feed-screenshot?aid={quote(aid)}" if len(str(link or "")) > 2000 and not str(link).startswith(("http://", "https://", "/")) else link
+            for link in screenshot_links[:4]
+        ]
     return sanitized
 
 
@@ -3717,21 +3818,40 @@ async def _fetch_news_items(include_raw: bool = False) -> list[dict]:
 
 
 async def _fetch_news_page(limit: int, offset: int) -> tuple[int, list[dict]]:
-    query = _visible_news_query()
-    total = await articles_col.count_documents(query)
-    cursor = (
-        articles_col.find(query)
-        .sort([
-            ("scraped_at", -1),
-            ("date", -1),
-            ("published_at", -1),
-            ("_id", -1),
-        ])
-        .skip(offset)
-        .limit(limit)
-    )
-    docs = await cursor.to_list(length=limit)
-    return total, [_build_article_item(doc, include_raw=False) for doc in docs if not _is_blocked_article_doc(doc)]
+    try:
+        total_future = asyncio.ensure_future(articles_col.estimated_document_count())
+    except Exception:
+        total_future = asyncio.ensure_future(articles_col.count_documents({}))
+    safe_limit = max(min(int(limit or 30), 500), 1)
+    safe_offset = max(int(offset or 0), 0)
+    candidates: list[dict] = []
+    seen_keys: set[str] = set()
+    scanned = 0
+    batch_limit = min(max(safe_limit * 6, 180), 300)
+    max_scan = max((safe_offset + safe_limit) * 24, 8000)
+    while scanned < max_scan:
+        docs = await (
+            articles_col.find({}, _NEWS_FEED_PROJECTION)
+            .sort([("$natural", -1)])
+            .skip(scanned)
+            .limit(batch_limit)
+            .to_list(length=batch_limit)
+        )
+        if not docs:
+            break
+        scanned += len(docs)
+        for doc in docs:
+            if _is_blocked_article_doc(doc):
+                continue
+            item = _build_article_item(doc, include_raw=False)
+            dedupe_key = _news_merge_key(item).strip().lower()
+            if not dedupe_key or dedupe_key in seen_keys:
+                continue
+            seen_keys.add(dedupe_key)
+            candidates.append(item)
+    items = sorted(candidates, key=_feed_sort_key, reverse=True)[safe_offset:safe_offset + safe_limit]
+    total = await total_future
+    return total, items
 
 
 async def _search_news_items(query: str, include_raw: bool = False, limit: int = SEARCH_CANDIDATE_LIMIT) -> list[dict]:
@@ -3868,6 +3988,109 @@ async def _fetch_threat_items(source_type: str = "", include_raw: bool = False) 
     return _cache_set_feed_items(cache_key, items) if not include_raw else items
 
 
+async def _fetch_threat_page(source_type: str, limit: int, offset: int, *, include_total: bool = True) -> tuple[int, list[dict]]:
+    prefixes = [prefix for prefix, category in _THREAT_PREFIXES.items() if category == source_type]
+    if not prefixes:
+        return 0, []
+
+    regex_pattern = "^(" + "|".join(prefixes) + "):"
+    query_doc = {"_id": {"$regex": regex_pattern}}
+    total_task = asyncio.ensure_future(kv_col.count_documents(query_doc)) if include_total else None
+    docs = await (
+        kv_col.find(query_doc, _THREAT_FEED_PROJECTION)
+        .sort([("_id", -1)])
+        .skip(offset)
+        .limit(limit)
+        .to_list(length=limit)
+    )
+
+    suffixes = []
+    for doc in docs:
+        doc_id = str(doc.get("_id", ""))
+        suffixes.append(doc_id.split(":", 1)[1] if ":" in doc_id else doc_id)
+
+    entity_map: dict[str, dict] = {}
+    if suffixes:
+        entity_ids = []
+        for prefix in prefixes:
+            entity_prefix = prefix.replace("_ITEMS", "_ENTITIES")
+            entity_ids.extend([f"{entity_prefix}:{suffix}" for suffix in suffixes])
+        entity_docs = await kv_col.find({"_id": {"$in": entity_ids}}, _THREAT_FEED_PROJECTION).to_list(length=None)
+        for entity_doc in entity_docs:
+            entity_id = str(entity_doc.get("_id", ""))
+            if ":" in entity_id:
+                entity_map[entity_id.split(":", 1)[1]] = entity_doc
+
+    items = []
+    for doc in docs:
+        doc_id = str(doc.get("_id", ""))
+        suffix = doc_id.split(":", 1)[1] if ":" in doc_id else doc_id
+        parsed = _parse_kv_item(doc, include_raw=False, entity_doc=entity_map.get(suffix))
+        if parsed:
+            items.append(parsed)
+
+    items = sorted(items, key=_feed_sort_key, reverse=True)
+    total = await total_task if total_task else 0
+    return total, items
+
+
+def _cached_feed_total() -> int:
+    cached_stats = _cache_get_stats()
+    if not cached_stats:
+        return 0
+    counts = cached_stats.get("counts") if isinstance(cached_stats.get("counts"), dict) else cached_stats
+    try:
+        return int(counts.get("total") or 0)
+    except Exception:
+        return 0
+
+
+async def _feed_total_from_stats() -> int:
+    total = _cached_feed_total()
+    if total:
+        return total
+    try:
+        stats_payload = await stats()
+        counts = stats_payload.get("counts") if isinstance(stats_payload.get("counts"), dict) else stats_payload
+        return int(counts.get("total") or 0)
+    except Exception:
+        return 0
+
+
+async def _fetch_combined_feed_page(limit: int, offset: int) -> tuple[int, list[dict]]:
+    safe_limit = max(min(int(limit or 30), 500), 1)
+    safe_offset = max(int(offset or 0), 0)
+    source_types = ("leak", "defacement", "exploit", "social", "api")
+
+    # Keep the dashboard path page-sized. The older all-feed route built every
+    # item first, which made the first paint wait on tens of thousands of docs.
+    if safe_offset <= 900:
+        candidate_limit = 1000
+        source_offset = 0
+        slice_offset = safe_offset
+    else:
+        candidate_limit = min(max(safe_limit, 30), 80)
+        source_offset = max((safe_offset // (len(source_types) + 1)) - safe_limit, 0)
+        slice_offset = 0
+
+    results = await asyncio.gather(
+        _fetch_news_page(candidate_limit, source_offset),
+        *[
+            _fetch_threat_page(source_type, candidate_limit, source_offset, include_total=False)
+            for source_type in source_types
+        ],
+    )
+
+    candidates: list[dict] = []
+    for _source_total, source_items in results:
+        candidates.extend(source_items)
+
+    candidates = sorted(candidates, key=_feed_sort_key, reverse=True)
+    total = await _feed_total_from_stats()
+    total = total or max(len(candidates), safe_offset + len(candidates))
+    return total, candidates[slice_offset:slice_offset + safe_limit]
+
+
 async def _fetch_combined_feed_items(include_raw: bool = False) -> list[dict]:
     cache_key = ("feed:all", include_raw)
     if not include_raw:
@@ -3983,47 +4206,57 @@ async def list_feed(
     include_raw: bool = Query(False),
 ):
     canonical = _canonical_source_type(source_type)
+    fast_cache_key = (
+        "feed",
+        canonical,
+        limit,
+        offset,
+        q.strip().lower(),
+        topic.strip().lower(),
+        start_date.strip(),
+        end_date.strip(),
+        bool(include_raw),
+    )
+    if not include_raw:
+        cached_page = _cache_get_feed_page(fast_cache_key)
+        if cached_page is not None:
+            return cached_page
 
     if canonical == "news":
         if not q and not include_raw and not topic and not start_date and not end_date:
             total, items = await _fetch_news_page(limit, offset)
-            return {
+            return _cache_set_feed_page(fast_cache_key, {
                 "total": total,
                 "offset": offset,
                 "limit": limit,
                 "items": [_public_feed_item(item) for item in items],
-            }
+            })
         if q:
             items = await _search_news_items(q, include_raw=include_raw)
         else:
             items = await _fetch_news_items(include_raw=include_raw)
     elif canonical in {"exploit", "leak", "defacement", "social", "api"}:
         if not q and not include_raw and not topic and not start_date and not end_date:
-            total = await _count_threat_items(canonical)
-            items = await _fetch_threat_items(canonical, include_raw=False)
-            return {
+            total, items = await _fetch_threat_page(canonical, limit, offset)
+            return _cache_set_feed_page(fast_cache_key, {
                 "total": total,
                 "offset": offset,
                 "limit": limit,
-                "items": [_public_feed_item(item) for item in items[offset:offset + limit]],
-            }
+                "items": [_public_feed_item(item) for item in items],
+            })
         if q:
             items = await _search_threat_items(q, canonical, include_raw=include_raw)
         else:
             items = await _fetch_threat_items(canonical, include_raw=include_raw)
     else:
         if not q and not include_raw and not topic and not start_date and not end_date:
-            total_news, total_threats, items = await asyncio.gather(
-                articles_col.count_documents({}),
-                _count_threat_items(),
-                _fetch_combined_feed_items(include_raw=False),
-            )
-            return {
-                "total": total_news + total_threats,
+            total, items = await _fetch_combined_feed_page(limit, offset)
+            return _cache_set_feed_page(fast_cache_key, {
+                "total": total,
                 "offset": offset,
                 "limit": limit,
-                "items": [_public_feed_item(item) for item in items[offset:offset + limit]],
-            }
+                "items": [_public_feed_item(item) for item in items],
+            })
         if q:
             news_items, threat_items = await asyncio.gather(
                 _search_news_items(q, include_raw=include_raw),
@@ -4040,12 +4273,12 @@ async def list_feed(
     if q:
         items = _filter_feed_items(items, q)
     items = _apply_feed_filters(items, topic=topic, start_date=start_date, end_date=end_date)
-    return {
+    return _cache_set_feed_page(fast_cache_key, {
         "total": len(items),
         "offset": offset,
         "limit": limit,
         "items": [_public_feed_item(item) for item in items[offset:offset + limit]],
-    }
+    })
 
 
 async def _find_feed_item_for_screenshot(aid: str) -> dict:
@@ -4095,9 +4328,45 @@ def _capture_feed_screenshot(url: str, output_path: pathlib.Path) -> None:
             browser.close()
 
 
+def _response_from_embedded_image(value: Any) -> Response | None:
+    text = str(value or "").strip()
+    if not text:
+        return None
+    media_type = "image/jpeg"
+    if text.startswith("data:image/"):
+        header, _, payload = text.partition(",")
+        if not payload:
+            return None
+        media_type = (header.split(";", 1)[0].replace("data:", "") or media_type).strip()
+        text = payload.strip()
+    if len(text) < 2000 or not re.fullmatch(r"[A-Za-z0-9+/=\s]+", text):
+        return None
+    try:
+        image_bytes = base64.b64decode(re.sub(r"\s+", "", text), validate=False)
+    except Exception:
+        return None
+    if len(image_bytes) < 1024:
+        return None
+    if image_bytes.startswith(b"\x89PNG"):
+        media_type = "image/png"
+    elif image_bytes.startswith(b"GIF"):
+        media_type = "image/gif"
+    elif image_bytes.startswith(b"\xff\xd8"):
+        media_type = "image/jpeg"
+    return Response(content=image_bytes, media_type=media_type)
+
+
 @app.get("/feed-screenshot")
 async def get_feed_screenshot(aid: str = Query(...)):
     item = await _find_feed_item_for_screenshot(aid)
+    embedded_refs = [item.get("screenshot")]
+    if isinstance(item.get("screenshot_links"), list):
+        embedded_refs.extend(item.get("screenshot_links") or [])
+    for ref in embedded_refs:
+        response = _response_from_embedded_image(ref)
+        if response is not None:
+            return response
+
     url = _unwrap_redirect_url(first_non_empty := _extract_field(item, "url", "website", "seed_url")) or first_non_empty
     parsed = urlparse(url or "")
     if parsed.scheme not in {"http", "https"} or not parsed.netloc:

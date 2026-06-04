@@ -8660,6 +8660,149 @@ body.light-theme .map-tooltip-stat {
   gap: 1.2rem;
 }
 
+.confidential-upload-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.2rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(circle at top right, rgba(71, 217, 255, 0.08), transparent 34%),
+    rgba(255, 255, 255, 0.025);
+}
+
+.confidential-upload-row,
+.confidential-filter-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.confidential-filter-row {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.confidential-filter-row .search-input,
+.confidential-upload-row .search-input {
+  color: #f7fbff;
+  background: rgba(14, 22, 36, 0.96);
+  border-color: rgba(154, 184, 218, 0.26);
+}
+
+.confidential-filter-row .search-input option,
+.confidential-status-select option {
+  color: #111827;
+  background: #f8fafc;
+}
+
+.confidential-filter-row .search-input:hover,
+.confidential-filter-row .search-input:focus,
+.confidential-upload-row .search-input:hover,
+.confidential-upload-row .search-input:focus,
+.confidential-status-select:hover,
+.confidential-status-select:focus {
+  color: #ffffff;
+  border-color: rgba(71, 217, 255, 0.58);
+  background: rgba(18, 29, 47, 0.98);
+}
+
+.confidential-disclaimer {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 90, 61, 0.2);
+  background: rgba(255, 90, 61, 0.07);
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.confidential-table-wrap {
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  overflow: auto;
+}
+
+.confidential-table {
+  min-width: 1180px;
+}
+
+.confidential-table th {
+  color: #9fb0c9;
+  background: rgba(16, 26, 42, 0.96);
+}
+
+.confidential-table td {
+  color: #f3f7fb;
+}
+
+.confidential-table tbody tr:hover td {
+  color: #ffffff;
+  background: rgba(71, 217, 255, 0.035);
+}
+
+.confidential-table code {
+  color: #9ae6d6;
+  font-weight: 800;
+  word-break: break-word;
+}
+
+.confidential-status-select {
+  width: 100%;
+  min-width: 128px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(10, 15, 26, 0.8);
+  color: #f7fbff;
+  padding: 0.55rem 0.65rem;
+}
+
+.compact-btn {
+  padding: 0.55rem 0.8rem;
+  color: #f8fbff;
+  background: rgba(23, 34, 52, 0.92);
+  border-color: rgba(154, 184, 218, 0.24);
+}
+
+.compact-btn:hover,
+.compact-btn:focus {
+  color: #ffffff;
+  background: rgba(38, 55, 78, 0.98);
+  border-color: rgba(71, 217, 255, 0.45);
+}
+
+.confidential-field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.75rem;
+}
+
+.confidential-field-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(154, 184, 218, 0.16);
+  background: rgba(255, 255, 255, 0.045);
+  color: #f7fbff;
+}
+
+.confidential-field-label {
+  color: #91a3bd;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.confidential-field-value {
+  color: #f7fbff;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
 .confidential-card {
   border: 1px solid var(--border);
   border-radius: 24px;
@@ -8686,16 +8829,7 @@ body.light-theme .map-tooltip-stat {
     linear-gradient(140deg, rgba(244, 226, 176, 0.96), rgba(255, 250, 234, 0.98) 55%, rgba(240, 227, 191, 0.95));
 }
 
-.confidential-doc-mock {
-  position: absolute;
-  inset: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  filter: blur(18px) saturate(0.95);
-  transform: scale(1.03);
-  opacity: 0.9;
-}
+
 
 .confidential-doc-header,
 .confidential-doc-body,
@@ -8788,19 +8922,7 @@ body.light-theme .map-tooltip-stat {
   width: 18%;
 }
 
-.confidential-preview-overlay {
-  position: absolute;
-  inset: auto 1.1rem 1.1rem 1.1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  padding: 1rem 1.1rem;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 90, 61, 0.2);
-  background: rgba(10, 14, 22, 0.82);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.3);
-}
+
 
 .confidential-preview-title {
   font-size: 0.92rem;

@@ -548,72 +548,96 @@
             <div class="confidential-banner">
               <div class="confidential-banner-copy">
                 <span class="badge-outline">Sensitive Evidence</span>
-                <h3 class="confidential-banner-title">Guarded identity-document review</h3>
-                <p class="confidential-banner-copytext">This panel keeps confidential-document evidence behind a withheld preview shell. The dashboard shows review context and handling status, but it does not render raw personal ID imagery.</p>
+                <h3 class="confidential-banner-title">Masked payment and credential exposure review</h3>
+                <p class="confidential-banner-copytext">This tool is for authorised defensive analysis only. Sensitive values are masked and raw secrets are never displayed or stored.</p>
               </div>
             </div>
 
-            <div class="confidential-layout">
-              <article class="confidential-card">
-                <div class="confidential-preview-shell">
-                  <div class="confidential-preview-frame" aria-label="Withheld confidential-document preview">
-                    <div class="confidential-doc-mock" aria-hidden="true">
-                      <div class="confidential-doc-header">
-                        <span class="confidential-doc-badge"></span>
-                        <div class="confidential-doc-title-stack">
-                          <span></span>
-                          <span></span>
-                        </div>
-                      </div>
-                      <div class="confidential-doc-body">
-                        <div class="confidential-doc-portrait"></div>
-                        <div class="confidential-doc-lines">
-                          <span class="wide"></span>
-                          <span></span>
-                          <span></span>
-                          <span class="short"></span>
-                          <span class="wide"></span>
-                        </div>
-                      </div>
-                      <div class="confidential-doc-footer">
-                        <span></span>
-                        <span class="wide"></span>
-                        <span class="short"></span>
-                      </div>
-                    </div>
-                    <div class="confidential-preview-overlay">
-                      <span class="confidential-preview-title">Preview Withheld</span>
-                      <span class="confidential-preview-copy">Sensitive government-issued identity details stay blocked inside DarkPulse.</span>
-                    </div>
-                  </div>
-                </div>
+            <div class="confidential-upload-card">
+              <div>
+                <h3 class="credential-section-title">Local file analysis</h3>
+                <p class="credential-empty-copy">Upload .txt, .csv, .json, or .log files. Processing happens locally on this server at runtime; uploaded files are not saved permanently.</p>
+              </div>
+              <div class="confidential-upload-row">
+                <input type="file" id="confidentialFileInput" accept=".txt,.csv,.json,.log" class="search-input" />
+                <button class="btn-primary" id="confidentialAnalyzeBtn">Analyse File</button>
+              </div>
+              <p class="confidential-disclaimer">Detected records are only potential matches and must be verified by an authorised analyst. CVV, passwords, tokens, and card values are redacted before rendering.</p>
+            </div>
 
-                <div class="confidential-card-body">
-                  <div class="confidential-meta-grid">
-                    <div class="fact-item">
-                      <span class="fact-label">Record Type</span>
-                      <span class="fact-value">Government identity document</span>
-                    </div>
-                    <div class="fact-item">
-                      <span class="fact-label">Region</span>
-                      <span class="fact-value">Kuwait</span>
-                    </div>
-                    <div class="fact-item">
-                      <span class="fact-label">Classification</span>
-                      <span class="fact-value">Confidential</span>
-                    </div>
-                    <div class="fact-item">
-                      <span class="fact-label">Display Mode</span>
-                      <span class="fact-value">Withheld preview</span>
-                    </div>
-                  </div>
+            <div id="confidentialStatus" class="pakdb-status"></div>
 
-                  <div class="confidential-notice">
-                    <strong>Handling note</strong>
-                    <p>Use this tab for controlled review status, case metadata, and downstream workflow decisions. Raw passport, civil-ID, and other personal-document imagery is not rendered directly in the dashboard.</p>
-                  </div>
-                </div>
-              </article>
+            <div id="confidentialStats" class="results-stats-row hidden">
+              <div class="stat-card">
+                <span class="stat-label">Elapsed</span>
+                <span class="stat-value" id="confidentialElapsed">0 ms</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Findings</span>
+                <span class="stat-value" id="confidentialCount">0</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">High Risk</span>
+                <span class="stat-value" id="confidentialHighRisk">0</span>
+              </div>
+            </div>
+
+            <div class="export-toolbar hidden" id="confidentialExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export Masked Findings</span>
+                <span class="export-toolbar-note">Exports contain masked values and detection metadata only.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="confidential" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="confidential" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
+
+            <div class="confidential-filter-row">
+              <select id="confidentialTypeFilter" class="search-input">
+                <option value="">All Types</option>
+              </select>
+              <select id="confidentialRiskFilter" class="search-input">
+                <option value="">All Risk Levels</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+              <select id="confidentialConfidenceFilter" class="search-input">
+                <option value="">All Confidence</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+              <select id="confidentialStatusFilter" class="search-input">
+                <option value="">All Status</option>
+                <option value="New">New</option>
+                <option value="Reviewed">Reviewed</option>
+                <option value="False Positive">False Positive</option>
+                <option value="Confirmed">Confirmed</option>
+              </select>
+            </div>
+
+            <div class="table-wrap confidential-table-wrap">
+              <table class="data-table confidential-table">
+                <thead>
+                  <tr>
+                    <th>Record ID</th>
+                    <th>Detected Type</th>
+                    <th>Masked Value</th>
+                    <th>Card Brand Guess</th>
+                    <th>Expiry Date</th>
+                    <th>Detection Confidence</th>
+                    <th>Risk Level</th>
+                    <th>Status</th>
+                    <th>Timestamp</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="confidentialResultsBody">
+                  <tr><td colspan="10">Upload a local file to begin masked defensive analysis.</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -1646,6 +1670,42 @@
         <button class="btn-secondary" type="button" data-export-target="detail" data-export-format="json">Download JSON</button>
         <button class="btn-secondary" type="button" data-export-target="detail" data-export-format="pdf">Download PDF</button>
         <a class="btn-primary" id="modalReadBtn" href="#" target="_blank">Open Source</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="confidentialDetailBackdrop">
+    <div class="modal modal-detail">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div class="modal-source">Masked Finding</div>
+          <div id="confidentialDetailTopTag" class="modal-top-tag"></div>
+        </div>
+        <button class="modal-close" id="confidentialDetailClose">x</button>
+      </div>
+      <div class="modal-body modal-detail-body">
+        <h2 class="modal-title" id="confidentialDetailTitle">Confidential Finding</h2>
+        <div class="modal-meta" id="confidentialDetailMeta"></div>
+        <div class="fact-grid" id="confidentialDetailFacts"></div>
+        <div class="modal-section">
+          <label>Parsed Masked Fields</label>
+          <div class="confidential-field-grid" id="confidentialParsedFields"></div>
+        </div>
+        <div class="modal-section">
+          <label>Reason for Detection</label>
+          <p id="confidentialDetailReason" class="modal-summary"></p>
+        </div>
+        <div class="modal-section">
+          <label>Masked Context Snippet</label>
+          <p id="confidentialDetailContext" class="modal-summary"></p>
+        </div>
+        <div class="modal-section">
+          <label>Analyst Notes</label>
+          <p id="confidentialDetailNotes" class="modal-summary"></p>
+        </div>
+      </div>
+      <div class="modal-footer detail-footer">
+        <button class="btn-secondary" type="button" id="confidentialDetailDismiss">Close</button>
       </div>
     </div>
   </div>

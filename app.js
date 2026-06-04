@@ -213,7 +213,9 @@ const SMART_UPDATE_SOURCE_LABELS = {
   news: "Security Feeds",
   leaks: "Ransomware Leaks",
   social: "Social Monitoring",
-  defacement: "Defacement Tracking"
+  defacement: "Defacement Tracking",
+  exploit: "Exploit Intelligence",
+  api: "API Outputs"
 };
 
 const state = {
@@ -281,6 +283,7 @@ const state = {
   smartUpdatePayload: null,
   smartUpdateJobId: "",
   smartUpdateStatus: "idle",
+  latestStats: null,
   headerSearchBusy: false,
   mediaLightboxSrc: "",
   mediaLightboxTitle: "",
@@ -996,13 +999,49 @@ function formatExportValue(value) {
     return value.map(item => formatExportValue(item)).filter(Boolean).join(", ");
   }
   if (value && typeof value === "object") {
-    return JSON.stringify(value);
+    if ("label" in value || "name" in value || "count" in value) {
+      const label = value.label || value.name || "Item";
+      const count = value.count ?? value.value ?? "";
+      return String(count).trim() ? `${label} ${count}` : String(label);
+    }
+    try {
+      return Object.entries(value)
+        .map(([key, itemValue]) => `${key}: ${formatExportValue(itemValue)}`)
+        .join(", ");
+    } catch {
+      return "-";
+    }
   }
   if (typeof value === "boolean") {
     return value ? "Yes" : "No";
   }
   const text = String(value ?? "").trim();
   return text || "-";
+}
+
+function maskCredentialSecret(value) {
+  const text = String(value ?? "").trim();
+  if (!text || text === "-") return "-";
+  if (text.length <= 1) return "#";
+  return `${text.slice(0, 1)}${"#".repeat(Math.min(text.length - 1, 24))}`;
+}
+
+function maskCredentialRawTrace(trace, password) {
+  let text = String(trace ?? "").trim();
+  if (!text) return "";
+  const secret = String(password ?? "").trim();
+  if (secret) {
+    text = text.split(secret).join(maskCredentialSecret(secret));
+  }
+  return text.replace(/(password|pass|pwd)(\s*[:=]\s*)([^\s|;,&]+)/gi, (_match, key, sep) => {
+    return `${key}${sep}[REDACTED]`;
+  });
+}
+
+function formatCredentialTags(tags) {
+  return (Array.isArray(tags) ? tags : [])
+    .map(tag => formatExportValue(tag))
+    .filter(Boolean);
 }
 
 function renderExportFields(fields) {
@@ -1407,14 +1446,14 @@ function syncSmartUpdateButton(isRunning = false) {
   const isCancelling = state.smartUpdateStatus === "cancelling";
 
   if (startButton) {
-    if (!startButton.dataset.originalText) {
+    if (!startButton.dataset.originalText || /scanning|stopping/i.test(startButton.dataset.originalText)) {
       startButton.dataset.originalText = startButton.textContent || "Scan Now";
     }
     startButton.classList.toggle("scanning", isRunning && !isCancelling);
     startButton.disabled = isRunning;
     startButton.textContent = isRunning
       ? (isCancelling ? "Stopping..." : "Scanning...")
-      : (startButton.dataset.originalText || "Scan Now");
+      : "Scan Now";
   }
 
   if (stopButton) {
@@ -1538,6 +1577,45 @@ function buildAlertSummaryData(payload) {
   };
 }
 
+function completeAlertSummarySources(sourceResults = []) {
+  const stats = state.latestStats || {};
+  const totalsBySource = {
+    news: stats.news,
+    leaks: stats.leak,
+    social: stats.social,
+    defacement: stats.defacement,
+    exploit: stats.exploit,
+    api: stats.api
+  };
+  const order = ["news", "leaks", "social", "defacement", "exploit", "api"];
+  const bySource = new Map();
+
+  (Array.isArray(sourceResults) ? sourceResults : []).forEach(item => {
+    const source = item.source || item.collector || "";
+    if (source) bySource.set(source, { ...item, source });
+  });
+
+  order.forEach(source => {
+    if (!bySource.has(source)) {
+      bySource.set(source, {
+        source,
+        label: SMART_UPDATE_SOURCE_LABELS[source],
+        status: "not_run",
+        new_records: 0,
+        current_count: Number(totalsBySource[source] || 0),
+        highlights: []
+      });
+      return;
+    }
+    const item = bySource.get(source);
+    if (item.current_count === undefined && item.after_count === undefined && item.before_count === undefined) {
+      item.current_count = Number(totalsBySource[source] || 0);
+    }
+  });
+
+  return order.map(source => bySource.get(source)).filter(Boolean);
+}
+
 function formatSourceRunStatus(status) {
   switch ((status || "").toLowerCase()) {
     case "cancelled":
@@ -1552,6 +1630,8 @@ function formatSourceRunStatus(status) {
       return "Running";
     case "queued":
       return "Queued";
+    case "not_run":
+      return "Not Run";
     default:
       return formatSmartUpdateStatus(status || "idle");
   }
@@ -1573,7 +1653,18 @@ function renderSmartUpdateBanner(payload = {}) {
 
   const activeRun = payload.active_run;
   const latestRun = payload.latest_run;
-  const latestNotification = payload.latest_notification;
+  const rawLatestNotification = payload.latest_notification;
+  const latestNotification = rawLatestNotification && !activeRun && isSmartUpdateRunning(rawLatestNotification.status)
+    ? {
+        ...rawLatestNotification,
+        status: latestRun?.status && !isSmartUpdateRunning(latestRun.status) ? latestRun.status : "completed_no_new",
+        title: latestRun?.completed_at ? "No intelligence update is running" : "No active scan is running",
+        message: latestRun?.completed_at
+          ? "The previous scan has finished. Press Scan Now to start a fresh hidden background sync."
+          : "Press Scan Now to start a hidden background sync.",
+        completed_at: latestRun?.completed_at || rawLatestNotification.completed_at,
+      }
+    : rawLatestNotification;
   const activeSourceResults = Array.isArray(activeRun?.source_results) ? activeRun.source_results : [];
 
   let status = "idle";
@@ -1584,12 +1675,14 @@ function renderSmartUpdateBanner(payload = {}) {
     const liveNewTotal = activeSourceResults.reduce((sum, item) => sum + Number(item.new_records || 0), 0);
     label.textContent = formatSmartUpdateStatus(activeRun.status);
     title.textContent = activeRun.status === "cancelling"
-      ? "One-click intelligence update is shutting down"
-      : "One-click intelligence update is scanning live sources";
+      ? "Fast background sync is shutting down"
+      : "Fast headless sync is checking for new records";
     message.textContent = activeRun.status === "cancelling"
       ? "Stop requested. DarkPulse is finalizing the latest counts from the active sources."
-      : "Security feeds, ransomware leaks, social monitoring, and defacement trackers are syncing into MongoDB now.";
+      : "Cached dashboard records stay visible while hidden collectors upsert new dated intelligence into MongoDB.";
     chips = [
+      "Headless mode",
+      "Incremental upsert",
       `New so far ${liveNewTotal}`,
       ...activeSourceResults.map(item => formatSourceProgressChip(item, true)).slice(0, 6),
       `Triggered by ${activeRun.triggered_by || "operator"}`
@@ -1617,7 +1710,7 @@ function renderSmartUpdateBanner(payload = {}) {
     status = latestRun.status || "idle";
     label.textContent = formatSmartUpdateStatus(status);
     title.textContent = "No intelligence update is running";
-    message.textContent = "Press Scan Now to refresh MongoDB and check for new intelligence across the dashboard sources.";
+    message.textContent = "Press Scan Now to run a hidden background sync. Old results stay cached while new unique records are added.";
     chips = [
       ...(latestRun.completed_at ? [`Last run ${formatDate(latestRun.completed_at)}`] : ["MongoDB ready"]),
       ...(Array.isArray(latestRun.source_results)
@@ -1627,13 +1720,15 @@ function renderSmartUpdateBanner(payload = {}) {
   } else {
     label.textContent = "Automation Idle";
     title.textContent = "No intelligence update is running";
-    message.textContent = "Press Scan Now to refresh MongoDB and check for new intelligence across the dashboard sources.";
-    chips = ["MongoDB ready", "Arya Dashboard Alert"];
+    message.textContent = "Press Scan Now to run a hidden background sync. Old results stay cached while new unique records are added.";
+    chips = ["MongoDB cache ready", "Headless collectors", "Arya Dashboard Alert"];
   }
 
   state.smartUpdateStatus = status;
   if (activeRun?.job_id) {
     state.smartUpdateJobId = activeRun.job_id;
+  } else if (!isSmartUpdateRunning(status)) {
+    state.smartUpdateJobId = "";
   }
 
   const visualStatus = status === "queued"
@@ -1686,7 +1781,8 @@ async function pollSmartUpdateStatus(silent = false) {
     const data = await apiFetch("/api/intelligence/status");
     renderSmartUpdateBanner(data);
 
-    const observedRun = data.active_run || data.latest_run;
+    const latestRunIsActive = data.latest_run && isSmartUpdateRunning(data.latest_run.status);
+    const observedRun = data.active_run || (latestRunIsActive ? null : data.latest_run);
     if (observedRun) {
       const currentStatus = observedRun.status || "idle";
 
@@ -2814,6 +2910,9 @@ async function initHeatmap() {
     $("impactCountriesCount").textContent = String(payload.summary?.affected_countries || countries.length || 0);
     $("impactLeakCoverage").textContent = String(payload.summary?.leak_items_with_country || 0);
     $("impactDefaceCoverage").textContent = String(payload.summary?.defacement_items_with_country || 0);
+    if ($("statCountryCount")) $("statCountryCount").textContent = String(payload.summary?.affected_countries || countries.length || 0);
+    if ($("statLeakCoverageCount")) $("statLeakCoverageCount").textContent = String(payload.summary?.leak_items_with_country || 0);
+    if ($("statDefaceCoverageCount")) $("statDefaceCoverageCount").textContent = String(payload.summary?.defacement_items_with_country || 0);
 
     renderCountryImpactList(countries);
     state.countryStatsByCode = Object.fromEntries(countries.map(country => [country.code, country]));
@@ -3154,16 +3253,53 @@ async function loadArticles(reset = false, targetPage = 1) {
 }
 
 async function fetchStats() {
-  const data = await apiFetch("/stats");
-  const counts = data.counts || data;
+  const statBindings = {
+    statTotalCount: "total",
+    statNewsCount: "news",
+    statLeakCount: "leak",
+    statDefaceCount: "defacement",
+    statExploitCount: "exploit",
+    statSocialCount: "social",
+    statVulnCount: "api",
+    statCountryCount: "affected_countries",
+    statLeakCoverageCount: "leak_coverage",
+    statDefaceCoverageCount: "defacement_coverage",
+    statCredentialCount: "credentials",
+    statCredentialDatasetCount: "credential_datasets",
+    statConfidentialCount: "confidential"
+  };
 
-  $("statTotalCount").textContent = String(counts.total || 0);
-  $("statNewsCount").textContent = String(counts.news || 0);
-  $("statLeakCount").textContent = String(counts.leak || 0);
-  $("statDefaceCount").textContent = String(counts.defacement || 0);
-  $("statExploitCount").textContent = String(counts.exploit || 0);
-  $("statSocialCount").textContent = String(counts.social || 0);
-  $("statVulnCount").textContent = String(counts.api || 0);
+  Object.keys(statBindings).forEach(id => {
+    const el = $(id);
+    if (el) {
+      el.closest(".stat-pill")?.setAttribute("data-state", "loading");
+    }
+  });
+
+  try {
+    const data = await apiFetch("/stats");
+    const counts = data.counts || data || {};
+    state.latestStats = counts;
+
+    Object.entries(statBindings).forEach(([id, key]) => {
+      const el = $(id);
+      if (!el) return;
+      const value = Number(counts[key] || 0);
+      el.textContent = Number.isFinite(value) ? String(value) : "0";
+      const card = el.closest(".stat-pill");
+      if (card) {
+        card.setAttribute("data-state", value > 0 ? "ready" : "empty");
+      }
+    });
+  } catch (error) {
+    Object.keys(statBindings).forEach(id => {
+      const el = $(id);
+      if (!el) return;
+      el.textContent = "0";
+      el.closest(".stat-pill")?.setAttribute("data-state", "error");
+    });
+    throw error;
+  }
 }
 
 function normalizeStringList(value) {
@@ -3537,6 +3673,7 @@ async function buildCredentialExportPayload() {
   const data = await fetchAllCredentialResultsForExport();
   const results = Array.isArray(data.results) ? data.results : [];
   if (!results.length) throw new Error("No credential results are available for export.");
+  const exportedAt = new Date().toISOString();
 
   return {
     filenameBase: `credential-checker-${data.query || "results"}`,
@@ -3548,7 +3685,8 @@ async function buildCredentialExportPayload() {
       ["Results", data.count || results.length],
       ["Hosts", data.hosts_count || 0],
       ["Matched Files", data.aggregated_count || 0],
-      ["Exported", formatDate(new Date().toISOString())]
+      ["Exported", formatDate(exportedAt)],
+      ["Sensitive Values", "Passwords are masked by default"]
     ],
     sections: [
       {
@@ -3556,17 +3694,19 @@ async function buildCredentialExportPayload() {
         cards: results.map((item, index) => ({
           title: item.credential_identifier || `Match ${index + 1}`,
           subtitle: item.domain_host || item.source_domain || "Exposure record",
-          text: item.raw_trace || "",
-          tags: Array.isArray(item.metadata_tags) ? item.metadata_tags : [],
+          text: maskCredentialRawTrace(item.raw_trace, item.password),
+          tags: formatCredentialTags(item.metadata_tags),
           fields: [
+            ["Username / Email", item.email_username || item.credential_identifier || "-"],
+            ["Domain", item.domain || "-"],
             ["Date", item.date || "-"],
             ["Source Domain", item.source_domain || "-"],
             ["Channel", item.channel || "-"],
             ["Year", item.year || "-"],
             ["File Type", item.file_type || "-"],
-            ["Domain", item.domain || "-"],
             ["IP", item.ip || "-"],
-            ["Password", item.password || "-"],
+            ["Password", maskCredentialSecret(item.password)],
+            ["Raw Trace", maskCredentialRawTrace(item.raw_trace, item.password) || "-"],
             ["Source File", item.source_file || "-"]
           ]
         }))
@@ -4770,6 +4910,8 @@ function renderCredentialResults(data) {
 
 function renderCredentialResultItem(item, index) {
   const tags = Array.isArray(item.metadata_tags) ? item.metadata_tags : [];
+  const maskedPassword = maskCredentialSecret(item.password);
+  const maskedTrace = maskCredentialRawTrace(item.raw_trace, item.password) || "No trace available.";
   return `
     <details class="credential-log-card"${index === 1 ? " open" : ""}>
       <summary class="credential-log-summary">
@@ -4822,7 +4964,7 @@ function renderCredentialResultItem(item, index) {
             </div>
             <div class="credential-detail-card">
               <span class="credential-detail-label">Password</span>
-              <span class="credential-detail-value">${escapeHtml(item.password || "-")}</span>
+              <span class="credential-detail-value">${escapeHtml(maskedPassword)}</span>
             </div>
           </div>
         </div>
@@ -4838,7 +4980,7 @@ function renderCredentialResultItem(item, index) {
 
         <div class="credential-section-block">
           <h4 class="credential-section-title">Raw Trace Buffer</h4>
-          <pre class="credential-trace">${escapeHtml(item.raw_trace || "No trace available.")}</pre>
+          <pre class="credential-trace">${escapeHtml(maskedTrace)}</pre>
         </div>
       </div>
     </details>
@@ -5676,7 +5818,7 @@ async function triggerSmartUpdate() {
   if (isSmartUpdateRunning(state.smartUpdateStatus)) return;
 
   syncSmartUpdateButton(true);
-  showToast("Launching automated intelligence update...", "info");
+  showToast("Launching hidden fast background sync...", "info");
 
   try {
     const data = await apiFetch("/api/trigger-smart-update", false, { method: "POST" });
@@ -5699,7 +5841,7 @@ async function triggerSmartUpdate() {
       latest_run: data.job,
       latest_notification: data.notification
     });
-    showToast(data.message || "Automated intelligence update started.", "success");
+    showToast(data.message || "Fast headless sync started.", "success");
     scheduleSmartUpdateMonitor(1000);
   } catch (error) {
     syncSmartUpdateButton(false);
@@ -5718,6 +5860,9 @@ async function stopSmartUpdate() {
     const data = await apiFetch("/api/intelligence/stop", false, { method: "POST" });
     if (data.status === "idle") {
       showToast(data.message || "No active scan is running.", "info");
+      state.smartUpdateStatus = "idle";
+      state.smartUpdateJobId = "";
+      syncSmartUpdateButton(false);
       await pollSmartUpdateStatus(true);
       return;
     }
@@ -5741,8 +5886,13 @@ async function stopSmartUpdate() {
 
 function showAlertSummary() {
   const summaryData = buildAlertSummaryData(state.smartUpdatePayload);
+  const completeSources = completeAlertSummarySources(summaryData.sourceResults);
+  const totalRecords = completeSources.reduce((sum, item) => {
+    const total = item.current_count ?? item.after_count ?? item.before_count ?? 0;
+    return sum + Number(total || 0);
+  }, 0);
 
-  if (!summaryData.jobId && summaryData.sourceResults.length === 0) {
+  if (!summaryData.jobId && summaryData.sourceResults.length === 0 && !completeSources.length) {
     showToast("No scan summary is available yet.", "info");
     return;
   }
@@ -5760,7 +5910,8 @@ function showAlertSummary() {
   $("alertSummaryFactGrid").innerHTML = [
     ["Status", formatSmartUpdateStatus(summaryData.status)],
     ["New Records", String(summaryData.totalNew || 0)],
-    ["Sources", String(summaryData.sourceResults.length || 0)]
+    ["Total Records", String(totalRecords || 0)],
+    ["Sources", String(completeSources.length || 0)]
   ].map(([label, value]) => `
     <div class="fact-item">
       <span class="fact-label">${escapeHtml(label)}</span>
@@ -5768,8 +5919,8 @@ function showAlertSummary() {
     </div>
   `).join("");
 
-  if (summaryData.sourceResults.length) {
-    $("alertSummarySources").innerHTML = summaryData.sourceResults.map(item => {
+  if (completeSources.length) {
+    $("alertSummarySources").innerHTML = completeSources.map(item => {
       const label = item.label || SMART_UPDATE_SOURCE_LABELS[item.source] || item.source || "Source";
       const total = item.current_count ?? item.after_count ?? item.before_count ?? 0;
       const highlights = Array.isArray(item.highlights) ? item.highlights : [];
@@ -5796,7 +5947,7 @@ function showAlertSummary() {
                 </div>
               `).join("")}
             </div>
-          ` : `<div class="summary-source-empty">No new items were added in this source during this run.</div>`}
+          ` : `<div class="summary-source-empty neutral">No new items were added in this source during this run.</div>`}
         </div>
       `;
     }).join("");

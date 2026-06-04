@@ -1,4 +1,5 @@
 import asyncio
+import os
 from playwright.async_api import async_playwright
 from api_collector.scripts._apk_mod import _apk_mod
 
@@ -12,8 +13,8 @@ async def main():
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(
-            headless=False,   # debugging ke liye False
-            slow_mo=50
+            headless=os.getenv("PLAYWRIGHT_HEADLESS", "1").strip().lower() not in {"0", "false", "no", "off"},
+            slow_mo=int(os.getenv("PLAYWRIGHT_SLOW_MO_MS", "0")),
         )
         context = await browser.new_context()
 

@@ -106,6 +106,18 @@ def _env_csv_set(name: str) -> set[str]:
     return {part.strip().lower() for part in raw.split(",") if part.strip()}
 
 
+def _force_headless(model) -> None:
+    """Keep dashboard-triggered scans invisible even for collector classes that
+    default to headed browser mode during local debugging."""
+    try:
+        if hasattr(model, "set_headless"):
+            model.set_headless(True)
+        elif hasattr(model, "_headless"):
+            setattr(model, "_headless", True)
+    except Exception:
+        pass
+
+
 def _model_target_url(model) -> str:
     for attr_name in ("seed_url", "base_url"):
         try:
@@ -366,6 +378,7 @@ def _run_news() -> None:
     for name, cls in sources:
         try:
             model = cls()
+            _force_headless(model)
             model.set_limits(max_pages=cfg.max_pages, max_articles=cfg.max_articles)
             result = RequestParser(proxy=proxy, model=model, reset_cache=True).parse()
             db_stats = _persist_model_data("news", name, model, parsed_data=result.get("data"))
@@ -542,6 +555,7 @@ def _run_leaks() -> None:
         model = None
         try:
             model = cls()
+            _force_headless(model)
             if hasattr(model, "set_proxy"):
                 model.set_proxy(proxy or {})
             if name in leak_source_names:
@@ -603,6 +617,7 @@ def _run_exploits() -> None:
     for name, cls in COLLECTORS:
         try:
             model = cls()
+            _force_headless(model)
             if hasattr(model, "set_proxy"):
                 model.set_proxy(proxy or {})
             result = RequestParser(
@@ -650,6 +665,7 @@ def _run_defacement() -> None:
     for name, cls in sources:
         try:
             model = cls()
+            _force_headless(model)
             if hasattr(model, "set_proxy"):
                 model.set_proxy(proxy or {})
             result = RequestParser(
@@ -708,6 +724,7 @@ def _run_social() -> None:
     for name, cls in sources:
         try:
             model = cls()
+            _force_headless(model)
             if hasattr(model, "set_proxy"):
                 model.set_proxy(proxy or {})
             result = RequestParser(proxy=proxy, model=model, reset_cache=True, seed_fetch=True).parse()

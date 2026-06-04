@@ -1,0 +1,851 @@
+{
+    "Result": [
+        {
+            "type": "credential",
+            "raw": "https://odoo.ucp.edu.pk/web/login:L1S21BSBT0082:a3255555",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (8).txt",
+            "password": "a3255555",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1S21BSBT0082"
+            ],
+            "m_index": "stealer_model-000100",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk/:l1f19bscs0581@ucp.edu.pk:arham.2249",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@AhegaoCloud 30KK+ LINES.txt",
+            "date": "2026-03-20",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1f19bscs0581"
+            ],
+            "password": "arham.2249",
+            "email": [
+                "l1f19bscs0581@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "189087123620165954351726473850692747655",
+            "m_index": "stealer_model-000188",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/:L1F20BSCS0704:zaibrocks642",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+            "date": "2026-03-25",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F20BSCS0704"
+            ],
+            "password": "zaibrocks642",
+            "m_hash": "95865107772968023635539917287913958927",
+            "m_index": "stealer_model-000189",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/:L1F22BSCS0265:Aamishilyas01",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+            "date": "2026-03-25",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F22BSCS0265"
+            ],
+            "password": "Aamishilyas01",
+            "m_hash": "84164758370128576872727176191985421144",
+            "m_index": "stealer_model-000189",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk/web/login:L1F22BBAM0299:leh117315",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 467].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F22BBAM0299"
+            ],
+            "password": "leh117315",
+            "m_hash": "287702708130075783936706029783397636525",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk/web/login:L1S21BSBT0082:a3255555",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@AhegaoCloud 10KK+ LINES.txt",
+            "date": "2026-03-20",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1S21BSBT0082"
+            ],
+            "password": "a3255555",
+            "m_hash": "97372521515922403069562990947579817895",
+            "m_index": "stealer_model-000188",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/web/signup:L1F20BSME0062:dell:E7240",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@KURTXT_ULP - URL LOGIN PASS PRIVATE #10.txt",
+            "date": "2026-04-11",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "dell"
+            ],
+            "password": "E7240",
+            "m_hash": "12286382110583966743820072202326825487",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/:l1f21bscs0264:HELLO3125",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#195.txt",
+            "date": "2026-03-25",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1f21bscs0264"
+            ],
+            "password": "HELLO3125",
+            "m_hash": "204608129049303855146319662066961681646",
+            "m_index": "stealer_model-000189",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/ : l1f21bscs0264 : HELLO3125",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@MetaCloudVipNew 2.56 M+ LINE.txt",
+            "date": "2026-03-20",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1f21bscs0264 "
+            ],
+            "password": "HELLO3125",
+            "m_hash": "300295247223701679929628793376978791609",
+            "m_index": "stealer_model-000188",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://odoo.ucp.edu.pk/ : l1s21bbam0196 : Mudasir&1",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (7).txt",
+            "password": "Mudasir&1",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null,
+                null,
+                null,
+                null
+            ],
+            "domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1s21bbam0196"
+            ],
+            "m_index": "stealer_model-000100",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk:L1F22BSCS0265:Aamishilyas01",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 465].txt",
+            "date": "2026-04-02",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F22BSCS0265"
+            ],
+            "password": "Aamishilyas01",
+            "m_hash": "70602613706236922438504804263072625897",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk:L1F22BBAM0109:4929137",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@AZULPRIVATE • @AZULCLOUD • UNIQUE #20.txt",
+            "date": "2026-04-12",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F22BBAM0109"
+            ],
+            "password": "4929137",
+            "m_hash": "94391907287247104218997250503283909636",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/ : l1f22bsen0011 : IAGvaSEL",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 465].txt",
+            "date": "2026-04-02",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1f22bsen0011 "
+            ],
+            "password": "IAGvaSEL",
+            "m_hash": "304274287097952560921721123804411577110",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://odoo.ucp.edu.pk/:l1f19bscs0581@ucp.edu.pk:arham.2249",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (6).txt",
+            "password": "arham.2249",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "odoo.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "l1f19bscs0581@ucp.edu.pk"
+            ],
+            "username": [
+                "l1f19bscs0581"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk/ : l1s21bbam0196 : Mudasir&1",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 465].txt",
+            "date": "2026-04-02",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1s21bbam0196 "
+            ],
+            "password": "Mudasir&1",
+            "m_hash": "185860536691818031712461338257849486332",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://odoo.ucp.edu.pk:L1F20BSCS0704:zaibrocks642",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (3).txt",
+            "password": "zaibrocks642",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F20BSCS0704"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/web/login:L1F22BBAM0299:leh117315",
+            "channel": "Cloud url:log:pass",
+            "file": null,
+            "file_name": "@cloud t29.txt",
+            "date": "2026-04-22",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F22BBAM0299"
+            ],
+            "password": "leh117315",
+            "m_hash": "65353426234759984369377004378544486000",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://odoo.ucp.edu.pk/web/signup:dr.elc@ucp.edu.pk:Sadia198010",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (6).txt",
+            "password": "Sadia198010",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "odoo.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "dr.elc@ucp.edu.pk"
+            ],
+            "username": [
+                "dr.elc"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk:l1f20bbam0250:Axeof0123",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "6 600 000 URL LOGIN PASS.txt",
+            "date": "2026-05-18",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1f20bbam0250"
+            ],
+            "password": "Axeof0123",
+            "m_hash": "224995011287193048770816565557047480394",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://odoo.ucp.edu.pk/web/login:L1F22BBAM0299:leh117315",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (3).txt",
+            "password": "leh117315",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F22BBAM0299"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk:L1F21PHMD0182:yNxKUHLY",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "6 600 000 URL LOGIN PASS.txt",
+            "date": "2026-05-18",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F21PHMD0182"
+            ],
+            "password": "yNxKUHLY",
+            "m_hash": "151463147136017699375537915881558170113",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk/:l1s22bscs0109:D@112233#",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "Untitled.txt",
+            "date": "2026-04-03",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1s22bscs0109"
+            ],
+            "password": "D@112233#",
+            "m_hash": "20253696390828198672439996816027755914",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/web/signup:dr.elc@ucp.edu.pk:Sadia198010",
+            "channel": "Darkside hub",
+            "file": null,
+            "file_name": "mansory (2).txt",
+            "date": "2026-03-03",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "dr.elc"
+            ],
+            "password": "Sadia198010",
+            "email": [
+                "dr.elc@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "280376838202448233503753037722484436881",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://odoo.ucp.edu.pk:l1s22bscs0109:D@112233#",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (3).txt",
+            "password": "D@112233#",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1s22bscs0109"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk:l1s21bsse0043@ucp.edu.pk:Aqfahs404",
+            "channel": "darkside linklogs",
+            "file": null,
+            "file_name": "mansory (3).txt",
+            "date": "2026-03-13",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1s21bsse0043"
+            ],
+            "password": "Aqfahs404",
+            "email": [
+                "l1s21bsse0043@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "212754906940733831779873480079071830993",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk/:l1s21bbam0196:mudasir&1",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#200.txt",
+            "date": "2026-04-04",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1s21bbam0196"
+            ],
+            "password": "mudasir&1",
+            "m_hash": "308628662653155471840801614768350130741",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk:l1s23bscs0357:NaumanBashir51",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#199.txt",
+            "date": "2026-04-04",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1s23bscs0357"
+            ],
+            "password": "NaumanBashir51",
+            "m_hash": "18115906610414606037278422083227793386",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk:l1s21bbam0196:mudasir&1",
+            "channel": "Darkside hub",
+            "file": null,
+            "file_name": "mansory (1).txt",
+            "date": "2026-03-13",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1s21bbam0196"
+            ],
+            "password": "mudasir&1",
+            "m_hash": "333259984217342032306525746182896480810",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk/web/login:L1S23BSCS0027:zubair123",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#185.txt",
+            "date": "2026-04-08",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1S23BSCS0027"
+            ],
+            "password": "zubair123",
+            "m_hash": "63390368150237615297386769734258798582",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/ : l1s21bbam0196 : Mudasir&1",
+            "channel": "darkside linklogs",
+            "file": null,
+            "file_name": "mansory (2).txt",
+            "date": "2026-03-13",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1s21bbam0196 "
+            ],
+            "password": "Mudasir&1",
+            "m_hash": "333353941699063580077022656204064400447",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk/:l1f21bsba0045:Jutt@125",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@Dragonvitulpnew [ULP part.3].txt",
+            "date": "2026-05-19",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1f21bsba0045"
+            ],
+            "password": "Jutt@125",
+            "m_hash": "5369543959252551168339731635987044573",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk/:L1F22BSSE0137:Pgccampus8",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@Dragonvitulpnew [ULP part.2].txt",
+            "date": "2026-05-19",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F22BSSE0137"
+            ],
+            "password": "Pgccampus8",
+            "m_hash": "132972789216521523197730329205574765217",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk:L1S21BSSE0020:sleep9@rest",
+            "channel": "Darkside hub",
+            "file": null,
+            "file_name": "mansory (4).txt",
+            "date": "2026-03-13",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1S21BSSE0020"
+            ],
+            "password": "sleep9@rest",
+            "m_hash": "10548698511770326689449314473679645602",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk : l1s22bscs0109 : D@112233",
+            "channel": "Darkside hub",
+            "file": null,
+            "file_name": "mansory (4).txt",
+            "date": "2026-03-14",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1s22bscs0109 "
+            ],
+            "password": "D@112233",
+            "m_hash": "93488398139568824877247033517717240064",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk/:L1F22BSCS0265:Aamishilyas01",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "pk_search_cloud_ulp_private_1879.txt",
+            "date": "2026-05-19",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F22BSCS0265"
+            ],
+            "password": "Aamishilyas01",
+            "m_hash": "172799635336682566617233690206630432975",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/:l1f21bscs0463@ucp.edu.pk:bakhtawar@54321",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#197.txt",
+            "date": "2026-04-05",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1f21bscs0463"
+            ],
+            "password": "bakhtawar@54321",
+            "email": [
+                "l1f21bscs0463@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "185983379664588561229484717354568740157",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/web/login:L1S21BSBT0082:a3255555",
+            "channel": "TXTLOG",
+            "file": null,
+            "file_name": "24-04-2026.txt",
+            "date": "2026-05-08",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1S21BSBT0082"
+            ],
+            "password": "a3255555",
+            "m_hash": "217685751665879287667516616862886427913",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/:L1S21BSSE0043@UCP.EDU.PK:Aqfahs404",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@AhegaoCloud 14KK+ LINES .txt",
+            "date": "2026-04-09",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1S21BSSE0043"
+            ],
+            "password": "Aqfahs404",
+            "email": [
+                "L1S21BSSE0043@UCP.EDU.PK"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "252877780212654702490486400246087470286",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk/:L1S21BSSE0043@ucp.edu.pk:Aqfahs404",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@AhegaoCloud 14KK+ LINES .txt",
+            "date": "2026-04-09",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1S21BSSE0043"
+            ],
+            "password": "Aqfahs404",
+            "email": [
+                "L1S21BSSE0043@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "64896591331623485229783456193595976812",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk/:L1F22BBAM0109:4929137",
+            "channel": "Darkside hub",
+            "file": null,
+            "file_name": "mansory (7).txt",
+            "date": "2026-03-14",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F22BBAM0109"
+            ],
+            "password": "4929137",
+            "m_hash": "34836388965325310978258777121280492621",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://odoo.ucp.edu.pk/:l1s21bbam0196:Mudasir&1",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@PixelCloud2 ULP 25.08.2025 #525.txt",
+            "date": "2026-04-10",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "l1s21bbam0196"
+            ],
+            "password": "Mudasir&1",
+            "m_hash": "269687649911951860717551523709783656111",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "odoo.ucp.edu.pk:L1F21PHMD0182:yNxKUHLY",
+            "channel": "Darkside hub",
+            "file": null,
+            "file_name": "mansory (7).txt",
+            "date": "2026-03-15",
+            "source_domain": [
+                "odoo.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F21PHMD0182"
+            ],
+            "password": "yNxKUHLY",
+            "m_hash": "192329430193183574188492687724745221917",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        }
+    ],
+    "Suggestions": [],
+    "Page_Count": 1.0
+}

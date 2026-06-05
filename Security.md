@@ -16,9 +16,6 @@ Please report vulnerabilities **privately** using one of the following methods:
   - Click **Security**
   - Click **Report a vulnerability**
 
-- **Email**  
-  Send detailed information to:  
-  **📧 m.abd571870@gmail.com**
 
 ### What to Include
 

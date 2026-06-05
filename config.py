@@ -41,9 +41,15 @@ class DarkPulseConfig:
 
     # ── API Server ───────────────────────────────────────────────────────────
     api_key: str = ""              # X-API-Key header value; empty = auth disabled
+    jwt_secret: str = ""
+    initial_admin_username: str = ""
+    initial_admin_password: str = ""
+    initial_admin_email: str = "admin@example.com"
+    initial_admin_name: str = "Administrator"
     cors_origins: List[str] = field(default_factory=lambda: ["*"])
     api_host: str = "0.0.0.0"
     api_port: int = 8000
+    credential_upload_max_bytes: int = 25 * 1024 * 1024
 
     # ── GitHub ───────────────────────────────────────────────────────────────
     github_token: str = ""
@@ -58,6 +64,8 @@ class DarkPulseConfig:
 
     # ── Scheduler ────────────────────────────────────────────────────────────
     schedule_interval_hours: int = 6   # how often orchestrator runs all collectors
+    collector_max_workers: int = 2
+    run_on_scheduler_start: bool = True
     healing_monitor_enabled: bool = False
     healing_monitor_interval_minutes: int = 180
     healing_monitor_target_limit: int = 12
@@ -114,9 +122,15 @@ def _load() -> DarkPulseConfig:
         mongo_uri=os.getenv("MONGO_URI", "mongodb://127.0.0.1:27017"),
         mongo_db=os.getenv("MONGO_DB", "darkpulse"),
         api_key=os.getenv("API_KEY", ""),
+        jwt_secret=os.getenv("JWT_SECRET", ""),
+        initial_admin_username=os.getenv("INITIAL_ADMIN_USERNAME", ""),
+        initial_admin_password=os.getenv("INITIAL_ADMIN_PASSWORD", ""),
+        initial_admin_email=os.getenv("INITIAL_ADMIN_EMAIL", "admin@example.com"),
+        initial_admin_name=os.getenv("INITIAL_ADMIN_NAME", "Administrator"),
         cors_origins=cors_list or ["*"],
         api_host=os.getenv("API_HOST", "0.0.0.0"),
         api_port=_int(os.getenv("API_PORT", "8000"), 8000),
+        credential_upload_max_bytes=_int(os.getenv("CREDENTIAL_UPLOAD_MAX_BYTES", str(25 * 1024 * 1024)), 25 * 1024 * 1024),
         github_token=os.getenv("GITHUB_TOKEN", ""),
         gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
         pagespeed_api_key=os.getenv("PAGESPEED_API_KEY", ""),
@@ -125,6 +139,8 @@ def _load() -> DarkPulseConfig:
         max_pages=_int(os.getenv("MAX_PAGES", "5"), 5),
         max_articles=_int(os.getenv("MAX_ARTICLES", "50"), 50),
         schedule_interval_hours=_int(os.getenv("SCHEDULE_INTERVAL_HOURS", "6"), 6),
+        collector_max_workers=max(1, _int(os.getenv("COLLECTOR_MAX_WORKERS", "2"), 2)),
+        run_on_scheduler_start=_bool(os.getenv("RUN_ON_SCHEDULER_START", "true"), True),
         healing_monitor_enabled=_bool(os.getenv("HEALING_MONITOR_ENABLED", "false")),
         healing_monitor_interval_minutes=_int(os.getenv("HEALING_MONITOR_INTERVAL_MINUTES", "180"), 180),
         healing_monitor_target_limit=_int(os.getenv("HEALING_MONITOR_TARGET_LIMIT", "12"), 12),

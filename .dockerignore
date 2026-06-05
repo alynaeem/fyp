@@ -2,6 +2,8 @@
 .idea
 .codex
 .env
+.env.*
+!.env.example
 .ruff_cache
 __pycache__/
 **/__pycache__/
@@ -14,5 +16,16 @@ mongodb-*/
 darkpulse_dump/
 logs/
 mongod.log
+server.log
+nohup.out
 NodeGoat/
-'
+data/
+mongo_runtime_*/
+api_collector/scripts/trivy_reports/
+news_collector/scripts/output/
+*.json
+*.jsonl
+*.log
+dead-code-report.json
+DarkPulse_Diagrams_Package.zip
+documents/

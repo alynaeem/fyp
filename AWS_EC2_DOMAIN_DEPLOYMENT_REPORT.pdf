@@ -1,0 +1,1269 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R 7 0 R 9 0 R 11 0 R 13 0 R 15 0 R 17 0 R 19 0 R 21 0 R 23 0 R] /Count 11 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> /F3 << /Type /Font /Subtype /Type1 /BaseFont /Courier >> >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 2918 >>
+stream
+BT
+/F2 18 Tf
+1 0 0 1 54 784 Tm
+(DarkPulse Low-Cost AWS EC2 Deployment Guide) Tj
+/F1 9 Tf
+1 0 0 1 54 743 Tm
+(Date: 2026-06-05) Tj
+/F1 9 Tf
+1 0 0 1 54 721 Tm
+(Project: DarkPulse 2.0 OSINT Threat Intelligence Dashboard) Tj
+/F1 9 Tf
+1 0 0 1 54 699 Tm
+(Final approach: one AWS EC2 instance, Docker Compose, local MongoDB container, Nginx) Tj
+/F1 9 Tf
+1 0 0 1 54 686 Tm
+(reverse proxy, HTTPS with Certbot, and a GoDaddy domain pointed to the EC2 Elastic IP.) Tj
+/F1 9 Tf
+1 0 0 1 54 664 Tm
+(Domain placeholder: `yourdomain.com`) Tj
+/F2 13 Tf
+1 0 0 1 54 642 Tm
+(1. Architecture) Tj
+/F1 9 Tf
+1 0 0 1 54 616 Tm
+(Use this low-cost architecture:) Tj
+/F3 8 Tf
+1 0 0 1 72 586 Tm
+(User Browser) Tj
+/F3 8 Tf
+1 0 0 1 72 574 Tm
+(  -> https://yourdomain.com) Tj
+/F3 8 Tf
+1 0 0 1 72 562 Tm
+(  -> GoDaddy DNS A record) Tj
+/F3 8 Tf
+1 0 0 1 72 550 Tm
+(  -> AWS EC2 Elastic IP) Tj
+/F3 8 Tf
+1 0 0 1 72 538 Tm
+(  -> Nginx on EC2 ports 80/443) Tj
+/F3 8 Tf
+1 0 0 1 72 526 Tm
+(  -> FastAPI Docker container on localhost:8000) Tj
+/F3 8 Tf
+1 0 0 1 72 514 Tm
+(  -> MongoDB Docker container on private Docker network) Tj
+/F1 9 Tf
+1 0 0 1 54 485 Tm
+(Services on EC2:) Tj
+/F3 8 Tf
+1 0 0 1 72 455 Tm
+(api container        FastAPI dashboard and backend) Tj
+/F3 8 Tf
+1 0 0 1 72 443 Tm
+(mongodb container    local MongoDB database) Tj
+/F3 8 Tf
+1 0 0 1 72 431 Tm
+(tor container        internal SOCKS proxy for collectors) Tj
+/F3 8 Tf
+1 0 0 1 72 419 Tm
+(collector container  scheduled background collectors) Tj
+/F3 8 Tf
+1 0 0 1 72 407 Tm
+(nginx host service   public reverse proxy and HTTPS entrypoint) Tj
+/F1 9 Tf
+1 0 0 1 54 378 Tm
+(This is the cheapest practical deployment for your current project because it avoids a) Tj
+/F1 9 Tf
+1 0 0 1 54 365 Tm
+(paid AWS load balancer, avoids Route 53 hosted-zone cost, and uses the GoDaddy DNS panel) Tj
+/F1 9 Tf
+1 0 0 1 54 352 Tm
+(you already have.) Tj
+/F2 13 Tf
+1 0 0 1 54 330 Tm
+(2. What This Approach Does and Does Not Do) Tj
+/F1 9 Tf
+1 0 0 1 54 304 Tm
+(This approach is good for:) Tj
+/F1 9 Tf
+1 0 0 1 66 282 Tm
+(- FYP/demo deployment.) Tj
+/F1 9 Tf
+1 0 0 1 66 269 Tm
+(- One public domain.) Tj
+/F1 9 Tf
+1 0 0 1 66 256 Tm
+(- One EC2 instance.) Tj
+/F1 9 Tf
+1 0 0 1 66 243 Tm
+(- Simple Docker Compose deployment.) Tj
+/F1 9 Tf
+1 0 0 1 66 230 Tm
+(- Keeping MongoDB and Tor private.) Tj
+/F1 9 Tf
+1 0 0 1 66 217 Tm
+(- Reusing your existing local 100k Mongo dataset.) Tj
+/F1 9 Tf
+1 0 0 1 54 195 Tm
+(This approach is not high availability:) Tj
+/F1 9 Tf
+1 0 0 1 66 173 Tm
+(- If EC2 stops, the app is offline.) Tj
+/F1 9 Tf
+1 0 0 1 66 160 Tm
+(- MongoDB is on the same instance.) Tj
+/F1 9 Tf
+1 0 0 1 66 147 Tm
+(- Scaling requires manual work later.) Tj
+/F1 9 Tf
+1 0 0 1 66 134 Tm
+(- Backups must be handled carefully.) Tj
+/F1 9 Tf
+1 0 0 1 54 112 Tm
+(For your current goal, this is acceptable and low cost.) Tj
+/F2 13 Tf
+1 0 0 1 54 90 Tm
+(3. Finish 100k Records Locally First) Tj
+/F1 8 Tf
+1 0 0 1 481 28 Tm
+(Page 1 of 11) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> /F3 << /Type /Font /Subtype /Type1 /BaseFont /Courier >> >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 3050 >>
+stream
+BT
+/F1 9 Tf
+1 0 0 1 54 784 Tm
+(Your local MongoDB already had:) Tj
+/F3 8 Tf
+1 0 0 1 72 754 Tm
+(Stored records: 99,465) Tj
+/F3 8 Tf
+1 0 0 1 72 742 Tm
+(Records remaining to 100k: 535) Tj
+/F1 9 Tf
+1 0 0 1 54 713 Tm
+(Temporarily increase local collector concurrency if your laptop can handle it:) Tj
+/F3 8 Tf
+1 0 0 1 72 683 Tm
+(COLLECTOR_MAX_WORKERS=4) Tj
+/F3 8 Tf
+1 0 0 1 72 671 Tm
+(RUN_ON_SCHEDULER_START=false) Tj
+/F1 9 Tf
+1 0 0 1 54 642 Tm
+(Run a one-time local collection:) Tj
+/F3 8 Tf
+1 0 0 1 72 612 Tm
+(python3 orchestrator.py --once) Tj
+/F1 9 Tf
+1 0 0 1 54 583 Tm
+(Or run selected collectors:) Tj
+/F3 8 Tf
+1 0 0 1 72 553 Tm
+(python3 orchestrator.py --once --collector exploit) Tj
+/F3 8 Tf
+1 0 0 1 72 541 Tm
+(python3 orchestrator.py --once --collector news) Tj
+/F3 8 Tf
+1 0 0 1 72 529 Tm
+(python3 orchestrator.py --once --collector leaks) Tj
+/F1 9 Tf
+1 0 0 1 54 500 Tm
+(Check the stored-record count:) Tj
+/F3 8 Tf
+1 0 0 1 72 470 Tm
+(python3 -c 'from pymongo import MongoClient;) Tj
+/F3 8 Tf
+1 0 0 1 72 458 Tm
+(db=MongoClient\("mongodb://127.0.0.1:27017"\)["darkpulse"];) Tj
+/F3 8 Tf
+1 0 0 1 72 446 Tm
+(cols=\("agent_state","api_items","articles","automation_state","clean_intel","collector_source_status","credential_datasets","credential_exposures","dashboard_notifications","defacement_entities","defacement_items","exploit_entities","exploit_items","github_scans","healing_events","healing_repairs","healing_runtime","healing_snapshots","healing_targets","intelligence_runs","leak_entities","leak_items","news_entities","news_items","pakdb_lookups","pcgame_scans","redis_kv_store","social_entities","social_items"\);) Tj
+/F3 8 Tf
+1 0 0 1 72 434 Tm
+(print\(sum\(db[c].count_documents\({}\) for c in cols\)\)') Tj
+/F1 9 Tf
+1 0 0 1 54 405 Tm
+(After reaching 100k, set the safer value again:) Tj
+/F3 8 Tf
+1 0 0 1 72 375 Tm
+(COLLECTOR_MAX_WORKERS=2) Tj
+/F2 13 Tf
+1 0 0 1 54 346 Tm
+(4. Commit Only Deployment-Safe Files) Tj
+/F1 9 Tf
+1 0 0 1 54 320 Tm
+(Do not commit `.env`, Mongo data, screenshots, reports, logs, or runtime files.) Tj
+/F1 9 Tf
+1 0 0 1 54 298 Tm
+(Commit code/config only:) Tj
+/F3 8 Tf
+1 0 0 1 72 268 Tm
+(git status) Tj
+/F3 8 Tf
+1 0 0 1 72 256 Tm
+(git add .dockerignore .gitignore .env.example config.py docker-compose.yml) Tj
+/F3 8 Tf
+1 0 0 1 72 244 Tm
+(orchestrator.py ui_server.py AWS_EC2_DOMAIN_DEPLOYMENT_REPORT.md) Tj
+/F3 8 Tf
+1 0 0 1 72 232 Tm
+(tools/generate_simple_pdf.py) Tj
+/F3 8 Tf
+1 0 0 1 72 220 Tm
+(git commit -m "Prepare DarkPulse for low-cost EC2 deployment") Tj
+/F3 8 Tf
+1 0 0 1 72 208 Tm
+(git push origin main) Tj
+/F1 9 Tf
+1 0 0 1 54 179 Tm
+(Keep `DEPLOYMENT_COST_REPORT.md` local if it was only for your AWS vs Vercel decision.) Tj
+/F2 13 Tf
+1 0 0 1 54 157 Tm
+(5. Export Local MongoDB) Tj
+/F1 9 Tf
+1 0 0 1 54 131 Tm
+(Create a local Mongo dump after reaching 100k:) Tj
+/F3 8 Tf
+1 0 0 1 72 101 Tm
+(mkdir -p backups) Tj
+/F3 8 Tf
+1 0 0 1 72 89 Tm
+(mongodump --uri="mongodb://127.0.0.1:27017/darkpulse" --out) Tj
+/F3 8 Tf
+1 0 0 1 72 77 Tm
+(backups/darkpulse_100k_dump) Tj
+/F1 8 Tf
+1 0 0 1 481 28 Tm
+(Page 2 of 11) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> /F3 << /Type /Font /Subtype /Type1 /BaseFont /Courier >> >> >> /Contents 8 0 R >>
+endobj
+8 0 obj
+<< /Length 2501 >>
+stream
+BT
+/F1 9 Tf
+1 0 0 1 54 767 Tm
+(Compress it:) Tj
+/F3 8 Tf
+1 0 0 1 72 737 Tm
+(tar -czf backups/darkpulse_100k_dump.tar.gz -C backups darkpulse_100k_dump) Tj
+/F1 9 Tf
+1 0 0 1 54 708 Tm
+(Keep this backup safe. Do not commit it to GitHub.) Tj
+/F2 13 Tf
+1 0 0 1 54 686 Tm
+(6. Prepare Optional Screenshot Cache) Tj
+/F1 9 Tf
+1 0 0 1 54 660 Tm
+(Your feed screenshots are not tracked in GitHub. That is good because screenshots can) Tj
+/F1 9 Tf
+1 0 0 1 54 647 Tm
+(make the repo huge.) Tj
+/F1 9 Tf
+1 0 0 1 54 625 Tm
+(If your demo depends on the exact local cached screenshots, migrate them separately) Tj
+/F1 9 Tf
+1 0 0 1 54 612 Tm
+(after EC2 is ready:) Tj
+/F3 8 Tf
+1 0 0 1 72 582 Tm
+(scp -i your-key.pem -r data/feed_screenshots ubuntu@EC2_IP:~/fyp/data/) Tj
+/F1 9 Tf
+1 0 0 1 54 553 Tm
+(If you do not migrate them, pictures can still appear when:) Tj
+/F1 9 Tf
+1 0 0 1 66 531 Tm
+(- records contain remote image URLs,) Tj
+/F1 9 Tf
+1 0 0 1 66 518 Tm
+(- records contain image/base64 data in Mongo,) Tj
+/F1 9 Tf
+1 0 0 1 66 505 Tm
+(- the backend generates screenshots on demand,) Tj
+/F1 9 Tf
+1 0 0 1 66 492 Tm
+(- the user opens records that trigger screenshot capture.) Tj
+/F1 9 Tf
+1 0 0 1 54 470 Tm
+(The frontend does not load 100k images at once. It loads only the visible page/cards and) Tj
+/F1 9 Tf
+1 0 0 1 54 457 Tm
+(detail views.) Tj
+/F2 13 Tf
+1 0 0 1 54 435 Tm
+(7. Launch AWS EC2) Tj
+/F1 9 Tf
+1 0 0 1 54 409 Tm
+(Create an EC2 instance:) Tj
+/F3 8 Tf
+1 0 0 1 72 379 Tm
+(AMI: Ubuntu Server 22.04 LTS or 24.04 LTS) Tj
+/F3 8 Tf
+1 0 0 1 72 367 Tm
+(Instance type: 4 vCPU / 16 GB RAM, such as t3.xlarge or t3a.xlarge) Tj
+/F3 8 Tf
+1 0 0 1 72 355 Tm
+(Storage: 80-120 GB gp3 EBS) Tj
+/F3 8 Tf
+1 0 0 1 72 343 Tm
+(Key pair: create/download a .pem key) Tj
+/F1 9 Tf
+1 0 0 1 54 314 Tm
+(Security group inbound rules:) Tj
+/F3 8 Tf
+1 0 0 1 72 284 Tm
+(SSH     TCP 22    Your IP only) Tj
+/F3 8 Tf
+1 0 0 1 72 272 Tm
+(HTTP    TCP 80    0.0.0.0/0 and ::/0) Tj
+/F3 8 Tf
+1 0 0 1 72 260 Tm
+(HTTPS   TCP 443   0.0.0.0/0 and ::/0) Tj
+/F1 9 Tf
+1 0 0 1 54 231 Tm
+(Do not open these publicly:) Tj
+/F3 8 Tf
+1 0 0 1 72 201 Tm
+(MongoDB  TCP 27017) Tj
+/F3 8 Tf
+1 0 0 1 72 189 Tm
+(Tor      TCP 9050 or 19050) Tj
+/F3 8 Tf
+1 0 0 1 72 177 Tm
+(App      TCP 8000) Tj
+/F1 9 Tf
+1 0 0 1 54 148 Tm
+(Allocate an Elastic IP:) Tj
+/F3 8 Tf
+1 0 0 1 72 118 Tm
+(EC2 Console -> Elastic IPs -> Allocate Elastic IP -> Associate with your instance) Tj
+/F1 9 Tf
+1 0 0 1 54 89 Tm
+(Use this Elastic IP for GoDaddy DNS.) Tj
+/F1 8 Tf
+1 0 0 1 481 28 Tm
+(Page 3 of 11) Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> /F3 << /Type /Font /Subtype /Type1 /BaseFont /Courier >> >> >> /Contents 10 0 R >>
+endobj
+10 0 obj
+<< /Length 1877 >>
+stream
+BT
+/F2 13 Tf
+1 0 0 1 54 784 Tm
+(8. SSH Into EC2) Tj
+/F1 9 Tf
+1 0 0 1 54 758 Tm
+(From your local machine:) Tj
+/F3 8 Tf
+1 0 0 1 72 728 Tm
+(chmod 400 your-key.pem) Tj
+/F3 8 Tf
+1 0 0 1 72 716 Tm
+(ssh -i your-key.pem ubuntu@EC2_ELASTIC_IP) Tj
+/F1 9 Tf
+1 0 0 1 54 687 Tm
+(Update Ubuntu:) Tj
+/F3 8 Tf
+1 0 0 1 72 657 Tm
+(sudo apt update) Tj
+/F3 8 Tf
+1 0 0 1 72 645 Tm
+(sudo apt upgrade -y) Tj
+/F1 9 Tf
+1 0 0 1 54 616 Tm
+(Install base packages:) Tj
+/F3 8 Tf
+1 0 0 1 72 586 Tm
+(sudo apt install -y git curl ca-certificates nginx certbot python3-certbot-nginx) Tj
+/F2 13 Tf
+1 0 0 1 54 557 Tm
+(9. Install Docker on EC2) Tj
+/F1 9 Tf
+1 0 0 1 54 531 Tm
+(Install Docker:) Tj
+/F3 8 Tf
+1 0 0 1 72 501 Tm
+(curl -fsSL https://get.docker.com | sudo sh) Tj
+/F3 8 Tf
+1 0 0 1 72 489 Tm
+(sudo usermod -aG docker ubuntu) Tj
+/F1 9 Tf
+1 0 0 1 54 460 Tm
+(Log out:) Tj
+/F3 8 Tf
+1 0 0 1 72 430 Tm
+(exit) Tj
+/F1 9 Tf
+1 0 0 1 54 401 Tm
+(SSH back in:) Tj
+/F3 8 Tf
+1 0 0 1 72 371 Tm
+(ssh -i your-key.pem ubuntu@EC2_ELASTIC_IP) Tj
+/F1 9 Tf
+1 0 0 1 54 342 Tm
+(Verify Docker:) Tj
+/F3 8 Tf
+1 0 0 1 72 312 Tm
+(docker --version) Tj
+/F3 8 Tf
+1 0 0 1 72 300 Tm
+(docker compose version) Tj
+/F1 9 Tf
+1 0 0 1 54 271 Tm
+(Docker's official Ubuntu documentation is the reference for Ubuntu Docker Engine) Tj
+/F1 9 Tf
+1 0 0 1 54 258 Tm
+(installation. The convenience script above is simpler for this demo deployment.) Tj
+/F2 13 Tf
+1 0 0 1 54 236 Tm
+(10. Clone the Project on EC2) Tj
+/F3 8 Tf
+1 0 0 1 72 202 Tm
+(git clone https://github.com/alynaeem/fyp.git) Tj
+/F3 8 Tf
+1 0 0 1 72 190 Tm
+(cd fyp) Tj
+/F1 9 Tf
+1 0 0 1 54 161 Tm
+(Create required runtime folders:) Tj
+/F3 8 Tf
+1 0 0 1 72 131 Tm
+(mkdir -p data/feed_screenshots data/credential_checker logs) Tj
+/F3 8 Tf
+1 0 0 1 72 119 Tm
+(api_collector/scripts/trivy_reports) Tj
+/F2 13 Tf
+1 0 0 1 54 90 Tm
+(11. Create EC2 `.env`) Tj
+/F1 8 Tf
+1 0 0 1 481 28 Tm
+(Page 4 of 11) Tj
+ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> /F3 << /Type /Font /Subtype /Type1 /BaseFont /Courier >> >> >> /Contents 12 0 R >>
+endobj
+12 0 obj
+<< /Length 2312 >>
+stream
+BT
+/F1 9 Tf
+1 0 0 1 54 784 Tm
+(Create `.env` manually on EC2:) Tj
+/F3 8 Tf
+1 0 0 1 72 754 Tm
+(nano .env) Tj
+/F1 9 Tf
+1 0 0 1 54 725 Tm
+(Use this template and replace values:) Tj
+/F3 8 Tf
+1 0 0 1 72 695 Tm
+(MONGO_URI=mongodb://mongodb:27017) Tj
+/F3 8 Tf
+1 0 0 1 72 683 Tm
+(MONGO_DB=darkpulse) Tj
+/F3 8 Tf
+1 0 0 1 72 659 Tm
+(JWT_SECRET=REPLACE_WITH_LONG_RANDOM_SECRET) Tj
+/F3 8 Tf
+1 0 0 1 72 635 Tm
+(INITIAL_ADMIN_USERNAME=youradmin) Tj
+/F3 8 Tf
+1 0 0 1 72 623 Tm
+(INITIAL_ADMIN_PASSWORD=your_strong_password) Tj
+/F3 8 Tf
+1 0 0 1 72 611 Tm
+(INITIAL_ADMIN_EMAIL=your@email.com) Tj
+/F3 8 Tf
+1 0 0 1 72 599 Tm
+(INITIAL_ADMIN_NAME=Administrator) Tj
+/F3 8 Tf
+1 0 0 1 72 575 Tm
+(API_KEY=) Tj
+/F3 8 Tf
+1 0 0 1 72 563 Tm
+(CORS_ORIGINS=https://yourdomain.com,https://www.yourdomain.com) Tj
+/F3 8 Tf
+1 0 0 1 72 539 Tm
+(GITHUB_TOKEN=) Tj
+/F3 8 Tf
+1 0 0 1 72 527 Tm
+(OPENROUTER_API_KEY=) Tj
+/F3 8 Tf
+1 0 0 1 72 515 Tm
+(PAGESPEED_API_KEY=) Tj
+/F3 8 Tf
+1 0 0 1 72 503 Tm
+(GEMINI_API_KEY=) Tj
+/F3 8 Tf
+1 0 0 1 72 479 Tm
+(RUN_ON_SCHEDULER_START=false) Tj
+/F3 8 Tf
+1 0 0 1 72 467 Tm
+(COLLECTOR_MAX_WORKERS=2) Tj
+/F3 8 Tf
+1 0 0 1 72 455 Tm
+(CREDENTIAL_UPLOAD_MAX_BYTES=26214400) Tj
+/F3 8 Tf
+1 0 0 1 72 431 Tm
+(SCHEDULE_INTERVAL_HOURS=6) Tj
+/F3 8 Tf
+1 0 0 1 72 419 Tm
+(HEALING_MONITOR_ENABLED=false) Tj
+/F3 8 Tf
+1 0 0 1 72 407 Tm
+(LOG_LEVEL=INFO) Tj
+/F1 9 Tf
+1 0 0 1 54 378 Tm
+(Generate `JWT_SECRET`:) Tj
+/F3 8 Tf
+1 0 0 1 72 348 Tm
+(python3 -c "import secrets; print\(secrets.token_urlsafe\(48\)\)") Tj
+/F1 9 Tf
+1 0 0 1 54 319 Tm
+(Important:) Tj
+/F1 9 Tf
+1 0 0 1 66 297 Tm
+(- `INITIAL_ADMIN_USERNAME` and `INITIAL_ADMIN_PASSWORD` only create the first admin) Tj
+/F1 9 Tf
+1 0 0 1 66 284 Tm
+(  if MongoDB is empty.) Tj
+/F1 9 Tf
+1 0 0 1 66 271 Tm
+(- After your first successful admin login, remove/blank those two values and restart) Tj
+/F1 9 Tf
+1 0 0 1 66 258 Tm
+(  containers.) Tj
+/F1 9 Tf
+1 0 0 1 66 245 Tm
+(- New frontend users remain pending until admin approval.) Tj
+/F2 13 Tf
+1 0 0 1 54 223 Tm
+(12. Start Docker Compose) Tj
+/F1 9 Tf
+1 0 0 1 54 197 Tm
+(Build and start:) Tj
+/F3 8 Tf
+1 0 0 1 72 167 Tm
+(docker compose up --build -d) Tj
+/F1 9 Tf
+1 0 0 1 54 138 Tm
+(Check containers:) Tj
+/F3 8 Tf
+1 0 0 1 72 108 Tm
+(docker compose ps) Tj
+/F1 9 Tf
+1 0 0 1 54 79 Tm
+(Watch API logs:) Tj
+/F1 8 Tf
+1 0 0 1 481 28 Tm
+(Page 5 of 11) Tj
+ET
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> /F3 << /Type /Font /Subtype /Type1 /BaseFont /Courier >> >> >> /Contents 14 0 R >>
+endobj
+14 0 obj
+<< /Length 1918 >>
+stream
+BT
+/F3 8 Tf
+1 0 0 1 72 767 Tm
+(docker compose logs -f api) Tj
+/F1 9 Tf
+1 0 0 1 54 738 Tm
+(Check health locally on EC2:) Tj
+/F3 8 Tf
+1 0 0 1 72 708 Tm
+(curl http://localhost:8000/health) Tj
+/F1 9 Tf
+1 0 0 1 54 679 Tm
+(Expected:) Tj
+/F3 8 Tf
+1 0 0 1 72 649 Tm
+({"status":"ok","database":"mongodb connected"}) Tj
+/F2 13 Tf
+1 0 0 1 54 620 Tm
+(13. Upload Mongo Dump to EC2) Tj
+/F1 9 Tf
+1 0 0 1 54 594 Tm
+(From your local machine:) Tj
+/F3 8 Tf
+1 0 0 1 72 564 Tm
+(scp -i your-key.pem backups/darkpulse_100k_dump.tar.gz ubuntu@EC2_ELASTIC_IP:~/) Tj
+/F1 9 Tf
+1 0 0 1 54 535 Tm
+(On EC2:) Tj
+/F3 8 Tf
+1 0 0 1 72 505 Tm
+(mkdir -p ~/mongo_restore) Tj
+/F3 8 Tf
+1 0 0 1 72 493 Tm
+(tar -xzf ~/darkpulse_100k_dump.tar.gz -C ~/mongo_restore) Tj
+/F1 9 Tf
+1 0 0 1 54 464 Tm
+(Copy dump into Mongo container:) Tj
+/F3 8 Tf
+1 0 0 1 72 434 Tm
+(docker cp ~/mongo_restore/darkpulse_100k_dump) Tj
+/F3 8 Tf
+1 0 0 1 72 422 Tm
+(darkpulse-mongo:/tmp/darkpulse_100k_dump) Tj
+/F1 9 Tf
+1 0 0 1 54 393 Tm
+(Restore:) Tj
+/F3 8 Tf
+1 0 0 1 72 363 Tm
+(docker exec darkpulse-mongo mongorestore --drop --db darkpulse) Tj
+/F3 8 Tf
+1 0 0 1 72 351 Tm
+(/tmp/darkpulse_100k_dump/darkpulse) Tj
+/F1 9 Tf
+1 0 0 1 54 322 Tm
+(Restart app containers:) Tj
+/F3 8 Tf
+1 0 0 1 72 292 Tm
+(docker compose restart api collector) Tj
+/F1 9 Tf
+1 0 0 1 54 263 Tm
+(Verify Mongo count:) Tj
+/F3 8 Tf
+1 0 0 1 72 233 Tm
+(docker exec darkpulse-mongo mongosh darkpulse --quiet --eval) Tj
+/F3 8 Tf
+1 0 0 1 72 221 Tm
+('db.redis_kv_store.countDocuments\(\)') Tj
+/F2 13 Tf
+1 0 0 1 54 192 Tm
+(14. Optional: Upload Cached Screenshots) Tj
+/F1 9 Tf
+1 0 0 1 54 166 Tm
+(Only do this if the demo needs your exact local cached screenshots.) Tj
+/F1 9 Tf
+1 0 0 1 54 144 Tm
+(From local machine:) Tj
+/F3 8 Tf
+1 0 0 1 72 114 Tm
+(scp -i your-key.pem -r data/feed_screenshots ubuntu@EC2_ELASTIC_IP:~/fyp/data/) Tj
+/F1 9 Tf
+1 0 0 1 54 85 Tm
+(On EC2, confirm:) Tj
+/F1 8 Tf
+1 0 0 1 481 28 Tm
+(Page 6 of 11) Tj
+ET
+endstream
+endobj
+15 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> /F3 << /Type /Font /Subtype /Type1 /BaseFont /Courier >> >> >> /Contents 16 0 R >>
+endobj
+16 0 obj
+<< /Length 2278 >>
+stream
+BT
+/F3 8 Tf
+1 0 0 1 72 776 Tm
+(ls -lh ~/fyp/data/feed_screenshots | head) Tj
+/F1 9 Tf
+1 0 0 1 54 747 Tm
+(Restart API if needed:) Tj
+/F3 8 Tf
+1 0 0 1 72 717 Tm
+(docker compose restart api) Tj
+/F2 13 Tf
+1 0 0 1 54 688 Tm
+(15. Configure Nginx) Tj
+/F1 9 Tf
+1 0 0 1 54 662 Tm
+(Create Nginx config:) Tj
+/F3 8 Tf
+1 0 0 1 72 632 Tm
+(sudo nano /etc/nginx/sites-available/darkpulse) Tj
+/F1 9 Tf
+1 0 0 1 54 603 Tm
+(Paste this and replace domain:) Tj
+/F3 8 Tf
+1 0 0 1 72 573 Tm
+(server {) Tj
+/F3 8 Tf
+1 0 0 1 72 561 Tm
+(    listen 80;) Tj
+/F3 8 Tf
+1 0 0 1 72 549 Tm
+(    server_name yourdomain.com www.yourdomain.com;) Tj
+/F3 8 Tf
+1 0 0 1 72 525 Tm
+(    client_max_body_size 30M;) Tj
+/F3 8 Tf
+1 0 0 1 72 501 Tm
+(    location / {) Tj
+/F3 8 Tf
+1 0 0 1 72 489 Tm
+(        proxy_pass http://127.0.0.1:8000;) Tj
+/F3 8 Tf
+1 0 0 1 72 477 Tm
+(        proxy_http_version 1.1;) Tj
+/F3 8 Tf
+1 0 0 1 72 453 Tm
+(        proxy_set_header Host $host;) Tj
+/F3 8 Tf
+1 0 0 1 72 441 Tm
+(        proxy_set_header Real-IP $remote_addr;) Tj
+/F3 8 Tf
+1 0 0 1 72 429 Tm
+(        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;) Tj
+/F3 8 Tf
+1 0 0 1 72 417 Tm
+(        proxy_set_header X-Forwarded-Proto $scheme;) Tj
+/F3 8 Tf
+1 0 0 1 72 393 Tm
+(        proxy_set_header Upgrade $http_upgrade;) Tj
+/F3 8 Tf
+1 0 0 1 72 381 Tm
+(        proxy_set_header Connection "upgrade";) Tj
+/F3 8 Tf
+1 0 0 1 72 369 Tm
+(    }) Tj
+/F3 8 Tf
+1 0 0 1 72 357 Tm
+(}) Tj
+/F1 9 Tf
+1 0 0 1 54 328 Tm
+(Enable site:) Tj
+/F3 8 Tf
+1 0 0 1 72 298 Tm
+(sudo ln -s /etc/nginx/sites-available/darkpulse /etc/nginx/sites-enabled/darkpulse) Tj
+/F3 8 Tf
+1 0 0 1 72 286 Tm
+(sudo nginx -t) Tj
+/F3 8 Tf
+1 0 0 1 72 274 Tm
+(sudo systemctl reload nginx) Tj
+/F1 9 Tf
+1 0 0 1 54 245 Tm
+(Test EC2 HTTP directly before DNS:) Tj
+/F3 8 Tf
+1 0 0 1 72 215 Tm
+(curl http://EC2_ELASTIC_IP) Tj
+/F2 13 Tf
+1 0 0 1 54 186 Tm
+(16. Point GoDaddy Domain to EC2) Tj
+/F1 9 Tf
+1 0 0 1 54 160 Tm
+(Use GoDaddy DNS directly. You do not need Route 53 for this low-cost approach.) Tj
+/F1 9 Tf
+1 0 0 1 54 138 Tm
+(In GoDaddy:) Tj
+/F3 8 Tf
+1 0 0 1 72 108 Tm
+(GoDaddy account) Tj
+/F3 8 Tf
+1 0 0 1 72 96 Tm
+(  -> My Products) Tj
+/F3 8 Tf
+1 0 0 1 72 84 Tm
+(  -> Domains) Tj
+/F3 8 Tf
+1 0 0 1 72 72 Tm
+(  -> select your domain) Tj
+/F1 8 Tf
+1 0 0 1 481 28 Tm
+(Page 7 of 11) Tj
+ET
+endstream
+endobj
+17 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> /F3 << /Type /Font /Subtype /Type1 /BaseFont /Courier >> >> >> /Contents 18 0 R >>
+endobj
+18 0 obj
+<< /Length 2147 >>
+stream
+BT
+/F3 8 Tf
+1 0 0 1 72 784 Tm
+(  -> DNS / Manage DNS) Tj
+/F1 9 Tf
+1 0 0 1 54 755 Tm
+(Add or edit these DNS records:) Tj
+/F3 8 Tf
+1 0 0 1 72 725 Tm
+(Type: A) Tj
+/F3 8 Tf
+1 0 0 1 72 713 Tm
+(Name: @) Tj
+/F3 8 Tf
+1 0 0 1 72 701 Tm
+(Value: EC2_ELASTIC_IP) Tj
+/F3 8 Tf
+1 0 0 1 72 689 Tm
+(TTL: 600 seconds or default) Tj
+/F3 8 Tf
+1 0 0 1 72 665 Tm
+(Type: CNAME) Tj
+/F3 8 Tf
+1 0 0 1 72 653 Tm
+(Name: www) Tj
+/F3 8 Tf
+1 0 0 1 72 641 Tm
+(Value: @) Tj
+/F3 8 Tf
+1 0 0 1 72 629 Tm
+(TTL: 600 seconds or default) Tj
+/F1 9 Tf
+1 0 0 1 54 600 Tm
+(Alternative for `www`:) Tj
+/F3 8 Tf
+1 0 0 1 72 570 Tm
+(Type: A) Tj
+/F3 8 Tf
+1 0 0 1 72 558 Tm
+(Name: www) Tj
+/F3 8 Tf
+1 0 0 1 72 546 Tm
+(Value: EC2_ELASTIC_IP) Tj
+/F1 9 Tf
+1 0 0 1 54 517 Tm
+(Wait for DNS propagation. It can be quick, but allow up to a few hours.) Tj
+/F1 9 Tf
+1 0 0 1 54 495 Tm
+(Test from your local machine:) Tj
+/F3 8 Tf
+1 0 0 1 72 465 Tm
+(dig yourdomain.com) Tj
+/F3 8 Tf
+1 0 0 1 72 453 Tm
+(dig www.yourdomain.com) Tj
+/F3 8 Tf
+1 0 0 1 72 441 Tm
+(curl http://yourdomain.com) Tj
+/F1 9 Tf
+1 0 0 1 54 412 Tm
+(The IP returned by `dig` should be your EC2 Elastic IP.) Tj
+/F1 9 Tf
+1 0 0 1 54 390 Tm
+(GoDaddy's official DNS/nameserver help explains that DNS is managed through the GoDaddy) Tj
+/F1 9 Tf
+1 0 0 1 54 377 Tm
+(account when using GoDaddy nameservers. Keep GoDaddy nameservers for this low-cost) Tj
+/F1 9 Tf
+1 0 0 1 54 364 Tm
+(approach and edit DNS records there.) Tj
+/F2 13 Tf
+1 0 0 1 54 342 Tm
+(17. Enable HTTPS With Certbot) Tj
+/F1 9 Tf
+1 0 0 1 54 316 Tm
+(Run this only after GoDaddy DNS points to EC2.) Tj
+/F1 9 Tf
+1 0 0 1 54 294 Tm
+(On EC2:) Tj
+/F3 8 Tf
+1 0 0 1 72 264 Tm
+(sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com) Tj
+/F1 9 Tf
+1 0 0 1 54 235 Tm
+(Choose the redirect option when prompted so HTTP redirects to HTTPS.) Tj
+/F1 9 Tf
+1 0 0 1 54 213 Tm
+(Test renewal:) Tj
+/F3 8 Tf
+1 0 0 1 72 183 Tm
+(sudo certbot renew --dry-run) Tj
+/F1 9 Tf
+1 0 0 1 54 154 Tm
+(Open:) Tj
+/F3 8 Tf
+1 0 0 1 72 124 Tm
+(https://yourdomain.com) Tj
+/F1 9 Tf
+1 0 0 1 54 95 Tm
+(Certbot's Nginx plugin edits your Nginx config and installs the certificate.) Tj
+/F1 8 Tf
+1 0 0 1 481 28 Tm
+(Page 8 of 11) Tj
+ET
+endstream
+endobj
+19 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> /F3 << /Type /Font /Subtype /Type1 /BaseFont /Courier >> >> >> /Contents 20 0 R >>
+endobj
+20 0 obj
+<< /Length 1705 >>
+stream
+BT
+/F2 13 Tf
+1 0 0 1 54 784 Tm
+(18. First Login) Tj
+/F1 9 Tf
+1 0 0 1 54 758 Tm
+(Open:) Tj
+/F3 8 Tf
+1 0 0 1 72 728 Tm
+(https://yourdomain.com) Tj
+/F1 9 Tf
+1 0 0 1 54 699 Tm
+(Login using the initial admin credentials from `.env`:) Tj
+/F3 8 Tf
+1 0 0 1 72 669 Tm
+(INITIAL_ADMIN_USERNAME) Tj
+/F3 8 Tf
+1 0 0 1 72 657 Tm
+(INITIAL_ADMIN_PASSWORD) Tj
+/F1 9 Tf
+1 0 0 1 54 628 Tm
+(After successful login, edit `.env`:) Tj
+/F3 8 Tf
+1 0 0 1 72 598 Tm
+(nano .env) Tj
+/F1 9 Tf
+1 0 0 1 54 569 Tm
+(Blank these:) Tj
+/F3 8 Tf
+1 0 0 1 72 539 Tm
+(INITIAL_ADMIN_USERNAME=) Tj
+/F3 8 Tf
+1 0 0 1 72 527 Tm
+(INITIAL_ADMIN_PASSWORD=) Tj
+/F1 9 Tf
+1 0 0 1 54 498 Tm
+(Restart:) Tj
+/F3 8 Tf
+1 0 0 1 72 468 Tm
+(docker compose restart api collector) Tj
+/F1 9 Tf
+1 0 0 1 54 439 Tm
+(The admin account remains in MongoDB.) Tj
+/F2 13 Tf
+1 0 0 1 54 417 Tm
+(19. Verify Deployment) Tj
+/F1 9 Tf
+1 0 0 1 54 391 Tm
+(Check app:) Tj
+/F3 8 Tf
+1 0 0 1 72 361 Tm
+(curl https://yourdomain.com/health) Tj
+/F1 9 Tf
+1 0 0 1 54 332 Tm
+(Check containers:) Tj
+/F3 8 Tf
+1 0 0 1 72 302 Tm
+(docker compose ps) Tj
+/F1 9 Tf
+1 0 0 1 54 273 Tm
+(Check logs:) Tj
+/F3 8 Tf
+1 0 0 1 72 243 Tm
+(docker compose logs -f api) Tj
+/F3 8 Tf
+1 0 0 1 72 231 Tm
+(docker compose logs -f collector) Tj
+/F1 9 Tf
+1 0 0 1 54 202 Tm
+(Check database:) Tj
+/F3 8 Tf
+1 0 0 1 72 172 Tm
+(docker exec darkpulse-mongo mongosh darkpulse --quiet --eval) Tj
+/F3 8 Tf
+1 0 0 1 72 160 Tm
+('db.redis_kv_store.countDocuments\(\)') Tj
+/F1 9 Tf
+1 0 0 1 54 131 Tm
+(In the frontend:) Tj
+/F1 9 Tf
+1 0 0 1 66 109 Tm
+(- Login works.) Tj
+/F1 9 Tf
+1 0 0 1 66 96 Tm
+(- Dashboard Total shows 100k+ after restore.) Tj
+/F1 9 Tf
+1 0 0 1 66 83 Tm
+(- Live Feed loads.) Tj
+/F1 8 Tf
+1 0 0 1 481 28 Tm
+(Page 9 of 11) Tj
+ET
+endstream
+endobj
+21 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> /F3 << /Type /Font /Subtype /Type1 /BaseFont /Courier >> >> >> /Contents 22 0 R >>
+endobj
+22 0 obj
+<< /Length 2157 >>
+stream
+BT
+/F1 9 Tf
+1 0 0 1 66 784 Tm
+(- Admin user page works.) Tj
+/F1 9 Tf
+1 0 0 1 66 771 Tm
+(- Screenshot/image behavior is acceptable.) Tj
+/F1 9 Tf
+1 0 0 1 66 758 Tm
+(- New registrations stay pending until admin approval.) Tj
+/F2 13 Tf
+1 0 0 1 54 736 Tm
+(20. Backups) Tj
+/F1 9 Tf
+1 0 0 1 54 710 Tm
+(Do not rely only on EC2 existing. Create backups.) Tj
+/F1 9 Tf
+1 0 0 1 54 688 Tm
+(Mongo backup on EC2:) Tj
+/F3 8 Tf
+1 0 0 1 72 658 Tm
+(docker exec darkpulse-mongo mongodump --db darkpulse --out /tmp/darkpulse_backup) Tj
+/F3 8 Tf
+1 0 0 1 72 646 Tm
+(docker cp darkpulse-mongo:/tmp/darkpulse_backup ~/darkpulse_backup) Tj
+/F3 8 Tf
+1 0 0 1 72 634 Tm
+(tar -czf ~/darkpulse_backup.tar.gz -C ~ darkpulse_backup) Tj
+/F1 9 Tf
+1 0 0 1 54 605 Tm
+(Download backup locally:) Tj
+/F3 8 Tf
+1 0 0 1 72 575 Tm
+(scp -i your-key.pem ubuntu@EC2_ELASTIC_IP:~/darkpulse_backup.tar.gz backups/) Tj
+/F1 9 Tf
+1 0 0 1 54 546 Tm
+(Optional EC2-level backup:) Tj
+/F3 8 Tf
+1 0 0 1 72 516 Tm
+(EC2 Console -> Volumes -> select EBS volume -> Create snapshot) Tj
+/F1 9 Tf
+1 0 0 1 54 487 Tm
+(Create EBS snapshots after major successful data imports.) Tj
+/F2 13 Tf
+1 0 0 1 54 465 Tm
+(21. Updating Code Later) Tj
+/F1 9 Tf
+1 0 0 1 54 439 Tm
+(On EC2:) Tj
+/F3 8 Tf
+1 0 0 1 72 409 Tm
+(cd ~/fyp) Tj
+/F3 8 Tf
+1 0 0 1 72 397 Tm
+(git pull origin main) Tj
+/F3 8 Tf
+1 0 0 1 72 385 Tm
+(docker compose up --build -d) Tj
+/F3 8 Tf
+1 0 0 1 72 373 Tm
+(docker compose logs -f api) Tj
+/F1 9 Tf
+1 0 0 1 54 344 Tm
+(Do not overwrite `.env` during updates.) Tj
+/F2 13 Tf
+1 0 0 1 54 322 Tm
+(22. Troubleshooting) Tj
+/F1 9 Tf
+1 0 0 1 54 296 Tm
+(Docker containers:) Tj
+/F3 8 Tf
+1 0 0 1 72 266 Tm
+(docker compose ps) Tj
+/F3 8 Tf
+1 0 0 1 72 254 Tm
+(docker compose logs -f api) Tj
+/F1 9 Tf
+1 0 0 1 54 225 Tm
+(Nginx:) Tj
+/F3 8 Tf
+1 0 0 1 72 195 Tm
+(sudo nginx -t) Tj
+/F3 8 Tf
+1 0 0 1 72 183 Tm
+(sudo systemctl status nginx) Tj
+/F3 8 Tf
+1 0 0 1 72 171 Tm
+(sudo systemctl reload nginx) Tj
+/F1 9 Tf
+1 0 0 1 54 142 Tm
+(HTTPS:) Tj
+/F3 8 Tf
+1 0 0 1 72 112 Tm
+(sudo certbot certificates) Tj
+/F3 8 Tf
+1 0 0 1 72 100 Tm
+(sudo certbot renew --dry-run) Tj
+/F1 9 Tf
+1 0 0 1 54 71 Tm
+(DNS:) Tj
+/F1 8 Tf
+1 0 0 1 481 28 Tm
+(Page 10 of 11) Tj
+ET
+endstream
+endobj
+23 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> /F3 << /Type /Font /Subtype /Type1 /BaseFont /Courier >> >> >> /Contents 24 0 R >>
+endobj
+24 0 obj
+<< /Length 2218 >>
+stream
+BT
+/F3 8 Tf
+1 0 0 1 72 767 Tm
+(dig yourdomain.com) Tj
+/F3 8 Tf
+1 0 0 1 72 755 Tm
+(dig www.yourdomain.com) Tj
+/F1 9 Tf
+1 0 0 1 54 726 Tm
+(Disk:) Tj
+/F3 8 Tf
+1 0 0 1 72 696 Tm
+(df -h) Tj
+/F3 8 Tf
+1 0 0 1 72 684 Tm
+(docker system df) Tj
+/F1 9 Tf
+1 0 0 1 54 655 Tm
+(If disk gets full:) Tj
+/F3 8 Tf
+1 0 0 1 72 625 Tm
+(docker system prune) Tj
+/F1 9 Tf
+1 0 0 1 54 596 Tm
+(Do not run destructive cleanup on Mongo volumes.) Tj
+/F2 13 Tf
+1 0 0 1 54 574 Tm
+(23. Final Checklist) Tj
+/F1 9 Tf
+1 0 0 1 66 548 Tm
+(- Local Mongo reaches 100k+.) Tj
+/F1 9 Tf
+1 0 0 1 66 535 Tm
+(- Local Mongo dump created.) Tj
+/F1 9 Tf
+1 0 0 1 66 522 Tm
+(- Code pushed to GitHub.) Tj
+/F1 9 Tf
+1 0 0 1 66 509 Tm
+(- EC2 instance created.) Tj
+/F1 9 Tf
+1 0 0 1 66 496 Tm
+(- Elastic IP associated.) Tj
+/F1 9 Tf
+1 0 0 1 66 483 Tm
+(- Security group exposes only SSH from your IP plus HTTP/HTTPS publicly.) Tj
+/F1 9 Tf
+1 0 0 1 66 470 Tm
+(- Docker installed.) Tj
+/F1 9 Tf
+1 0 0 1 66 457 Tm
+(- Repo cloned.) Tj
+/F1 9 Tf
+1 0 0 1 66 444 Tm
+(- `.env` created on EC2.) Tj
+/F1 9 Tf
+1 0 0 1 66 431 Tm
+(- Docker Compose is running.) Tj
+/F1 9 Tf
+1 0 0 1 66 418 Tm
+(- Mongo dump restored.) Tj
+/F1 9 Tf
+1 0 0 1 66 405 Tm
+(- Optional screenshots migrated only if needed.) Tj
+/F1 9 Tf
+1 0 0 1 66 392 Tm
+(- Nginx proxies to `127.0.0.1:8000`.) Tj
+/F1 9 Tf
+1 0 0 1 66 379 Tm
+(- GoDaddy `A @` record points to EC2 Elastic IP.) Tj
+/F1 9 Tf
+1 0 0 1 66 366 Tm
+(- GoDaddy `www` record points to root or EC2 Elastic IP.) Tj
+/F1 9 Tf
+1 0 0 1 66 353 Tm
+(- Certbot HTTPS is active.) Tj
+/F1 9 Tf
+1 0 0 1 66 340 Tm
+(- Admin login works.) Tj
+/F1 9 Tf
+1 0 0 1 66 327 Tm
+(- Bootstrap admin values removed from `.env`.) Tj
+/F1 9 Tf
+1 0 0 1 66 314 Tm
+(- Dashboard Total shows 100k+.) Tj
+/F1 9 Tf
+1 0 0 1 66 301 Tm
+(- Mongo backup created.) Tj
+/F2 13 Tf
+1 0 0 1 54 279 Tm
+(References) Tj
+/F1 9 Tf
+1 0 0 1 66 253 Tm
+(- GoDaddy DNS/nameserver management:) Tj
+/F1 9 Tf
+1 0 0 1 66 240 Tm
+(  https://www.godaddy.com/help/change-nameservers-for-my-domains-664) Tj
+/F1 9 Tf
+1 0 0 1 66 227 Tm
+(- Docker Engine on Ubuntu: https://docs.docker.com/installation/ubuntulinux/) Tj
+/F1 9 Tf
+1 0 0 1 66 214 Tm
+(- Certbot with Nginx: https://certbot.eff.org/) Tj
+/F1 8 Tf
+1 0 0 1 481 28 Tm
+(Page 11 of 11) Tj
+ET
+endstream
+endobj
+xref
+0 25
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000189 00000 n 
+0000000485 00000 n 
+0000003454 00000 n 
+0000003750 00000 n 
+0000006851 00000 n 
+0000007147 00000 n 
+0000009699 00000 n 
+0000009996 00000 n 
+0000011925 00000 n 
+0000012223 00000 n 
+0000014587 00000 n 
+0000014885 00000 n 
+0000016855 00000 n 
+0000017153 00000 n 
+0000019483 00000 n 
+0000019781 00000 n 
+0000021980 00000 n 
+0000022278 00000 n 
+0000024035 00000 n 
+0000024333 00000 n 
+0000026542 00000 n 
+0000026840 00000 n 
+trailer
+<< /Size 25 /Root 1 0 R >>
+startxref
+29110
+%%EOF

@@ -846,8 +846,9 @@ def run_all_collectors(selected: Optional[str] = None) -> None:
     targets = [selected] if selected else list(COLLECTORS)
     log.info(f"=== DarkPulse Orchestrator | collectors={targets} | proxy={cfg.tor_proxy_url or 'none'} ===")
     
-    # Run all collectors in parallel to hit the 10k target as fast as possible
-    with ThreadPoolExecutor(max_workers=len(targets)) as executor:
+    max_workers = max(1, min(len(targets), cfg.collector_max_workers))
+    log.info(f"Collector concurrency | max_workers={max_workers}")
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
         executor.map(run_collector, targets)
         
     log.info("=== All collectors finished ===")
@@ -881,8 +882,10 @@ def start_scheduler(collector: Optional[str] = None) -> None:
         replace_existing=True,
     )
 
-    # Run once immediately on start
-    run_all_collectors(selected=collector)
+    if cfg.run_on_scheduler_start:
+        run_all_collectors(selected=collector)
+    else:
+        log.info("Skipping immediate collector run on scheduler start.")
 
     log.info(f"Scheduler running — next run in {interval_hours}h. Press Ctrl+C to stop.")
     try:

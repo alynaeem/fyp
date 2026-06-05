@@ -1388,7 +1388,9 @@ async def _execute_intelligence_update(job_id: str) -> None:
         await _release_scan_lock(job_id, final_status)
 
 
-SECRET_KEY = "a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4"
+SECRET_KEY = cfg.jwt_secret.strip() or secrets.token_urlsafe(48)
+if not cfg.jwt_secret.strip():
+    log.warning("JWT_SECRET is not configured. A temporary startup-only JWT secret was generated.")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 MFA_CHALLENGE_EXPIRE_MINUTES = 10
@@ -1530,7 +1532,6 @@ async def verify_api_key(
         "/auth/login",
         "/auth/login/verify-otp",
         "/auth/register",
-        "/scan/repo",
     }
     
     if path in PUBLIC_PATHS:
@@ -1565,19 +1566,27 @@ app.include_router(build_healing_router(get_current_user, admin_required))
 # Ensure default admin exists on startup
 @app.on_event("startup")
 async def create_default_admin():
-    admin = await users_col.find_one({"username": "admin"})
-    if not admin:
-        hashed = get_password_hash("1qaz!QAZ")
-        await users_col.insert_one({
-            "username": "admin",
-            "password": hashed,
-            "email": "admin@example.com",
-            "name": "Administrator",
-            "status": "approved",
-            "role": "admin",
-            "two_factor_enabled": False,
-        })
-        log.info("Default admin user created.")
+    initial_username = cfg.initial_admin_username.strip()
+    initial_password = cfg.initial_admin_password
+    if initial_username and initial_password:
+        admin = await users_col.find_one({"username": initial_username})
+        if not admin:
+            hashed = get_password_hash(initial_password)
+            await users_col.insert_one({
+                "username": initial_username,
+                "password": hashed,
+                "email": cfg.initial_admin_email.strip() or "admin@example.com",
+                "name": cfg.initial_admin_name.strip() or initial_username,
+                "status": "approved",
+                "role": "admin",
+                "two_factor_enabled": False,
+            })
+            log.info("Initial admin user created from environment configuration.")
+    elif not await users_col.find_one({"role": "admin"}):
+        log.warning(
+            "No admin user exists and INITIAL_ADMIN_USERNAME/INITIAL_ADMIN_PASSWORD are not configured. "
+            "Create an admin through a trusted local setup path before production use."
+        )
 
     await automation_state_col.update_one(
         {"_id": SCAN_LOCK_ID},
@@ -2712,6 +2721,38 @@ _LEGACY_STATS_PATTERNS = (
     (r"^PORTSWIGGER:", "exploit"),
     (r"^DEFACER:", "defacement"),
     (r"^RAW_LEAK_ITEMS", "leak"),
+)
+
+_STORED_RECORD_COLLECTIONS = (
+    "agent_state",
+    "api_items",
+    "articles",
+    "automation_state",
+    "clean_intel",
+    "collector_source_status",
+    "credential_datasets",
+    "credential_exposures",
+    "dashboard_notifications",
+    "defacement_entities",
+    "defacement_items",
+    "exploit_entities",
+    "exploit_items",
+    "github_scans",
+    "healing_events",
+    "healing_repairs",
+    "healing_runtime",
+    "healing_snapshots",
+    "healing_targets",
+    "intelligence_runs",
+    "leak_entities",
+    "leak_items",
+    "news_entities",
+    "news_items",
+    "pakdb_lookups",
+    "pcgame_scans",
+    "redis_kv_store",
+    "social_entities",
+    "social_items",
 )
 
 _FEED_SOURCE_ALIASES = {
@@ -4214,7 +4255,7 @@ def _cached_feed_total() -> int:
         return 0
     counts = cached_stats.get("counts") if isinstance(cached_stats.get("counts"), dict) else cached_stats
     try:
-        return int(counts.get("total") or 0)
+        return int(counts.get("display_total") or counts.get("total") or 0)
     except Exception:
         return 0
 
@@ -4226,7 +4267,7 @@ async def _feed_total_from_stats() -> int:
     try:
         stats_payload = await stats()
         counts = stats_payload.get("counts") if isinstance(stats_payload.get("counts"), dict) else stats_payload
-        return int(counts.get("total") or 0)
+        return int(counts.get("display_total") or counts.get("total") or 0)
     except Exception:
         return 0
 
@@ -4640,10 +4681,21 @@ async def stats():
     result["defacement_coverage"] = int(map_summary.get("defacement_items_with_country") or 0)
 
     category_total = sum(result.values())
-    result["total"] = sum(
+    display_total = sum(
         int(result.get(key, 0) or 0)
         for key in ("news", "leak", "defacement", "exploit", "social", "api")
     ) or category_total
+    try:
+        stored_counts = await asyncio.gather(
+            *[db[collection_name].count_documents({}) for collection_name in _STORED_RECORD_COLLECTIONS]
+        )
+        stored_total = sum(int(count or 0) for count in stored_counts)
+    except Exception:
+        stored_total = display_total
+    result["display_total"] = display_total
+    result["stored_total"] = stored_total
+    result["records_to_100k"] = max(100000 - stored_total, 0)
+    result["total"] = max(stored_total, display_total)
     return _cache_set_stats({"counts": result, **result})
 
 
@@ -6491,7 +6543,7 @@ async def _build_repo_ai_recommendations(
         return fallback, "fallback_error", "OpenRouter is temporarily unavailable, so DarkPulse used local repository recommendations."
 
 
-@app.post("/scan/repo")
+@app.post("/scan/repo", dependencies=[Depends(get_current_user)])
 async def scan_repo(request: Request):
     """
     Scans a GitHub repository for vulnerabilities using Trivy.
@@ -6983,6 +7035,7 @@ async def credential_checker_upload(files: list[UploadFile] = File(...)):
         base_dir = credential_data_dir()
         saved: list[str] = []
         allowed_exts = {".json", ".jsonl", ".ndjson"}
+        max_upload_bytes = max(1, cfg.credential_upload_max_bytes)
 
         for upload in files:
             file_name = pathlib.Path(upload.filename or "").name.strip()
@@ -6994,7 +7047,12 @@ async def credential_checker_upload(files: list[UploadFile] = File(...)):
                 raise HTTPException(status_code=400, detail=f"Unsupported file type for {file_name}")
 
             destination = base_dir / file_name
-            content = await upload.read()
+            content = await upload.read(max_upload_bytes + 1)
+            if len(content) > max_upload_bytes:
+                raise HTTPException(
+                    status_code=413,
+                    detail=f"{file_name} is too large. Maximum allowed size is {max_upload_bytes // (1024 * 1024)} MB.",
+                )
             destination.write_bytes(content)
             saved.append(file_name)
             await upload.close()
@@ -7061,38 +7119,55 @@ def _card_brand_guess(digits: str) -> str:
 
 
 def _mask_card(value: str) -> str:
-    """Credit card masking disabled - original value return karega"""
-    return str(value or "")
+    digits = re.sub(r"\D", "", str(value or ""))
+    if len(digits) <= 2:
+        return "#" * len(digits)
+    return f"{digits[0]}{'#' * (len(digits) - 2)}{digits[-1]}"
 
 
 def _mask_password(value: str) -> str:
-    """Password masking disabled - original value return karega"""
-    return str(value or "")
+    text = str(value or "")
+    if not text:
+        return ""
+    return f"{text[0]}{'#' * (len(text) - 1)}"
 
 
 def _mask_token(value: str) -> str:
-    """Token masking disabled - original value return karega"""
-    return str(value or "")
+    text = str(value or "")
+    if len(text) <= 6:
+        return "#" * len(text)
+    return f"{text[:3]}{'#' * (len(text) - 6)}{text[-3:]}"
 
 
 def _mask_email(value: str) -> str:
-    """Email masking disabled - original value return karega"""
-    return str(value or "")
+    text = str(value or "").strip()
+    if "@" not in text:
+        return _mask_password(text)
+    local, domain = text.split("@", 1)
+    if not local:
+        return f"*@{domain}"
+    return f"{local[0]}{'*' * max(len(local) - 1, 1)}@{domain}"
 
 
 def _mask_phone(value: str) -> str:
-    """Phone masking disabled - original value return karega"""
-    return str(value or "")
+    digits = re.sub(r"\D", "", str(value or ""))
+    if len(digits) <= 4:
+        return "#" * len(digits)
+    return f"{digits[:2]}{'#' * (len(digits) - 4)}{digits[-2:]}"
 
 
 def _mask_ip(value: str) -> str:
-    """IP masking disabled - original value return karega"""
-    return str(value or "")
+    parts = str(value or "").strip().split(".")
+    if len(parts) != 4:
+        return "#.#.#.#"
+    return f"{parts[0]}.{parts[1]}.#.#"
 
 
 def _mask_user_agent(value: str) -> str:
-    """User Agent masking disabled - original value return karega"""
-    return str(value or "").strip() or "N/A"
+    text = str(value or "").strip()
+    if not text:
+        return "N/A"
+    return re.sub(r"\d{4,}", lambda match: "#" * len(match.group(0)), text)
 
 def _safe_field(value: str) -> str:
     text = str(value or "").strip()
@@ -7231,9 +7306,9 @@ def _analyse_confidential_text(file_name: str, text: str) -> list[dict[str, Any]
             if 13 <= len(digits) <= 19 and _luhn_valid(digits):
                 replacements.append((raw, _mask_card(digits)))
         for regex, detected_type, masker, confidence, reason in (
-            (_CVV_RE, "CVV", lambda value: str(value or ""), "Medium", "CVV/CVC keyword followed by a 3-4 digit value."),
-            (_PASSWORD_RE, "Password", lambda value: str(value or ""), "Medium", "Password-like key/value pattern detected."),
-            (_TOKEN_RE, "API Key / Token", lambda value: str(value or ""), "Medium", "Token, cookie, API key, bearer, or secret-like key/value pattern detected."),
+            (_CVV_RE, "CVV", lambda value: "[REDACTED]", "Medium", "CVV/CVC keyword followed by a 3-4 digit value."),
+            (_PASSWORD_RE, "Password", _mask_password, "Medium", "Password-like key/value pattern detected."),
+            (_TOKEN_RE, "API Key / Token", _mask_token, "Medium", "Token, cookie, API key, bearer, or secret-like key/value pattern detected."),
         ):
             for match in regex.finditer(line_text):
                 replacements.append((match.group(1), masker(match.group(1))))
@@ -7284,14 +7359,10 @@ def _analyse_confidential_text(file_name: str, text: str) -> list[dict[str, Any]
                 card_brand=_card_brand_guess(digits),
             )
 
-               # CVV, Password, Token ke liye masking control
         for regex, detected_type, masker, confidence, reason in (
-            # CVV ab full dikhega (redacted nahi hoga)
-            (_CVV_RE, "CVV", lambda value: str(value or ""), "Medium", "CVV/CVC keyword followed by a 3-4 digit value."),
-            
-            # Agar password aur token bhi full chahiye to yeh bhi change kar sakte ho
-            (_PASSWORD_RE, "Password", lambda value: str(value or ""), "Medium", "Password-like key/value pattern detected."),
-            (_TOKEN_RE, "API Key / Token", lambda value: str(value or ""), "Medium", "Token, cookie, API key, bearer, or secret-like key/value pattern detected."),
+            (_CVV_RE, "CVV", lambda value: "[REDACTED]", "Medium", "CVV/CVC keyword followed by a 3-4 digit value."),
+            (_PASSWORD_RE, "Password", _mask_password, "Medium", "Password-like key/value pattern detected."),
+            (_TOKEN_RE, "API Key / Token", _mask_token, "Medium", "Token, cookie, API key, bearer, or secret-like key/value pattern detected."),
         ):
             for match in regex.finditer(line_text):
                 raw_value = match.group(1)

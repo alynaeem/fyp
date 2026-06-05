@@ -1,4 +1,6 @@
 .env
+.env.*
+!.env.example
 .codex
 .ruff_cache/
 __pycache__/
@@ -12,4 +14,13 @@ mongodb-*/
 darkpulse_dump/
 logs/
 mongod.log
-'
+server.log
+nohup.out
+data/exports/
+data/feed_screenshots/
+data/html_snapshots/
+data/healing/snapshots/
+mongo_runtime_*/
+api_collector/scripts/trivy_reports/
+news_collector/scripts/output/
+dead-code-report.json

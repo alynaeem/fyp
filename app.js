@@ -1470,6 +1470,27 @@ function syncSmartUpdateButton(isRunning = false) {
   }
 }
 
+function initSidebarAutomationCollapse() {
+  const sidebar = document.querySelector(".app-sidebar");
+  const nav = document.querySelector(".sidebar-nav");
+  if (!sidebar || !nav || sidebar.dataset.automationScrollReady === "1") return;
+
+  sidebar.dataset.automationScrollReady = "1";
+  let lastScrollTop = nav.scrollTop;
+  nav.addEventListener("scroll", () => {
+    const currentScrollTop = nav.scrollTop;
+    const delta = currentScrollTop - lastScrollTop;
+
+    if (currentScrollTop <= 12 || delta < -8) {
+      sidebar.classList.remove("sidebar-automation-collapsed");
+    } else if (delta > 8 && currentScrollTop > 24) {
+      sidebar.classList.add("sidebar-automation-collapsed");
+    }
+
+    lastScrollTop = currentScrollTop;
+  }, { passive: true });
+}
+
 function formatSmartUpdateStatus(status) {
   switch (status) {
     case "running":
@@ -1730,6 +1751,15 @@ function renderSmartUpdateBanner(payload = {}) {
   } else if (!isSmartUpdateRunning(status)) {
     state.smartUpdateJobId = "";
   }
+
+  if (!activeRun && status === "cancelled") {
+    bar.classList.add("hidden");
+    renderSmartUpdateMeta([]);
+    syncSmartUpdateButton(false);
+    return;
+  }
+
+  bar.classList.remove("hidden");
 
   const visualStatus = status === "queued"
     ? "running"
@@ -2496,9 +2526,10 @@ function splitAiSectionLines(content = "", forceList = false) {
 function _dpRenderStructuredAnswer(rawText, bubble) {
   // Clean and parse the structured sections
   const bodyText = rawText
-    .replace(/\*\*(Summary|Key Findings|Relevant Records|Missing Values):?\*\*/g, "$1:")
+    .replace(/\*\*\s*(Summary|Key Findings|Relevant Records|Missing Values)\s*:?\s*\*\*/g, "$1:")
     .replace(/^#+\s*(Summary|Key Findings|Relevant Records|Missing Values):?/gm, "$1:")
     .replace(/\s*(Summary|Key Findings|Relevant Records|Missing Values):\s*/g, "\n$1:\n")
+    .replace(/\*\*/g, "")
     .trim();
 
   const sectionNames = ["Summary", "Key Findings", "Relevant Records", "Missing Values"];
@@ -2524,6 +2555,17 @@ function _dpRenderStructuredAnswer(rawText, bubble) {
       : `<p>${escapeHtml(lines[0] || section.content)}</p>`;
     return `<section class="ai-chat-section"><h3>${escapeHtml(section.title)}</h3>${markup}</section>`;
   }).join("");
+}
+
+function _dpChatMetaLabel(metaInfo) {
+  if (!metaInfo) return "response";
+  const count = Number(metaInfo.count || 0);
+  if (metaInfo.status === "general_chat") return "general chat";
+  if (metaInfo.status === "empty") return "no matching records";
+  if (metaInfo.status === "success") {
+    return count === 1 ? "1 source record" : `top ${count} source records`;
+  }
+  return count === 1 ? "1 record" : `${count} records`;
 }
 
 async function runAiChatQuery() {
@@ -2636,7 +2678,7 @@ async function runAiChatQuery() {
     const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     const meta = document.createElement("div");
     meta.className = "dp-msg-meta";
-    meta.innerHTML = `<span class="dp-msg-meta-dot"></span> ${time} · ${metaInfo?.count || 0} records`;
+    meta.innerHTML = `<span class="dp-msg-meta-dot"></span> ${time} · ${escapeHtml(_dpChatMetaLabel(metaInfo))}`;
     aiMsg.appendChild(meta);
 
     _dpScrollToBottom();
@@ -3021,6 +3063,125 @@ function buildCountryTooltip(stats) {
   `;
 }
 
+function getCountryDisplayName(code, tooltip) {
+  const normalizedCode = String(code || "").toUpperCase();
+  const tooltipText = typeof tooltip?.text === "function" ? String(tooltip.text() || "").trim() : "";
+  if (tooltipText) return tooltipText;
+  try {
+    const displayNames = new Intl.DisplayNames(["en"], { type: "region" });
+    return displayNames.of(normalizedCode) || normalizedCode;
+  } catch (_) {
+    return normalizedCode || "Unknown Country";
+  }
+}
+
+function syncMapRegionTitles() {
+  const displayNames = (() => {
+    try {
+      return new Intl.DisplayNames(["en"], { type: "region" });
+    } catch (_) {
+      return null;
+    }
+  })();
+  document.querySelectorAll("#worldMap [data-code], #worldMap .jvm-region").forEach(region => {
+    const code = String(region.getAttribute("data-code") || region.dataset?.code || "").toUpperCase();
+    if (!code) return;
+    const stats = state.countryStatsByCode[code];
+    const countryName = stats?.name || displayNames?.of(code) || code;
+    const total = Number(stats?.total || 0);
+    const titleText = total
+      ? `${countryName} - ${total} tracked activity item${total === 1 ? "" : "s"}`
+      : countryName;
+
+    region.setAttribute("aria-label", titleText);
+    region.setAttribute("title", titleText);
+    let titleNode = Array.from(region.children || []).find(child => child.tagName?.toLowerCase() === "title");
+    if (!titleNode) {
+      titleNode = document.createElementNS("http://www.w3.org/2000/svg", "title");
+      region.insertBefore(titleNode, region.firstChild || null);
+    }
+    titleNode.textContent = titleText;
+  });
+}
+
+function getMapRegionFromTarget(target) {
+  const region = target?.closest?.("[data-code], .jvm-region");
+  if (!region || !$("worldMap")?.contains(region)) return null;
+  return region;
+}
+
+function getMapRegionCode(region) {
+  return String(
+    region?.getAttribute?.("data-code")
+    || region?.dataset?.code
+    || region?.getAttribute?.("id")
+    || ""
+  ).replace(/^.*-/, "").toUpperCase();
+}
+
+function mapTooltipTextForCode(code) {
+  const stats = state.countryStatsByCode?.[code];
+  const name = stats?.name || getCountryDisplayName(code);
+  const total = Number(stats?.total || 0);
+  if (!total) return { name, meta: "No mapped activity" };
+  return {
+    name,
+    meta: `Total ${total} | Leaks ${Number(stats?.leak_count || 0)} | Defacement ${Number(stats?.defacement_count || 0)}`
+  };
+}
+
+function showMapHoverTooltip(event, code) {
+  const shell = document.querySelector(".map-shell");
+  if (!shell || !code) return;
+
+  let tooltip = $("mapHoverTooltip");
+  if (!tooltip) {
+    tooltip = document.createElement("div");
+    tooltip.id = "mapHoverTooltip";
+    tooltip.className = "map-hover-tooltip";
+    shell.appendChild(tooltip);
+  }
+
+  const payload = mapTooltipTextForCode(code);
+  tooltip.innerHTML = `
+    <div class="map-hover-tooltip-title">${escapeHtml(payload.name || code)}</div>
+    <div class="map-hover-tooltip-meta">${escapeHtml(payload.meta)}</div>
+  `;
+
+  const shellRect = shell.getBoundingClientRect();
+  const tooltipRect = tooltip.getBoundingClientRect();
+  const nextLeft = event.clientX - shellRect.left + 16;
+  const nextTop = event.clientY - shellRect.top + 16;
+  const clampedLeft = Math.min(Math.max(12, nextLeft), Math.max(12, shellRect.width - tooltipRect.width - 12));
+  const clampedTop = Math.min(Math.max(12, nextTop), Math.max(12, shellRect.height - tooltipRect.height - 12));
+
+  tooltip.style.left = `${clampedLeft}px`;
+  tooltip.style.top = `${clampedTop}px`;
+  tooltip.classList.add("is-visible");
+}
+
+function hideMapHoverTooltip() {
+  $("mapHoverTooltip")?.classList.remove("is-visible");
+}
+
+function initMapHoverTooltip() {
+  const container = $("worldMap");
+  if (!container || container.dataset.hoverTooltipReady === "1") return;
+  container.dataset.hoverTooltipReady = "1";
+
+  container.addEventListener("mousemove", event => {
+    const region = getMapRegionFromTarget(event.target);
+    const code = getMapRegionCode(region);
+    if (!code) {
+      hideMapHoverTooltip();
+      return;
+    }
+    showMapHoverTooltip(event, code);
+  });
+
+  container.addEventListener("mouseleave", hideMapHoverTooltip);
+}
+
 function updateMapFocusCard(country) {
   $("mapFocusCountry").textContent = country?.name || "No affected country";
   $("mapFocusLeaks").textContent = String(country?.leak_count || 0);
@@ -3258,6 +3419,7 @@ async function initHeatmap() {
     );
     const container = $("worldMap");
     container.innerHTML = "";
+    initMapHoverTooltip();
 
     if (state.mapInstance && typeof state.mapInstance.destroy === "function") {
       state.mapInstance.destroy();
@@ -3289,7 +3451,7 @@ async function initHeatmap() {
         const stats = state.countryStatsByCode[code];
         if (!stats) {
           tooltip.html(buildCountryTooltip({
-            name: tooltip.text(),
+            name: getCountryDisplayName(code, tooltip),
             leak_count: 0,
             defacement_count: 0,
             total: 0,
@@ -3309,6 +3471,7 @@ async function initHeatmap() {
     });
 
     window.setTimeout(() => {
+      syncMapRegionTitles();
       syncAffectedRegions(countries);
       if (state.mapSpotlightCountries.length) {
         setMapSpotlight(state.mapSpotlightCountries[state.mapSpotlightIndex % state.mapSpotlightCountries.length].code);
@@ -5757,6 +5920,8 @@ function scheduleRefresh() {
 }
 
 function setupEventListeners() {
+  initSidebarAutomationCollapse();
+
   document.querySelectorAll(".nav-item").forEach(item => {
     item.addEventListener("click", () => {
       const target = item.dataset.view || item.dataset.tab;

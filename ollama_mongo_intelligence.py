@@ -395,6 +395,12 @@ def _chat_user_prompt(user_query: str, context: str) -> str:
     )
 
 
+def _iter_utf8_lines(response: requests.Response) -> Iterator[str]:
+    for raw_line in response.iter_lines(decode_unicode=False):
+        if raw_line:
+            yield raw_line.decode("utf-8", errors="replace")
+
+
 def _strip_think_tags(chunks: Iterator[str]) -> Iterator[str]:
     """Filter out Qwen-3 <think>…</think> reasoning blocks from a token stream.
 
@@ -487,7 +493,7 @@ def call_openrouter(
         ) as resp:
             resp.raise_for_status()
 
-            for raw_line in resp.iter_lines(decode_unicode=True):
+            for raw_line in _iter_utf8_lines(resp):
                 if not raw_line:
                     continue
                 line = raw_line.strip()
@@ -625,6 +631,178 @@ def call_chat_model(user_query: str, context: str, *, model: str = OLLAMA_MODEL)
     yield from call_ollama(user_query, context, model=model)
 
 
+def _general_chat_system_prompt() -> str:
+    return (
+        "You are DarkPulse AI, a concise assistant inside a defensive OSINT dashboard. "
+        "For normal conversation, answer naturally and briefly. "
+        "If the user asks what you can do, explain that you can search local DarkPulse records "
+        "for threats, leaks, CVEs, domains, actors, malware, ransomware, and source evidence. "
+        "Do not pretend you searched the database unless database context is provided. "
+        "Keep the answer under four sentences."
+    )
+
+
+def call_openrouter_general_chat(
+    user_query: str,
+    *,
+    model: str = OPENROUTER_MODEL,
+    openrouter_url: str = OPENROUTER_URL,
+    api_key: str = OPENROUTER_API_KEY,
+    timeout: int = 90,
+) -> Iterator[str]:
+    if not api_key:
+        yield "I can chat normally and search local DarkPulse records, but OpenRouter is not configured right now."
+        return
+
+    payload = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": _general_chat_system_prompt()},
+            {"role": "user", "content": user_query},
+        ],
+        "temperature": 0.4,
+        "top_p": 0.9,
+        "max_tokens": 220,
+        "stream": True,
+    }
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "HTTP-Referer": "http://localhost:8000",
+        "X-Title": "DarkPulse",
+    }
+
+    def _raw_chunks() -> Iterator[str]:
+        with requests.post(
+            openrouter_url,
+            headers=headers,
+            json=payload,
+            timeout=timeout,
+            stream=True,
+        ) as resp:
+            resp.raise_for_status()
+            for raw_line in _iter_utf8_lines(resp):
+                if not raw_line:
+                    continue
+                line = raw_line.strip()
+                if line.startswith("data:"):
+                    line = line[5:].strip()
+                if not line or line == "[DONE]":
+                    continue
+                try:
+                    data = json.loads(line)
+                except ValueError:
+                    continue
+                choices = data.get("choices") or []
+                if not choices:
+                    continue
+                chunk = (choices[0].get("delta") or {}).get("content")
+                if chunk:
+                    yield chunk
+
+    emitted = False
+    try:
+        for chunk in _strip_think_tags(_raw_chunks()):
+            emitted = True
+            yield chunk
+    except requests.exceptions.Timeout:
+        yield "I am here, but the model took too long to answer. Try again in a moment."
+        return
+    except requests.RequestException:
+        yield "I am here, but the chat model is temporarily unavailable. You can still ask a specific intelligence search query."
+        return
+
+    if not emitted:
+        yield "I am here. Ask me about DarkPulse records, threats, leaks, CVEs, actors, or domains."
+
+
+def call_general_chat_model(user_query: str) -> Iterator[str]:
+    if OPENROUTER_API_KEY and AI_PROVIDER != "ollama":
+        yield from call_openrouter_general_chat(user_query)
+        return
+    # Local fallback keeps general chat working if OpenRouter is disabled.
+    prompt = f"{_general_chat_system_prompt()}\n\nUser: {user_query}\nAssistant:"
+    selected_model = _fallback_model_for_ollama(OLLAMA_URL, OLLAMA_MODEL)
+    payload = {
+        "model": selected_model,
+        "prompt": prompt,
+        "stream": True,
+        "options": {"temperature": 0.4, "top_p": 0.9, "num_predict": 220},
+    }
+    try:
+        with requests.post(OLLAMA_URL, json=payload, timeout=90, stream=True) as response:
+            response.raise_for_status()
+            for raw_line in response.iter_lines(decode_unicode=True):
+                if not raw_line:
+                    continue
+                try:
+                    data = json.loads(raw_line.strip())
+                except ValueError:
+                    continue
+                chunk = data.get("response")
+                if chunk:
+                    yield chunk
+                if data.get("done"):
+                    break
+    except requests.RequestException:
+        yield "I am here. Ask me about local DarkPulse records, threats, leaks, CVEs, actors, or domains."
+
+
+def _is_general_chat_query(user_query: str) -> bool:
+    text = re.sub(r"[^\w\s']", " ", str(user_query or "").lower())
+    compact_text = re.sub(r"\s+", " ", text).strip()
+    words = [word for word in text.split() if word]
+    if not words:
+        return True
+
+    greeting_words = {"hi", "hello", "hey", "salam", "assalamualaikum", "yo"}
+    thanks_words = {"thanks", "thank", "thankyou", "thx"}
+    help_words = {"help", "commands"}
+    capability_phrases = {
+        "what can you do",
+        "what else can you do",
+        "what do you do",
+        "what are your capabilities",
+        "show me your capabilities",
+        "tell me what you can do",
+        "who are you",
+        "what are you",
+        "tell me about yourself",
+        "introduce yourself",
+    }
+    wellbeing_phrases = {
+        "how are you",
+        "how r you",
+        "how are u",
+        "how do you do",
+        "how is it going",
+        "how's it going",
+        "whats up",
+        "what's up",
+        "sup",
+    }
+
+    if len(words) <= 3 and any(word in greeting_words for word in words):
+        return True
+    if compact_text in wellbeing_phrases or (len(words) <= 5 and compact_text.startswith("how are you")):
+        return True
+    if compact_text in capability_phrases:
+        return True
+    if len(words) <= 8 and (
+        compact_text.startswith("what can you")
+        or compact_text.startswith("what else can you")
+        or compact_text.startswith("what do you do")
+        or compact_text.startswith("who are you")
+        or compact_text.startswith("what are you")
+    ):
+        return True
+    if len(words) <= 4 and any(word in thanks_words for word in words):
+        return True
+    if len(words) <= 3 and any(word in help_words for word in words):
+        return True
+    return False
+
+
 def stream_query_from_mongo(
     user_query: str,
     *,
@@ -639,6 +817,17 @@ def stream_query_from_mongo(
     Yields a dictionary with database metadata first, 
     then yields the string chunks of the LLM response.
     """
+    if _is_general_chat_query(user_query):
+        yield {
+            "status": "general_chat",
+            "collection": collection_name,
+            "count": 0,
+            "context_word_count": 0,
+            "documents": [],
+        }
+        yield from call_general_chat_model(user_query)
+        return
+
     client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
     collection = client[database_name][collection_name]
 

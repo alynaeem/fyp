@@ -1020,22 +1020,11 @@ function formatExportValue(value) {
 }
 
 function maskCredentialSecret(value) {
-  const text = String(value ?? "").trim();
-  if (!text || text === "-") return "-";
-  if (text.length <= 1) return "#";
-  return `${text.slice(0, 1)}${"#".repeat(Math.min(text.length - 1, 24))}`;
+  return String(value ?? "").trim() || "-";
 }
 
 function maskCredentialRawTrace(trace, password) {
-  let text = String(trace ?? "").trim();
-  if (!text) return "";
-  const secret = String(password ?? "").trim();
-  if (secret) {
-    text = text.split(secret).join(maskCredentialSecret(secret));
-  }
-  return text.replace(/(password|pass|pwd)(\s*[:=]\s*)([^\s|;,&]+)/gi, (_match, key, sep) => {
-    return `${key}${sep}[REDACTED]`;
-  });
+  return String(trace ?? "").trim() || "";
 }
 
 function formatCredentialTags(tags) {
@@ -5399,8 +5388,8 @@ function renderCredentialResults(data) {
 
 function renderCredentialResultItem(item, index) {
   const tags = Array.isArray(item.metadata_tags) ? item.metadata_tags : [];
-  const maskedPassword = maskCredentialSecret(item.password);
-  const maskedTrace = maskCredentialRawTrace(item.raw_trace, item.password) || "No trace available.";
+  const maskedPassword = String(item.password ?? "").trim() || "-";
+  const maskedTrace = String(item.raw_trace ?? "").trim() || "No trace available.";
   return `
     <details class="credential-log-card"${index === 1 ? " open" : ""}>
       <summary class="credential-log-summary">

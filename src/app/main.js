@@ -795,7 +795,7 @@ function closeAiChatModal() {
 
 function clearAiChat() {
   $("aiChatInput").value = "";
-  $("aiChatStatus").textContent = "Ollama model: llama3.1:8b preferred";
+  $("aiChatStatus").textContent = "OpenRouter model: qwen/qwen3-235b-a22b-2507";
   $("aiChatAnswer").classList.add("hidden");
   $("aiChatAnswer").textContent = "";
   $("aiChatSources").classList.add("hidden");
@@ -913,7 +913,7 @@ async function runAiChatQuery() {
   }
 
   setActionButtonBusy("aiChatAskBtn", true, "Thinking...", "Ask");
-  $("aiChatStatus").textContent = "Searching MongoDB and asking local Ollama...";
+  $("aiChatStatus").textContent = "Searching MongoDB and asking OpenRouter...";
   $("aiChatAnswer").classList.add("hidden");
   $("aiChatAnswer").textContent = "";
   $("aiChatSources").classList.add("hidden");

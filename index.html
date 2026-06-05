@@ -251,6 +251,7 @@
               <span class="status-note" id="lastUpdated">Updated just now</span>
             </div>
           </div>
+          <button class="icon-btn ai-chat-header-btn" id="aiChatLaunchBtn" title="AI Chat">AI Chat</button>
           <button class="icon-btn" id="settingsBtn" title="Settings">Settings</button>
         </div>
       </header>
@@ -1795,6 +1796,51 @@
         <button class="btn-secondary" id="feedFiltersResetBtn" type="button">Reset Filters</button>
         <button class="btn-primary" id="feedFiltersApplyBtn" type="button">Apply Filters</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Floating AI Chatbot Widget -->
+  <button class="dp-chat-fab hidden" id="dpChatFab" title="DarkPulse AI Assistant">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </button>
+
+  <div class="dp-chat-widget hidden" id="dpChatWidget">
+    <div class="dp-chat-header" id="dpChatHeader">
+      <div class="dp-chat-header-left">
+        <span class="dp-chat-avatar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </span>
+        <div>
+          <span class="dp-chat-header-title">DarkPulse AI</span>
+          <span class="dp-chat-header-sub" id="dpChatHeaderSub">Qwen 3 · MongoDB Intelligence</span>
+        </div>
+      </div>
+      <div class="dp-chat-header-actions">
+        <button class="dp-chat-hdr-btn" id="dpChatClearBtn" title="Clear chat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+        </button>
+        <button class="dp-chat-hdr-btn" id="dpChatMinBtn" title="Minimize">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="dp-chat-hdr-btn" id="dpChatCloseBtn" title="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="dp-chat-messages" id="dpChatMessages">
+      <div class="dp-chat-welcome">
+        <div class="dp-chat-welcome-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>
+        <p class="dp-chat-welcome-title">DarkPulse Intelligence</p>
+        <p class="dp-chat-welcome-text">Ask about threat actors, leaks, CVEs, ransomware campaigns, or any topic in the local MongoDB.</p>
+      </div>
+    </div>
+    <div class="dp-chat-input-bar">
+      <input class="dp-chat-input" id="dpChatInput" type="text" placeholder="Ask about leaks, actors, CVEs..." autocomplete="off" />
+      <button class="dp-chat-send" id="dpChatSendBtn" title="Send">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
     </div>
   </div>
 

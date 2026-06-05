@@ -20,7 +20,8 @@ import json
 import os
 import re
 from dataclasses import dataclass
-from typing import Any, Iterable
+from typing import Any, Iterable, Iterator
+import sys
 
 import requests
 from bson import ObjectId
@@ -70,7 +71,7 @@ SYSTEM_FIELD_NAMES = {
 
 BINARY_TYPES = (bytes, bytearray, memoryview)
 MAX_FIELD_CHARS = 2_000
-MAX_CONTEXT_WORDS = int(os.getenv("OLLAMA_MAX_CONTEXT_WORDS", "1800"))
+MAX_CONTEXT_WORDS = int(os.getenv("OLLAMA_MAX_CONTEXT_WORDS", "1000"))
 DEFAULT_LIMIT = int(os.getenv("OLLAMA_QUERY_LIMIT", "8"))
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
@@ -79,6 +80,10 @@ OLLAMA_FALLBACK_MODELS = (
     "llama3.2:latest",
     "dolphin-mistral:latest",
 )
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
+OPENROUTER_URL = os.getenv("OPENROUTER_URL", "https://openrouter.ai/api/v1/chat/completions")
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "qwen/qwen3-235b-a22b-2507")
+AI_PROVIDER = os.getenv("AI_PROVIDER", "openrouter" if OPENROUTER_API_KEY else "ollama").strip().lower()
 
 
 @dataclass
@@ -209,15 +214,10 @@ def _keywords_from_query(query: str) -> list[str]:
     return [word for word in words if word not in stopwords][:8]
 
 
-def _has_text_index(collection: Collection) -> bool:
-    try:
-        for index in collection.list_indexes():
-            key_spec = dict(index.get("key", {}))
-            if "text" in key_spec.values():
-                return True
-    except PyMongoError:
-        return False
-    return False
+# NOTE: we DO NOT dynamically call list_indexes() on every execution because
+# that introduces a measurable latency overhead. Assume the $text index exists.
+# If the index is missing, a PyMongo OperationFailure will be raised and we
+# fallback to regex search. This keeps runtime fast while still defensive.
 
 
 def _fallback_regex_query(query: str) -> dict[str, Any]:
@@ -250,21 +250,29 @@ def search_mongo_documents(
     """
     projection = None
 
-    if _has_text_index(collection):
-        try:
-            cursor = (
-                collection.find(
-                    {"$text": {"$search": user_query}},
-                    {"score": {"$meta": "textScore"}},
-                )
-                .sort([("score", {"$meta": "textScore"})])
-                .limit(limit)
+    search_str = " ".join(_keywords_from_query(user_query))
+    if not search_str:
+        search_str = user_query
+
+    # Try $text search first (fast when index exists). Do NOT call
+    # list_indexes() here to avoid the per-call overhead — instead rely on
+    # the DB to have the index; on failure we fall back to regex.
+    try:
+        cursor = (
+            collection.find(
+                {"$text": {"$search": search_str}},
+                {"score": {"$meta": "textScore"}},
             )
-            docs = list(cursor)
-            if docs:
-                return docs
-        except OperationFailure:
-            pass
+            .sort([("score", {"$meta": "textScore"})])
+            .limit(limit)
+        )
+        docs = list(cursor)
+        if docs:
+            return docs
+    except (OperationFailure, PyMongoError):
+        # Text search failed (likely missing text index or other issue).
+        # Fall back to bounded regex search across common fields.
+        pass
 
     query_doc = _fallback_regex_query(user_query)
     try:
@@ -364,17 +372,9 @@ def _fallback_model_for_ollama(ollama_url: str, preferred_model: str) -> str:
     return installed[0] if installed else preferred_model
 
 
-def call_ollama(
-    user_query: str,
-    context: str,
-    *,
-    model: str = OLLAMA_MODEL,
-    ollama_url: str = OLLAMA_URL,
-    timeout: int = 240,
-) -> str:
-    """Call local Ollama using raw requests to avoid adding dependencies."""
-    system_prompt = (
-        "You are DarkPulse's local defensive OSINT summarization assistant. "
+def _chat_system_prompt() -> str:
+    return (
+        "You are DarkPulse's defensive OSINT summarization assistant. "
         "The operator is authorized to analyze locally stored security records. "
         "Use only the database context provided. Be objective and concise. "
         "Do not invent names, dates, counts, countries, sources, or conclusions. "
@@ -385,18 +385,176 @@ def call_ollama(
         "Use short bullet points under Key Findings, Relevant Records, and Missing Values. "
         "Do not write one long paragraph."
     )
-    prompt = (
-        f"{system_prompt}\n\n"
+
+
+def _chat_user_prompt(user_query: str, context: str) -> str:
+    return (
         f"User query: {user_query}\n\n"
         f"Database context:\n{context}\n\n"
         "Synthesize the answer now."
     )
 
+
+def _strip_think_tags(chunks: Iterator[str]) -> Iterator[str]:
+    """Filter out Qwen-3 <think>…</think> reasoning blocks from a token stream.
+
+    The tags may span multiple chunks, so we track an ``inside_think`` flag
+    and buffer partial tag sequences that straddle chunk boundaries.
+    """
+    inside_think = False
+    buf = ""
+
+    for chunk in chunks:
+        buf += chunk
+        while buf:
+            if inside_think:
+                end_pos = buf.find("</think>")
+                if end_pos == -1:
+                    # Still inside <think>; discard everything buffered so far
+                    buf = ""
+                    break
+                # Skip past the closing tag
+                buf = buf[end_pos + len("</think>"):]
+                inside_think = False
+                # Strip the leading newlines that Qwen usually adds after </think>
+                buf = buf.lstrip("\n")
+            else:
+                start_pos = buf.find("<think>")
+                if start_pos == -1:
+                    # No opening tag – check if a partial "<think" sits at the end
+                    # so we don't emit it prematurely.
+                    safe_end = len(buf)
+                    for i in range(1, min(len("<think>"), len(buf)) + 1):
+                        if "<think>".startswith(buf[-i:]):
+                            safe_end = len(buf) - i
+                            break
+                    if safe_end > 0:
+                        yield buf[:safe_end]
+                    buf = buf[safe_end:]
+                    break
+                else:
+                    # Emit everything before the tag, then enter think mode
+                    if start_pos > 0:
+                        yield buf[:start_pos]
+                    buf = buf[start_pos + len("<think>"):]
+                    inside_think = True
+
+    # Flush any remaining buffer (shouldn't contain partial tags in practice)
+    if buf and not inside_think:
+        yield buf
+
+
+def call_openrouter(
+    user_query: str,
+    context: str,
+    *,
+    model: str = OPENROUTER_MODEL,
+    openrouter_url: str = OPENROUTER_URL,
+    api_key: str = OPENROUTER_API_KEY,
+    timeout: int = 240,
+) -> Iterator[str]:
+    """Stream OpenRouter chat completions as incremental text chunks."""
+    if not api_key:
+        yield "OpenRouter is not configured. Set OPENROUTER_API_KEY in .env and restart the server."
+        return
+
+    payload = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": _chat_system_prompt()},
+            {"role": "user", "content": _chat_user_prompt(user_query, context)},
+        ],
+        "temperature": 0.1,
+        "top_p": 0.9,
+        "max_tokens": 700,
+        "stream": True,
+    }
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "HTTP-Referer": "http://localhost:8000",
+        "X-Title": "DarkPulse",
+    }
+
+    def _raw_chunks() -> Iterator[str]:
+        """Inner generator that yields raw delta content from the SSE stream."""
+        with requests.post(
+            openrouter_url,
+            headers=headers,
+            json=payload,
+            timeout=timeout,
+            stream=True,
+        ) as resp:
+            resp.raise_for_status()
+
+            for raw_line in resp.iter_lines(decode_unicode=True):
+                if not raw_line:
+                    continue
+                line = raw_line.strip()
+                if line.startswith("data:"):
+                    line = line[5:].strip()
+                if not line or line == "[DONE]":
+                    continue
+
+                try:
+                    data = json.loads(line)
+                except ValueError:
+                    continue
+
+                choices = data.get("choices") or []
+                if not choices:
+                    continue
+
+                delta = choices[0].get("delta") or {}
+                chunk = delta.get("content")
+                if chunk:
+                    yield chunk
+
+    emitted = False
+    try:
+        for chunk in _strip_think_tags(_raw_chunks()):
+            emitted = True
+            yield chunk
+    except requests.exceptions.Timeout:
+        yield "OpenRouter request timed out. Reduce the query scope or try again."
+        return
+    except requests.RequestException as exc:
+        response = getattr(exc, "response", None)
+        detail = ""
+        if response is not None:
+            try:
+                error_payload = response.json()
+                detail = (
+                    error_payload.get("error", {}).get("message")
+                    if isinstance(error_payload.get("error"), dict)
+                    else error_payload.get("error")
+                ) or json.dumps(error_payload, ensure_ascii=False)
+            except ValueError:
+                detail = response.text.strip()
+        suffix = f" Details: {detail}" if detail else ""
+        yield f"OpenRouter request failed for model '{model}': {exc}.{suffix}"
+        return
+
+    if not emitted:
+        yield "OpenRouter returned an empty response."
+
+
+def call_ollama(
+    user_query: str,
+    context: str,
+    *,
+    model: str = OLLAMA_MODEL,
+    ollama_url: str = OLLAMA_URL,
+    timeout: int = 240,
+) -> Iterator[str]:
+    """Stream local Ollama responses as incremental text chunks."""
+    prompt = f"{_chat_system_prompt()}\n\n{_chat_user_prompt(user_query, context)}"
+
     selected_model = _fallback_model_for_ollama(ollama_url, model)
     payload = {
         "model": selected_model,
         "prompt": prompt,
-        "stream": False,
+        "stream": True,
         "options": {
             "temperature": 0.1,
             "top_p": 0.9,
@@ -405,13 +563,38 @@ def call_ollama(
         },
     }
 
+    if selected_model != model:
+        yield f"Model fallback: requested '{model}', used installed model '{selected_model}'.\n\n"
+
+    emitted = False
     try:
-        response = requests.post(ollama_url, json=payload, timeout=timeout)
-        response.raise_for_status()
+        with requests.post(ollama_url, json=payload, timeout=timeout, stream=True) as response:
+            response.raise_for_status()
+
+            for raw_line in response.iter_lines(decode_unicode=True):
+                if not raw_line:
+                    continue
+                line = raw_line.strip()
+                if not line:
+                    continue
+                try:
+                    data = json.loads(line)
+                except ValueError:
+                    continue
+
+                chunk = data.get("response")
+                if chunk:
+                    emitted = True
+                    yield chunk
+
+                if data.get("done"):
+                    break
     except requests.exceptions.ConnectionError:
-        return f"Ollama is not reachable at {ollama_url}. Start Ollama and pull llama3.1:8b first."
+        yield f"Ollama is not reachable at {ollama_url}. Start Ollama and pull llama3.1:8b first."
+        return
     except requests.exceptions.Timeout:
-        return "Ollama request timed out. Reduce the query scope or confirm the local model is responsive."
+        yield "Ollama request timed out. Reduce the query scope or confirm the local model is responsive."
+        return
     except requests.RequestException as exc:
         response = getattr(exc, "response", None)
         detail = ""
@@ -422,20 +605,27 @@ def call_ollama(
             except ValueError:
                 detail = response.text.strip()
         suffix = f" Details: {detail}" if detail else ""
-        return f"Ollama request failed for model '{selected_model}': {exc}.{suffix}"
+        yield f"Ollama request failed for model '{selected_model}': {exc}.{suffix}"
+        return
 
-    try:
-        data = response.json()
-    except ValueError:
-        return "Ollama returned a non-JSON response."
-
-    answer = (data.get("response") or "").strip() or "Ollama returned an empty response."
-    if selected_model != model:
-        return f"Model fallback: requested '{model}', used installed model '{selected_model}'.\n\n{answer}"
-    return answer
+    if not emitted:
+        yield "Ollama returned an empty response."
 
 
-def answer_query_from_mongo(
+def call_chat_model(user_query: str, context: str, *, model: str = OLLAMA_MODEL) -> Iterator[str]:
+    if AI_PROVIDER == "openrouter":
+        yield from call_openrouter(user_query, context, model=OPENROUTER_MODEL)
+        return
+    if AI_PROVIDER == "ollama":
+        yield from call_ollama(user_query, context, model=model)
+        return
+    if OPENROUTER_API_KEY:
+        yield from call_openrouter(user_query, context, model=OPENROUTER_MODEL)
+        return
+    yield from call_ollama(user_query, context, model=model)
+
+
+def stream_query_from_mongo(
     user_query: str,
     *,
     mongo_uri: str = cfg.mongo_uri,
@@ -444,56 +634,42 @@ def answer_query_from_mongo(
     limit: int = DEFAULT_LIMIT,
     max_context_words: int = MAX_CONTEXT_WORDS,
     model: str = OLLAMA_MODEL,
-) -> SearchResult:
-    """End-to-end entry point for app integration."""
+) -> Iterator[str | dict]:
+    """
+    Yields a dictionary with database metadata first, 
+    then yields the string chunks of the LLM response.
+    """
     client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
     collection = client[database_name][collection_name]
 
     try:
         docs = search_mongo_documents(collection, user_query, limit=limit)
     except PyMongoError as exc:
-        return SearchResult(
-            query=user_query,
-            collection=collection_name,
-            count=0,
-            context_word_count=0,
-            answer=f"MongoDB search failed: {exc}",
-            documents=[],
-        )
+        yield {"status": "error", "message": f"MongoDB search failed: {exc}"}
+        return
     finally:
         client.close()
 
     if not docs:
-        return SearchResult(
-            query=user_query,
-            collection=collection_name,
-            count=0,
-            context_word_count=0,
-            answer="No matching data found in database.",
-            documents=[],
-        )
+        yield {"status": "empty", "message": "No matching data found in database."}
+        return
 
     context, included_docs, word_count = build_bounded_context(docs, max_words=max_context_words)
     if not context.strip():
-        return SearchResult(
-            query=user_query,
-            collection=collection_name,
-            count=len(docs),
-            context_word_count=0,
-            answer="No usable text fields found in matching database documents.",
-            documents=[],
-        )
+        yield {"status": "empty", "message": "No usable text fields found in database documents."}
+        return
 
-    answer = call_ollama(user_query, context, model=model)
-    return SearchResult(
-        query=user_query,
-        collection=collection_name,
-        count=len(docs),
-        context_word_count=word_count,
-        answer=answer,
-        documents=included_docs,
-    )
+    # 1. Yield the metadata payload first so the UI can render sources immediately
+    yield {
+        "status": "success",
+        "collection": collection_name,
+        "count": len(docs),
+        "context_word_count": word_count,
+        "documents": included_docs,
+    }
 
+    # 2. Yield the actual text stream
+    yield from call_chat_model(user_query, context, model=model)
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Search MongoDB and summarize results with local Ollama.")
@@ -504,14 +680,43 @@ def main() -> int:
     parser.add_argument("--model", default=OLLAMA_MODEL, help="Ollama model name")
     args = parser.parse_args()
 
-    result = answer_query_from_mongo(
-        args.query,
-        collection_name=args.collection,
-        limit=args.limit,
-        max_context_words=args.max_words,
-        model=args.model,
+    client = MongoClient(cfg.mongo_uri, serverSelectionTimeoutMS=5000)
+    collection = client[cfg.mongo_db][args.collection]
+
+    try:
+        docs = search_mongo_documents(collection, args.query, limit=args.limit)
+    except PyMongoError as exc:
+        sys.stdout.write(f"MongoDB search failed: {exc}\n")
+        sys.stdout.flush()
+        return 1
+    finally:
+        client.close()
+
+    if not docs:
+        sys.stdout.write("No matching data found in database.\n")
+        sys.stdout.flush()
+        return 0
+
+    context, _, word_count = build_bounded_context(docs, max_words=args.max_words)
+    if not context.strip():
+        sys.stdout.write("No usable text fields found in matching database documents.\n")
+        sys.stdout.flush()
+        return 0
+
+    sys.stdout.write(
+        f"Collection: {args.collection}\n"
+        f"Matched docs: {len(docs)}\n"
+        f"Context words: {word_count}\n"
+        "Answer:\n"
     )
-    print(json.dumps(result.__dict__, ensure_ascii=False, indent=2))
+    sys.stdout.flush()
+
+    for chunk in call_chat_model(args.query, context, model=args.model):
+        sys.stdout.write(chunk)
+        sys.stdout.flush()
+
+    sys.stdout.write("\n")
+    sys.stdout.flush()
     return 0
 
 

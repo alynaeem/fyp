@@ -2334,6 +2334,332 @@ function closeFeedFiltersModal() {
   $("feedFiltersBackdrop").classList.add("hidden");
 }
 
+/* ── Floating Chatbot Widget ────────────────────────────────────────── */
+let _dpChatBusy = false;
+
+function dpChatShow() {
+  $("dpChatWidget").classList.remove("hidden");
+  $("dpChatFab").classList.add("hidden");
+  setTimeout(() => $("dpChatInput").focus(), 60);
+}
+
+function dpChatHide() {
+  $("dpChatWidget").classList.add("hidden");
+  $("dpChatFab").classList.remove("hidden");
+}
+
+function dpChatMinimize() {
+  $("dpChatWidget").classList.add("hidden");
+  $("dpChatFab").classList.remove("hidden");
+}
+
+function dpChatClear() {
+  $("dpChatMessages").innerHTML = `
+    <div class="dp-chat-welcome">
+      <div class="dp-chat-welcome-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      </div>
+      <p class="dp-chat-welcome-title">DarkPulse Intelligence</p>
+      <p class="dp-chat-welcome-text">Ask about threat actors, leaks, CVEs, ransomware campaigns, or any topic in the local MongoDB.</p>
+    </div>
+  `;
+}
+
+function dpChatShowFab() {
+  if ($("dpChatWidget").classList.contains("hidden")) {
+    $("dpChatFab").classList.remove("hidden");
+  }
+}
+
+function _dpScrollToBottom() {
+  const el = $("dpChatMessages");
+  el.scrollTop = el.scrollHeight;
+}
+
+function _dpAddUserMessage(text) {
+  const welcome = $("dpChatMessages").querySelector(".dp-chat-welcome");
+  if (welcome) welcome.remove();
+
+  const now = new Date();
+  const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  const msg = document.createElement("div");
+  msg.className = "dp-msg dp-msg-user";
+  msg.innerHTML = `
+    <div class="dp-msg-bubble">${escapeHtml(text)}</div>
+    <div class="dp-msg-meta">${time}</div>
+  `;
+  $("dpChatMessages").appendChild(msg);
+  _dpScrollToBottom();
+}
+
+function _dpAddThinking() {
+  const el = document.createElement("div");
+  el.className = "dp-msg dp-msg-ai";
+  el.id = "dpMsgThinking";
+  el.innerHTML = `
+    <div class="dp-msg-bubble dp-msg-thinking">
+      <div class="dp-msg-thinking-dots"><span></span><span></span><span></span></div>
+      Searching intelligence...
+    </div>
+  `;
+  $("dpChatMessages").appendChild(el);
+  _dpScrollToBottom();
+}
+
+function _dpRemoveThinking() {
+  const el = $("dpMsgThinking");
+  if (el) el.remove();
+}
+
+function _dpSourceLabel(doc) {
+  // Build a human-readable label from the document reference
+  const aid = doc.aid || doc._id || "";
+  const field = doc.field || "";
+
+  // Try to extract a meaningful title from the preview
+  const preview = doc.preview || "";
+  const titleMatch = preview.match(/Title:\s*(.+?)(?:\n|$)/i);
+  const summaryMatch = preview.match(/Summary:\s*(.+?)(?:\n|$)/i);
+  const sourceMatch = preview.match(/Source(?:\sName)?:\s*(.+?)(?:\n|$)/i);
+
+  if (titleMatch && titleMatch[1].trim().length > 5) {
+    return titleMatch[1].trim().slice(0, 65);
+  }
+  if (summaryMatch && summaryMatch[1].trim().length > 5) {
+    return summaryMatch[1].trim().slice(0, 65);
+  }
+  if (sourceMatch && sourceMatch[1].trim().length > 3) {
+    return sourceMatch[1].trim().slice(0, 65);
+  }
+
+  // Fallback: use the aid/field combo but make it readable
+  if (aid && field && field !== "record" && field !== "content") {
+    return `${field.charAt(0).toUpperCase() + field.slice(1)} · ${aid.slice(0, 20)}`;
+  }
+  if (aid) {
+    // Try to extract source from the aid pattern like "LEAK_ITEMS:raw:xxxx"
+    const aidParts = aid.split(":");
+    if (aidParts.length >= 2) {
+      const type = aidParts[0].replace(/_ITEMS$/i, "").replace(/_/g, " ");
+      return `${type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()} record · ${aidParts.slice(-1)[0].slice(0, 12)}`;
+    }
+    return `Intelligence record · ${aid.slice(0, 20)}`;
+  }
+  return `Source document #${Math.random().toString(36).slice(2, 6)}`;
+}
+
+function _dpRenderSources(docs, container) {
+  if (!docs || !docs.length) return;
+
+  const sourcesEl = document.createElement("div");
+  sourcesEl.className = "dp-msg-sources";
+  sourcesEl.innerHTML = `<div class="dp-msg-sources-label">References (${docs.length})</div>`;
+
+  docs.slice(0, 5).forEach((doc, i) => {
+    const btn = document.createElement("button");
+    btn.className = "dp-msg-source-chip";
+    if (doc.aid) {
+      btn.setAttribute("data-ai-source-aid", doc.aid);
+    } else {
+      btn.disabled = true;
+    }
+    btn.innerHTML = `
+      <span class="dp-msg-source-num">${i + 1}</span>
+      <span class="dp-msg-source-text">${escapeHtml(_dpSourceLabel(doc))}</span>
+      <span class="dp-msg-source-arrow">${doc.aid ? "→" : ""}</span>
+    `;
+    if (doc.aid) {
+      btn.addEventListener("click", () => {
+        dpChatMinimize();
+        showDetail(doc.aid);
+      });
+    }
+    sourcesEl.appendChild(btn);
+  });
+
+  container.appendChild(sourcesEl);
+}
+
+function splitAiSectionLines(content = "", forceList = false) {
+  const normalized = String(content || "")
+    .replace(/\s+(?=\d+\.\s+)/g, "\n")
+    .replace(/\s+-\s+/g, "\n")
+    .trim();
+  const lines = normalized
+    .split(/\n+/)
+    .map(line => line.replace(/^[-*•\d.)\s]+/, "").trim())
+    .filter(Boolean);
+  return forceList ? lines : (lines.length > 1 ? lines : [normalized]);
+}
+
+function _dpRenderStructuredAnswer(rawText, bubble) {
+  // Clean and parse the structured sections
+  const bodyText = rawText
+    .replace(/\*\*(Summary|Key Findings|Relevant Records|Missing Values):?\*\*/g, "$1:")
+    .replace(/^#+\s*(Summary|Key Findings|Relevant Records|Missing Values):?/gm, "$1:")
+    .replace(/\s*(Summary|Key Findings|Relevant Records|Missing Values):\s*/g, "\n$1:\n")
+    .trim();
+
+  const sectionNames = ["Summary", "Key Findings", "Relevant Records", "Missing Values"];
+  const sectionPattern = new RegExp(`^(${sectionNames.join("|")}):?\\s*`, "gm");
+  const matches = [...bodyText.matchAll(sectionPattern)];
+
+  if (!matches.length) {
+    bubble.innerHTML = `<p style="margin:0">${escapeHtml(bodyText)}</p>`;
+    return;
+  }
+
+  const sections = matches.map((match, index) => {
+    const start = match.index + match[0].length;
+    const end = matches[index + 1]?.index ?? bodyText.length;
+    return { title: match[1], content: bodyText.slice(start, end).trim() };
+  }).filter(s => s.content);
+
+  bubble.innerHTML = sections.map(section => {
+    const forceList = section.title !== "Summary";
+    const lines = splitAiSectionLines(section.content, forceList);
+    const markup = forceList || lines.length > 1
+      ? `<ul>${lines.map(l => `<li>${escapeHtml(l)}</li>`).join("")}</ul>`
+      : `<p>${escapeHtml(lines[0] || section.content)}</p>`;
+    return `<section class="ai-chat-section"><h3>${escapeHtml(section.title)}</h3>${markup}</section>`;
+  }).join("");
+}
+
+async function runAiChatQuery() {
+  const input = $("dpChatInput");
+  const query = input.value.trim();
+  if (!query || _dpChatBusy) return;
+
+  _dpChatBusy = true;
+  input.value = "";
+  $("dpChatSendBtn").disabled = true;
+
+  _dpAddUserMessage(query);
+  _dpAddThinking();
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "text/event-stream"
+    };
+    const token = getToken();
+    const apiKey = localStorage.getItem(STORAGE_KEY) || "";
+    if (token) headers.Authorization = `Bearer ${token}`;
+    if (apiKey) headers["X-API-Key"] = apiKey;
+
+    const response = await fetch(getBase() + "/api/ai/stream", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ query, collection: "redis_kv_store", limit: 8, max_context_words: 1800 })
+    });
+
+    if (response.status === 401) { handleLogout(); throw new Error("Session expired"); }
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.detail || `HTTP ${response.status}`);
+    }
+
+    _dpRemoveThinking();
+
+    // Create AI message bubble
+    const aiMsg = document.createElement("div");
+    aiMsg.className = "dp-msg dp-msg-ai";
+    const bubble = document.createElement("div");
+    bubble.className = "dp-msg-bubble";
+    const streamEl = document.createElement("div");
+    streamEl.className = "dp-msg-stream";
+    bubble.appendChild(streamEl);
+    aiMsg.appendChild(bubble);
+    $("dpChatMessages").appendChild(aiMsg);
+
+    let fullAnswer = "";
+    let metaDocs = [];
+    let metaInfo = null;
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let sseBuffer = "";
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+
+      sseBuffer += decoder.decode(value, { stream: true });
+      const parts = sseBuffer.split("\n\n");
+      sseBuffer = parts.pop() || "";
+
+      for (const part of parts) {
+        if (!part.trim()) continue;
+        let eventType = "message", eventData = "";
+        for (const line of part.split("\n")) {
+          if (line.startsWith("event: ")) eventType = line.slice(7).trim();
+          else if (line.startsWith("data: ")) eventData = line.slice(6);
+        }
+
+        if (eventType === "meta") {
+          try {
+            const meta = JSON.parse(eventData);
+            metaInfo = meta;
+            if (meta.status === "error" || meta.status === "empty") {
+              streamEl.textContent = meta.message || "No data found.";
+              break;
+            }
+            metaDocs = meta.documents || [];
+          } catch(_) {}
+        } else if (eventType === "chunk") {
+          try {
+            const text = JSON.parse(eventData);
+            fullAnswer += text;
+            streamEl.textContent = fullAnswer;
+            _dpScrollToBottom();
+          } catch(_) {}
+        } else if (eventType === "done") {
+          break;
+        }
+      }
+    }
+
+    // Final structured render
+    if (fullAnswer.trim()) {
+      streamEl.remove();
+      _dpRenderStructuredAnswer(fullAnswer, bubble);
+    }
+
+    // Add source references
+    if (metaDocs.length > 0) {
+      _dpRenderSources(metaDocs, bubble);
+    }
+
+    // Add timestamp
+    const now = new Date();
+    const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const meta = document.createElement("div");
+    meta.className = "dp-msg-meta";
+    meta.innerHTML = `<span class="dp-msg-meta-dot"></span> ${time} · ${metaInfo?.count || 0} records`;
+    aiMsg.appendChild(meta);
+
+    _dpScrollToBottom();
+
+  } catch (error) {
+    _dpRemoveThinking();
+    const errMsg = document.createElement("div");
+    errMsg.className = "dp-msg dp-msg-ai";
+    errMsg.innerHTML = `<div class="dp-msg-bubble" style="border-color:rgba(255,80,80,0.3)">⚠ ${escapeHtml(error.message)}</div>`;
+    $("dpChatMessages").appendChild(errMsg);
+    _dpScrollToBottom();
+  } finally {
+    _dpChatBusy = false;
+    $("dpChatSendBtn").disabled = false;
+    $("dpChatInput").focus();
+  }
+}
+
+// Legacy aliases — keep these so old code referencing them doesn't crash
+function openAiChatModal() { dpChatShow(); }
+function closeAiChatModal() { dpChatMinimize(); }
+function clearAiChat() { dpChatClear(); }
+
 async function applyFeedFilters() {
   const startDate = $("feedFilterStartDate").value.trim();
   const endDate = $("feedFilterEndDate").value.trim();
@@ -5503,6 +5829,21 @@ function setupEventListeners() {
   $("feedFiltersClose").onclick = closeFeedFiltersModal;
   $("feedFiltersApplyBtn").onclick = applyFeedFilters;
   $("feedFiltersResetBtn").onclick = resetFeedFilters;
+  $("aiChatLaunchBtn").onclick = dpChatShow;
+  $("dpChatFab").onclick = dpChatShow;
+  $("dpChatCloseBtn").onclick = dpChatHide;
+  $("dpChatMinBtn").onclick = dpChatMinimize;
+  $("dpChatSendBtn").onclick = runAiChatQuery;
+  $("dpChatClearBtn").onclick = dpChatClear;
+  $("dpChatInput").addEventListener("keydown", event => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      runAiChatQuery();
+    }
+  });
+
+  // Show FAB after auth
+  dpChatShowFab();
 
   window.onclick = e => {
     if (e.target === $("settingsBackdrop")) $("settingsBackdrop").classList.add("hidden");

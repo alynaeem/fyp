@@ -158,25 +158,19 @@ async def the_analyst():
     validates the evidence via Gemini 3 Flash, scores the impact,
     and publishes the final enriched intelligence to intel_feed.
     """
-    # Wait to ensure google-genai is installed before importing if running too fast
-    await asyncio.sleep(5)
-    try:
-        from google import genai
-        from google.genai import types
-        import os
-        
-        # We assume the user has set GEMINI_API_KEY in their environment or .env
-        api_key = os.environ.get("GEMINI_API_KEY", "")
-        if not api_key:
-            log.warning("[Analyst] GEMINI_API_KEY missing. The Analyst will run in bypass mode.")
-            bypass_mode = True
-        else:
-            client = genai.Client(api_key=api_key)
-            bypass_mode = False
-            
-    except ImportError:
-        log.error("[Analyst] google-genai not installed. Running in bypass mode.")
+    import os
+    import aiohttp
+    import json
+    
+    api_key = os.environ.get("OPENROUTER_API_KEY", "")
+    model = os.environ.get("OPENROUTER_MODEL", "qwen/qwen3-235b-a22b-2507")
+    url = os.environ.get("OPENROUTER_URL", "https://openrouter.ai/api/v1/chat/completions")
+    
+    if not api_key:
+        log.warning("[Analyst] OPENROUTER_API_KEY missing. The Analyst will run in bypass mode.")
         bypass_mode = True
+    else:
+        bypass_mode = False
 
     log.info("[Analyst] Initialized. Awaiting clean intel...")
     while True:
@@ -191,7 +185,7 @@ async def the_analyst():
                 
             for item in items:
                 title = item.get("title", "")
-                url = item.get("url", "")
+                url_str = item.get("url", "")
                 source_type = item.get("source_type", "unknown")
                 raw_payload = item.get("raw_payload", {})
                 
@@ -208,10 +202,10 @@ async def the_analyst():
                     
                     Source Type: {source_type}
                     Title/Snippet: {title}
-                    URL: {url}
+                    URL: {url_str}
                     Payload summary: {str(raw_payload)[:1000]}
                     
-                    Return ONLY a JSON object in this exact format:
+                    Return ONLY a JSON object in this exact format without markdown code blocks:
                     {{
                         "impact_score": <int 0-100>,
                         "is_fake": <bool>,
@@ -221,22 +215,33 @@ async def the_analyst():
                     """
                     
                     try:
-                        # Call Gemini to score the item using loop.run_in_executor to avoid blocking
-                        loop = asyncio.get_running_loop()
-                        def call_gemini():
-                            response = client.models.generate_content(
-                                model='gemini-2.5-flash',
-                                contents=prompt,
-                                config=types.GenerateContentConfig(
-                                    temperature=0.1,
-                                    response_mime_type="application/json"
-                                )
-                            )
-                            return response.text
+                        headers = {
+                            "Authorization": f"Bearer {api_key}",
+                            "Content-Type": "application/json"
+                        }
+                        payload = {
+                            "model": model,
+                            "messages": [{"role": "user", "content": prompt}],
+                            "temperature": 0.1,
+                            "response_format": {"type": "json_object"}
+                        }
+                        
+                        async with aiohttp.ClientSession() as session:
+                            async with session.post(url, headers=headers, json=payload, timeout=20) as resp:
+                                resp.raise_for_status()
+                                result_json = await resp.json()
+                                result_text = result_json["choices"][0]["message"]["content"]
+                        
+                        # Sometimes models return JSON wrapped in markdown
+                        clean_text = result_text.strip()
+                        if clean_text.startswith("```json"):
+                            clean_text = clean_text[7:]
+                        if clean_text.startswith("```"):
+                            clean_text = clean_text[3:]
+                        if clean_text.endswith("```"):
+                            clean_text = clean_text[:-3]
                             
-                        result_text = await loop.run_in_executor(None, call_gemini)
-                        import json
-                        analysis = json.loads(result_text)
+                        analysis = json.loads(clean_text.strip())
                         
                         impact_score = analysis.get("impact_score", 0)
                         is_fake = analysis.get("is_fake", False)

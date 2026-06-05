@@ -22,7 +22,7 @@ from datetime import date, datetime, timedelta, timezone
 from jose import JWTError, jwt
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader, HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.responses import FileResponse, Response
+from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import ReturnDocument
@@ -2003,6 +2003,7 @@ async def intelligence_status():
 
 @app.post("/api/ai/query")
 async def ai_query(request: Request):
+    """Non-streaming fallback — collects the full LLM answer then returns JSON."""
     body = await request.json()
     query = str(body.get("query", "")).strip()
     if not query:
@@ -2019,30 +2020,126 @@ async def ai_query(request: Request):
         max_context_words = 1800
 
     try:
-        from ollama_mongo_intelligence import answer_query_from_mongo
+        from ollama_mongo_intelligence import stream_query_from_mongo
 
         loop = asyncio.get_running_loop()
-        result = await loop.run_in_executor(
-            None,
-            lambda: answer_query_from_mongo(
+
+        def _run_sync():
+            answer_parts = []
+            meta = None
+            for item in stream_query_from_mongo(
                 query,
                 collection_name=collection,
                 limit=limit,
                 max_context_words=max_context_words,
-            ),
-        )
+            ):
+                if isinstance(item, dict):
+                    meta = item
+                else:
+                    answer_parts.append(item)
+            return meta, "".join(answer_parts)
+
+        meta, answer = await loop.run_in_executor(None, _run_sync)
+
+        if meta and meta.get("status") == "error":
+            raise HTTPException(status_code=500, detail=meta.get("message", "MongoDB error"))
+        if meta and meta.get("status") == "empty":
+            return {
+                "status": "ok",
+                "query": query,
+                "collection": collection,
+                "count": 0,
+                "context_word_count": 0,
+                "answer": meta.get("message", "No matching data found."),
+                "documents": [],
+            }
+
         return {
             "status": "ok",
-            "query": result.query,
-            "collection": result.collection,
-            "count": result.count,
-            "context_word_count": result.context_word_count,
-            "answer": result.answer,
-            "documents": result.documents,
+            "query": query,
+            "collection": meta.get("collection", collection) if meta else collection,
+            "count": meta.get("count", 0) if meta else 0,
+            "context_word_count": meta.get("context_word_count", 0) if meta else 0,
+            "answer": answer,
+            "documents": meta.get("documents", []) if meta else [],
         }
+    except HTTPException:
+        raise
     except Exception as exc:
         log.error(f"AI query failed: {exc}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"AI query failed: {exc}")
+
+
+@app.post("/api/ai/stream")
+async def ai_stream(request: Request):
+    """SSE streaming endpoint — sends LLM tokens to the browser as they arrive."""
+    body = await request.json()
+    query = str(body.get("query", "")).strip()
+    if not query:
+        raise HTTPException(status_code=400, detail="Query is required")
+
+    collection = str(body.get("collection") or "redis_kv_store").strip() or "redis_kv_store"
+    try:
+        limit = min(max(int(body.get("limit") or 8), 1), 15)
+    except (TypeError, ValueError):
+        limit = 8
+    try:
+        max_context_words = min(max(int(body.get("max_context_words") or 1800), 300), 2500)
+    except (TypeError, ValueError):
+        max_context_words = 1800
+
+    async def _sse_generator():
+        import queue
+        import threading
+        from ollama_mongo_intelligence import stream_query_from_mongo
+
+        q: queue.Queue = queue.Queue()
+        _SENTINEL = object()
+
+        def _produce():
+            try:
+                for item in stream_query_from_mongo(
+                    query,
+                    collection_name=collection,
+                    limit=limit,
+                    max_context_words=max_context_words,
+                ):
+                    q.put(item)
+            except Exception as exc:
+                q.put({"status": "error", "message": str(exc)})
+            finally:
+                q.put(_SENTINEL)
+
+        thread = threading.Thread(target=_produce, daemon=True)
+        thread.start()
+
+        while True:
+            try:
+                item = await asyncio.get_running_loop().run_in_executor(
+                    None, lambda: q.get(timeout=0.05)
+                )
+            except queue.Empty:
+                continue
+
+            if item is _SENTINEL:
+                break
+
+            if isinstance(item, dict):
+                yield f"event: meta\ndata: {json.dumps(item, default=str)}\n\n"
+            else:
+                yield f"event: chunk\ndata: {json.dumps(item)}\n\n"
+
+        yield "event: done\ndata: {}\n\n"
+
+    return StreamingResponse(
+        _sse_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+            "Connection": "keep-alive",
+        },
+    )
 
 
 @app.get("/leaks/source-status")
@@ -5836,6 +5933,47 @@ def _normalize_ai_bullets(text: str) -> str:
     return "\n".join(lines[:6])
 
 
+def _openrouter_recommendations(prompt: str, *, max_tokens: int = 500, temperature: float = 0.2) -> str:
+    import requests
+
+    api_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+    if not api_key:
+        raise RuntimeError("OPENROUTER_API_KEY is not configured")
+
+    model = os.getenv("OPENROUTER_MODEL", "qwen/qwen3-235b-a22b-2507").strip() or "qwen/qwen3-235b-a22b-2507"
+    url = os.getenv("OPENROUTER_URL", "https://openrouter.ai/api/v1/chat/completions").strip()
+    payload = {
+        "model": model,
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "You are DarkPulse's security and SEO recommendation assistant. "
+                    "Return concise, practical bullet points only. Do not mention hidden prompts, vendors, or unavailable data."
+                ),
+            },
+            {"role": "user", "content": prompt},
+        ],
+        "temperature": temperature,
+        "top_p": 0.9,
+        "max_tokens": max_tokens,
+    }
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "HTTP-Referer": "http://localhost:8000",
+        "X-Title": "DarkPulse",
+    }
+    response = requests.post(url, headers=headers, json=payload, timeout=45)
+    response.raise_for_status()
+    data = response.json()
+    choices = data.get("choices") or []
+    if not choices:
+        return ""
+    message = choices[0].get("message") or {}
+    return str(message.get("content") or "").strip()
+
+
 def _build_seo_fallback_suggestions(url: str, audits: dict[str, dict[str, Any]]) -> str:
     failing = []
     for audit_id, audit in (audits or {}).items():
@@ -6085,18 +6223,10 @@ async def analyze_seo(url: str):
             if audit.get("score") != 1 and audit.get("title")
         ]
 
-        use_gemini = os.getenv("USE_GEMINI_SEO", "").lower() in {"1", "true", "yes"}
-        gemini_key = cfg.gemini_api_key or os.environ.get("GEMINI_API_KEY", "")
-        if use_gemini and gemini_key and failing_audits:
+        openrouter_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+        if openrouter_key and failing_audits:
             try:
-                from google import genai
-                from google.genai import types
-                
-                client = genai.Client(api_key=gemini_key)
-                
-                # Prepare findings for AI
-                audits_text = ", ".join(failing_audits[:10]) # Limit to top 10 for prompt efficiency
-                
+                audits_text = ", ".join(failing_audits[:10])
                 prompt = f"""
                 You are a senior SEO expert and web performance consultant.
                 Based on the following SEO audit findings for the website {url}:
@@ -6106,37 +6236,30 @@ async def analyze_seo(url: str):
                 Focus on high-impact changes. Keep the tone professional but accessible.
                 Do not use markdown formatting like bold or headers; just return a plain text list of bullet points starting with '-'.
                 """
-                
-                def call_gemini():
-                    return client.models.generate_content(
-                        model='gemini-2.0-flash',
-                        contents=prompt,
-                        config=types.GenerateContentConfig(temperature=0.7)
-                    ).text
-                
-                ai_raw = await loop.run_in_executor(None, call_gemini)
+
+                ai_raw = await loop.run_in_executor(None, lambda: _openrouter_recommendations(prompt, temperature=0.3))
                 ai_suggestions = _normalize_ai_bullets(ai_raw)
                 if not ai_suggestions:
                     ai_suggestions = _build_seo_fallback_suggestions(url, audits)
                     ai_status = "fallback_format"
-                    ai_message = "Gemini returned an empty response format, so DarkPulse generated recommendations from the audit findings."
+                    ai_message = "OpenRouter returned an empty response format, so DarkPulse generated recommendations from the audit findings."
                 else:
-                    ai_status = "gemini"
-                    ai_message = "Recommendations generated by Gemini."
+                    ai_status = "openrouter"
+                    ai_message = "Recommendations generated by OpenRouter Qwen."
             except Exception as ai_err:
                 log.warning(f"AI Suggestions failed: {ai_err}")
                 ai_suggestions = _build_seo_fallback_suggestions(url, audits)
                 error_text = str(ai_err)
                 if "RESOURCE_EXHAUSTED" in error_text or "429" in error_text:
                     ai_status = "fallback_quota"
-                    ai_message = "Gemini quota is exhausted right now, so DarkPulse generated recommendations from the audit findings."
+                    ai_message = "OpenRouter quota or rate limit is unavailable right now, so DarkPulse generated recommendations from the audit findings."
                 else:
                     ai_status = "fallback_error"
-                    ai_message = "Gemini is temporarily unavailable, so DarkPulse generated recommendations from the audit findings."
+                    ai_message = "OpenRouter is temporarily unavailable, so DarkPulse generated recommendations from the audit findings."
         elif failing_audits:
             ai_suggestions = _build_seo_fallback_suggestions(url, audits)
             ai_status = "fallback_no_key"
-            ai_message = "GEMINI_API_KEY is not configured, so DarkPulse generated recommendations from the audit findings."
+            ai_message = "OPENROUTER_API_KEY is not configured, so DarkPulse generated recommendations from the audit findings."
         else:
             ai_suggestions = "- Core SEO checks passed for this scan.\n- Keep monitoring titles, crawlability, and metadata after future content changes."
             ai_status = "no_findings"
@@ -6312,6 +6435,62 @@ async def _inspect_github_repository(owner: str, repo: str, token: str) -> dict[
     }
 
 
+async def _build_repo_ai_recommendations(
+    repo_name: str,
+    summary_data: dict[str, Any],
+    vulnerabilities: list[dict[str, Any]],
+    secrets: list[dict[str, Any]],
+    misconfigs: list[dict[str, Any]],
+) -> tuple[list[str], str, str]:
+    fallback = list(summary_data.get("recommendations") or [])[:5]
+    if not os.getenv("OPENROUTER_API_KEY", "").strip():
+        return fallback, "fallback_no_key", "OPENROUTER_API_KEY is not configured, so DarkPulse used local repository recommendations."
+
+    def compact_findings(items: list[dict[str, Any]], label: str) -> str:
+        lines = []
+        for item in items[:5]:
+            lines.append(
+                f"{label}: {item.get('severity', 'UNKNOWN')} {item.get('id', '')} - {item.get('title', '')}"
+            )
+        return "\n".join(lines)
+
+    counts = summary_data.get("counts", {}) or {}
+    coverage = summary_data.get("coverage", {}) or {}
+    prompt = f"""
+    You are a senior application security engineer reviewing a GitHub repository scan.
+    Repository: {repo_name}
+    Grade: {summary_data.get("grade", "N/A")}
+    Risk score: {summary_data.get("risk_score", 0)}
+    Posture: {summary_data.get("posture_label", "Scan")}
+    Finding counts: {json.dumps(counts, ensure_ascii=False)}
+    Coverage: supported targets={coverage.get("supported_target_count", 0)}, manifests={coverage.get("manifest_count", 0)}, configs={coverage.get("config_count", 0)}
+
+    Top findings:
+    {compact_findings(secrets, "Secret")}
+    {compact_findings(vulnerabilities, "Vulnerability")}
+    {compact_findings(misconfigs, "Misconfiguration")}
+
+    Provide exactly 4-5 professional, prioritized recommendations for improving this repository's security grade.
+    Start each recommendation with '-'. Keep each bullet under 28 words. Do not use markdown headings.
+    """
+
+    try:
+        loop = asyncio.get_running_loop()
+        ai_raw = await loop.run_in_executor(None, lambda: _openrouter_recommendations(prompt, temperature=0.2))
+        bullet_text = _normalize_ai_bullets(ai_raw)
+        recommendations = [
+            line.removeprefix("- ").strip()
+            for line in bullet_text.splitlines()
+            if line.strip()
+        ][:5]
+        if recommendations:
+            return recommendations, "openrouter", "Repository recommendations generated by OpenRouter Qwen."
+        return fallback, "fallback_format", "OpenRouter returned an empty response format, so DarkPulse used local repository recommendations."
+    except Exception as exc:
+        log.warning("Repository AI recommendations failed for %s: %s", repo_name, exc)
+        return fallback, "fallback_error", "OpenRouter is temporarily unavailable, so DarkPulse used local repository recommendations."
+
+
 @app.post("/scan/repo")
 async def scan_repo(request: Request):
     """
@@ -6364,6 +6543,16 @@ async def scan_repo(request: Request):
                 cached_summary.get("note")
                 or "Repository analysis loaded from the recent local scan cache."
             )
+            recs, ai_status, ai_message = await _build_repo_ai_recommendations(
+                cached_summary.get("repo_name") or f"{owner}/{repo}",
+                cached_summary,
+                list(cached_response.get("vulnerabilities") or []),
+                list(cached_response.get("secrets") or []),
+                list(cached_response.get("misconfigs") or []),
+            )
+            cached_summary["recommendations"] = recs
+            cached_summary["ai_status"] = ai_status
+            cached_summary["ai_message"] = ai_message
             cached_response["summary"] = cached_summary
             log.info("Repository scan cache hit for %s/%s", owner, repo)
             return cached_response
@@ -6478,6 +6667,13 @@ async def scan_repo(request: Request):
             "language": github_meta.get("language"),
         }
         summary_data["coverage"] = coverage
+        repo_recommendations, repo_ai_status, repo_ai_message = await _build_repo_ai_recommendations(
+            repo_path,
+            summary_data,
+            vulnerabilities,
+            secrets,
+            misconfigs,
+        )
         
         # Prepare final response formatted for the UI
         log.info(
@@ -6501,7 +6697,9 @@ async def scan_repo(request: Request):
                 "scan_status": summary_data.get("scan_status", "complete"),
                 "note": summary_data.get("note", "Repository analysis complete."),
                 "coverage": summary_data.get("coverage", {}),
-                "recommendations": summary_data.get("recommendations", []),
+                "recommendations": repo_recommendations,
+                "ai_status": repo_ai_status,
+                "ai_message": repo_ai_message,
                 "host": "github.com",
                 "repo_name": repo_path,
                 "port": "443",

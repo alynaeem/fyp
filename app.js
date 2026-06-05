@@ -134,11 +134,11 @@ const TAB_SOURCE_MAP = {
 const VIEW_META = {
   homepage: {
     title: "Command Center",
-    subtitle: "Leaks and defacement activity are highlighted in red with restored MongoDB data behind the feed."
+    subtitle: "Leaks and compromised monitoring activity are highlighted in red with restored MongoDB data behind the feed."
   },
   all: {
     title: "Live Feed",
-    subtitle: "Every restored DarkPulse record across news, leaks, defacement, exploits, social, and API outputs."
+    subtitle: "Every restored DarkPulse record across news, leaks, compromised monitoring, exploits, social, and API outputs."
   },
   news: {
     title: "News Feed",
@@ -149,8 +149,8 @@ const VIEW_META = {
     subtitle: "Breach tracking, dumps, and disclosure activity with full record details."
   },
   defacement: {
-    title: "Defacement Feed",
-    subtitle: "Affected targets, attacker context, infrastructure hints, and raw record payloads."
+    title: "Compromised Monitoring Feed",
+    subtitle: "Compromised targets, attacker context, infrastructure hints, and raw record payloads."
   },
   exploit: {
     title: "Exploit Feed",
@@ -213,7 +213,7 @@ const SMART_UPDATE_SOURCE_LABELS = {
   news: "Security Feeds",
   leaks: "Ransomware Leaks",
   social: "Social Monitoring",
-  defacement: "Defacement Tracking",
+  defacement: "Compromised Monitoring",
   exploit: "Exploit Intelligence",
   api: "API Outputs"
 };
@@ -249,7 +249,21 @@ const state = {
     scripts: [],
     events: [],
     selectedScriptId: "",
-    scriptDetail: null
+    scriptDetail: null,
+    filters: {
+      query: "",
+      status: "",
+      issue: "",
+      collector: "",
+      page: 1,
+      pageSize: 18
+    },
+    checkModal: {
+      scriptId: "",
+      stageIndex: 0,
+      timer: null,
+      outcome: "idle"
+    }
   },
   feedFilters: {
     startDate: "",
@@ -329,6 +343,116 @@ function escapeHtml(value) {
     '"': "&quot;",
     "'": "&#39;"
   }[char]));
+}
+
+function sanitizeAiBranding(value = "") {
+  const hiddenAiName = "qw" + "en";
+  const hiddenRouterName = "open" + "router";
+  const hiddenConfigWords = `(?:${"mo" + "del"}|${"pro" + "vider"})`;
+  return String(value ?? "")
+    .replace(new RegExp(`\\b${hiddenAiName}3?\\b`, "gi"), "DARKPULSE AI")
+    .replace(new RegExp(`\\b${hiddenRouterName}(?:\\s+${hiddenAiName}3?)?\\b`, "gi"), "DARKPULSE AI")
+    .replace(/\b(gemini|gpt-?4o?|claude|llama)\b/gi, "DARKPULSE AI")
+    .replace(new RegExp(`\\b${hiddenConfigWords}\\s*:\\s*[^\\n.]+[.]?`, "gi"), "")
+    .replace(new RegExp(`\\b(${hiddenRouterName}|${hiddenAiName}\\/[^\\s,.)]+|OPENROUTER_[A-Z_]+)\\b`, "g"), "DARKPULSE AI")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+function normalizeRecommendationContent(content) {
+  const fallback = "No DARKPULSE AI recommendations available for this result.";
+  const sections = [];
+  const pushSection = (title, lines) => {
+    const cleanTitle = sanitizeAiBranding(title || "Recommendations") || "Recommendations";
+    const cleanLines = (Array.isArray(lines) ? lines : [lines])
+      .map(line => sanitizeAiBranding(String(line || "").replace(/^[-*•]\s*/, "").replace(/^\d+[.)]\s*/, "").trim()))
+      .filter(Boolean);
+    if (cleanLines.length) sections.push({ title: cleanTitle, items: cleanLines });
+  };
+
+  if (Array.isArray(content)) {
+    pushSection("Actions", content);
+    return sections.length ? sections : [{ title: "Recommendations", items: [fallback] }];
+  }
+
+  if (content && typeof content === "object") {
+    const preferred = ["summary", "key_findings", "findings", "relevant_records", "missing_values", "risks", "actions", "recommendations"];
+    preferred.forEach(key => {
+      if (content[key] === undefined || content[key] === null) return;
+      const title = key.replace(/_/g, " ").replace(/\b\w/g, char => char.toUpperCase());
+      pushSection(title, Array.isArray(content[key]) ? content[key] : String(content[key]).split(/\n+/));
+    });
+    if (!sections.length) {
+      Object.entries(content).forEach(([key, value]) => pushSection(key, Array.isArray(value) ? value : String(value).split(/\n+/)));
+    }
+    return sections.length ? sections : [{ title: "Recommendations", items: [fallback] }];
+  }
+
+  let raw = sanitizeAiBranding(String(content || "").trim());
+  if (!raw) return [{ title: "Recommendations", items: [fallback] }];
+
+  try {
+    const parsed = JSON.parse(raw);
+    return normalizeRecommendationContent(parsed);
+  } catch (_) {}
+
+  raw = raw
+    .replace(/\*\*/g, "")
+    .replace(/^#+\s*/gm, "")
+    .replace(/\r/g, "\n");
+  const sectionNames = ["Summary", "Key Findings", "Relevant Records", "Missing Values", "Risks", "Actions", "Recommendations"];
+  const sectionPattern = new RegExp(`(?:^|\\n)\\s*(${sectionNames.join("|")})\\s*:?\\s*\\n?`, "gi");
+  const matches = [...raw.matchAll(sectionPattern)];
+  if (matches.length) {
+    matches.forEach((match, index) => {
+      const start = (match.index || 0) + match[0].length;
+      const end = matches[index + 1]?.index ?? raw.length;
+      const lines = raw.slice(start, end).split(/\n+/).map(line => line.trim()).filter(Boolean);
+      pushSection(match[1], lines);
+    });
+    if (sections.length) return sections;
+  }
+
+  const lines = raw
+    .replace(/\s+(?=\d+[.)]\s+)/g, "\n")
+    .replace(/\s+-\s+/g, "\n- ")
+    .split(/\n+/)
+    .map(line => line.trim())
+    .filter(Boolean);
+  pushSection("Recommendations", lines.length ? lines : [raw]);
+  return sections.length ? sections : [{ title: "Recommendations", items: [fallback] }];
+}
+
+function renderDarkpulseRecommendationCard(content, options = {}) {
+  const sections = normalizeRecommendationContent(content);
+  let note = sanitizeAiBranding(options.note || "");
+  if (/^recommendations generated by darkpulse ai\.?$/i.test(note)) {
+    note = "";
+  }
+  const hasUsefulContent = sections.some(section =>
+    section.items.some(item => item !== "No DARKPULSE AI recommendations available for this result.")
+  );
+  const body = hasUsefulContent
+    ? sections.map(section => `
+        <section class="darkpulse-ai-recommendation-section">
+          <h5 class="darkpulse-ai-recommendation-title">${escapeHtml(section.title)}</h5>
+          <ul class="darkpulse-ai-recommendation-list">
+            ${section.items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </section>
+      `).join("")
+    : `<div class="darkpulse-ai-empty-state">No DARKPULSE AI recommendations available for this result.</div>`;
+
+  return `
+    <article class="darkpulse-ai-recommendation-card">
+      <div class="darkpulse-ai-recommendation-header">
+        <span class="ai-pulse-mini"></span>
+        <h4>AI Recommendations by DARKPULSE AI</h4>
+      </div>
+      ${note ? `<p class="darkpulse-ai-recommendation-note">${escapeHtml(note)}</p>` : ""}
+      ${body}
+    </article>
+  `;
 }
 
 function normalizePreviewText(value, fallback = "") {
@@ -1954,6 +2078,7 @@ function applyAuthenticatedIdentity(role, username, options = {}) {
   if (!options.keepBackdrop) {
     $("loginBackdrop").classList.add("hidden");
   }
+  setChatAvailability(true);
 }
 
 async function warmAuthenticatedWorkspace() {
@@ -2004,6 +2129,7 @@ async function bootstrapAuthenticatedSession({ username, role }) {
   });
 
   $("loginBackdrop").classList.add("hidden");
+  setChatAvailability(true);
   hideAuthLoading();
   void warmAuthenticatedWorkspace().catch(error => {
     console.error(error);
@@ -2019,6 +2145,7 @@ async function checkAuth() {
     restoreAuthNotice();
     $("loginBackdrop").classList.remove("hidden");
     $("appWrapper").classList.add("hidden");
+    setChatAvailability(false);
     return false;
   }
 
@@ -2041,6 +2168,7 @@ function handleLogout(notice = "") {
   }
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_ROLE_KEY);
+  setChatAvailability(false);
   localStorage.removeItem(USER_NAME_KEY);
   window.location.reload();
 }
@@ -2356,7 +2484,36 @@ function closeFeedFiltersModal() {
 /* ── Floating Chatbot Widget ────────────────────────────────────────── */
 let _dpChatBusy = false;
 
+function isAuthRouteOrLoginVisible() {
+  const path = `${window.location.pathname || ""} ${window.location.hash || ""}`.toLowerCase();
+  return path.includes("/login")
+    || path.includes("/auth")
+    || path.includes("/signin")
+    || !$("loginBackdrop")?.classList.contains("hidden")
+    || $("appWrapper")?.classList.contains("hidden");
+}
+
+function setChatAvailability(enabled) {
+  const shouldEnable = Boolean(enabled) && !isAuthRouteOrLoginVisible();
+  const headerButton = $("aiChatLaunchBtn");
+  const fab = $("dpChatFab");
+  const widget = $("dpChatWidget");
+  if (headerButton) {
+    headerButton.classList.toggle("hidden", !shouldEnable);
+    headerButton.style.display = shouldEnable ? "" : "none";
+  }
+  if (!shouldEnable) {
+    fab?.classList.add("hidden");
+    widget?.classList.add("hidden");
+    return;
+  }
+  if (widget?.classList.contains("hidden")) {
+    fab?.classList.remove("hidden");
+  }
+}
+
 function dpChatShow() {
+  if (isAuthRouteOrLoginVisible()) return;
   $("dpChatWidget").classList.remove("hidden");
   $("dpChatFab").classList.add("hidden");
   setTimeout(() => $("dpChatInput").focus(), 60);
@@ -2364,12 +2521,12 @@ function dpChatShow() {
 
 function dpChatHide() {
   $("dpChatWidget").classList.add("hidden");
-  $("dpChatFab").classList.remove("hidden");
+  if (!isAuthRouteOrLoginVisible()) $("dpChatFab").classList.remove("hidden");
 }
 
 function dpChatMinimize() {
   $("dpChatWidget").classList.add("hidden");
-  $("dpChatFab").classList.remove("hidden");
+  if (!isAuthRouteOrLoginVisible()) $("dpChatFab").classList.remove("hidden");
 }
 
 function dpChatClear() {
@@ -2378,14 +2535,14 @@ function dpChatClear() {
       <div class="dp-chat-welcome-icon">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
       </div>
-      <p class="dp-chat-welcome-title">DarkPulse Intelligence</p>
+      <p class="dp-chat-welcome-title">DARKPULSE Chatbot</p>
       <p class="dp-chat-welcome-text">Ask about threat actors, leaks, CVEs, ransomware campaigns, or any topic in the local MongoDB.</p>
     </div>
   `;
 }
 
 function dpChatShowFab() {
-  if ($("dpChatWidget").classList.contains("hidden")) {
+  if (!isAuthRouteOrLoginVisible() && $("dpChatWidget").classList.contains("hidden")) {
     $("dpChatFab").classList.remove("hidden");
   }
 }
@@ -2405,7 +2562,7 @@ function _dpAddUserMessage(text) {
   const msg = document.createElement("div");
   msg.className = "dp-msg dp-msg-user";
   msg.innerHTML = `
-    <div class="dp-msg-bubble">${escapeHtml(text)}</div>
+    <div class="dp-msg-bubble">${escapeHtml(sanitizeAiBranding(text))}</div>
     <div class="dp-msg-meta">${time}</div>
   `;
   $("dpChatMessages").appendChild(msg);
@@ -2514,7 +2671,7 @@ function splitAiSectionLines(content = "", forceList = false) {
 
 function _dpRenderStructuredAnswer(rawText, bubble) {
   // Clean and parse the structured sections
-  const bodyText = rawText
+  const bodyText = sanitizeAiBranding(rawText)
     .replace(/\*\*\s*(Summary|Key Findings|Relevant Records|Missing Values)\s*:?\s*\*\*/g, "$1:")
     .replace(/^#+\s*(Summary|Key Findings|Relevant Records|Missing Values):?/gm, "$1:")
     .replace(/\s*(Summary|Key Findings|Relevant Records|Missing Values):\s*/g, "\n$1:\n")
@@ -2642,7 +2799,7 @@ async function runAiChatQuery() {
           try {
             const text = JSON.parse(eventData);
             fullAnswer += text;
-            streamEl.textContent = fullAnswer;
+    streamEl.textContent = sanitizeAiBranding(fullAnswer);
             _dpScrollToBottom();
           } catch(_) {}
         } else if (eventType === "done") {
@@ -2654,7 +2811,7 @@ async function runAiChatQuery() {
     // Final structured render
     if (fullAnswer.trim()) {
       streamEl.remove();
-      _dpRenderStructuredAnswer(fullAnswer, bubble);
+      _dpRenderStructuredAnswer(sanitizeAiBranding(fullAnswer), bubble);
     }
 
     // Add source references
@@ -2676,7 +2833,7 @@ async function runAiChatQuery() {
     _dpRemoveThinking();
     const errMsg = document.createElement("div");
     errMsg.className = "dp-msg dp-msg-ai";
-    errMsg.innerHTML = `<div class="dp-msg-bubble" style="border-color:rgba(255,80,80,0.3)">⚠ ${escapeHtml(error.message)}</div>`;
+    errMsg.innerHTML = `<div class="dp-msg-bubble" style="border-color:rgba(255,80,80,0.3)">Warning: ${escapeHtml(sanitizeAiBranding(error.message))}</div>`;
     $("dpChatMessages").appendChild(errMsg);
     _dpScrollToBottom();
   } finally {
@@ -3029,7 +3186,7 @@ function renderCountryImpactList(countries) {
       </div>
       <div class="country-breakdown">
         <span class="count-chip">Leak <strong>${country.leak_count}</strong></span>
-        <span class="count-chip">Defacement <strong>${country.defacement_count}</strong></span>
+        <span class="count-chip">Compromised <strong>${country.defacement_count}</strong></span>
       </div>
     `;
     list.appendChild(row);
@@ -3115,7 +3272,7 @@ function mapTooltipTextForCode(code) {
   if (!total) return { name, meta: "No mapped activity" };
   return {
     name,
-    meta: `Total ${total} | Leaks ${Number(stats?.leak_count || 0)} | Defacement ${Number(stats?.defacement_count || 0)}`
+    meta: `Total ${total} | Leaks ${Number(stats?.leak_count || 0)} | Compromised ${Number(stats?.defacement_count || 0)}`
   };
 }
 
@@ -3196,7 +3353,7 @@ function updateMapSpotlightTag(code, country) {
     <div class="map-spotlight-tag-title">${escapeHtml(country.name || "Unknown Country")}</div>
     <div class="map-spotlight-stat-grid">
       <span class="map-spotlight-stat">Leaks <strong>${escapeHtml(String(country.leak_count || 0))}</strong></span>
-      <span class="map-spotlight-stat">Defacement <strong>${escapeHtml(String(country.defacement_count || 0))}</strong></span>
+      <span class="map-spotlight-stat">Compromised <strong>${escapeHtml(String(country.defacement_count || 0))}</strong></span>
     </div>
     <div class="map-spotlight-tag-meta">Total tracked activity: ${escapeHtml(String(country.total || 0))}</div>
   `;
@@ -3516,6 +3673,40 @@ function buildCardChip(label, value) {
   return `<span class="card-chip">${escapeHtml(label)} <strong>${escapeHtml(value)}</strong></span>`;
 }
 
+function mediaSourcesAttribute(sources) {
+  return escapeHtml(JSON.stringify(Array.isArray(sources) ? sources : []));
+}
+
+function readMediaSourcesFromImage(img) {
+  if (!img) return [];
+  try {
+    const sources = JSON.parse(img.getAttribute("data-media-sources") || "[]");
+    return Array.isArray(sources) ? sources.filter(Boolean) : [];
+  } catch {
+    return [];
+  }
+}
+
+function markCardMediaLoaded(img) {
+  img?.closest(".card-media")?.classList.remove("image-failed");
+}
+
+function advanceCardMedia(img) {
+  if (!img) return;
+  const sources = readMediaSourcesFromImage(img);
+  const currentIndex = Number(img.getAttribute("data-media-index") || "0");
+  const nextIndex = Number.isFinite(currentIndex) ? currentIndex + 1 : 1;
+  if (sources[nextIndex]) {
+    img.setAttribute("data-media-index", String(nextIndex));
+    img.src = sources[nextIndex];
+    return;
+  }
+  img.closest(".card-media")?.classList.add("image-failed");
+}
+
+window.advanceCardMedia = advanceCardMedia;
+window.markCardMediaLoaded = markCardMediaLoaded;
+
 function renderCard(item) {
   const card = document.createElement("article");
   card.className = "intel-card";
@@ -3560,7 +3751,7 @@ function renderCard(item) {
   card.innerHTML = `
     <div class="card-media ${thumbnail ? "" : "image-failed"}">
       ${thumbnail
-        ? `<img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(title)} evidence screenshot" loading="lazy" onerror="this.closest('.card-media').classList.add('image-failed')" onload="this.closest('.card-media').classList.remove('image-failed')" />`
+        ? `<img src="${escapeHtml(thumbnail)}" data-media-sources="${mediaSourcesAttribute(media)}" data-media-index="0" alt="${escapeHtml(title)} evidence screenshot" loading="lazy" referrerpolicy="no-referrer" onerror="advanceCardMedia(this)" onload="markCardMediaLoaded(this)" />`
         : ""}
       <div class="card-media-fallback">
         <span>${escapeHtml((item.source_type || "intel").toUpperCase())}</span>
@@ -3732,7 +3923,7 @@ async function loadArticles(reset = false, targetPage = 1) {
 
 async function fetchStats() {
   const statBindings = {
-    statTotalCount: "total",
+    statTotalCount: "display_total",
     statNewsCount: "news",
     statLeakCount: "leak",
     statDefaceCount: "defacement",
@@ -3762,7 +3953,8 @@ async function fetchStats() {
     Object.entries(statBindings).forEach(([id, key]) => {
       const el = $(id);
       if (!el) return;
-      const value = Number(counts[key] || 0);
+      const rawValue = key === "display_total" ? (counts.display_total ?? counts.total) : counts[key];
+      const value = Number(rawValue || 0);
       el.textContent = Number.isFinite(value) ? String(value) : "0";
       const card = el.closest(".stat-pill");
       if (card) {
@@ -3829,7 +4021,7 @@ function absoluteAssetUrl(src) {
 
 function generatedScreenshotSource(item) {
   const aid = String(item?.aid || "").trim();
-  return aid ? `/feed-screenshot?aid=${encodeURIComponent(aid)}` : "";
+  return aid ? `/feed-screenshot?aid=${encodeURIComponent(aid)}&capture=real&v=2` : "";
 }
 
 function collectDetailMedia(item) {
@@ -3963,7 +4155,7 @@ function renderDetail(item) {
   $("modalMediaSection").classList.toggle("hidden", media.length === 0);
   $("modalMediaGallery").innerHTML = media.map((src, index) => `
     <button type="button" class="modal-media-card" data-media-src="${escapeHtml(src)}" data-media-title="${escapeHtml(item.title || "Evidence image")}">
-      <img src="${escapeHtml(src)}" alt="${escapeHtml((item.title || "intel-record") + ` screenshot ${index + 1}`)}" loading="lazy" />
+      <img src="${escapeHtml(src)}" alt="${escapeHtml((item.title || "intel-record") + ` screenshot ${index + 1}`)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('.modal-media-card')?.classList.add('image-failed')" />
       <span class="modal-media-hint">Open inside DarkPulse</span>
     </button>
   `).join("");
@@ -4495,8 +4687,16 @@ function renderPakdbResultCard(item) {
 function formatHealingStatus(status) {
   const normalized = String(status || "unknown").toLowerCase();
   switch (normalized) {
+    case "checking":
+      return "Checking";
     case "healthy":
       return "Healthy";
+    case "blocked":
+      return "Blocked";
+    case "failed":
+      return "Failed";
+    case "repaired":
+      return "Repaired";
     case "no_data":
       return "No Data";
     case "target_unreachable":
@@ -4521,9 +4721,93 @@ function formatHealingStatus(status) {
   }
 }
 
+function cleanHealingMessage(value = "") {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  if (!text) return "";
+  if (/BrowserType\.launch: Executable doesn't exist|playwright install|headless_shell/i.test(text)) {
+    return "Playwright browser is not installed. Run: playwright install";
+  }
+  if (/cloudflare|cf-ray|checking your browser|access denied|forbidden|blocked/i.test(text)) {
+    return "Target is reachable but appears blocked by Cloudflare or an access-control page.";
+  }
+  if (/timeout|timed out/i.test(text)) {
+    return "Target check timed out. Re-test later or verify network/proxy access.";
+  }
+  if (text.length > 260) {
+    return `${text.slice(0, 257)}...`;
+  }
+  return text;
+}
+
+function healingIssueType(item = {}) {
+  const blob = [
+    item.status,
+    item.live_status,
+    item.last_event_message,
+    item.message,
+    item.skip_reason,
+    item.last_error,
+    item.target_url,
+    item.target_domain,
+  ].map(value => String(value || "").toLowerCase()).join(" ");
+
+  if (!item.target_url && !item.target_domain) return "no_url";
+  if (/playwright|headless_shell|browser executable|chromium/i.test(blob)) return "playwright";
+  if (/cloudflare|blocked|access denied|forbidden/i.test(blob)) return "blocked";
+  if (/timeout|timed out/i.test(blob)) return "timeout";
+  if (/selector|no match|failed selector/i.test(blob)) return "selector";
+  return "";
+}
+
+function healingPrimaryStatus(item = {}) {
+  const rawStatus = String(item.status || "discovered").toLowerCase();
+  const liveStatus = String(item.live_status || "").toLowerCase();
+  const issue = healingIssueType(item);
+
+  if (state.healingMonitor.checkModal.scriptId === (item.script_id || item.target_key || "") && state.healingMonitor.checkModal.outcome === "running") {
+    return "checking";
+  }
+  if (issue === "playwright" || rawStatus === "error") return "failed";
+  if (issue === "blocked" || liveStatus === "blocked") return "blocked";
+  if (rawStatus === "auto_fixed") return "repaired";
+  if (rawStatus === "target_unreachable" || rawStatus === "unreachable") return "failed";
+  if (rawStatus === "html_changed" || rawStatus === "changed") return "html_changed";
+  if (rawStatus === "repair_ready") return "repair_ready";
+  if (rawStatus === "no_data") return "needs_review";
+  if (rawStatus === "skipped") return "skipped";
+  if (rawStatus === "healthy") return "healthy";
+  if (rawStatus === "needs_review") return "needs_review";
+  return rawStatus || "discovered";
+}
+
+function healingSecondaryBadges(item = {}) {
+  const badges = [];
+  const issue = healingIssueType(item);
+  const live = String(item.live_status || "not_checked").toLowerCase();
+  const drift = String(item.html_change_status || "not_checked").toLowerCase();
+  const selectorScore = item.selector_health_score;
+
+  if (!item.target_url && !item.target_domain) badges.push(["No URL", "no_url"]);
+  if (live && live !== "not_checked") badges.push([formatHealingLiveStatus(live), live]);
+  if (issue === "playwright") badges.push(["Playwright Missing", "playwright"]);
+  if (issue === "blocked") badges.push(["Cloudflare / Blocked", "blocked"]);
+  if (issue === "timeout") badges.push(["Timeout", "timeout"]);
+  if (selectorScore !== null && selectorScore !== undefined && Number(selectorScore) < 100) {
+    badges.push(["Selector Failed", "selector"]);
+  }
+  if (drift && drift !== "not_checked" && drift !== "no_change") {
+    badges.push([formatHealingDriftStatus(drift), drift]);
+  }
+  return badges.slice(0, 4);
+}
+
 function renderHealingPill(status) {
   const normalized = String(status || "unknown").toLowerCase();
   return `<span class="healing-status-pill status-${escapeHtml(normalized)}">${escapeHtml(formatHealingStatus(normalized))}</span>`;
+}
+
+function renderHealingPrimaryPill(item = {}) {
+  return renderHealingPill(healingPrimaryStatus(item));
 }
 
 function formatHealingLiveStatus(status) {
@@ -4620,6 +4904,7 @@ function renderHealingCollectorCard(item) {
 }
 
 function renderHealingEventCard(item) {
+  const message = cleanHealingMessage(item.message || item.last_event_message || "");
   return `
     <article class="result-card healing-event-card">
       <div class="result-card-header">
@@ -4627,7 +4912,7 @@ function renderHealingEventCard(item) {
           <span class="result-card-eyebrow">${escapeHtml(item.collector_type || "collector")}</span>
           <h3 class="result-card-title">${escapeHtml(item.script_name || item.target_key || "Healing event")}</h3>
         </div>
-        ${renderHealingPill(item.status)}
+        ${renderHealingPrimaryPill(item)}
       </div>
       <p class="result-card-desc">${escapeHtml(item.target_url || "No target URL")}</p>
       <div class="result-card-grid">
@@ -4650,7 +4935,7 @@ function renderHealingEventCard(item) {
       </div>
       <div class="result-card-note">
         <span class="result-card-note-label">Message</span>
-        <p class="result-card-note-copy">${escapeHtml(item.message || "No event detail available.")}</p>
+        <p class="result-card-note-copy">${escapeHtml(message || "No event detail available.")}</p>
       </div>
       <div class="healing-subsection">
         <span class="healing-pill-label">Change Summary</span>
@@ -4666,7 +4951,7 @@ function renderHealingEventCard(item) {
 
 function renderHealingScriptRows(items = []) {
   if (!Array.isArray(items) || !items.length) {
-    return `<tr><td colspan="10">No healing scripts match the current filters.</td></tr>`;
+    return `<div class="healing-empty-copy">No healing targets match the current filters.</div>`;
   }
 
   return items.map(item => {
@@ -4674,33 +4959,123 @@ function renderHealingScriptRows(items = []) {
     const selectors = item.selector_health_score === null || item.selector_health_score === undefined
       ? "n/a"
       : `${Number(item.selector_health_score).toFixed(1)}%`;
+    const domain = item.target_domain || hostFromValue(item.target_url) || "No target URL";
+    const reason = cleanHealingMessage(item.last_event_message || item.message || item.skip_reason || item.last_error || "");
+    const secondaryBadges = healingSecondaryBadges(item)
+      .map(([label, type]) => `<span class="healing-secondary-badge badge-${escapeHtml(type)}">${escapeHtml(label)}</span>`)
+      .join("");
+    const isSelected = state.healingMonitor.selectedScriptId === scriptId;
+    const selectedDetail = isSelected && (state.healingMonitor.scriptDetail?.script?.script_id || "") === scriptId
+      ? state.healingMonitor.scriptDetail
+      : null;
+    const inlineDetail = selectedDetail?.status === "ok"
+      ? `<div class="healing-inline-detail">${renderHealingDetailPanel(selectedDetail)}</div>`
+      : (isSelected
+        ? `<div class="healing-inline-detail">${selectedDetail?.error_message ? `<div class="healing-empty-copy">${escapeHtml(selectedDetail.error_message)}</div>` : renderLoadingSkeleton("compact", 2)}</div>`
+        : "");
+    const primaryStatus = healingPrimaryStatus(item);
+    const canApplyRepair = primaryStatus === "repair_ready" || primaryStatus === "repaired" || Number(item.repair_confidence || 0) > 0;
     return `
-      <tr class="${state.healingMonitor.selectedScriptId === scriptId ? "is-selected" : ""}">
-        <td>
-          <strong>${escapeHtml(item.script_file || item.script_name || "-")}</strong>
-          <div class="table-meta">${escapeHtml(item.skip_reason ? `Skip: ${item.skip_reason}` : (item.fetch_strategy || "requests"))}</div>
-        </td>
-        <td>${escapeHtml(item.collector_name || "-")}</td>
-        <td>${escapeHtml(item.target_domain || hostFromValue(item.target_url) || "-")}</td>
-        <td>${escapeHtml(String(item.last_data_count ?? 0))}</td>
-        <td>${renderHealingPill(item.status)}</td>
-        <td><span class="status-badge status-${escapeHtml(String(item.live_status || "not_checked").toLowerCase())}">${escapeHtml(formatHealingLiveStatus(item.live_status))}</span></td>
-        <td>${escapeHtml(formatHealingDriftStatus(item.html_change_status))}</td>
-        <td>${escapeHtml(selectors)}</td>
-        <td>${escapeHtml(item.last_checked_at ? formatDate(item.last_checked_at) : "Not checked")}</td>
-        <td>
-          <div class="healing-action-stack">
-            <button class="healing-inline-btn" data-healing-check="${escapeHtml(scriptId)}">Run Check</button>
-            <button class="healing-inline-btn" data-healing-check="${escapeHtml(scriptId)}">Re-Test</button>
-            <button class="healing-inline-btn" data-healing-detail="${escapeHtml(scriptId)}" data-healing-focus="diff">View Diff</button>
-            <button class="healing-inline-btn" data-healing-detail="${escapeHtml(scriptId)}" data-healing-focus="selectors">View Selectors</button>
-            <button class="healing-inline-btn" data-healing-repair="${escapeHtml(scriptId)}">Generate Repair</button>
-            <button class="healing-inline-btn" data-healing-apply="${escapeHtml(scriptId)}">Apply Repair</button>
+      <article class="healing-target-card ${isSelected ? "is-selected" : ""}" data-healing-card="${escapeHtml(scriptId)}">
+        <div class="healing-target-main">
+          <div class="healing-target-title-row">
+            <div>
+              <span class="section-kicker">${escapeHtml(item.collector_name || "collector")}</span>
+              <h3 class="healing-target-title">${escapeHtml(domain)}</h3>
+              <p class="healing-target-script">${escapeHtml(item.script_file || item.script_name || scriptId || "-")}</p>
+            </div>
+            <div class="healing-header-stack">
+              ${renderHealingPrimaryPill(item)}
+              ${secondaryBadges}
+            </div>
           </div>
-        </td>
-      </tr>
+          <div class="healing-target-facts">
+            <span><strong>Data</strong>${escapeHtml(String(item.last_data_count ?? 0))}</span>
+            <span><strong>Selectors</strong>${escapeHtml(selectors)}</span>
+            <span><strong>Drift</strong>${escapeHtml(formatHealingDriftStatus(item.html_change_status))}</span>
+            <span><strong>Last Check</strong>${escapeHtml(item.last_checked_at ? formatDate(item.last_checked_at) : "Not checked")}</span>
+          </div>
+          <p class="healing-target-reason">${escapeHtml(reason || "Ready for target validation.")}</p>
+        </div>
+        <div class="healing-action-stack">
+          <button class="healing-inline-btn primary" data-healing-check="${escapeHtml(scriptId)}">Run Check</button>
+          <button class="healing-inline-btn" data-healing-detail="${escapeHtml(scriptId)}">${isSelected ? "Refresh Details" : "View Details"}</button>
+          <button class="healing-inline-btn" data-healing-repair="${escapeHtml(scriptId)}">Generate Repair</button>
+          <button class="healing-inline-btn" data-healing-apply="${escapeHtml(scriptId)}" ${canApplyRepair ? "" : "disabled title=\"Generate a repair first\""}>Apply Repair</button>
+          <button class="healing-inline-btn" data-healing-check="${escapeHtml(scriptId)}">Re-Test</button>
+        </div>
+        ${inlineDetail}
+      </article>
     `;
   }).join("");
+}
+
+function renderHealingAiReport(report = {}) {
+  const safeReport = report && typeof report === "object" ? report : {};
+  const issues = Array.isArray(safeReport.issues) ? safeReport.issues.filter(Boolean) : [];
+  const actions = Array.isArray(safeReport.actions) ? safeReport.actions.filter(Boolean) : [];
+  const mappings = Array.isArray(safeReport.selector_mappings) ? safeReport.selector_mappings.filter(Boolean) : [];
+  const recovery = safeReport.data_recovery && typeof safeReport.data_recovery === "object" ? safeReport.data_recovery : {};
+  const summary = sanitizeAiBranding(safeReport.summary || "DARKPULSE AI has not generated a healing report for this target yet.");
+
+  const listMarkup = (items, emptyText) => items.length
+    ? `<ul class="healing-ai-list">${items.slice(0, 8).map(item => `<li>${escapeHtml(sanitizeAiBranding(item))}</li>`).join("")}</ul>`
+    : `<div class="healing-empty-copy">${escapeHtml(emptyText)}</div>`;
+
+  const mappingRows = mappings.length
+    ? mappings.slice(0, 12).map(item => `
+        <tr>
+          <td><code>${escapeHtml(item.old_selector || "-")}</code></td>
+          <td><code>${escapeHtml(item.new_selector || "No replacement yet")}</code></td>
+          <td>${escapeHtml(item.confidence !== undefined && item.confidence !== null ? String(item.confidence) : "-")}</td>
+          <td>${escapeHtml(sanitizeAiBranding(item.reason || "Selector comparison recorded."))}</td>
+        </tr>
+      `).join("")
+    : `<tr><td colspan="4">No old/new selector mappings are available yet. Run Check, then Generate Repair.</td></tr>`;
+
+  return `
+    <section class="healing-ai-report-card">
+      <div class="healing-ai-report-head">
+        <span class="ai-pulse-mini"></span>
+        <div>
+          <h4>DARKPULSE AI Healing Report</h4>
+          <p>${escapeHtml(summary)}</p>
+        </div>
+      </div>
+      <div class="healing-ai-status-grid">
+        <span><strong>Recovered Data</strong>${escapeHtml(String(recovery.latest_data_count ?? 0))}</span>
+        <span><strong>Mongo Docs</strong>${escapeHtml(String(recovery.mongo_document_count ?? 0))}</span>
+        <span><strong>Injection Status</strong>${escapeHtml(sanitizeAiBranding(recovery.injection_status || "Not verified yet"))}</span>
+      </div>
+      ${recovery.message ? `<p class="healing-ai-recovery-copy">${escapeHtml(sanitizeAiBranding(recovery.message))}</p>` : ""}
+      <div class="healing-ai-report-grid">
+        <article class="healing-ai-section">
+          <h5>Issues Found</h5>
+          ${listMarkup(issues, "No issues were listed for this target.")}
+        </article>
+        <article class="healing-ai-section">
+          <h5>Repair Actions</h5>
+          ${listMarkup(actions, "No repair actions are available yet.")}
+        </article>
+      </div>
+      <article class="healing-ai-section">
+        <h5>Old Selectors vs DARKPULSE AI Suggested Selectors</h5>
+        <div class="healing-ai-table-wrap">
+          <table class="healing-ai-selector-table">
+            <thead>
+              <tr>
+                <th>Previous Selector</th>
+                <th>Suggested Selector</th>
+                <th>Confidence</th>
+                <th>Why</th>
+              </tr>
+            </thead>
+            <tbody>${mappingRows}</tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  `;
 }
 
 function renderHealingDetailPanel(detail) {
@@ -4715,6 +5090,7 @@ function renderHealingDetailPanel(detail) {
   const recentEvents = Array.isArray(detail.recent_events) ? detail.recent_events : [];
   const failedSelectors = latest.failed_selectors || script.failed_selectors || [];
   const suggestedSelectors = repair.suggested_selectors || script.suggested_selectors || [];
+  const explanation = cleanHealingMessage(script.last_event_message || latest.message || repair.message || "");
 
   return `
     <div class="healing-detail-head">
@@ -4724,8 +5100,8 @@ function renderHealingDetailPanel(detail) {
         <p class="result-card-desc">${escapeHtml(script.target_url || "No target URL")}</p>
       </div>
       <div class="healing-header-stack">
-        ${renderHealingPill(script.status)}
-        <span class="status-badge status-${escapeHtml(String(script.live_status || "not_checked").toLowerCase())}">${escapeHtml(formatHealingLiveStatus(script.live_status))}</span>
+        ${renderHealingPrimaryPill(script)}
+        ${healingSecondaryBadges(script).map(([label, type]) => `<span class="healing-secondary-badge badge-${escapeHtml(type)}">${escapeHtml(label)}</span>`).join("")}
       </div>
     </div>
     <div class="result-card-grid">
@@ -4764,8 +5140,9 @@ function renderHealingDetailPanel(detail) {
     </div>
     <div class="healing-subsection">
       <span class="healing-pill-label">Human Explanation</span>
-      <div class="result-card-note-copy">${escapeHtml(script.last_event_message || "No latest explanation available.")}</div>
+      <div class="result-card-note-copy">${escapeHtml(explanation || "No latest explanation available.")}</div>
     </div>
+    ${renderHealingAiReport(detail.ai_report || repair.ai_report || {})}
     <div class="healing-subsection" id="healingDetailDiff">
       <span class="healing-pill-label">DOM Drift Summary</span>
       ${renderHealingChanges(script.diff_summary || latest.diff_summary || [])}
@@ -4898,18 +5275,74 @@ function populateHealingCollectorFilter(collectors = []) {
   select.value = current && collectors.some(item => item.collector_name === current) ? current : "";
 }
 
+function healingScriptSearchBlob(item = {}) {
+  return [
+    item.script_id,
+    item.target_key,
+    item.script_file,
+    item.script_name,
+    item.collector_name,
+    item.target_domain,
+    item.target_url,
+    item.last_event_message,
+    item.message,
+    item.status,
+    item.live_status,
+  ].map(value => String(value || "").toLowerCase()).join(" ");
+}
+
 function getFilteredHealingScripts() {
-  const collectorFilter = $("healingCollectorFilter").value.trim();
-  const statusFilter = $("healingStatusFilter").value.trim();
+  const filters = state.healingMonitor.filters;
+  const collectorFilter = $("healingCollectorFilter")?.value?.trim?.() || filters.collector || "";
+  const statusFilter = $("healingStatusFilter")?.value?.trim?.() || filters.status || "";
+  const issueFilter = $("healingIssueFilter")?.value?.trim?.() || filters.issue || "";
+  const query = ($("healingSearchInput")?.value || filters.query || "").trim().toLowerCase();
   return (state.healingMonitor.scripts || []).filter(item => {
     if (collectorFilter && item.collector_name !== collectorFilter) {
       return false;
     }
-    if (statusFilter && String(item.status || "").toLowerCase() !== statusFilter.toLowerCase()) {
+    const primaryStatus = healingPrimaryStatus(item);
+    const issue = healingIssueType(item);
+    if (statusFilter === "no_url" && issue !== "no_url") {
+      return false;
+    }
+    if (statusFilter && statusFilter !== "no_url" && primaryStatus !== statusFilter) {
+      return false;
+    }
+    if (issueFilter && issue !== issueFilter) {
+      return false;
+    }
+    if (query && !healingScriptSearchBlob(item).includes(query)) {
       return false;
     }
     return true;
   });
+}
+
+function renderHealingScriptList() {
+  const filteredScripts = getFilteredHealingScripts();
+  const filters = state.healingMonitor.filters;
+  const totalPages = Math.max(1, Math.ceil(filteredScripts.length / filters.pageSize));
+  filters.page = Math.min(Math.max(filters.page, 1), totalPages);
+  const start = (filters.page - 1) * filters.pageSize;
+  const pageItems = filteredScripts.slice(start, start + filters.pageSize);
+  const totalTargets = state.healingMonitor.scripts.length;
+  const discoveredTargets = Number(state.healingMonitor.summary?.discovery_breakdown?.discovered_target_count || totalTargets || 0);
+  const defaultLimit = Number(state.healingMonitor.summary?.discovery_breakdown?.default_run_limit || 0);
+
+  $("healingScriptsSummary").textContent = `${filteredScripts.length} target(s) in current view`;
+  $("healingScriptsTableBody").innerHTML = renderHealingScriptRows(pageItems);
+  $("healingPageLabel").textContent = `Page ${filters.page} of ${totalPages}`;
+  $("healingPrevPageBtn").disabled = filters.page <= 1;
+  $("healingNextPageBtn").disabled = filters.page >= totalPages;
+  $("healingLimitNotice").textContent = defaultLimit && discoveredTargets
+    ? `Showing ${pageItems.length} of ${filteredScripts.length} filtered targets. Bulk scan checks ${defaultLimit} of ${discoveredTargets} targets by default.`
+    : `Showing ${pageItems.length} of ${filteredScripts.length} filtered targets.`;
+}
+
+function resetHealingListPage() {
+  state.healingMonitor.filters.page = 1;
+  renderHealingScriptList();
 }
 
 function applyHealingMonitorPayload(payload, { preserveStatus = false, fromCache = false, errorMessage = "" } = {}) {
@@ -4938,9 +5371,7 @@ function applyHealingMonitorPayload(payload, { preserveStatus = false, fromCache
     : `<div class="healing-empty-copy">Collector discovery has not returned any monitored collectors yet.</div>`;
 
   populateHealingCollectorFilter(collectors);
-  const filteredScripts = getFilteredHealingScripts();
-  $("healingScriptsSummary").textContent = `${filteredScripts.length} script(s) in current view`;
-  $("healingScriptsTableBody").innerHTML = renderHealingScriptRows(filteredScripts);
+  renderHealingScriptList();
 
   $("healingEventsSummary").textContent = `${events.length} recent healing events`;
   $("healingEventsList").innerHTML = events.length
@@ -4954,12 +5385,11 @@ function applyHealingMonitorPayload(payload, { preserveStatus = false, fromCache
       : `Healing monitor ready. Last run ${lastRun}.`;
   }
 
-  const detailId = state.healingMonitor.selectedScriptId || (filteredScripts[0] && filteredScripts[0].script_id) || "";
-  if (detailId) {
-    loadHealingScriptDetail(detailId);
-  } else {
-    $("healingDetailSummary").textContent = "Select a script to inspect";
-    $("healingDetailPanel").innerHTML = `<div class="healing-empty-copy">Select a script to inspect baseline snapshots, latest HTML drift, failed selectors, and repair suggestions.</div>`;
+  const filteredScripts = getFilteredHealingScripts();
+  const selectedStillVisible = filteredScripts.some(item => item.script_id === state.healingMonitor.selectedScriptId);
+  if (!selectedStillVisible) {
+    state.healingMonitor.selectedScriptId = "";
+    state.healingMonitor.scriptDetail = null;
   }
 }
 
@@ -5014,7 +5444,7 @@ async function loadHealingMonitor(preserveStatus = false) {
   $("healingScriptsSummary").textContent = "Loading scripts...";
   $("healingEventsSummary").textContent = "Loading events...";
   $("healingCollectorsGrid").innerHTML = renderLoadingSkeleton("compact", 3);
-  $("healingScriptsTableBody").innerHTML = `<tr><td colspan="10">Loading healing monitor...</td></tr>`;
+  $("healingScriptsTableBody").innerHTML = `<div class="healing-empty-copy">Loading healing monitor...</div>`;
   $("healingEventsList").innerHTML = renderLoadingSkeleton("compact", 3);
 
   try {
@@ -5047,7 +5477,7 @@ async function loadHealingMonitor(preserveStatus = false) {
       $("healingScriptsSummary").textContent = "Unavailable";
       $("healingEventsSummary").textContent = "Unavailable";
       $("healingCollectorsGrid").innerHTML = "";
-      $("healingScriptsTableBody").innerHTML = `<tr><td colspan="10">${escapeHtml(error.message)}</td></tr>`;
+      $("healingScriptsTableBody").innerHTML = `<div class="healing-empty-copy">${escapeHtml(error.message)}</div>`;
       $("healingEventsList").innerHTML = "";
       $("healingExplainerBadge").textContent = "Unavailable";
       $("healingExplainerIntro").textContent = "Healing discovery details could not be loaded right now.";
@@ -5061,16 +5491,13 @@ async function loadHealingMonitor(preserveStatus = false) {
 async function loadHealingScriptDetail(scriptId, focus = "") {
   if (!scriptId) return;
   state.healingMonitor.selectedScriptId = scriptId;
-  $("healingDetailSummary").textContent = "Loading script detail...";
-  $("healingDetailPanel").innerHTML = renderLoadingSkeleton("compact", 2);
-  $("healingScriptsTableBody").innerHTML = renderHealingScriptRows(getFilteredHealingScripts());
+  state.healingMonitor.scriptDetail = null;
+  renderHealingScriptList();
   try {
     const detail = await apiFetch(`/api/healing/script/${encodeURIComponent(scriptId)}`);
     state.healingMonitor.scriptDetail = detail;
-    $("healingDetailSummary").textContent = detail.script
-      ? `${detail.script.script_name || detail.script.script_file || scriptId}`
-      : "Script detail";
-    $("healingDetailPanel").innerHTML = renderHealingDetailPanel(detail);
+    renderHealingScriptList();
+    document.querySelector(`[data-healing-card="${CSS.escape(scriptId)}"]`)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     if (focus === "diff") {
       $("healingDetailDiff")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     } else if (focus === "selectors") {
@@ -5078,8 +5505,13 @@ async function loadHealingScriptDetail(scriptId, focus = "") {
     }
     await maybeApplyActiveTranslation("view");
   } catch (error) {
-    $("healingDetailSummary").textContent = "Detail unavailable";
-    $("healingDetailPanel").innerHTML = `<div class="healing-empty-copy">${escapeHtml(error.message)}</div>`;
+    state.healingMonitor.scriptDetail = {
+      status: "error",
+      script: { script_id: scriptId },
+      ai_report: null,
+      error_message: error.message
+    };
+    renderHealingScriptList();
   }
 }
 
@@ -5099,6 +5531,103 @@ async function runHealingDiscover() {
   }
 }
 
+const HEALING_CHECK_STAGES = [
+  "Preparing check",
+  "Launching browser/request",
+  "Reaching target",
+  "Capturing HTML",
+  "Validating selectors",
+  "Comparing baseline",
+  "Generating DARKPULSE AI diagnosis",
+  "Preparing repair preview",
+  "Refreshing recovered records",
+];
+
+function healingScriptById(scriptId) {
+  return (state.healingMonitor.scripts || []).find(item => (item.script_id || item.target_key || "") === scriptId) || {};
+}
+
+function closeHealingCheckModal() {
+  $("healingCheckBackdrop")?.classList.add("hidden");
+  if (state.healingMonitor.checkModal.timer) {
+    window.clearInterval(state.healingMonitor.checkModal.timer);
+  }
+  state.healingMonitor.checkModal.timer = null;
+  state.healingMonitor.checkModal.outcome = "idle";
+}
+
+function renderHealingCheckProgress(outcome = "running") {
+  const stageIndex = state.healingMonitor.checkModal.stageIndex;
+  const finalLabel = outcome === "failed" ? "Failed" : "Completed";
+  const stages = outcome === "running" ? HEALING_CHECK_STAGES : [...HEALING_CHECK_STAGES, finalLabel];
+  $("healingCheckProgress").innerHTML = stages.map((stage, index) => {
+    let statusClass = "pending";
+    if (outcome !== "running" && index === stages.length - 1) {
+      statusClass = outcome === "failed" ? "failed" : "done";
+    } else if (index < stageIndex || outcome !== "running") {
+      statusClass = "done";
+    } else if (index === stageIndex) {
+      statusClass = "active";
+    }
+    return `
+      <div class="healing-progress-step ${statusClass}">
+        <span>${index + 1}</span>
+        <strong>${escapeHtml(stage)}</strong>
+      </div>
+    `;
+  }).join("");
+}
+
+function openHealingCheckModal(scriptId) {
+  const item = healingScriptById(scriptId);
+  const domain = item.target_domain || hostFromValue(item.target_url) || "No target URL";
+  state.healingMonitor.checkModal.scriptId = scriptId;
+  state.healingMonitor.checkModal.stageIndex = 0;
+  state.healingMonitor.checkModal.outcome = "running";
+
+  $("healingCheckTitle").textContent = item.script_file || item.script_name || scriptId || "Target Check";
+  $("healingCheckSubtitle").textContent = domain;
+  $("healingCheckMeta").innerHTML = `
+    <div><span>Collector</span><strong>${escapeHtml(item.collector_name || "-")}</strong></div>
+    <div><span>Target Domain</span><strong>${escapeHtml(domain)}</strong></div>
+    <div><span>Target URL</span><strong>${escapeHtml(item.target_url || "No URL")}</strong></div>
+    <div><span>Current Status</span><strong>${escapeHtml(formatHealingStatus(healingPrimaryStatus(item)))}</strong></div>
+    <div><span>Last Checked</span><strong>${escapeHtml(item.last_checked_at ? formatDate(item.last_checked_at) : "Not checked")}</strong></div>
+    <div><span>Reachability</span><strong>${escapeHtml(formatHealingLiveStatus(item.live_status))}</strong></div>
+    <div><span>Selector Health</span><strong>${escapeHtml(item.selector_health_score === null || item.selector_health_score === undefined ? "n/a" : `${item.selector_health_score}%`)}</strong></div>
+    <div><span>HTML Drift</span><strong>${escapeHtml(formatHealingDriftStatus(item.html_change_status))}</strong></div>
+  `;
+  $("healingCheckDiagnosis").textContent = "Running target validation. Results will appear here when the check finishes.";
+  renderHealingCheckProgress("running");
+  $("healingCheckBackdrop").classList.remove("hidden");
+
+  if (state.healingMonitor.checkModal.timer) {
+    window.clearInterval(state.healingMonitor.checkModal.timer);
+  }
+  state.healingMonitor.checkModal.timer = window.setInterval(() => {
+    const modal = state.healingMonitor.checkModal;
+    if (modal.outcome !== "running") return;
+    modal.stageIndex = Math.min(modal.stageIndex + 1, HEALING_CHECK_STAGES.length - 1);
+    renderHealingCheckProgress("running");
+    renderHealingScriptList();
+  }, 700);
+  renderHealingScriptList();
+}
+
+function finishHealingCheckModal({ success = true, message = "" } = {}) {
+  if (state.healingMonitor.checkModal.timer) {
+    window.clearInterval(state.healingMonitor.checkModal.timer);
+  }
+  state.healingMonitor.checkModal.timer = null;
+  state.healingMonitor.checkModal.stageIndex = HEALING_CHECK_STAGES.length;
+  state.healingMonitor.checkModal.outcome = success ? "complete" : "failed";
+  renderHealingCheckProgress(success ? "complete" : "failed");
+  $("healingCheckDiagnosis").textContent = cleanHealingMessage(message) || (success
+    ? "Check completed. Review the inline target card for latest data, selector mappings, drift, and repair report."
+    : "Check failed. Review the error and run the suggested next action.");
+  renderHealingScriptList();
+}
+
 async function runHealingMonitor(targetKey = "", inlineButton = null) {
   const isSingleTarget = !!targetKey;
   const collectorName = $("healingCollectorFilter")?.value?.trim?.() || "";
@@ -5115,6 +5644,14 @@ async function runHealingMonitor(targetKey = "", inlineButton = null) {
       ? `Checking HTML drift for ${targetKey}...`
       : "Running healing checks across monitored scripts..."
   );
+  if (isSingleTarget) {
+    state.healingMonitor.selectedScriptId = targetKey;
+    state.healingMonitor.scriptDetail = null;
+    state.healingMonitor.checkModal.scriptId = targetKey;
+    state.healingMonitor.checkModal.stageIndex = 0;
+    state.healingMonitor.checkModal.outcome = "running";
+    renderHealingScriptList();
+  }
 
   try {
     const path = targetKey ? `/api/healing/check/${encodeURIComponent(targetKey)}` : "/api/healing/run";
@@ -5134,10 +5671,31 @@ async function runHealingMonitor(targetKey = "", inlineButton = null) {
     $("healingStatus").textContent = statusLine
       ? `${data.message} ${statusLine}.`
       : (data.message || "Healing scan complete.");
+    let repairMessage = "";
+    if (isSingleTarget) {
+      state.healingMonitor.checkModal.stageIndex = HEALING_CHECK_STAGES.length - 2;
+      renderHealingScriptList();
+      try {
+        const repairData = await apiFetch(`/api/healing/repair/${encodeURIComponent(targetKey)}`, false, { method: "POST" });
+        repairMessage = repairData.repair?.message || "DARKPULSE AI repair report generated.";
+      } catch (repairError) {
+        repairMessage = `DARKPULSE AI repair report could not be generated: ${repairError.message}`;
+      }
+      finishHealingCheckModal({
+        success: true,
+        message: `${data.message || statusLine || "Target check complete."} ${repairMessage} Opened inline details on this card.`
+      });
+    }
     await loadHealingMonitor(true);
+    if (isSingleTarget) {
+      await loadHealingScriptDetail(targetKey);
+    }
     showToast(data.message || "Healing scan complete.", "success");
   } catch (error) {
     $("healingStatus").textContent = `Healing scan failed: ${error.message}`;
+    if (isSingleTarget) {
+      finishHealingCheckModal({ success: false, message: error.message });
+    }
     showToast(`Healing scan failed: ${error.message}`, "error");
   } finally {
     setActionButtonBusy("healingRunBtn", false, "Scanning...");
@@ -5157,8 +5715,8 @@ async function generateHealingRepair(scriptId, button = null) {
   try {
     const data = await apiFetch(`/api/healing/repair/${encodeURIComponent(scriptId)}`, false, { method: "POST" });
     showToast(data.repair?.message || "Repair preview generated.", "success");
-    await loadHealingScriptDetail(scriptId);
     await loadHealingMonitor(true);
+    await loadHealingScriptDetail(scriptId);
   } catch (error) {
     showToast(`Repair preview failed: ${error.message}`, "error");
   } finally {
@@ -6168,13 +6726,43 @@ function setupEventListeners() {
   $("healingDiscoverBtn").addEventListener("click", runHealingDiscover);
   $("healingRunBtn").addEventListener("click", () => runHealingMonitor());
   $("healingRefreshBtn").addEventListener("click", () => loadHealingMonitor());
+  $("healingSearchInput").addEventListener("input", () => {
+    state.healingMonitor.filters.query = $("healingSearchInput").value.trim();
+    resetHealingListPage();
+  });
   $("healingCollectorFilter").addEventListener("change", () => {
-    $("healingScriptsSummary").textContent = `${getFilteredHealingScripts().length} script(s) in current view`;
-    $("healingScriptsTableBody").innerHTML = renderHealingScriptRows(getFilteredHealingScripts());
+    state.healingMonitor.filters.collector = $("healingCollectorFilter").value.trim();
+    resetHealingListPage();
   });
   $("healingStatusFilter").addEventListener("change", () => {
-    $("healingScriptsSummary").textContent = `${getFilteredHealingScripts().length} script(s) in current view`;
-    $("healingScriptsTableBody").innerHTML = renderHealingScriptRows(getFilteredHealingScripts());
+    state.healingMonitor.filters.status = $("healingStatusFilter").value.trim();
+    resetHealingListPage();
+  });
+  $("healingIssueFilter").addEventListener("change", () => {
+    state.healingMonitor.filters.issue = $("healingIssueFilter").value.trim();
+    resetHealingListPage();
+  });
+  $("healingPrevPageBtn").addEventListener("click", () => {
+    state.healingMonitor.filters.page = Math.max(1, state.healingMonitor.filters.page - 1);
+    renderHealingScriptList();
+  });
+  $("healingNextPageBtn").addEventListener("click", () => {
+    state.healingMonitor.filters.page += 1;
+    renderHealingScriptList();
+  });
+  $("healingCheckClose").addEventListener("click", closeHealingCheckModal);
+  $("healingCheckBackdrop").addEventListener("click", event => {
+    if (event.target === $("healingCheckBackdrop")) closeHealingCheckModal();
+  });
+  $("healingStatsGrid").addEventListener("click", event => {
+    const card = event.target.closest("[data-healing-stat-filter]");
+    if (!card) return;
+    const filter = card.dataset.healingStatFilter || "";
+    $("healingStatusFilter").value = filter;
+    $("healingIssueFilter").value = "";
+    state.healingMonitor.filters.status = filter;
+    state.healingMonitor.filters.issue = "";
+    resetHealingListPage();
   });
   $("healingScriptsTableBody").addEventListener("click", event => {
     const checkButton = event.target.closest("[data-healing-check]");
@@ -6195,6 +6783,14 @@ function setupEventListeners() {
     const applyButton = event.target.closest("[data-healing-apply]");
     if (applyButton) {
       applyHealingRepair(applyButton.dataset.healingApply || "", applyButton);
+      return;
+    }
+    if (event.target.closest(".healing-inline-detail")) {
+      return;
+    }
+    const card = event.target.closest("[data-healing-card]");
+    if (card) {
+      loadHealingScriptDetail(card.dataset.healingCard || "");
     }
   });
 
@@ -6730,20 +7326,15 @@ function renderRepoReport(data) {
   const repoRecommendationsContent = $("repoRecommendationsContent");
   const repoRecommendationsTitle = $("repoRecommendationsTitle");
   if (repoRecommendationsBox && repoRecommendationsContent && repoRecommendationsTitle) {
-    if (recommendations.length) {
-      repoRecommendationsBox.classList.remove("hidden");
-      repoRecommendationsTitle.textContent = grade === "A" ? "Maintain Grade A" : "How to Reach A";
-      const intro = grade === "A"
-        ? "This repository is in a strong state right now. These practices help keep it there."
-        : `DarkPulse graded this repository ${grade}. These improvements would strengthen the posture and move it closer to A.`;
-      repoRecommendationsContent.innerHTML = `
-        <p class="suggestions-note">${escapeHtml(intro)}</p>
-        <ul>${recommendations.map(point => `<li>${escapeHtml(point)}</li>`).join("")}</ul>
-      `;
-    } else {
-      repoRecommendationsBox.classList.add("hidden");
-      repoRecommendationsContent.innerHTML = "";
-    }
+    repoRecommendationsBox.classList.remove("hidden");
+    repoRecommendationsTitle.textContent = "AI Recommendations by DARKPULSE AI";
+    const intro = grade === "A"
+      ? "This repository is in a strong state right now. These practices help keep it there."
+      : `DarkPulse graded this repository ${grade}. These improvements would strengthen the posture and move it closer to A.`;
+    repoRecommendationsContent.innerHTML = renderDarkpulseRecommendationCard(
+      recommendations.length ? { Actions: recommendations } : "",
+      { note: intro }
+    );
   }
 
   // Render Category Function
@@ -6876,30 +7467,10 @@ function renderSeoReport(data) {
 
   const aiBox = $("seoAiSuggestionsBox");
   const aiContent = $("seoAiSuggestionsContent");
-  const rawSuggestions = String(data.ai_suggestions || "").trim();
-  const aiMessage = String(data.ai_message || "").trim();
-  const normalizedPoints = rawSuggestions
-    .split(/\n+/)
-    .map(line => line.trim())
-    .filter(Boolean)
-    .map(line => line.replace(/^[-*•]\s*/, "").replace(/^\d+[.)]\s*/, "").trim())
-    .filter(Boolean);
-
-  if (rawSuggestions || aiMessage) {
-    aiBox.classList.remove("hidden");
-    const messageHtml = aiMessage
-      ? `<p class="suggestions-note">${escapeHtml(aiMessage)}</p>`
-      : "";
-
-    if (normalizedPoints.length) {
-      aiContent.innerHTML = `${messageHtml}<ul>${normalizedPoints.map(point => `<li>${escapeHtml(point)}</li>`).join("")}</ul>`;
-    } else {
-      aiContent.innerHTML = `${messageHtml}<p class="suggestions-note">${escapeHtml(rawSuggestions || "No AI recommendations were returned for this scan.")}</p>`;
-    }
-  } else {
-    aiBox.classList.add("hidden");
-    aiContent.innerHTML = "";
-  }
+  const rawSuggestions = sanitizeAiBranding(String(data.ai_suggestions || "").trim());
+  const aiMessage = sanitizeAiBranding(String(data.ai_message || "").trim());
+  aiBox.classList.remove("hidden");
+  aiContent.innerHTML = renderDarkpulseRecommendationCard(rawSuggestions, { note: aiMessage });
 }
 
 function showToast(message, type = "info") {

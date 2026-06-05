@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 from collections import Counter
+import json
+import os
 from pathlib import Path
+import re
 import threading
 import time
 from typing import Any
@@ -36,6 +39,188 @@ class HealingStatusService:
         self._discovery_lock = threading.Lock()
         self._last_discovery_monotonic = 0.0
         self._discovery_ttl_seconds = 45.0
+
+    def _selector_pairs_for_report(self, detail: dict[str, Any], repair_doc: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+        script = detail.get("script") or {}
+        latest = detail.get("latest_snapshot") or {}
+        baseline = detail.get("baseline_snapshot") or {}
+        repair = repair_doc or detail.get("latest_repair") or {}
+        baseline_results = baseline.get("selector_results") or []
+        latest_results = latest.get("selector_results") or []
+        current_index = {str(item.get("selector") or ""): item for item in latest_results}
+        suggested_index = {
+            str(item.get("old_selector") or ""): item
+            for item in (repair.get("suggested_selectors") or script.get("suggested_selectors") or [])
+        }
+        mapping_index = {
+            str(item.get("old_selector") or ""): item
+            for item in (repair.get("changed_selector_mappings") or [])
+        }
+        pairs: list[dict[str, Any]] = []
+        for previous in baseline_results[:24]:
+            old_selector = str(previous.get("selector") or "").strip()
+            if not old_selector:
+                continue
+            current = current_index.get(old_selector) or {}
+            suggestion = suggested_index.get(old_selector) or {}
+            mapping = mapping_index.get(old_selector) or {}
+            previous_count = int(previous.get("match_count") or 0)
+            current_count = int(current.get("match_count") or 0)
+            new_selector = mapping.get("new_selector") or suggestion.get("suggested_selector") or ""
+            if previous_count > 0 or current_count == 0 or new_selector:
+                pairs.append({
+                    "old_selector": old_selector,
+                    "old_match_count": previous_count,
+                    "current_match_count": current_count,
+                    "new_selector": new_selector,
+                    "confidence": mapping.get("confidence") or suggestion.get("confidence") or 0,
+                    "reason": suggestion.get("reason") or ("Selector no longer matches current HTML." if previous_count and not current_count else "Selector still present."),
+                })
+        if not pairs:
+            for item in (repair.get("failed_selectors") or script.get("failed_selectors") or [])[:12]:
+                old_selector = str(item.get("selector") or "").strip()
+                suggestion = suggested_index.get(old_selector) or {}
+                pairs.append({
+                    "old_selector": old_selector,
+                    "old_match_count": 0,
+                    "current_match_count": 0,
+                    "new_selector": suggestion.get("suggested_selector") or "",
+                    "confidence": suggestion.get("confidence") or 0,
+                    "reason": item.get("reason") or "Selector failed in latest check.",
+                })
+        return pairs
+
+    def _fallback_ai_healing_report(self, detail: dict[str, Any], repair_doc: dict[str, Any] | None = None) -> dict[str, Any]:
+        script = detail.get("script") or {}
+        latest = detail.get("latest_snapshot") or {}
+        repair = repair_doc or detail.get("latest_repair") or {}
+        selector_pairs = self._selector_pairs_for_report(detail, repair)
+        last_data = int(script.get("last_data_count") or latest.get("data_count") or 0)
+        mongo_docs = int(script.get("mongo_document_count") or 0)
+        status = str(script.get("status") or "unknown")
+        issues = []
+        if str(script.get("live_status") or "").lower() in {"blocked", "unreachable"}:
+            issues.append("Target is reachable only partially or appears blocked by access controls.")
+        if (script.get("selector_health_score") is not None) and float(script.get("selector_health_score") or 0) < 100:
+            issues.append(f"Selector health is {script.get('selector_health_score')}%, so one or more extraction paths need review.")
+        if last_data <= 0:
+            issues.append("The latest validation did not recover records from this script.")
+        if script.get("last_parse_error"):
+            issues.append(str(script.get("last_parse_error")))
+        if not issues:
+            issues.append("No major selector failure was detected in the latest validation.")
+
+        actions = []
+        if repair.get("repair_candidate_exists"):
+            actions.append("Apply the generated repair preview, then re-test immediately.")
+        elif selector_pairs:
+            actions.append("Review the old/new selector mappings and generate a repair preview.")
+        else:
+            actions.append("Run a fresh target check to capture current HTML before repairing.")
+        actions.append("Keep the patch only if the re-test returns data; otherwise restore the backup.")
+        actions.append("After a successful re-test, DarkPulse records the recovered count and Mongo document visibility.")
+
+        recovery = "Ready to apply repair." if repair.get("repair_candidate_exists") else "Needs repair preview before apply."
+        if status == "healthy" and last_data > 0:
+            recovery = "Data is currently being recovered by this script."
+        elif repair.get("status") == "applied":
+            recovery = "Repair was applied previously; run check to confirm latest recovered data."
+
+        return {
+            "source": "DARKPULSE AI",
+            "summary": f"{script.get('script_file') or script.get('script_name') or 'This script'} is in `{status}` state with {last_data} latest record(s) and {mongo_docs} Mongo document(s).",
+            "issues": issues[:8],
+            "selector_mappings": selector_pairs[:12],
+            "actions": actions,
+            "data_recovery": {
+                "latest_data_count": last_data,
+                "mongo_document_count": mongo_docs,
+                "injection_status": "Recovered and visible in DarkPulse" if last_data > 0 or mongo_docs > 0 else "No recovered data yet",
+                "message": recovery,
+            },
+        }
+
+    def _call_ai_healing_report(self, detail: dict[str, Any], repair_doc: dict[str, Any]) -> dict[str, Any] | None:
+        api_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+        if not api_key:
+            return None
+        try:
+            import requests
+
+            script = detail.get("script") or {}
+            latest = detail.get("latest_snapshot") or {}
+            baseline = detail.get("baseline_snapshot") or {}
+            selector_pairs = self._selector_pairs_for_report(detail, repair_doc)
+            payload_context = {
+                "script": {
+                    "name": script.get("script_file") or script.get("script_name"),
+                    "collector": script.get("collector_name"),
+                    "target_url": script.get("target_url"),
+                    "status": script.get("status"),
+                    "live_status": script.get("live_status"),
+                    "selector_health_score": script.get("selector_health_score"),
+                    "last_data_count": script.get("last_data_count"),
+                    "mongo_document_count": script.get("mongo_document_count"),
+                    "last_parse_error": script.get("last_parse_error"),
+                    "last_event_message": script.get("last_event_message"),
+                },
+                "drift_summary": script.get("diff_summary") or latest.get("diff_summary") or [],
+                "selector_mappings": selector_pairs[:16],
+                "repair": {
+                    "candidate_exists": repair_doc.get("repair_candidate_exists"),
+                    "confidence": repair_doc.get("repair_confidence"),
+                    "changed_selector_mappings": repair_doc.get("changed_selector_mappings") or [],
+                    "message": repair_doc.get("message"),
+                },
+                "latest_html_excerpt": re.sub(r"\s+", " ", str(latest.get("html") or ""))[:3500],
+                "baseline_snapshot_path": baseline.get("snapshot_path"),
+                "latest_snapshot_path": latest.get("snapshot_path"),
+            }
+            prompt = (
+                "Return strict JSON only. Build a DARKPULSE AI healing report for a scraper target. "
+                "Do not mention vendors, provider names, or model names. "
+                "Schema: summary string, issues string array, selector_mappings array with old_selector,new_selector,confidence,reason, "
+                "actions string array, data_recovery object with latest_data_count,mongo_document_count,injection_status,message. "
+                "Explain old selectors versus new selectors and whether data can be recovered."
+            )
+            model = os.getenv("OPENROUTER_MODEL", "qwen/qwen3-235b-a22b-2507").strip() or "qwen/qwen3-235b-a22b-2507"
+            response = requests.post(
+                os.getenv("OPENROUTER_URL", "https://openrouter.ai/api/v1/chat/completions").strip(),
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "http://localhost:8000",
+                    "X-Title": "DarkPulse",
+                },
+                json={
+                    "model": model,
+                    "messages": [
+                        {"role": "system", "content": prompt},
+                        {"role": "user", "content": json.dumps(payload_context, ensure_ascii=False)},
+                    ],
+                    "temperature": 0.15,
+                    "max_tokens": 900,
+                },
+                timeout=45,
+            )
+            response.raise_for_status()
+            data = response.json()
+            text = str(((data.get("choices") or [{}])[0].get("message") or {}).get("content") or "").strip()
+            text = re.sub(r"^```(?:json)?|```$", "", text, flags=re.IGNORECASE | re.MULTILINE).strip()
+            report = json.loads(text)
+            if isinstance(report, dict):
+                report["source"] = "DARKPULSE AI"
+                return report
+        except Exception:
+            return None
+        return None
+
+    def _build_healing_report(self, detail: dict[str, Any], repair_doc: dict[str, Any] | None = None, *, use_ai: bool = False) -> dict[str, Any]:
+        if use_ai:
+            ai_report = self._call_ai_healing_report(detail, repair_doc or {})
+            if ai_report:
+                return ai_report
+        return self._fallback_ai_healing_report(detail, repair_doc)
 
     def discover_targets(self, *, force: bool = False) -> dict[str, Any]:
         if not force and (time.monotonic() - self._last_discovery_monotonic) < self._discovery_ttl_seconds:
@@ -317,7 +502,7 @@ class HealingStatusService:
         baseline_snapshot = self.storage.baseline_snapshot(script_id) or {}
         latest_repair = self.storage.latest_repair(script_id) or {}
         recent_events = [self._normalize_event_doc(item) for item in self.storage.list_events(limit=10, script_id=script_id)]
-        return {
+        detail = {
             "status": "ok",
             "script": self._normalize_script_doc(script_doc),
             "baseline_snapshot": self._serialise_snapshot(baseline_snapshot),
@@ -325,6 +510,8 @@ class HealingStatusService:
             "latest_repair": self._serialise_doc(latest_repair),
             "recent_events": recent_events,
         }
+        detail["ai_report"] = (detail["latest_repair"] or {}).get("ai_report") or self._build_healing_report(detail)
+        return detail
 
     def generate_repair(self, script_id: str) -> dict[str, Any]:
         detail = self.get_script_detail(script_id)
@@ -363,6 +550,12 @@ class HealingStatusService:
             "candidate_patch_path": preview.candidate_patch_path,
             "message": preview.preview_message,
         }
+        temp_detail = {
+            **detail,
+            "script": script_doc,
+            "latest_repair": repair_doc,
+        }
+        repair_doc["ai_report"] = self._build_healing_report(temp_detail, repair_doc, use_ai=True)
         repair_id = self.storage.save_repair_record(repair_doc).inserted_id
         repair_doc["repair_id"] = str(repair_id)
         self.storage.update_script_runtime(
@@ -402,11 +595,13 @@ class HealingStatusService:
             if not recovered:
                 original = Path(backup_path).read_text(encoding="utf-8", errors="ignore")
                 source_path.write_text(original, encoding="utf-8")
+                rollback_detail = self.get_script_detail(script_id)
                 return {
                     "status": "rolled_back",
                     "message": "Candidate repair did not recover data. Original script was restored.",
                     "backup_path": backup_path,
                     "check_result": result,
+                    "ai_report": rollback_detail.get("ai_report"),
                 }
 
             latest_repair = self.storage.latest_repair(script_id)
@@ -425,6 +620,7 @@ class HealingStatusService:
                 "message": "Repair applied and data recovered successfully.",
                 "backup_path": backup_path,
                 "check_result": result,
+                "ai_report": self.get_script_detail(script_id).get("ai_report"),
             }
         except Exception as exc:
             try:

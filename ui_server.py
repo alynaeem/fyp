@@ -6,6 +6,7 @@ import pathlib
 import json
 import re
 import signal
+import socket
 import sys
 import time
 import traceback
@@ -85,7 +86,7 @@ INTELLIGENCE_SCAN_SOURCES = {
         },
     },
     "defacement": {
-        "label": "Defacement Tracking",
+        "label": "Compromised Monitoring",
         "collector": "defacement",
         "collection_name": "defacement_items",
         "env_overrides": {
@@ -2654,7 +2655,7 @@ async def _build_map_stats_payload() -> dict:
             entry = _touch(code)
             entry["defacement_count"] += 1
             entry["total"] += 1
-            _append_unique(entry["defacement_sources"], _humanize_source_name(item.get("source"), fallback="Defacement Intel"))
+            _append_unique(entry["defacement_sources"], _humanize_source_name(item.get("source"), fallback="Compromised Intel"))
             _append_example(entry, item)
 
     countries = sorted(bucket.values(), key=lambda item: (-item["total"], item["name"]))
@@ -4518,12 +4519,30 @@ def _feed_screenshot_cache_path(aid: str, url: str) -> pathlib.Path:
     return _FEED_SCREENSHOT_DIR / f"{digest}.jpg"
 
 
+def _chromium_host_resolver_rule(url: str) -> str:
+    host = urlparse(url or "").hostname
+    if not host:
+        return ""
+    try:
+        addresses = socket.getaddrinfo(host, 443, type=socket.SOCK_STREAM)
+    except OSError:
+        return ""
+    for family, _, _, _, sockaddr in addresses:
+        if family == socket.AF_INET and sockaddr and sockaddr[0]:
+            return f"MAP {host} {sockaddr[0]},EXCLUDE localhost"
+    return ""
+
+
 def _capture_feed_screenshot(url: str, output_path: pathlib.Path) -> None:
     from playwright.sync_api import sync_playwright
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    launch_args = ["--no-sandbox", "--disable-dev-shm-usage"]
+    resolver_rule = _chromium_host_resolver_rule(url)
+    if resolver_rule:
+        launch_args.append(f"--host-resolver-rules={resolver_rule}")
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
+        browser = p.chromium.launch(headless=True, args=launch_args)
         context = browser.new_context(
             viewport={"width": 1280, "height": 720},
             device_scale_factor=1,
@@ -4695,7 +4714,9 @@ async def stats():
     result["display_total"] = display_total
     result["stored_total"] = stored_total
     result["records_to_100k"] = max(100000 - stored_total, 0)
-    result["total"] = max(stored_total, display_total)
+    # Dashboard Total must match the primary stream cards visible in the UI.
+    # Raw Mongo volume is still returned as stored_total for diagnostics.
+    result["total"] = display_total
     return _cache_set_stats({"counts": result, **result})
 
 
@@ -4770,9 +4791,9 @@ async def _call_authorized_pakdb_provider(number: str, normalized_number: str) -
     )
 
     if not provider_url:
-        raise ValueError("PakDB lookup source is not configured. Please connect an authorized data provider API.")
+        raise ValueError("PakDB lookup source is not configured. Please connect an authorized data source API.")
     if not provider_key:
-        raise PermissionError("PakDB provider API key is missing. Please set PAKDB_PROVIDER_API_KEY in .env.")
+        raise PermissionError("PakDB data source API key is missing. Please set PAKDB_PROVIDER_API_KEY in .env.")
 
     def request_provider() -> tuple[int, Any]:
         response = requests.post(
@@ -4797,11 +4818,11 @@ async def _call_authorized_pakdb_provider(number: str, normalized_number: str) -
     log.info("PakDB provider response status=%s provider=%s", status_code, provider_name)
 
     if status_code in (401, 403):
-        raise PermissionError("PakDB provider rejected the request. Please check provider API settings.")
+        raise PermissionError("PakDB data source rejected the request. Please check data source API settings.")
     if status_code in (408, 429, 500, 502, 503, 504):
-        raise ConnectionError("PakDB lookup failed. Please check provider API settings.")
+        raise ConnectionError("PakDB lookup failed. Please check data source API settings.")
     if status_code >= 400:
-        raise RuntimeError("PakDB lookup failed. Please check provider API settings.")
+        raise RuntimeError("PakDB lookup failed. Please check data source API settings.")
 
     records = _extract_pakdb_records(payload)
     metadata = {
@@ -4814,7 +4835,7 @@ async def _call_authorized_pakdb_provider(number: str, normalized_number: str) -
 
 @app.post("/pakdb/lookup")
 async def pakdb_lookup(request: Request):
-    """Run a PakDB lookup through an authorized provider API only."""
+    """Run a PakDB lookup through an authorized data source API only."""
 
     body = await request.json()
     number = str(body.get("number", "")).strip()
@@ -4838,10 +4859,10 @@ async def pakdb_lookup(request: Request):
             timeout=25,
         )
         provider = metadata.get("provider", "authorized-provider")
-        message = "No matching record found from the configured authorized provider." if not items else ""
+        message = "No matching record found from the configured authorized data source." if not items else ""
     except asyncio.TimeoutError:
         status = "error"
-        message = "PakDB lookup failed. Please check provider API settings."
+        message = "PakDB lookup failed. Please check data source API settings."
         log.error("PakDB provider timeout for normalized=%s provider=%s", normalized_number, provider)
     except (ValueError, PermissionError, ConnectionError, RuntimeError) as exc:
         status = "error"
@@ -4849,7 +4870,7 @@ async def pakdb_lookup(request: Request):
         log.error("PakDB lookup error reason=%s normalized=%s", message, normalized_number)
     except Exception as exc:
         status = "error"
-        message = "PakDB lookup failed. Please check provider API settings."
+        message = "PakDB lookup failed. Please check data source API settings."
         log.error("PakDB lookup failed unexpectedly for %s: %s", normalized_number, exc, exc_info=True)
 
     doc = {
@@ -6294,24 +6315,24 @@ async def analyze_seo(url: str):
                 if not ai_suggestions:
                     ai_suggestions = _build_seo_fallback_suggestions(url, audits)
                     ai_status = "fallback_format"
-                    ai_message = "OpenRouter returned an empty response format, so DarkPulse generated recommendations from the audit findings."
+                    ai_message = "DARKPULSE AI generated recommendations from the audit findings."
                 else:
                     ai_status = "openrouter"
-                    ai_message = "Recommendations generated by OpenRouter Qwen."
+                    ai_message = "Recommendations generated by DARKPULSE AI."
             except Exception as ai_err:
                 log.warning(f"AI Suggestions failed: {ai_err}")
                 ai_suggestions = _build_seo_fallback_suggestions(url, audits)
                 error_text = str(ai_err)
                 if "RESOURCE_EXHAUSTED" in error_text or "429" in error_text:
                     ai_status = "fallback_quota"
-                    ai_message = "OpenRouter quota or rate limit is unavailable right now, so DarkPulse generated recommendations from the audit findings."
+                    ai_message = "DARKPULSE AI generated recommendations from the audit findings."
                 else:
                     ai_status = "fallback_error"
-                    ai_message = "OpenRouter is temporarily unavailable, so DarkPulse generated recommendations from the audit findings."
+                    ai_message = "DARKPULSE AI generated recommendations from the audit findings."
         elif failing_audits:
             ai_suggestions = _build_seo_fallback_suggestions(url, audits)
             ai_status = "fallback_no_key"
-            ai_message = "OPENROUTER_API_KEY is not configured, so DarkPulse generated recommendations from the audit findings."
+            ai_message = "DARKPULSE AI generated recommendations from the audit findings."
         else:
             ai_suggestions = "- Core SEO checks passed for this scan.\n- Keep monitoring titles, crawlability, and metadata after future content changes."
             ai_status = "no_findings"
@@ -6496,7 +6517,7 @@ async def _build_repo_ai_recommendations(
 ) -> tuple[list[str], str, str]:
     fallback = list(summary_data.get("recommendations") or [])[:5]
     if not os.getenv("OPENROUTER_API_KEY", "").strip():
-        return fallback, "fallback_no_key", "OPENROUTER_API_KEY is not configured, so DarkPulse used local repository recommendations."
+        return fallback, "fallback_no_key", "DARKPULSE AI used local repository recommendations."
 
     def compact_findings(items: list[dict[str, Any]], label: str) -> str:
         lines = []
@@ -6536,11 +6557,11 @@ async def _build_repo_ai_recommendations(
             if line.strip()
         ][:5]
         if recommendations:
-            return recommendations, "openrouter", "Repository recommendations generated by OpenRouter Qwen."
-        return fallback, "fallback_format", "OpenRouter returned an empty response format, so DarkPulse used local repository recommendations."
+            return recommendations, "openrouter", "Repository recommendations generated by DARKPULSE AI."
+        return fallback, "fallback_format", "DARKPULSE AI used local repository recommendations."
     except Exception as exc:
         log.warning("Repository AI recommendations failed for %s: %s", repo_name, exc)
-        return fallback, "fallback_error", "OpenRouter is temporarily unavailable, so DarkPulse used local repository recommendations."
+        return fallback, "fallback_error", "DARKPULSE AI used local repository recommendations."
 
 
 @app.post("/scan/repo", dependencies=[Depends(get_current_user)])

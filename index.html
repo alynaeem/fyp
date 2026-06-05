@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dark Pulse - OSINT Dashboard</title>
-  <meta name="description" content="Live DarkPulse intelligence dashboard for leaks, defacement, exploits, and threat reporting." />
+  <meta name="description" content="Live DarkPulse intelligence dashboard for leaks, compromised monitoring, exploits, and threat reporting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/style.css?v=43" />
@@ -95,8 +95,8 @@
           <div class="nav-item" data-tab="defacement">
             <span class="nav-icon">D</span>
             <div class="nav-copy">
-              <span class="nav-label">Defacement</span>
-              <span class="nav-meta">Targeted website defacement activity</span>
+              <span class="nav-label">Compromised Monitoring</span>
+              <span class="nav-meta">Targeted compromised website activity</span>
             </div>
           </div>
           <div class="nav-item" data-tab="exploit">
@@ -232,7 +232,7 @@
         <div class="header-left">
           <p class="header-kicker">DarkPulse Live</p>
           <h1 class="view-title" id="viewTitle">Command Center</h1>
-          <p class="view-subtitle" id="viewSubtitle">Leaks and defacement activity are highlighted in red with restored MongoDB data behind the feed.</p>
+          <p class="view-subtitle" id="viewSubtitle">Leaks and compromised monitoring activity are highlighted in red with restored MongoDB data behind the feed.</p>
         </div>
 
         <div class="header-center">
@@ -251,7 +251,7 @@
               <span class="status-note" id="lastUpdated">Updated just now</span>
             </div>
           </div>
-          <button class="icon-btn ai-chat-header-btn" id="aiChatLaunchBtn" title="AI Chat">AI Chat</button>
+          <button class="icon-btn ai-chat-header-btn" id="aiChatLaunchBtn" title="DARKPULSE Chatbot">DARKPULSE Chatbot</button>
           <button class="icon-btn" id="settingsBtn" title="Settings">Settings</button>
         </div>
       </header>
@@ -283,7 +283,7 @@
             <span class="stat-value" id="statLeakCount">0</span>
           </div>
           <div class="stat-pill" data-tab="defacement">
-            <span class="stat-label">Defacement</span>
+            <span class="stat-label">Compromised Monitoring</span>
             <span class="stat-value" id="statDefaceCount">0</span>
           </div>
           <div class="stat-pill" data-tab="exploit">
@@ -307,7 +307,7 @@
             <span class="stat-value" id="statLeakCoverageCount">0</span>
           </div>
           <div class="stat-pill stat-pill-support">
-            <span class="stat-label">Deface Coverage</span>
+            <span class="stat-label">Compromised Coverage</span>
             <span class="stat-value" id="statDefaceCoverageCount">0</span>
           </div>
           <div class="stat-pill stat-pill-support">
@@ -329,7 +329,7 @@
             <div class="impact-header">
               <div>
                 <p class="section-kicker">Global Impact Map</p>
-                <h2 class="section-title">Countries hit by leak and defacement activity</h2>
+                <h2 class="section-title">Countries hit by leak and compromised activity</h2>
                 <p class="section-copy">Affected regions are highlighted in red across the live heat map, with the active country and leak total rotating automatically from the restored dataset.</p>
               </div>
               <div class="impact-summary-grid">
@@ -342,7 +342,7 @@
                   <span class="mini-stat-value" id="impactLeakCoverage">0</span>
                 </div>
                 <div class="mini-stat">
-                  <span class="mini-stat-label">Defacement Coverage</span>
+                  <span class="mini-stat-label">Compromised Coverage</span>
                   <span class="mini-stat-value" id="impactDefaceCoverage">0</span>
                 </div>
               </div>
@@ -368,7 +368,7 @@
                 <div class="rail-card">
                   <div class="rail-card-header">
                     <span class="section-kicker">Affected Countries</span>
-                    <span class="rail-card-note">Leak / Defacement</span>
+                    <span class="rail-card-note">Leak / Compromised</span>
                   </div>
                   <div id="countryImpactList" class="country-impact-list"></div>
                 </div>
@@ -735,14 +735,10 @@
                   </div>
                 </div>
 
-                <!-- AI SEO Suggestions Box -->
+                <!-- DARKPULSE AI Recommendations Box -->
                 <div id="seoAiSuggestionsBox" class="seo-suggestions-container hidden">
-                  <div class="suggestions-header">
-                    <span class="ai-pulse-mini"></span>
-                    <h4 class="suggestions-title">AI Recommendations</h4>
-                  </div>
                   <div id="seoAiSuggestionsContent" class="suggestions-body">
-                    <!-- AI suggestions bullet points here -->
+                    <!-- DARKPULSE AI recommendations render here -->
                   </div>
                 </div>
               </div>
@@ -922,10 +918,7 @@
                 </div>
 
                 <div id="repoRecommendationsBox" class="seo-suggestions-container hidden">
-                  <div class="suggestions-header">
-                    <span class="ai-pulse-mini"></span>
-                    <h4 class="suggestions-title" id="repoRecommendationsTitle">How to Reach A</h4>
-                  </div>
+                  <h4 class="suggestions-title hidden" id="repoRecommendationsTitle">AI Recommendations by DARKPULSE AI</h4>
                   <div id="repoRecommendationsContent" class="suggestions-body"></div>
                 </div>
               </div>
@@ -994,7 +987,7 @@
                 <article class="healing-step-card">
                   <span class="healing-pill-label">1. Discovery</span>
                   <strong class="healing-step-title">Script folders are scanned</strong>
-                  <p class="healing-step-copy" id="healingExplainRoots">The monitor checks leak, news, exploit, defacement, social, and API collector folders.</p>
+                  <p class="healing-step-copy" id="healingExplainRoots">The monitor checks leak, news, exploit, compromised monitoring, social, and API collector folders.</p>
                 </article>
                 <article class="healing-step-card">
                   <span class="healing-pill-label">2. Filtering</span>
@@ -1013,31 +1006,31 @@
             <div id="healingStatus" class="pakdb-status">Monitor ready.</div>
 
             <div class="healing-stats-grid" id="healingStatsGrid">
-              <div class="mini-card healing-stat-card">
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="">
                 <span class="mini-card-label">Total Scripts</span>
                 <span class="mini-card-value" id="healingStatTotalScripts">0</span>
               </div>
-              <div class="mini-card healing-stat-card">
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="healthy">
                 <span class="mini-card-label">Healthy</span>
                 <span class="mini-card-value" id="healingStatHealthy">0</span>
               </div>
-              <div class="mini-card healing-stat-card">
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="no_data">
                 <span class="mini-card-label">No Data</span>
                 <span class="mini-card-value" id="healingStatNoData">0</span>
               </div>
-              <div class="mini-card healing-stat-card">
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="blocked">
                 <span class="mini-card-label">Unreachable</span>
                 <span class="mini-card-value" id="healingStatUnreachable">0</span>
               </div>
-              <div class="mini-card healing-stat-card">
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="html_changed">
                 <span class="mini-card-label">HTML Changed</span>
                 <span class="mini-card-value" id="healingStatChanged">0</span>
               </div>
-              <div class="mini-card healing-stat-card">
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="repair_ready">
                 <span class="mini-card-label">Repair Ready</span>
                 <span class="mini-card-value" id="healingStatRepairReady">0</span>
               </div>
-              <div class="mini-card healing-stat-card">
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="needs_review">
                 <span class="mini-card-label">Needs Review</span>
                 <span class="mini-card-value" id="healingStatNeedsReview">0</span>
               </div>
@@ -1058,43 +1051,46 @@
                   <span class="rail-card-note" id="healingScriptsSummary">0 scripts tracked</span>
                 </div>
                 <div class="healing-filter-bar">
+                  <input id="healingSearchInput" class="healing-search-input" type="search" placeholder="Search domain, script, collector..." />
                   <select id="healingCollectorFilter" class="healing-filter-select">
                     <option value="">All Collectors</option>
                   </select>
                   <select id="healingStatusFilter" class="healing-filter-select">
                     <option value="">All Statuses</option>
+                    <option value="discovered">Discovered</option>
+                    <option value="checking">Checking</option>
                     <option value="healthy">Healthy</option>
-                    <option value="no_data">No Data</option>
-                    <option value="target_unreachable">Unreachable</option>
+                    <option value="blocked">Blocked</option>
+                    <option value="needs_review">Needs Review</option>
+                    <option value="failed">Failed</option>
                     <option value="html_changed">HTML Changed</option>
                     <option value="repair_ready">Repair Ready</option>
-                    <option value="needs_review">Needs Review</option>
+                    <option value="repaired">Repaired</option>
+                    <option value="no_data">No Data</option>
                     <option value="skipped">Skipped</option>
-                    <option value="discovered">Discovered</option>
+                    <option value="no_url">No URL</option>
+                  </select>
+                  <select id="healingIssueFilter" class="healing-filter-select">
+                    <option value="">All Issues</option>
+                    <option value="blocked">Blocked / Cloudflare</option>
+                    <option value="playwright">Playwright Missing</option>
+                    <option value="selector">Selector Failed</option>
+                    <option value="timeout">Timeout</option>
+                    <option value="no_url">No URL</option>
                   </select>
                   <button class="btn-secondary" id="healingRefreshBtn">Refresh</button>
                 </div>
               </div>
-              <div class="table-shell healing-table-shell">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Script</th>
-                      <th>Collector</th>
-                      <th>Domain</th>
-                      <th>Data</th>
-                      <th>Status</th>
-                      <th>Live</th>
-                      <th>Drift</th>
-                      <th>Selectors</th>
-                      <th>Last Checked</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody id="healingScriptsTableBody">
-                    <tr><td colspan="10">Loading healing monitor...</td></tr>
-                  </tbody>
-                </table>
+              <div class="healing-list-toolbar">
+                <span id="healingLimitNotice">Showing monitored targets.</span>
+                <div class="healing-pagination">
+                  <button class="healing-inline-btn" id="healingPrevPageBtn" type="button">Prev</button>
+                  <span id="healingPageLabel">Page 1</span>
+                  <button class="healing-inline-btn" id="healingNextPageBtn" type="button">Next</button>
+                </div>
+              </div>
+              <div class="healing-target-list" id="healingScriptsTableBody">
+                <div class="healing-empty-copy">Loading healing monitor...</div>
               </div>
             </div>
 
@@ -1119,6 +1115,25 @@
                   </div>
                   <div id="healingEventsList" class="compact-list"></div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-backdrop hidden" id="healingCheckBackdrop">
+            <div class="modal-panel healing-check-modal">
+              <div class="modal-header">
+                <div>
+                  <span class="section-kicker">Run Check</span>
+                  <h3 class="modal-title" id="healingCheckTitle">Target Check</h3>
+                  <p class="modal-summary" id="healingCheckSubtitle">Preparing target validation...</p>
+                </div>
+                <button class="modal-close" id="healingCheckClose" type="button" aria-label="Close">x</button>
+              </div>
+              <div id="healingCheckMeta" class="healing-check-meta"></div>
+              <div id="healingCheckProgress" class="healing-check-progress"></div>
+              <div class="healing-subsection">
+                <span class="healing-pill-label">Diagnosis</span>
+                <div id="healingCheckDiagnosis" class="healing-diagnosis-box">Waiting for check result...</div>
               </div>
             </div>
           </div>
@@ -1241,7 +1256,7 @@
 
               <section class="docs-section" id="docs-command">
                 <h4>Command Center and Feeds</h4>
-                <p>The Command Center is the operator launch surface. It combines automation status, source counters, global impact mapping, and routing into detailed feeds. Analysts can jump directly into News, Leaks, Defacement, Exploits, Social, and API/Tools from the sidebar.</p>
+                <p>The Command Center is the operator launch surface. It combines automation status, source counters, global impact mapping, and routing into detailed feeds. Analysts can jump directly into News, Leaks, Compromised Monitoring, Exploits, Social, and API/Tools from the sidebar.</p>
                 <div class="docs-grid">
                   <div class="docs-card">
                     <strong>Live Feed</strong>
@@ -1249,7 +1264,7 @@
                   </div>
                   <div class="docs-card">
                     <strong>One-Click Intelligence Update</strong>
-                    <p>Manual orchestration for news, leaks, social, and defacement with live dashboard state and result summaries.</p>
+                    <p>Manual orchestration for news, leaks, social, and compromised monitoring with live dashboard state and result summaries.</p>
                   </div>
                   <div class="docs-card">
                     <strong>Alert Summary</strong>
@@ -1516,7 +1531,7 @@
             <img src="/assets/logos/darkpulse-threatmark.svg" alt="DarkPulse mark" class="auth-brand-mark" />
             <div>
               <h1>Dark<span class="logo-accent">Pulse</span> Intelligence</h1>
-              <p>Operational visibility for leaks, ransomware signals, defacement evidence, hostile channels, semantic routing, and collector healing.</p>
+              <p>Operational visibility for leaks, ransomware signals, compromised website evidence, hostile channels, semantic routing, and collector healing.</p>
             </div>
           </div>
           <div class="auth-feature-column">
@@ -1565,7 +1580,7 @@
                 <div class="auth-console-nav">
                   <span class="active">Command Center</span>
                   <span>Leaks</span>
-                  <span>Defacement</span>
+                  <span>Compromised Monitoring</span>
                   <span>Social Intel</span>
                   <span>Documentation</span>
                 </div>
@@ -1596,7 +1611,7 @@
                 <div class="auth-radar-threats">
                   <span class="auth-radar-threat label-1">Leaks</span>
                   <span class="auth-radar-threat label-2">Ransomware</span>
-                  <span class="auth-radar-threat label-3">Defacement</span>
+                  <span class="auth-radar-threat label-3">Compromised</span>
                   <span class="auth-radar-threat label-4">Threat Intel</span>
                 </div>
                 <span class="auth-radar-ring ring-1"></span>
@@ -1764,7 +1779,7 @@
       </div>
       <div class="modal-body modal-summary-body">
         <h2 class="modal-title">Filter feed sections</h2>
-        <p class="translate-copy">Apply one set of filters across the live feed tabs like News, Leaks, Defacement, Social, Exploit, and API.</p>
+        <p class="translate-copy">Apply one set of filters across the live feed tabs like News, Leaks, Compromised Monitoring, Social, Exploit, and API.</p>
         <div class="feed-filter-grid">
           <div class="input-group">
             <label>Start Date</label>
@@ -1799,8 +1814,8 @@
     </div>
   </div>
 
-  <!-- Floating AI Chatbot Widget -->
-  <button class="dp-chat-fab hidden" id="dpChatFab" title="DarkPulse AI Assistant">
+  <!-- Floating DARKPULSE Chatbot Widget -->
+  <button class="dp-chat-fab hidden" id="dpChatFab" title="DARKPULSE Chatbot">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
   </button>
 
@@ -1811,8 +1826,8 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </span>
         <div>
-          <span class="dp-chat-header-title">DarkPulse AI</span>
-          <span class="dp-chat-header-sub" id="dpChatHeaderSub">Qwen 3 · MongoDB Intelligence</span>
+          <span class="dp-chat-header-title">DARKPULSE Chatbot</span>
+          <span class="dp-chat-header-sub" id="dpChatHeaderSub">DARKPULSE AI intelligence search</span>
         </div>
       </div>
       <div class="dp-chat-header-actions">
@@ -1832,12 +1847,12 @@
         <div class="dp-chat-welcome-icon">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
         </div>
-        <p class="dp-chat-welcome-title">DarkPulse Intelligence</p>
+        <p class="dp-chat-welcome-title">DARKPULSE Chatbot</p>
         <p class="dp-chat-welcome-text">Ask about threat actors, leaks, CVEs, ransomware campaigns, or any topic in the local MongoDB.</p>
       </div>
     </div>
     <div class="dp-chat-input-bar">
-      <input class="dp-chat-input" id="dpChatInput" type="text" placeholder="Ask about leaks, actors, CVEs..." autocomplete="off" />
+      <input class="dp-chat-input" id="dpChatInput" type="text" placeholder="Ask DARKPULSE AI..." autocomplete="off" />
       <button class="dp-chat-send" id="dpChatSendBtn" title="Send">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>

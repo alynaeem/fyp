@@ -795,7 +795,7 @@ function closeAiChatModal() {
 
 function clearAiChat() {
   $("aiChatInput").value = "";
-  $("aiChatStatus").textContent = "OpenRouter model: qwen/qwen3-235b-a22b-2507";
+  $("aiChatStatus").textContent = "DARKPULSE AI intelligence search";
   $("aiChatAnswer").classList.add("hidden");
   $("aiChatAnswer").textContent = "";
   $("aiChatSources").classList.add("hidden");
@@ -823,7 +823,7 @@ function renderAiChatAnswer(answer = "", query = "") {
     return;
   }
 
-  const fallbackMatch = rawText.match(/^Model fallback:[^\n]+/);
+  const fallbackMatch = rawText.match(/^DARKPULSE AI fallback:[^\n]+/);
   const fallbackNotice = fallbackMatch ? fallbackMatch[0] : "";
   const bodyText = (fallbackNotice ? rawText.slice(fallbackNotice.length).trim() : rawText)
     .replace(/\*\*(Summary|Key Findings|Relevant Records|Missing Values):?\*\*/g, "$1:")
@@ -2752,18 +2752,18 @@ function renderPakdbResultCard(item) {
   const entries = Object.entries(item || {})
     .filter(([key, value]) => value !== null && value !== undefined && value !== "" && !["source", "provider", "timestamp"].includes(String(key).toLowerCase()))
     .slice(0, 8);
-  const title = item.name || item.mobile || item.number || item.phone || "Authorized Provider Record";
-  const provider = item.provider || item.source || "Authorized Provider";
+  const title = item.name || item.mobile || item.number || item.phone || "Authorized Data Source Record";
+  const sourceLabel = item.source || "Authorized Data Source";
   const timestamp = item.timestamp || item.updated_at || item.created_at || "";
 
   return `
     <article class="identity-card">
       <div class="identity-header">
         <div>
-          <h3 class="identity-name">${escapeHtml(normalizePreviewText(title, "Authorized Provider Record"))}</h3>
-          <p class="identity-address">${escapeHtml(normalizePreviewText(provider, "Authorized Provider"))}</p>
+          <h3 class="identity-name">${escapeHtml(normalizePreviewText(title, "Authorized Data Source Record"))}</h3>
+          <p class="identity-address">${escapeHtml(normalizePreviewText(sourceLabel, "Authorized Data Source"))}</p>
         </div>
-        <span class="identity-pill">PakDB Provider</span>
+        <span class="identity-pill">PakDB Source</span>
       </div>
       <div class="identity-grid">
         ${entries.length ? entries.map(([key, value]) => `
@@ -2778,7 +2778,7 @@ function renderPakdbResultCard(item) {
           </div>
         `}
       </div>
-      <div class="identity-meta-line">Matched from the configured authorized provider${timestamp ? ` on ${escapeHtml(formatDate(timestamp))}` : ""}.</div>
+      <div class="identity-meta-line">Matched from the configured authorized data source${timestamp ? ` on ${escapeHtml(formatDate(timestamp))}` : ""}.</div>
     </article>
   `;
 }
@@ -3563,22 +3563,22 @@ async function runPakdbLookup() {
     const items = data.results || [];
     state.scanExports.pakdb = { query: data.query || number, provider: data.provider || "", items };
     if (data.status === "error") {
-      $("pakdbStatus").textContent = data.message || "PakDB lookup failed. Please check provider API settings.";
+      $("pakdbStatus").textContent = data.message || "PakDB lookup failed. Please check data source settings.";
       $("pakdbHistoryList").innerHTML = "";
       clearPagination("pakdbPagination");
       setExportToolbarState("pakdbExportBar", false);
       return;
     }
     $("pakdbStatus").textContent = items.length
-      ? `${items.length} result(s) returned from ${data.provider || "authorized provider"}.`
-      : (data.message || "No matching record found from the configured authorized provider.");
+      ? `${items.length} result(s) returned from the authorized data source.`
+      : (data.message || "No matching record found from the configured authorized data source.");
     setClientPaginatedItems("pakdb", items);
     setExportToolbarState("pakdbExportBar", items.length > 0, `${items.length} Pakistan SIM result(s) ready for export.`);
     await renderClientPaginatedResults("pakdb", 1);
   } catch (error) {
     state.scanExports.pakdb = { query: number, items: [] };
     $("pakdbStatus").textContent = error.name === "AbortError"
-      ? "PakDB lookup failed. Please check provider API settings."
+      ? "PakDB lookup failed. Please check data source settings."
       : error.message;
     $("pakdbHistoryList").innerHTML = "";
     clearPagination("pakdbPagination");
@@ -4890,7 +4890,7 @@ function renderSeoReport(data) {
     if (normalizedPoints.length) {
       aiContent.innerHTML = `${messageHtml}<ul>${normalizedPoints.map(point => `<li>${escapeHtml(point)}</li>`).join("")}</ul>`;
     } else {
-      aiContent.innerHTML = `${messageHtml}<p class="suggestions-note">${escapeHtml(rawSuggestions || "No AI recommendations were returned for this scan.")}</p>`;
+      aiContent.innerHTML = `${messageHtml}<p class="suggestions-note">${escapeHtml(rawSuggestions || "No DARKPULSE AI recommendations available for this result.")}</p>`;
     }
   } else {
     aiBox.classList.add("hidden");

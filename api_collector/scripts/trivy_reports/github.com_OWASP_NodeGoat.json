@@ -3,10 +3,10 @@
   "Trivy": {
     "Version": "0.70.0"
   },
-  "ReportID": "019e94c6-b9d8-7564-b6b3-35e6123c0c31",
-  "CreatedAt": "2026-06-04T22:35:12.216357332Z",
+  "ReportID": "019e94e6-5572-70b5-9346-fd9387719eab",
+  "CreatedAt": "2026-06-04T23:09:43.666049675Z",
   "ArtifactID": "sha256:c18d564916d77203ac5d5202e66a788976158d6a5e0eb9acc7cdb6ab8defd8c9",
-  "ArtifactName": "/home/darkpulse/.cache/darkpulse/trivy_repos/repo_trivy_wnd8yldy",
+  "ArtifactName": "/home/darkpulse/.cache/darkpulse/trivy_repos/repo_trivy_82tir8mv",
   "ArtifactType": "repository",
   "Metadata": {
     "RepoURL": "https://github.com/OWASP/NodeGoat.git",
@@ -5888,14 +5888,14 @@
           "Name": "debug",
           "Identifier": {
             "PURL": "pkg:npm/debug@3.2.6",
-            "UID": "199e13f0419cdbab"
+            "UID": "a95a7b350384156c"
           },
           "Version": "3.2.6",
           "Dev": true,
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "ms@2.1.2"
+            "ms@2.1.1"
           ],
           "Locations": [
             {
@@ -6512,7 +6512,7 @@
           "Name": "dezalgo",
           "Identifier": {
             "PURL": "pkg:npm/dezalgo@1.0.3",
-            "UID": "f76b8d4b12551584"
+            "UID": "a01759f3f7fe9d9c"
           },
           "Version": "1.0.3",
           "Dev": true,
@@ -6522,7 +6522,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "asap@2.0.5",
+            "asap@2.0.6",
             "wrappy@1.0.2"
           ],
           "Locations": [
@@ -10186,7 +10186,7 @@
           "Name": "has-ansi",
           "Identifier": {
             "PURL": "pkg:npm/has-ansi@2.0.0",
-            "UID": "20eb47b374b7bb62"
+            "UID": "1b94a1be6f3b281d"
           },
           "Version": "2.0.0",
           "Dev": true,
@@ -10196,7 +10196,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "ansi-regex@2.1.1"
+            "ansi-regex@2.0.0"
           ],
           "Locations": [
             {
@@ -10823,7 +10823,7 @@
           "Name": "http-signature",
           "Identifier": {
             "PURL": "pkg:npm/http-signature@1.1.1",
-            "UID": "c0e6ba074b01dde0"
+            "UID": "d3b665e5be3c1140"
           },
           "Version": "1.1.1",
           "Dev": true,
@@ -10834,8 +10834,8 @@
           "Relationship": "indirect",
           "DependsOn": [
             "assert-plus@0.2.0",
-            "jsprim@1.3.1",
-            "sshpk@1.10.1"
+            "jsprim@1.4.1",
+            "sshpk@1.16.0"
           ],
           "Locations": [
             {
@@ -12023,7 +12023,7 @@
           "Name": "is-fullwidth-code-point",
           "Identifier": {
             "PURL": "pkg:npm/is-fullwidth-code-point@1.0.0",
-            "UID": "3e3ddc05169245df"
+            "UID": "9619f5eb5eca5488"
           },
           "Version": "1.0.0",
           "Licenses": [
@@ -12032,7 +12032,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "number-is-nan@1.0.0"
+            "number-is-nan@1.0.1"
           ],
           "Locations": [
             {
@@ -18069,7 +18069,7 @@
           "Name": "parse-json",
           "Identifier": {
             "PURL": "pkg:npm/parse-json@2.2.0",
-            "UID": "6606e5a9903dd3a4"
+            "UID": "4a441a440daeaa01"
           },
           "Version": "2.2.0",
           "Dev": true,
@@ -18079,7 +18079,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "error-ex@1.3.0"
+            "error-ex@1.3.2"
           ],
           "Locations": [
             {
@@ -18447,7 +18447,7 @@
           "Name": "path-type",
           "Identifier": {
             "PURL": "pkg:npm/path-type@1.1.0",
-            "UID": "ec76c566cefc9378"
+            "UID": "13f6419f785a639e"
           },
           "Version": "1.1.0",
           "Dev": true,
@@ -18457,7 +18457,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "graceful-fs@4.1.4",
+            "graceful-fs@4.1.15",
             "pify@2.3.0",
             "pinkie-promise@2.0.1"
           ],
@@ -20779,7 +20779,7 @@
           "Name": "rimraf",
           "Identifier": {
             "PURL": "pkg:npm/rimraf@2.5.4",
-            "UID": "77871a754b21a5f4"
+            "UID": "b9e70b9c4fb27579"
           },
           "Version": "2.5.4",
           "Dev": true,
@@ -20789,7 +20789,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "glob@7.1.0"
+            "glob@7.0.5"
           ],
           "Locations": [
             {
@@ -22129,7 +22129,7 @@
           "Name": "spdx-expression-parse",
           "Identifier": {
             "PURL": "pkg:npm/spdx-expression-parse@1.0.2",
-            "UID": "854c5b88267d780d"
+            "UID": "e9a6c1bb932eceda"
           },
           "Version": "1.0.2",
           "Dev": true,
@@ -22139,8 +22139,8 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "spdx-exceptions@1.0.5",
-            "spdx-license-ids@1.2.1"
+            "spdx-exceptions@1.0.4",
+            "spdx-license-ids@1.2.0"
           ],
           "Locations": [
             {
@@ -22875,7 +22875,7 @@
           "Name": "strip-ansi",
           "Identifier": {
             "PURL": "pkg:npm/strip-ansi@3.0.1",
-            "UID": "d44017734ee22fdd"
+            "UID": "365b01962aa4ac62"
           },
           "Version": "3.0.1",
           "Licenses": [
@@ -22884,7 +22884,7 @@
           "Indirect": true,
           "Relationship": "indirect",
           "DependsOn": [
-            "ansi-regex@2.0.0"
+            "ansi-regex@2.1.1"
           ],
           "Locations": [
             {

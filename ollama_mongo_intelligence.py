@@ -37,6 +37,7 @@ COMMON_TEXT_FIELDS = (
     "summary",
     "description",
     "content",
+    "important_content",
     "payload",
     "data",
     "body",
@@ -45,9 +46,66 @@ COMMON_TEXT_FIELDS = (
     "raw",
     "message",
     "url",
+    "base_url",
     "source",
     "source_name",
+    "country",
+    "country_names",
+    "country_codes",
+    "team",
+    "entities.text",
+    "entities.label",
 )
+
+SOURCE_INTENT_PREFIXES = {
+    "leak": ("LEAK_ITEMS:", "RAW_LEAK_ITEMS"),
+    "defacement": ("DEFACEMENT_ITEMS:",),
+    "compromised": ("DEFACEMENT_ITEMS:",),
+    "exploit": ("EXPLOIT_ITEMS:",),
+    "cve": ("EXPLOIT_ITEMS:",),
+    "social": ("SOCIAL_ITEMS:",),
+    "api": ("API_ITEMS:",),
+}
+
+QUERY_STOPWORDS = {
+    "show",
+    "about",
+    "with",
+    "from",
+    "that",
+    "this",
+    "please",
+    "find",
+    "give",
+    "tell",
+    "data",
+    "records",
+    "record",
+    "some",
+    "any",
+    "related",
+    "darkpulse",
+    "sbout",
+    "bout",
+}
+
+INTENT_WORDS = {
+    "leak",
+    "leaks",
+    "breach",
+    "breaches",
+    "compromised",
+    "monitoring",
+    "defacement",
+    "defaced",
+    "exploit",
+    "exploits",
+    "cve",
+    "cves",
+    "social",
+    "api",
+    "news",
+}
 
 SYSTEM_FIELD_NAMES = {
     "_id",
@@ -63,6 +121,7 @@ SYSTEM_FIELD_NAMES = {
     "screenshot",
     "screenshots",
     "html",
+    "ref_html",
     "raw_html",
     "m_ref_html",
     "binary",
@@ -151,6 +210,22 @@ def flatten_mongo_document(
         if isinstance(value, BINARY_TYPES):
             continue
 
+        if isinstance(value, str) and value.strip().startswith(("{", "[")):
+            try:
+                parsed_value = json.loads(value)
+            except ValueError:
+                parsed_value = None
+            if isinstance(parsed_value, (dict, list)):
+                nested = flatten_mongo_document(
+                    parsed_value if isinstance(parsed_value, dict) else {"items": parsed_value},
+                    parent_key=label if key_text != "value" else parent_key,
+                    max_depth=max_depth,
+                    current_depth=current_depth + 1,
+                )
+                if nested:
+                    lines.append(nested)
+                    continue
+
         if isinstance(value, dict):
             nested = flatten_mongo_document(
                 value,
@@ -197,21 +272,63 @@ def flatten_mongo_document(
 
 def _keywords_from_query(query: str) -> list[str]:
     words = re.findall(r"[A-Za-z0-9_@./:-]{3,}", query.lower())
-    stopwords = {
-        "show",
-        "about",
-        "with",
-        "from",
-        "that",
-        "this",
-        "please",
-        "find",
-        "give",
-        "tell",
-        "data",
-        "records",
-    }
-    return [word for word in words if word not in stopwords][:8]
+    return [word for word in words if word not in QUERY_STOPWORDS][:8]
+
+
+def _search_terms_from_query(query: str) -> list[str]:
+    terms = [
+        word
+        for word in _keywords_from_query(query)
+        if word not in INTENT_WORDS and len(word) >= 3
+    ]
+    return terms[:6]
+
+
+def _prefixes_from_query(query: str) -> tuple[str, ...]:
+    text = query.lower()
+    prefixes: list[str] = []
+    for token, mapped_prefixes in SOURCE_INTENT_PREFIXES.items():
+        if re.search(rf"\b{re.escape(token)}s?\b", text):
+            prefixes.extend(mapped_prefixes)
+    return tuple(dict.fromkeys(prefixes))
+
+
+def _prefix_query(prefixes: tuple[str, ...]) -> dict[str, Any]:
+    if not prefixes:
+        return {}
+    if len(prefixes) == 1:
+        return {"_id": {"$regex": f"^{re.escape(prefixes[0])}"}}
+    return {"$or": [{"_id": {"$regex": f"^{re.escape(prefix)}"}} for prefix in prefixes]}
+
+
+def _term_regex_pattern(term: str) -> str:
+    escaped = re.escape(term)
+    if re.fullmatch(r"[a-zA-Z]{3,}", term):
+        return rf"\b{escaped}\b"
+    return escaped
+
+
+def _targeted_intent_query(query: str) -> dict[str, Any]:
+    prefixes = _prefixes_from_query(query)
+    if not prefixes:
+        return {}
+
+    terms = _search_terms_from_query(query)
+    base_query = _prefix_query(prefixes)
+    if not terms:
+        return base_query
+
+    term_clauses = []
+    for term in terms:
+        pattern = _term_regex_pattern(term)
+        term_clauses.append({
+            "$or": [
+                {field: {"$regex": pattern, "$options": "i"}}
+                for field in COMMON_TEXT_FIELDS
+            ]
+        })
+
+    return {"$and": [base_query, *term_clauses]}
 
 
 # NOTE: we DO NOT dynamically call list_indexes() on every execution because
@@ -249,6 +366,15 @@ def search_mongo_documents(
     would be too expensive on large local collections.
     """
     projection = None
+
+    targeted_query = _targeted_intent_query(user_query)
+    if targeted_query:
+        try:
+            docs = list(collection.find(targeted_query, projection).limit(limit))
+            if docs:
+                return docs
+        except PyMongoError:
+            pass
 
     search_str = " ".join(_keywords_from_query(user_query))
     if not search_str:

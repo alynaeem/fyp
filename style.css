@@ -2064,6 +2064,58 @@ a {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.feed-filter-grid .input-group {
+  min-width: 0;
+}
+
+.feed-filter-grid .input-group + .input-group {
+  margin-top: 0;
+}
+
+.modal-feed-filters .input-group input,
+.modal-feed-filters .input-group select {
+  width: 100%;
+  min-height: 54px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text-main);
+  padding: 0 1rem;
+}
+
+.modal-feed-filters .input-group select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 12px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2.4rem;
+}
+
+.modal-feed-filters .input-group select option {
+  background: #ffffff;
+  color: #111827;
+}
+
+.modal-feed-filters .input-group select option:checked,
+.modal-feed-filters .input-group select option:hover {
+  background: #93c5fd;
+  color: #111827;
+}
+
+.modal-feed-filters .input-group input:focus,
+.modal-feed-filters .input-group select:focus {
+  outline: none;
+  border-color: rgba(255, 91, 95, 0.65);
+  box-shadow: 0 0 0 3px rgba(255, 91, 95, 0.12);
 }
 
 .modal-media-gallery {
@@ -11655,4 +11707,101 @@ body.light-theme #translateLanguageSelect {
 body.light-theme #translateLanguageSelect option {
   background: #ffffff !important;
   color: #142033 !important;
+}
+
+/* Final light-theme contrast pass */
+body.light-theme .logo-text,
+body.light-theme .user-name,
+body.light-theme .nav-label,
+body.light-theme .section-title,
+body.light-theme .view-title,
+body.light-theme .modal-title,
+body.light-theme .panel-header h2,
+body.light-theme .card-title,
+body.light-theme .account-list-text strong,
+body.light-theme .data-table td,
+body.light-theme .data-table th {
+  color: #142033 !important;
+}
+
+body.light-theme .nav-section,
+body.light-theme .nav-section-compact,
+body.light-theme .sidebar-scan-shell {
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+body.light-theme .nav-section-compact {
+  background: rgba(15, 23, 42, 0.08) !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  border-radius: 16px;
+  padding: 0.55rem;
+}
+
+body.light-theme .nav-separator {
+  color: #94a3b8 !important;
+}
+
+body.light-theme .nav-item {
+  background: #ffffff !important;
+  color: #142033 !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+body.light-theme .nav-item:hover {
+  background: #f8fbff !important;
+  color: #142033 !important;
+}
+
+body.light-theme .nav-item.active {
+  background: linear-gradient(90deg, rgba(34, 166, 196, 0.14), rgba(255, 90, 61, 0.08)), #ffffff !important;
+  border-color: rgba(34, 166, 196, 0.35) !important;
+}
+
+body.light-theme .btn-secondary,
+body.light-theme .compact-btn,
+body.light-theme .icon-btn,
+body.light-theme .scan-now-btn,
+body.light-theme .scan-alert-btn,
+body.light-theme .scan-stop-btn,
+body.light-theme .logout-btn {
+  color: #142033 !important;
+  background: #ffffff !important;
+  border-color: rgba(15, 23, 42, 0.14) !important;
+}
+
+body.light-theme button:disabled,
+body.light-theme .scan-stop-btn:disabled,
+body.light-theme .scan-alert-btn:disabled {
+  color: #64748b !important;
+  background: #f1f5f9 !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
+}
+
+body.light-theme .btn-primary {
+  color: #ffffff !important;
+}
+
+body.light-theme .modal-feed-filters .input-group select,
+body.light-theme .modal-feed-filters .input-group input,
+body.light-theme .search-input,
+body.light-theme .account-input {
+  background: #ffffff !important;
+  color: #142033 !important;
+  border-color: rgba(15, 23, 42, 0.16) !important;
+}
+
+body.light-theme .modal-feed-filters .input-group select option {
+  background: #ffffff !important;
+  color: #111827 !important;
+}
+
+body.light-theme .data-table tbody tr:hover td {
+  background: #f8fbff !important;
+  color: #142033 !important;
+}
+
+body.light-theme .status-inline-note {
+  color: #475569 !important;
 }

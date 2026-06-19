@@ -15,7 +15,7 @@ import hmac
 import secrets
 import struct
 from typing import Any, Dict, List, Optional
-from urllib.parse import parse_qs, quote, unquote, urlencode, urlparse
+from urllib.parse import parse_qs, quote, unquote, urlencode, urlparse, urljoin
 from uuid import uuid4
 from fastapi import FastAPI, Query, Request, HTTPException, Depends, WebSocket, WebSocketDisconnect, UploadFile, File
 import bcrypt
@@ -2551,8 +2551,11 @@ async def approve_user(username: str):
     return {"status": "ok", "message": f"User {username} approved"}
 
 
-@app.post("/admin/users/{username}/reject", dependencies=[Depends(admin_required)])
-async def reject_user(username: str):
+@app.post("/admin/users/{username}/reject")
+async def reject_user(username: str, current_user: dict = Depends(admin_required)):
+    current_username = str(current_user.get("username") or "").strip().lower()
+    if username.strip().lower() == current_username:
+        raise HTTPException(status_code=400, detail="You cannot reject or delete your own admin account.")
     result = await users_col.delete_one({"username": username})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="User not found")
@@ -3547,16 +3550,30 @@ def _apply_feed_filters(
     topic: str = "",
     start_date: str = "",
     end_date: str = "",
+    network: str = "",
 ) -> list[dict]:
     normalized_topic = _normalize_search_text(topic)
     start_bound = _parse_feed_filter_date(start_date)
     end_bound = _parse_feed_filter_date(end_date)
+    normalized_network = (network or "").strip().lower()
 
-    if not normalized_topic and not start_bound and not end_bound:
+    if not normalized_topic and not start_bound and not end_bound and not normalized_network:
         return items
 
     filtered: list[dict] = []
     for item in items:
+        if normalized_network:
+            item_network = str(item.get("network") or "").strip().lower()
+            item_url_blob = " ".join(
+                str(item.get(field) or "")
+                for field in ("url", "link", "source_url", "weblink", "m_url", "app_url")
+            ).lower()
+            is_onion = item_network in {"onion", "tor", "darkweb", "dark_web"} or ".onion" in item_url_blob
+            if normalized_network == "onion" and not is_onion:
+                continue
+            if normalized_network == "clearnet" and is_onion:
+                continue
+
         if normalized_topic:
             haystack = _compose_search_blob(
                 item.get("title"),
@@ -4419,6 +4436,7 @@ async def list_feed(
     topic: str = Query(""),
     start_date: str = Query(""),
     end_date: str = Query(""),
+    network: str = Query(""),
     include_raw: bool = Query(False),
 ):
     canonical = _canonical_source_type(source_type)
@@ -4431,6 +4449,7 @@ async def list_feed(
         topic.strip().lower(),
         start_date.strip(),
         end_date.strip(),
+        network.strip().lower(),
         bool(include_raw),
     )
     if not include_raw:
@@ -4439,7 +4458,7 @@ async def list_feed(
             return cached_page
 
     if canonical == "news":
-        if not q and not include_raw and not topic and not start_date and not end_date:
+        if not q and not include_raw and not topic and not start_date and not end_date and not network:
             total, items = await _fetch_news_page(limit, offset)
             return _cache_set_feed_page(fast_cache_key, {
                 "total": total,
@@ -4452,7 +4471,7 @@ async def list_feed(
         else:
             items = await _fetch_news_items(include_raw=include_raw)
     elif canonical in {"exploit", "leak", "defacement", "social", "api"}:
-        if not q and not include_raw and not topic and not start_date and not end_date:
+        if not q and not include_raw and not topic and not start_date and not end_date and not network:
             total, items = await _fetch_threat_page(canonical, limit, offset)
             return _cache_set_feed_page(fast_cache_key, {
                 "total": total,
@@ -4465,7 +4484,7 @@ async def list_feed(
         else:
             items = await _fetch_threat_items(canonical, include_raw=include_raw)
     else:
-        if not q and not include_raw and not topic and not start_date and not end_date:
+        if not q and not include_raw and not topic and not start_date and not end_date and not network:
             total, items = await _fetch_combined_feed_page(limit, offset)
             return _cache_set_feed_page(fast_cache_key, {
                 "total": total,
@@ -4488,7 +4507,7 @@ async def list_feed(
     items = sorted(items, key=_feed_sort_key, reverse=True)
     if q:
         items = _filter_feed_items(items, q)
-    items = _apply_feed_filters(items, topic=topic, start_date=start_date, end_date=end_date)
+    items = _apply_feed_filters(items, topic=topic, start_date=start_date, end_date=end_date, network=network)
     return _cache_set_feed_page(fast_cache_key, {
         "total": len(items),
         "offset": offset,
@@ -5591,7 +5610,7 @@ pcgame_col = db["pcgame_scans"]
 
 @app.post("/pcgame/scan")
 async def pcgame_scan(request: Request):
-    """Search Steam and PCGamingWiki for a game."""
+    """Search multiple PC game/software sources and return query-matching entries only."""
     import asyncio
     from datetime import datetime, timezone
 
@@ -5983,6 +6002,13 @@ async def get_mission_graph(leak_id: str):
 
 
 # --- SEO Checker ---
+class SEOScanError(Exception):
+    def __init__(self, message: str, *, kind: str = "scan_error", details: dict[str, Any] | None = None):
+        super().__init__(message)
+        self.kind = kind
+        self.details = details or {}
+
+
 def calculate_seo_grade(score: float) -> str:
     """Map 0-1 score to A, B, C, D, F grades."""
     if score is None: return "N/A"
@@ -6053,6 +6079,16 @@ def _build_seo_fallback_suggestions(url: str, audits: dict[str, dict[str, Any]])
         score = audit.get("score")
         if score == 1:
             continue
+        recommendation = str(audit.get("recommendation") or "").strip()
+        if recommendation:
+            failing.append({
+                "id": audit_id,
+                "title": str(audit.get("title") or audit_id).strip(),
+                "description": str(audit.get("description") or "").strip(),
+                "score": score,
+                "recommendation": recommendation,
+            })
+            continue
         failing.append({
             "id": audit_id,
             "title": str(audit.get("title") or audit_id).strip(),
@@ -6076,6 +6112,9 @@ def _build_seo_fallback_suggestions(url: str, audits: dict[str, dict[str, Any]])
             suggestions.append(clean_text)
 
     for item in failing:
+        if item.get("recommendation"):
+            _push(item["recommendation"])
+            continue
         title = item["title"].lower()
         description = re.sub(r"\s+", " ", item["description"]).strip()
         short_desc = description[:160].rstrip(".")
@@ -6117,122 +6156,794 @@ def _safe_ratio(numerator: int, denominator: int) -> float:
     return max(0.0, min(1.0, numerator / denominator))
 
 
-def _local_seo_audit(url: str) -> dict[str, Any]:
+def _score_length(value: str, good_min: int, good_max: int, warn_min: int = 1, warn_max: int | None = None) -> float:
+    length = len(value or "")
+    if good_min <= length <= good_max:
+        return 1.0
+    if length >= warn_min and (warn_max is None or length <= warn_max):
+        return 0.65
+    return 0.0
+
+
+def _normalize_seo_host(hostname: str | None) -> str:
+    host = (hostname or "").strip().lower().rstrip(".")
+    if host.startswith("www."):
+        host = host[4:]
+    return host
+
+
+def _same_requested_host(requested_host: str | None, final_host: str | None) -> bool:
+    requested = _normalize_seo_host(requested_host)
+    final = _normalize_seo_host(final_host)
+    return bool(requested and final and requested == final)
+
+
+def _validate_seo_target(url: str) -> tuple[str, str]:
+    parsed = urlparse(url)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise SEOScanError(
+            "Please enter a valid website URL or domain, for example https://example.com.",
+            kind="invalid_url",
+        )
+    hostname = parsed.hostname
+    if not hostname:
+        raise SEOScanError("The URL does not contain a valid hostname.", kind="invalid_url")
+    try:
+        socket.getaddrinfo(hostname, 443 if parsed.scheme == "https" else 80, type=socket.SOCK_STREAM)
+    except socket.gaierror:
+        raise SEOScanError(
+            f"Domain '{hostname}' could not be resolved. Check the spelling or try the full live URL.",
+            kind="dns_error",
+            details={"host": hostname},
+        )
+    except OSError as exc:
+        raise SEOScanError(
+            f"Could not validate DNS for '{hostname}': {exc}",
+            kind="dns_error",
+            details={"host": hostname},
+        )
+    return url, hostname
+
+
+def _friendly_request_error(url: str, exc: Exception) -> SEOScanError:
+    import requests
+
+    host = urlparse(url).hostname or url
+    if isinstance(exc, requests.exceptions.Timeout):
+        return SEOScanError(
+            f"Timed out while connecting to '{host}'. The site may be slow or blocking automated checks.",
+            kind="timeout",
+            details={"host": host},
+        )
+    if isinstance(exc, requests.exceptions.SSLError):
+        return SEOScanError(
+            f"Could not complete the HTTPS/TLS handshake for '{host}'. Check the SSL certificate or try http:// if this is an internal site.",
+            kind="ssl_error",
+            details={"host": host},
+        )
+    if isinstance(exc, requests.exceptions.TooManyRedirects):
+        return SEOScanError(
+            f"'{host}' has too many redirects. Fix the redirect loop before running an SEO audit.",
+            kind="redirect_loop",
+            details={"host": host},
+        )
+    if isinstance(exc, requests.exceptions.ConnectionError):
+        return SEOScanError(
+            f"Could not connect to '{host}'. The domain may be offline, blocked, or refusing scanner requests.",
+            kind="connection_error",
+            details={"host": host},
+        )
+    if isinstance(exc, requests.exceptions.HTTPError):
+        response = getattr(exc, "response", None)
+        status_code = getattr(response, "status_code", None)
+        return SEOScanError(
+            f"'{host}' returned HTTP {status_code or 'error'}, so a reliable SEO report could not be generated.",
+            kind="http_error",
+            details={"host": host, "status_code": status_code},
+        )
+    return SEOScanError(
+        f"SEO scan failed for '{host}': {exc}",
+        kind="scan_error",
+        details={"host": host},
+    )
+
+
+_SEO_HTTP_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (X11; Linux x86_64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/123.0 Safari/537.36"
+    )
+}
+_ACCESS_LIMIT_PATTERNS = (
+    "please wait while we verify",
+    "enable javascript",
+    "log in to continue",
+    "login to continue",
+    "authentication required",
+    "sign up",
+    "create account",
+    "checkpoint",
+    "captcha",
+)
+_BOT_PROTECTION_PATTERNS = (
+    "captcha",
+    "cloudflare",
+    "cf-challenge",
+    "checking your browser",
+    "automated access",
+    "unusual traffic",
+    "rate limited",
+    "too many requests",
+)
+_GENERIC_LINK_TEXT = {"", "click here", "read more", "learn more", "here", "more", "link"}
+
+
+def _clean_seo_text(value: Any) -> str:
+    return re.sub(r"\s+", " ", str(value or "")).strip()
+
+
+def _seo_status(score: float, *, confidence: str = "high", needs_review: bool = False) -> str:
+    if needs_review:
+        return "needs_review"
+    if score >= 0.85:
+        return "pass"
+    if confidence == "low":
+        return "needs_review"
+    if score >= 0.55:
+        return "warning"
+    return "fail"
+
+
+def _scan_confidence_grade(level: str) -> str:
+    return {"high": "High", "medium": "Medium", "low": "Low"}.get(level, "Medium")
+
+
+def _is_brand_like_short_title(title: str, hostname: str) -> bool:
+    title_clean = re.sub(r"[^a-z0-9]+", "", (title or "").lower())
+    host_part = (_normalize_seo_host(hostname).split(".")[0] or "").lower()
+    return bool(title_clean and host_part and (title_clean == host_part or title_clean in host_part or host_part in title_clean))
+
+
+def _json_ld_parse_errors(values: list[str]) -> list[str]:
+    errors: list[str] = []
+    for index, raw_value in enumerate(values, start=1):
+        try:
+            json.loads(raw_value)
+        except Exception as exc:
+            errors.append(f"JSON-LD block {index}: {str(exc)[:120]}")
+    return errors
+
+
+def _extract_seo_dom_snapshot(html: str, base_url: str, *, source: str) -> dict[str, Any]:
     import requests
     from bs4 import BeautifulSoup
 
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (X11; Linux x86_64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/123.0 Safari/537.36"
-        )
-    }
-    response = requests.get(url, timeout=30, headers=headers, allow_redirects=True)
-    response.raise_for_status()
-
-    final_url = response.url or url
-    soup = BeautifulSoup(response.text or "", "lxml")
-
-    def _text(value: Any) -> str:
-        return re.sub(r"\s+", " ", str(value or "")).strip()
-
-    title_text = _text(soup.title.string if soup.title else "")
-    meta_description = _text((soup.find("meta", attrs={"name": re.compile("^description$", re.I)}) or {}).get("content"))
-    robots_meta = _text((soup.find("meta", attrs={"name": re.compile("^robots$", re.I)}) or {}).get("content"))
-    x_robots = _text(response.headers.get("X-Robots-Tag"))
-    canonical = _text((soup.find("link", attrs={"rel": re.compile("canonical", re.I)}) or {}).get("href"))
-    viewport = _text((soup.find("meta", attrs={"name": re.compile("^viewport$", re.I)}) or {}).get("content"))
-    lang = _text(getattr(soup.html, "attrs", {}).get("lang") if soup.html else "")
-
-    h1_tags = [tag for tag in soup.find_all("h1") if _text(tag.get_text(" ", strip=True))]
+    soup = BeautifulSoup(html or "", "lxml")
+    title = _clean_seo_text(soup.title.string if soup.title else "")
+    meta_description = _clean_seo_text((soup.find("meta", attrs={"name": re.compile("^description$", re.I)}) or {}).get("content"))
+    robots_meta = _clean_seo_text((soup.find("meta", attrs={"name": re.compile("^robots$", re.I)}) or {}).get("content"))
+    canonical_tags = [
+        _clean_seo_text(tag.get("href"))
+        for tag in soup.find_all("link", attrs={"rel": re.compile("canonical", re.I)})
+        if _clean_seo_text(tag.get("href"))
+    ]
+    canonical_abs = [urljoin(base_url, item) for item in canonical_tags]
+    viewport = _clean_seo_text((soup.find("meta", attrs={"name": re.compile("^viewport$", re.I)}) or {}).get("content"))
+    lang = _clean_seo_text(getattr(soup.html, "attrs", {}).get("lang") if soup.html else "")
+    body_text = _clean_seo_text(soup.body.get_text(" ", strip=True) if soup.body else "")
+    h1_texts = [_clean_seo_text(tag.get_text(" ", strip=True)) for tag in soup.find_all("h1")]
+    h1_texts = [item for item in h1_texts if item]
     image_tags = soup.find_all("img")
-    images_with_alt = sum(1 for img in image_tags if _text(img.get("alt")))
+    informative_images = [
+        img for img in image_tags
+        if str(img.get("role") or "").lower() != "presentation"
+        and str(img.get("aria-hidden") or "").lower() != "true"
+    ]
+    images_with_alt = sum(1 for img in informative_images if _clean_seo_text(img.get("alt")))
     anchor_tags = soup.find_all("a")
     descriptive_links = sum(
         1 for link in anchor_tags
-        if _text(link.get_text(" ", strip=True)).lower() not in {"", "click here", "read more", "learn more", "here", "more"}
+        if _clean_seo_text(link.get_text(" ", strip=True)).lower() not in _GENERIC_LINK_TEXT
+    )
+    og_tags = soup.find_all("meta", attrs={"property": re.compile(r"^og:", re.I)})
+    twitter_tags = soup.find_all("meta", attrs={"name": re.compile(r"^twitter:", re.I)})
+    json_ld_values = [
+        str(tag.string or tag.get_text() or "").strip()
+        for tag in soup.find_all("script", attrs={"type": re.compile(r"ld\+json", re.I)})
+        if str(tag.string or tag.get_text() or "").strip()
+    ]
+    html_lower = (html or "").lower()
+    app_root_present = bool(
+        soup.find(id=re.compile(r"^(app|root|__next|mount)$", re.I))
+        or soup.find(attrs={"data-reactroot": True})
+        or soup.find(attrs={"ng-version": True})
+    )
+    access_limited = any(pattern in html_lower or pattern in body_text.lower() for pattern in _ACCESS_LIMIT_PATTERNS)
+    bot_protection = any(pattern in html_lower or pattern in body_text.lower() for pattern in _BOT_PROTECTION_PATTERNS)
+    script_count = len(soup.find_all("script"))
+
+    return {
+        "source": source,
+        "title": title,
+        "metaDescription": meta_description,
+        "robotsMeta": robots_meta,
+        "canonical": canonical_abs[0] if canonical_abs else "",
+        "canonicalTags": canonical_abs,
+        "viewport": viewport,
+        "lang": lang,
+        "h1Count": len(h1_texts),
+        "h1Text": h1_texts[:5],
+        "bodyTextLength": len(body_text),
+        "imageCount": len(image_tags),
+        "informativeImageCount": len(informative_images),
+        "imagesWithAlt": images_with_alt,
+        "linkCount": len(anchor_tags),
+        "descriptiveLinkCount": descriptive_links,
+        "openGraphCount": len(og_tags),
+        "twitterCardCount": len(twitter_tags),
+        "jsonLdCount": len(json_ld_values),
+        "jsonLdParseErrors": _json_ld_parse_errors(json_ld_values),
+        "scriptCount": script_count,
+        "htmlSize": len(html or ""),
+        "appRootPresent": app_root_present,
+        "accessLimitedSignals": access_limited,
+        "botProtectionLikely": bot_protection,
+        "htmlPreview": (html or "")[:500],
+    }
+
+
+def _rendered_seo_scan(url: str) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
+    try:
+        from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+    except Exception as exc:
+        return None, {"kind": "playwright_unavailable", "message": f"Rendered DOM scan unavailable: {exc}"}
+
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
+            context = browser.new_context(
+                user_agent=_SEO_HTTP_HEADERS["User-Agent"],
+                viewport={"width": 1365, "height": 900},
+                ignore_https_errors=True,
+            )
+            page = context.new_page()
+            response_status = None
+            try:
+                response = page.goto(url, wait_until="domcontentloaded", timeout=15000)
+                response_status = response.status if response else None
+                try:
+                    page.wait_for_load_state("networkidle", timeout=5000)
+                except PlaywrightTimeoutError:
+                    pass
+                html = page.content()
+                snapshot = _extract_seo_dom_snapshot(html, page.url or url, source="rendered_dom")
+                snapshot["url"] = page.url or url
+                snapshot["statusCode"] = response_status
+                return snapshot, None
+            finally:
+                context.close()
+                browser.close()
+    except Exception as exc:
+        return None, {"kind": exc.__class__.__name__, "message": f"Rendered DOM scan failed: {str(exc)[:240]}"}
+
+
+def _fetch_robots_status(session: Any, final_url: str, hostname: str) -> dict[str, Any]:
+    robots_url = f"{urlparse(final_url).scheme}://{hostname}/robots.txt"
+    try:
+        response = session.get(robots_url, timeout=8, headers=_SEO_HTTP_HEADERS, allow_redirects=True)
+        text = response.text or ""
+        body_lower = text.lower()
+        if response.status_code == 200:
+            score = 0.0 if re.search(r"(?im)^disallow:\s*/\s*$", body_lower) else 1.0
+            status = "pass" if score == 1.0 else "fail"
+            message = f"robots.txt returned HTTP 200 with {len(text)} characters."
+        elif response.status_code == 403:
+            score, status = 0.55, "warning"
+            message = "robots.txt returned HTTP 403; crawler policy could not be fully verified."
+        elif response.status_code == 404:
+            score, status = 0.65, "warning"
+            message = "robots.txt returned HTTP 404; no robots policy was found."
+        elif response.status_code == 429:
+            score, status = 0.55, "warning"
+            message = "robots.txt returned HTTP 429; rate limited during scan."
+        else:
+            score, status = 0.65, "warning"
+            message = f"robots.txt returned HTTP {response.status_code}."
+        return {"url": robots_url, "statusCode": response.status_code, "score": score, "status": status, "message": message}
+    except Exception as exc:
+        return {"url": robots_url, "statusCode": None, "score": 0.55, "status": "warning", "message": f"robots.txt check failed: {str(exc)[:120]}"}
+
+
+def _compute_crawler_visibility(raw: dict[str, Any], rendered: dict[str, Any] | None, rendered_error: dict[str, Any] | None) -> dict[str, Any]:
+    raw_body = int(raw.get("bodyTextLength") or 0)
+    raw_scripts = int(raw.get("scriptCount") or 0)
+    rendered_body = int(rendered.get("bodyTextLength") or 0) if rendered else None
+    rendered_scripts = int(rendered.get("scriptCount") or 0) if rendered else 0
+    text_for_detection = " ".join([
+        str(raw.get("htmlPreview") or ""),
+        str((rendered or {}).get("htmlPreview") or ""),
+    ]).lower()
+    js_heavy = raw_scripts >= 20 or (raw_scripts >= 5 and raw_body < 250) or bool(raw.get("appRootPresent")) or bool((rendered or {}).get("appRootPresent"))
+    access_limited = bool(raw.get("accessLimitedSignals") or (rendered or {}).get("accessLimitedSignals") or (raw_body < 30 and raw_scripts >= 5))
+    bot_protection = bool(raw.get("botProtectionLikely") or (rendered or {}).get("botProtectionLikely") or raw.get("statusCode") in {403, 429})
+    login_wall = any(pattern in text_for_detection for pattern in ("login", "log in", "sign up", "create account", "authentication required"))
+    rendered_available = rendered is not None
+    rendered_meaningful = rendered_available and (
+        (rendered_body or 0) >= 80
+        or ((rendered_body or 0) >= 20 and int((rendered or {}).get("h1Count") or 0) > 0 and raw_scripts < 5)
     )
 
+    if rendered_meaningful and not bot_protection:
+        level = "high"
+        reason = "Rendered DOM scan completed and visible text/content was available."
+    elif rendered_available and (rendered_body or 0) > 0:
+        level = "medium"
+        reason = "Rendered DOM scan completed but returned limited visible content."
+    else:
+        level = "low"
+        if rendered_error:
+            reason = rendered_error.get("message") or "Rendered DOM scan failed or was blocked."
+        else:
+            reason = "Only limited crawler-visible initial HTML was available."
+
+    return {
+        "level": level,
+        "reason": reason,
+        "signals": {
+            "bodyTextLength": raw_body,
+            "scriptCount": raw_scripts,
+            "renderedBodyTextLength": rendered_body,
+            "renderedScriptCount": rendered_scripts,
+            "accessLimitedSignals": access_limited,
+            "botProtectionLikely": bot_protection,
+            "loginWallLikely": login_wall,
+            "jsHeavyLikely": js_heavy,
+            "renderedScanAvailable": rendered_available,
+        },
+    }
+
+
+def _preferred_dom(raw: dict[str, Any], rendered: dict[str, Any] | None, field: str) -> tuple[Any, str, str]:
+    rendered_value = (rendered or {}).get(field)
+    raw_value = raw.get(field)
+    if rendered is not None and rendered_value not in (None, "", [], {}):
+        return rendered_value, "rendered_dom", "high"
+    if raw_value not in (None, "", [], {}):
+        return raw_value, "raw_html", "medium" if rendered is None else "high"
+    return raw_value, "combined" if rendered is not None else "raw_html", "high" if rendered is not None else "low"
+
+
+def _make_audit(
+    audits: dict[str, dict[str, Any]],
+    audit_id: str,
+    *,
+    score: float,
+    title: str,
+    description: str,
+    weight: int,
+    evidence: str,
+    recommendation: str = "",
+    confidence: str = "high",
+    evidence_source: str = "combined",
+    status: str | None = None,
+    note: str = "",
+) -> None:
+    bounded = round(max(0.0, min(1.0, float(score))), 2)
+    audits[audit_id] = {
+        "id": audit_id,
+        "score": bounded,
+        "title": title,
+        "description": description,
+        "evidence": evidence,
+        "recommendation": recommendation,
+        "weight": weight,
+        "status": status or _seo_status(bounded, confidence=confidence),
+        "confidence": confidence,
+        "evidenceSource": evidence_source,
+        "note": note,
+    }
+
+
+def _build_dual_mode_seo_report(
+    *,
+    url: str,
+    final_url: str,
+    requested_host: str,
+    response: Any,
+    raw: dict[str, Any],
+    rendered: dict[str, Any] | None,
+    rendered_error: dict[str, Any] | None,
+    robots: dict[str, Any],
+) -> dict[str, Any]:
+    hostname = urlparse(final_url).hostname or requested_host
+    visibility = _compute_crawler_visibility(raw, rendered, rendered_error)
+    low_visibility = visibility["level"] == "low"
+    limited_visibility = visibility["level"] != "high"
     audits: dict[str, dict[str, Any]] = {}
+    rendered_available = rendered is not None
 
-    def _add_audit(audit_id: str, score: float, title: str, description: str) -> None:
-        audits[audit_id] = {
-            "score": round(max(0.0, min(1.0, float(score))), 2),
-            "title": title,
-            "description": description,
-        }
+    def limited_note(issue: str) -> str:
+        return (
+            f"{issue} was not verified in a high-confidence rendered DOM. "
+            "Validate with Google Search Console URL Inspection or PageSpeed Insights."
+        )
 
-    _add_audit(
+    title, title_source, title_conf = _preferred_dom(raw, rendered, "title")
+    title_score = _score_length(str(title or ""), 10, 65, warn_min=1, warn_max=85)
+    if title_score < 0.85 and _is_brand_like_short_title(str(title or ""), hostname):
+        title_score = 0.75
+        title_note = "A longer descriptive title may help non-brand search intent, but short brand titles can be acceptable for major brand homepages."
+    else:
+        title_note = ""
+    _make_audit(
+        audits,
         "document-title",
-        1.0 if 10 <= len(title_text) <= 65 else (0.5 if title_text else 0.0),
-        "Document has a descriptive title",
-        "A strong SEO title should exist and usually stay within a readable search-result length."
-    )
-    _add_audit(
-        "meta-description",
-        1.0 if 50 <= len(meta_description) <= 170 else (0.5 if meta_description else 0.0),
-        "Meta description is present",
-        "Pages should have a concise meta description that explains value clearly in search results."
-    )
-    _add_audit(
-        "http-status-code",
-        1.0 if response.status_code == 200 else 0.0,
-        "Page returns a successful status code",
-        f"The scanned page returned HTTP {response.status_code}. Important landing pages should normally respond with HTTP 200."
-    )
-    _add_audit(
-        "is-crawlable",
-        0.0 if ("noindex" in robots_meta.lower() or "noindex" in x_robots.lower()) else 1.0,
-        "Page is indexable by search engines",
-        "Robots directives should not accidentally block indexation of pages intended for search visibility."
-    )
-    _add_audit(
-        "viewport",
-        1.0 if viewport else 0.0,
-        "Mobile viewport is configured",
-        "Responsive pages should define a viewport meta tag so they render correctly on mobile devices."
-    )
-    _add_audit(
-        "html-lang",
-        1.0 if lang else 0.0,
-        "Document language is declared",
-        "The root html element should declare a language to help search engines and accessibility tooling interpret content."
-    )
-    _add_audit(
-        "canonical",
-        1.0 if canonical else 0.0,
-        "Canonical URL is declared",
-        "Canonical tags help consolidate duplicate signals and clarify which URL should rank."
-    )
-    _add_audit(
-        "single-h1",
-        1.0 if len(h1_tags) == 1 else (0.5 if len(h1_tags) > 1 else 0.0),
-        "Primary H1 heading is defined",
-        "Pages generally perform best with one clear H1 that matches the main topic and search intent."
-    )
-    _add_audit(
-        "image-alt",
-        _safe_ratio(images_with_alt, len(image_tags)),
-        "Images include alt text",
-        "Important images should include meaningful alt text so search engines and assistive technologies understand them."
-    )
-    _add_audit(
-        "link-text",
-        _safe_ratio(descriptive_links, len(anchor_tags)),
-        "Links use descriptive anchor text",
-        "Anchor text should describe the destination instead of relying on generic phrases like 'click here'."
+        score=title_score,
+        title="Document has a descriptive title",
+        description="A strong SEO title should exist and usually stay within a readable search-result length.",
+        weight=12,
+        evidence=f"Title length: {len(str(title or ''))}. Title: {str(title or 'not found')[:90]}.",
+        recommendation="Consider a 10-65 character title aligned with the page's primary search intent." if title_score < 0.85 else "",
+        confidence=title_conf,
+        evidence_source=title_source,
+        note=title_note,
+        status="warning" if title_note else None,
     )
 
-    valid_scores = [audit["score"] for audit in audits.values() if isinstance(audit.get("score"), (int, float))]
-    seo_score = round(sum(valid_scores) / len(valid_scores), 2) if valid_scores else 0.0
+    meta_description, meta_source, meta_conf = _preferred_dom(raw, rendered, "metaDescription")
+    meta_score = _score_length(str(meta_description or ""), 50, 170, warn_min=1, warn_max=220)
+    meta_status = None
+    meta_note = "Google may generate snippets from page content, but a meta description is still recommended."
+    if not meta_description and low_visibility and not rendered_available:
+        meta_score, meta_status, meta_conf, meta_source = 0.55, "needs_review", "low", "raw_html"
+        meta_note = limited_note("Meta description")
+    _make_audit(
+        audits,
+        "meta-description",
+        score=meta_score,
+        title="Meta description is present",
+        description="Pages should have a concise meta description that explains value clearly in search results.",
+        weight=10,
+        evidence=f"Raw length: {len(str(raw.get('metaDescription') or ''))}; rendered length: {len(str((rendered or {}).get('metaDescription') or '')) if rendered_available else 'not available'}.",
+        recommendation="Add a unique 50-170 character meta description focused on the page value and target audience." if meta_score < 0.85 else "",
+        confidence=meta_conf,
+        evidence_source=meta_source,
+        status=meta_status,
+        note=meta_note if meta_score < 0.85 else "",
+    )
+
+    redirects = len(response.history or [])
+    _make_audit(
+        audits,
+        "http-status-code",
+        score=1.0 if response.status_code == 200 else 0.0,
+        title="Page returns a successful status code",
+        description=f"The scanned page returned HTTP {response.status_code}. Important landing pages should normally respond with HTTP 200.",
+        weight=14,
+        evidence=f"Final URL: {final_url}. Redirect hops: {redirects}.",
+        recommendation="Fix the page response so the canonical landing URL returns HTTP 200." if response.status_code != 200 else "",
+        confidence="high",
+        evidence_source="http_headers",
+    )
+
+    robots_meta_raw = str(raw.get("robotsMeta") or "")
+    robots_meta_rendered = str((rendered or {}).get("robotsMeta") or "")
+    x_robots = str(raw.get("xRobotsTag") or "")
+    noindex = "noindex" in robots_meta_raw.lower() or "noindex" in robots_meta_rendered.lower() or "noindex" in x_robots.lower()
+    _make_audit(
+        audits,
+        "is-crawlable",
+        score=0.0 if noindex else 1.0,
+        title="Page is indexable by search engines",
+        description="Robots directives should not accidentally block indexation of pages intended for search visibility.",
+        weight=14,
+        evidence=f"Raw meta robots: {robots_meta_raw or 'none'}; rendered meta robots: {robots_meta_rendered or 'none'}; X-Robots-Tag: {x_robots or 'none'}.",
+        recommendation="Remove noindex directives from pages that should appear in search results." if noindex else "",
+        confidence="high",
+        evidence_source="combined",
+    )
+
+    for audit_id, field, title, description, weight, recommendation in [
+        ("viewport", "viewport", "Mobile viewport is configured", "Responsive pages should define a viewport meta tag so they render correctly on mobile devices.", 8, 'Add <meta name="viewport" content="width=device-width, initial-scale=1"> for reliable mobile rendering.'),
+        ("html-lang", "lang", "Document language is declared", "The root html element should declare a language to help search engines and accessibility tooling interpret content.", 5, 'Set the root html language, for example <html lang="en">, to improve accessibility and interpretation.'),
+    ]:
+        value, source, confidence = _preferred_dom(raw, rendered, field)
+        missing_low = not value and low_visibility and not rendered_available
+        _make_audit(
+            audits,
+            audit_id,
+            score=0.55 if missing_low else (1.0 if value else 0.0),
+            title=title,
+            description=description,
+            weight=weight,
+            evidence=f"Raw: {raw.get(field) or 'not found'}; rendered: {(rendered or {}).get(field) or ('not available' if not rendered_available else 'not found')}.",
+            recommendation=recommendation if not value else "",
+            confidence="low" if missing_low else confidence,
+            evidence_source=source,
+            status="needs_review" if missing_low else None,
+            note=limited_note(title) if missing_low else "",
+        )
+
+    raw_canonicals = raw.get("canonicalTags") or []
+    rendered_canonicals = (rendered or {}).get("canonicalTags") or []
+    canonical, canonical_source, canonical_conf = _preferred_dom(raw, rendered, "canonical")
+    multiple_canonical = len(raw_canonicals) > 1 or len(rendered_canonicals) > 1
+    canonical_mismatch = bool(raw_canonicals and rendered_canonicals and raw_canonicals[0] != rendered_canonicals[0])
+    canonical_score = 1.0 if canonical and not multiple_canonical and not canonical_mismatch else (0.55 if canonical else 0.0)
+    canonical_status = None
+    canonical_note = ""
+    if not canonical and low_visibility:
+        canonical_score, canonical_status, canonical_conf, canonical_source = 0.55, "needs_review", "low", "raw_html"
+        canonical_note = limited_note("Canonical tag")
+    _make_audit(
+        audits,
+        "canonical",
+        score=canonical_score,
+        title="Canonical URL is declared",
+        description="Canonical tags help consolidate duplicate signals and clarify which URL should rank.",
+        weight=8,
+        evidence=f"Raw canonicals: {raw_canonicals or 'none'}; rendered canonicals: {rendered_canonicals or ('not available' if not rendered_available else 'none')}.",
+        recommendation="Declare one canonical URL pointing to the preferred HTTPS version of this page." if canonical_score < 0.85 else "",
+        confidence=canonical_conf,
+        evidence_source=canonical_source if not (raw_canonicals and rendered_canonicals) else "combined",
+        status=canonical_status,
+        note=canonical_note or ("Multiple or mismatched canonical tags were detected." if multiple_canonical or canonical_mismatch else ""),
+    )
+
+    h1_count = int((rendered or raw).get("h1Count") or 0)
+    h1_source = "rendered_dom" if rendered_available else "raw_html"
+    h1_conf = "high" if rendered_available and visibility["level"] == "high" else ("medium" if rendered_available else "low")
+    h1_score = 1.0 if h1_count == 1 else (0.65 if 2 <= h1_count <= 3 else 0.0)
+    h1_status = None
+    h1_note = ""
+    if h1_count == 0 and limited_visibility:
+        h1_score, h1_status, h1_note = 0.55, "needs_review", limited_note("H1")
+    _make_audit(
+        audits,
+        "single-h1",
+        score=h1_score,
+        title="Primary H1 heading is defined",
+        description="Pages generally perform best with one clear H1 that matches the main topic and search intent.",
+        weight=7,
+        evidence=f"Raw H1 count: {raw.get('h1Count')}; rendered H1 count: {(rendered or {}).get('h1Count') if rendered_available else 'not available'}.",
+        recommendation="Use one visible H1 that clearly describes the page topic." if h1_score < 0.85 else "",
+        confidence=h1_conf,
+        evidence_source=h1_source,
+        status=h1_status,
+        note=h1_note,
+    )
+
+    img_source_data = rendered if rendered_available else raw
+    image_count = int(img_source_data.get("informativeImageCount") or img_source_data.get("imageCount") or 0)
+    images_with_alt = int(img_source_data.get("imagesWithAlt") or 0)
+    image_score = _safe_ratio(images_with_alt, image_count) if image_count else 0.55
+    image_status = "not_applicable" if image_count == 0 and visibility["level"] != "low" else None
+    image_note = ""
+    if limited_visibility and image_count <= 2:
+        image_status, image_score, image_note = "needs_review", 0.55, limited_note("Image alt coverage")
+    _make_audit(
+        audits,
+        "image-alt",
+        score=image_score,
+        title="Images include alt text",
+        description="Important images should include meaningful alt text so search engines and assistive technologies understand them.",
+        weight=5,
+        evidence=f"Raw images with alt: {raw.get('imagesWithAlt')}/{raw.get('informativeImageCount')}; rendered: {(rendered or {}).get('imagesWithAlt')}/{(rendered or {}).get('informativeImageCount') if rendered_available else 'not available'}.",
+        recommendation="Add concise, meaningful alt text to informative images; decorative images can use empty alt text." if image_score < 0.85 and image_count else "",
+        confidence="low" if image_status == "needs_review" else ("high" if rendered_available and visibility["level"] == "high" else "medium"),
+        evidence_source="rendered_dom" if rendered_available else "raw_html",
+        status=image_status,
+        note=image_note,
+    )
+
+    link_data = rendered if rendered_available else raw
+    link_count = int(link_data.get("linkCount") or 0)
+    descriptive_links = int(link_data.get("descriptiveLinkCount") or 0)
+    if link_count == 0:
+        link_score = 0.55
+        link_status = "needs_review" if limited_visibility else "not_applicable"
+        link_note = "No links were available in the inspected DOM; this rule cannot be confirmed from the current scan."
+    else:
+        link_score = _safe_ratio(descriptive_links, link_count)
+        link_status = None
+        link_note = ""
+    _make_audit(
+        audits,
+        "link-text",
+        score=link_score,
+        title="Links use descriptive anchor text",
+        description="Anchor text should describe the destination instead of relying on generic phrases like 'click here'.",
+        weight=5,
+        evidence=f"Raw descriptive links: {raw.get('descriptiveLinkCount')}/{raw.get('linkCount')}; rendered: {(rendered or {}).get('descriptiveLinkCount')}/{(rendered or {}).get('linkCount') if rendered_available else 'not available'}.",
+        recommendation="Replace vague link labels with destination-specific anchor text." if link_count and link_score < 0.85 else "",
+        confidence="low" if link_status == "needs_review" else ("high" if rendered_available and visibility["level"] == "high" else "medium"),
+        evidence_source="rendered_dom" if rendered_available else "raw_html",
+        status=link_status,
+        note=link_note,
+    )
+
+    for audit_id, raw_field, rendered_field, title, description, weight, recommendation in [
+        ("social-metadata", "openGraphCount", "openGraphCount", "Social preview metadata is configured", "Open Graph or Twitter Card tags improve link previews and click-through quality when pages are shared.", 4, "Add Open Graph and Twitter Card metadata for the title, description, image, and canonical URL."),
+        ("structured-data", "jsonLdCount", "jsonLdCount", "Structured data is present", "JSON-LD schema helps search engines understand page entities and can unlock richer search presentation.", 4, "Add relevant JSON-LD schema such as Organization, WebSite, Article, BreadcrumbList, or LocalBusiness where appropriate."),
+    ]:
+        raw_count = int(raw.get(raw_field) or 0)
+        rendered_count = int((rendered or {}).get(rendered_field) or 0)
+        count = rendered_count if rendered_available else raw_count
+        source = "rendered_dom" if rendered_available else "raw_html"
+        confidence = "high" if rendered_available and visibility["level"] == "high" else ("low" if low_visibility else "medium")
+        score = 1.0 if count else (0.55 if limited_visibility else 0.45)
+        status = "needs_review" if limited_visibility and not count else None
+        note = limited_note(title) if status == "needs_review" else ""
+        if audit_id == "structured-data" and (raw.get("jsonLdParseErrors") or (rendered or {}).get("jsonLdParseErrors")):
+            score, status, note = 0.55, "warning", "JSON-LD was found but at least one block could not be parsed."
+        _make_audit(
+            audits,
+            audit_id,
+            score=score,
+            title=title,
+            description=description,
+            weight=weight,
+            evidence=f"Raw count: {raw_count}; rendered count: {rendered_count if rendered_available else 'not available'}.",
+            recommendation=recommendation if score < 0.85 else "",
+            confidence=confidence,
+            evidence_source=source,
+            status=status,
+            note=note,
+        )
+
+    _make_audit(
+        audits,
+        "robots-txt",
+        score=float(robots.get("score", 0.55)),
+        title="robots.txt is reachable and not broadly blocking",
+        description="A clear robots.txt file helps crawlers understand which areas can be accessed.",
+        weight=5,
+        evidence=str(robots.get("message") or "robots.txt was not checked."),
+        recommendation="Review robots.txt so it is reachable and does not accidentally block important public pages." if robots.get("status") != "pass" else "",
+        confidence="high" if robots.get("statusCode") == 200 else "medium",
+        evidence_source="robots_txt",
+        status=str(robots.get("status") or "warning"),
+    )
+
+    content_bytes = len(response.content or b"")
+    _make_audit(
+        audits,
+        "response-weight",
+        score=1.0 if content_bytes <= 1_500_000 else (0.65 if content_bytes <= 3_000_000 else 0.35),
+        title="Initial HTML response is reasonably sized",
+        description="Very large HTML responses can slow down crawling and first render.",
+        weight=4,
+        evidence=f"Downloaded HTML size: {round(content_bytes / 1024, 1)} KB. Compression header: {response.headers.get('Content-Encoding') or 'none observed'}.",
+        recommendation="Reduce initial HTML payload and move non-critical data/scripts out of the first response." if content_bytes > 1_500_000 else "",
+        confidence="high",
+        evidence_source="http_headers",
+    )
+    _make_audit(
+        audits,
+        "redirects",
+        score=1.0 if redirects <= 1 else (0.7 if redirects <= 3 else 0.35),
+        title="Redirect chain is short",
+        description="Short redirect chains preserve crawl efficiency and reduce latency.",
+        weight=4,
+        evidence=f"Redirect hops before final URL: {redirects}.",
+        recommendation="Point internal and canonical links directly to the final HTTPS URL to avoid extra redirect hops." if redirects > 1 else "",
+        confidence="high",
+        evidence_source="http_headers",
+    )
+
+    _make_audit(
+        audits,
+        "crawler-visibility",
+        score={"high": 1.0, "medium": 0.7, "low": 0.4}[visibility["level"]],
+        title="Crawler visibility confidence",
+        description="Shows how much reliable page content DarkPulse could inspect.",
+        weight=0,
+        evidence=visibility["reason"],
+        recommendation="Validate with Google Search Console URL Inspection or PageSpeed Insights." if visibility["level"] != "high" else "",
+        confidence="high",
+        evidence_source="combined",
+        status="pass" if visibility["level"] == "high" else "warning",
+        note="This is a scan-confidence finding, not a direct SEO defect.",
+    )
+
+    weighted_total = sum(float(audit["score"]) * int(audit["weight"]) for audit in audits.values() if int(audit.get("weight") or 0) > 0)
+    total_weight = sum(int(audit["weight"]) for audit in audits.values() if int(audit.get("weight") or 0) > 0)
+    seo_score = round(weighted_total / total_weight, 2) if total_weight else 0.0
+    if visibility["level"] == "low":
+        seo_score = round(max(seo_score, 0.72), 2)
 
     return {
         "url": final_url,
+        "requestedUrl": url,
         "seoScore": seo_score,
+        "seoHealthScore": seo_score,
+        "seoHealthGrade": calculate_seo_grade(seo_score),
+        "scanConfidenceGrade": _scan_confidence_grade(visibility["level"]),
+        "scanModeUsed": "raw_html+rendered_dom" if rendered_available else "raw_html",
+        "rawScanAvailable": True,
+        "renderedScanAvailable": rendered_available,
+        "crawlerVisibility": visibility,
         "audits": audits,
-        "provider": "local_fallback",
+        "provider": "dual_mode_local",
+        "confidence": "normal" if visibility["level"] == "high" else "limited_html",
+        "rawScan": raw,
+        "renderedScan": rendered,
+        "renderedScanError": rendered_error,
+        "technical": {
+            "status_code": response.status_code,
+            "redirects": redirects,
+            "content_bytes": content_bytes,
+            "compressed": bool(response.headers.get("Content-Encoding")),
+            "body_text_length": raw.get("bodyTextLength"),
+            "rendered_body_text_length": (rendered or {}).get("bodyTextLength"),
+            "js_heavy": visibility["signals"]["jsHeavyLikely"],
+            "access_limited": visibility["signals"]["accessLimitedSignals"],
+            "bot_protection_likely": visibility["signals"]["botProtectionLikely"],
+            "response_headers": dict(response.headers),
+            "redirect_chain": [item.url for item in response.history] + [final_url],
+        },
     }
+
+
+def _local_seo_audit(url: str) -> dict[str, Any]:
+    import requests
+
+    url, requested_host = _validate_seo_target(url)
+    session = requests.Session()
+    try:
+        response = session.get(url, timeout=30, headers=_SEO_HTTP_HEADERS, allow_redirects=True)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as exc:
+        raise _friendly_request_error(url, exc) from exc
+
+    final_url = response.url or url
+    final_host = urlparse(final_url).hostname
+    if not _same_requested_host(requested_host, final_host):
+        raise SEOScanError(
+            (
+                f"'{requested_host}' redirects to a different domain "
+                f"'{final_host or final_url}'. No SEO report was generated for the requested host."
+            ),
+            kind="cross_domain_redirect",
+            details={
+                "requested_host": requested_host,
+                "final_host": final_host,
+                "final_url": final_url,
+                "redirect_chain": [item.url for item in response.history] + [final_url],
+            },
+        )
+
+    raw = _extract_seo_dom_snapshot(response.text or "", final_url, source="raw_html")
+    raw["url"] = final_url
+    raw["statusCode"] = response.status_code
+    raw["xRobotsTag"] = _clean_seo_text(response.headers.get("X-Robots-Tag"))
+    raw["responseHeaders"] = dict(response.headers)
+    raw["compression"] = response.headers.get("Content-Encoding") or ""
+    raw["initialHtmlBytes"] = len(response.content or b"")
+
+    rendered, rendered_error = _rendered_seo_scan(final_url)
+    if rendered is not None:
+        rendered_host = urlparse(rendered.get("url") or final_url).hostname
+        if rendered_host and not _same_requested_host(requested_host, rendered_host):
+            rendered_error = {
+                "kind": "cross_domain_redirect",
+                "message": f"Rendered browser ended on a different host: {rendered_host}.",
+            }
+            rendered = None
+
+    hostname = urlparse(final_url).hostname or requested_host
+    robots = _fetch_robots_status(session, final_url, hostname)
+    return _build_dual_mode_seo_report(
+        url=url,
+        final_url=final_url,
+        requested_host=requested_host,
+        response=response,
+        raw=raw,
+        rendered=rendered,
+        rendered_error=rendered_error,
+        robots=robots,
+    )
 
 @app.get("/seo/analyze")
 async def analyze_seo(url: str):
@@ -6241,30 +6952,20 @@ async def analyze_seo(url: str):
     Returns structured audit data and a calculated grade.
     """
     try:
-        from api_collector.scripts.seo_checker import pagespeed_seo
         import time
         import asyncio
         
         # Ensure URL has protocol
         if not url.startswith(("http://", "https://")):
             url = "https://" + url
+        _, requested_host = _validate_seo_target(url)
             
         log.info(f"SEO analysis requested for: {url}")
         
         loop = asyncio.get_running_loop()
-        use_pagespeed = os.getenv("USE_PAGESPEED_SEO", "").lower() in {"1", "true", "yes"}
-        pagespeed_key = cfg.pagespeed_api_key or os.environ.get("PAGESPEED_API_KEY", "")
-        scan_source = "local_fallback"
-        scan_message = "DarkPulse used the fast local SEO audit so the scanner stays responsive."
-        if use_pagespeed and pagespeed_key:
-            data = await asyncio.wait_for(
-                loop.run_in_executor(None, pagespeed_seo, url, pagespeed_key),
-                timeout=12,
-            )
-            scan_source = "pagespeed"
-            scan_message = ""
-        else:
-            data = await loop.run_in_executor(None, _local_seo_audit, url)
+        data = await loop.run_in_executor(None, _local_seo_audit, url)
+        scan_source = data.get("provider", "dual_mode_local")
+        scan_message = "Analysis complete."
         
         if "error" in data:
             error_message = str(data.get("error") or "")
@@ -6276,37 +6977,67 @@ async def analyze_seo(url: str):
                 or "daily limit" in response_preview.lower()
             )
             if quota_hit:
-                log.warning(f"SEO PageSpeed quota unavailable for {url}; using local fallback audit.")
+                log.warning(f"SEO upstream quota unavailable for {url}; using local dual-mode audit.")
                 data = await loop.run_in_executor(None, _local_seo_audit, url)
-                scan_source = "local_fallback"
-                scan_message = "Google PageSpeed quota is unavailable right now, so DarkPulse used a local SEO fallback audit."
+                scan_source = data.get("provider", "dual_mode_local")
+                scan_message = "Upstream SEO provider was unavailable, so DarkPulse used the local dual-mode audit."
             else:
                 log.error(f"SEO analysis failed for {url}: {data['error']}")
                 return {"status": "error", "message": data["error"]}
         
         audits = data.get("audits", {})
+        final_report_host = urlparse(str(data.get("url") or url)).hostname
+        if final_report_host and not _same_requested_host(requested_host, final_report_host):
+            raise SEOScanError(
+                (
+                    f"'{requested_host}' redirects to a different domain "
+                    f"'{final_report_host}'. No SEO report was generated for the requested host."
+                ),
+                kind="cross_domain_redirect",
+                details={"requested_host": requested_host, "final_host": final_report_host, "final_url": data.get("url")},
+            )
         score = data.get("seoScore", 0)
-        grade = calculate_seo_grade(score)
+        seo_health_grade = data.get("seoHealthGrade") or calculate_seo_grade(score)
+        scan_confidence_grade = data.get("scanConfidenceGrade") or _scan_confidence_grade((data.get("crawlerVisibility") or {}).get("level", "medium"))
+        if data.get("confidence") == "limited_html":
+            scan_message = "Analysis complete with limited crawler-visible HTML. Grade is approximate for JavaScript-heavy, access-gated, or bot-protected pages."
         ai_suggestions = ""
         ai_status = "fallback"
         ai_message = ""
-        failing_audits = [
-            audit.get("title")
-            for audit in audits.values()
-            if audit.get("score") != 1 and audit.get("title")
-        ]
+        failing_audits = []
+        for audit in audits.values():
+            score_value = audit.get("score")
+            if not isinstance(score_value, (int, float)) or score_value >= 0.85:
+                continue
+            failing_audits.append({
+                "title": audit.get("title") or "SEO audit",
+                "score": score_value,
+                "evidence": audit.get("evidence") or audit.get("description") or "",
+                "recommendation": audit.get("recommendation") or "",
+            })
 
         openrouter_key = os.getenv("OPENROUTER_API_KEY", "").strip()
-        if openrouter_key and failing_audits:
+        use_openrouter_seo = os.getenv("USE_OPENROUTER_SEO", "").lower() in {"1", "true", "yes"}
+        if use_openrouter_seo and openrouter_key and failing_audits:
             try:
-                audits_text = ", ".join(failing_audits[:10])
+                audits_text = "\n".join(
+                    f"- {item['title']} (score {item['score']}): {item['evidence']} Suggested action: {item['recommendation'] or 'prioritize a direct fix.'}"
+                    for item in failing_audits[:8]
+                )
+                technical = data.get("technical") or {}
                 prompt = f"""
                 You are a senior SEO expert and web performance consultant.
-                Based on the following SEO audit findings for the website {url}:
-                Findings: {audits_text}
+                Website: {data.get("url") or url}
+                Scan source: {scan_source}
+                Confidence: {data.get("confidence", "normal")}
+                Technical context: {json.dumps(technical, ensure_ascii=False)}
+                Only use the following observed audit evidence. Do not invent issues that are not listed.
+                Findings:
+                {audits_text}
                 
-                Provide 3-4 professional, actionable, and concise bullet points for improvement.
-                Focus on high-impact changes. Keep the tone professional but accessible.
+                Provide 3-4 professional, actionable, concise bullet points.
+                Prioritize the lowest-score/highest-impact findings and mention specific observed evidence when useful.
+                If crawler visibility is limited, say the grade is approximate and recommend verification with Search Console or PageSpeed.
                 Do not use markdown formatting like bold or headers; just return a plain text list of bullet points starting with '-'.
                 """
 
@@ -6331,7 +7062,7 @@ async def analyze_seo(url: str):
                     ai_message = "DARKPULSE AI generated recommendations from the audit findings."
         elif failing_audits:
             ai_suggestions = _build_seo_fallback_suggestions(url, audits)
-            ai_status = "fallback_no_key"
+            ai_status = "local_evidence"
             ai_message = "DARKPULSE AI generated recommendations from the audit findings."
         else:
             ai_suggestions = "- Core SEO checks passed for this scan.\n- Keep monitoring titles, crawlability, and metadata after future content changes."
@@ -6342,14 +7073,34 @@ async def analyze_seo(url: str):
             "status": "ok",
             "url": data.get("url"),
             "score": score,
-            "grade": grade,
+            "grade": seo_health_grade,
+            "seoHealthScore": data.get("seoHealthScore", score),
+            "seoHealthGrade": seo_health_grade,
+            "scanConfidenceGrade": scan_confidence_grade,
+            "scanModeUsed": data.get("scanModeUsed", "raw_html"),
+            "rawScanAvailable": data.get("rawScanAvailable", False),
+            "renderedScanAvailable": data.get("renderedScanAvailable", False),
+            "crawlerVisibility": data.get("crawlerVisibility", {}),
+            "rawScan": data.get("rawScan"),
+            "renderedScan": data.get("renderedScan"),
+            "renderedScanError": data.get("renderedScanError"),
             "audits": audits,
             "ai_suggestions": ai_suggestions.strip(),
             "ai_status": ai_status,
             "ai_message": ai_message,
             "scan_source": scan_source,
             "scan_message": scan_message,
+            "confidence": data.get("confidence", "normal"),
+            "technical": data.get("technical", {}),
             "timestamp": time.strftime("%B %d, %Y")
+        }
+    except SEOScanError as e:
+        log.warning("SEO scan rejected: %s", e)
+        return {
+            "status": "error",
+            "message": str(e),
+            "error_type": e.kind,
+            "details": e.details,
         }
     except Exception as e:
         log.error(f"SEO analysis exception: {e}")
@@ -6413,12 +7164,14 @@ def _parse_github_repo_url(repo_url: str) -> tuple[str, str, str] | None:
 
 
 def _github_api_headers(token: str) -> dict[str, str]:
-    return {
-        "Authorization": f"Bearer {token}",
+    headers = {
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
         "User-Agent": "DarkPulse-Repository-Scanner",
     }
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    return headers
 
 
 def _github_api_get(path: str, token: str, *, timeout: int = 20) -> tuple[int, dict[str, Any], dict[str, str]]:
@@ -6458,6 +7211,18 @@ async def _inspect_github_repository(owner: str, repo: str, token: str) -> dict[
         lambda: _github_api_get(repo_path, token),
     )
     log.info("GitHub API repo status for %s/%s: %s", owner, repo, status_code)
+    effective_token = token
+    authenticated = bool(token)
+    if status_code == 404 and token:
+        public_status, public_payload, public_headers = await loop.run_in_executor(
+            None,
+            lambda: _github_api_get(repo_path, ""),
+        )
+        log.info("GitHub public API repo status for %s/%s: %s", owner, repo, public_status)
+        if public_status == 200:
+            status_code, repo_payload, headers = public_status, public_payload, public_headers
+            effective_token = ""
+            authenticated = False
     if status_code != 200:
         raise ValueError(_github_error_message(status_code, repo_payload, headers))
 
@@ -6478,7 +7243,7 @@ async def _inspect_github_repository(owner: str, repo: str, token: str) -> dict[
         api_path = f"/repos/{owner}/{repo}/contents/{quote(path)}?ref={quote(default_branch)}"
         status, payload, _headers = await loop.run_in_executor(
             None,
-            lambda api_path=api_path: _github_api_get(api_path, token, timeout=12),
+            lambda api_path=api_path: _github_api_get(api_path, effective_token, timeout=12),
         )
         log.info("GitHub API content status for %s/%s %s: %s", owner, repo, path, status)
         return path, status, payload
@@ -6503,6 +7268,7 @@ async def _inspect_github_repository(owner: str, repo: str, token: str) -> dict[
         "pushed_at": repo_payload.get("pushed_at"),
         "language": repo_payload.get("language"),
         "open_issues_count": repo_payload.get("open_issues_count", 0),
+        "authenticated": authenticated,
         "discovered_files": sorted(set(discovered_files))[:20],
         "inaccessible_paths": inaccessible_paths[:10],
     }
@@ -6648,7 +7414,7 @@ async def scan_repo(request: Request):
         scan_query = {
             "github": normalized_repo_url,
             "git_token": git_token,
-            "timeout": 55,
+            "timeout": 180,
             "print_details": False,
             "keep_workdir": False,
         }
@@ -6660,7 +7426,7 @@ async def scan_repo(request: Request):
                     None,
                     lambda: asyncio.run(scanner.parse_leak_data(query=scan_query, context=None)),
                 ),
-                timeout=65,
+                timeout=210,
             )
         except asyncio.TimeoutError:
             log.error("Repository scan timed out for %s/%s", owner, repo)

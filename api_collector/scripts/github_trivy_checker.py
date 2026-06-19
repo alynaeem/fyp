@@ -573,6 +573,29 @@ class github_trivy_checker(api_collector_interface, ABC):
             print(f"[TRIVY] Running   : {git_bin} clone --depth 1 --filter=blob:none <repo> <dir>")
             clone_res = self._executor.submit(_run_blocking, clone_cmd, None, max(300, int(timeout / 3)), None).result()
 
+            if clone_res["return_code"] != 0 and git_token and "github.com" in repo_url and repo_url.startswith("https://"):
+                stderr_lower = str(clone_res.get("stderr") or "").lower()
+                auth_denied = any(
+                    marker in stderr_lower
+                    for marker in (
+                        "repository not found",
+                        "authentication failed",
+                        "could not read username",
+                        "bad credentials",
+                    )
+                )
+                if auth_denied:
+                    print("[TRIVY] Token-auth clone failed; retrying public clone without token.")
+                    public_clone_cmd = [git_bin, "clone", "--depth", "1", "--filter=blob:none", repo_url, str(workdir)]
+                    clone_res = self._executor.submit(
+                        _run_blocking,
+                        public_clone_cmd,
+                        None,
+                        max(300, int(timeout / 3)),
+                        None,
+                    ).result()
+                    clone_cmd = public_clone_cmd
+
             if clone_res["return_code"] != 0:
                 err_msg = f"git clone failed: {clone_res.get('stderr', 'unknown error')}"
                 print(f"[TRIVY] ❌ {err_msg}")

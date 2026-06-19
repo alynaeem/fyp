@@ -244,13 +244,6 @@
         </div>
 
         <div class="header-right">
-          <div class="status-indicator">
-            <span class="status-dot ok" id="statusDot"></span>
-            <div class="status-copy">
-              <span id="statusText">Connected</span>
-              <span class="status-note" id="lastUpdated">Updated just now</span>
-            </div>
-          </div>
           <button class="icon-btn ai-chat-header-btn" id="aiChatLaunchBtn" title="DARKPULSE Chatbot">DARKPULSE Chatbot</button>
           <button class="icon-btn" id="settingsBtn" title="Settings">Settings</button>
         </div>
@@ -733,6 +726,24 @@
                     <span class="mini-card-label">Scanned By</span>
                     <span class="mini-card-value">DarkPulse Intelligence</span>
                   </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">SEO Health Grade</span>
+                    <span class="mini-card-value" id="seoHealthGradeValue">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Scan Confidence</span>
+                    <span class="mini-card-value" id="seoScanConfidenceValue">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Scan Mode</span>
+                    <span class="mini-card-value" id="seoScanModeValue">-</span>
+                  </div>
+                </div>
+
+                <div id="seoCrawlerWarning" class="seo-suggestions-container hidden">
+                  <div class="suggestions-body">
+                    <p class="suggestions-note" id="seoCrawlerWarningText"></p>
+                  </div>
                 </div>
 
                 <!-- DARKPULSE AI Recommendations Box -->
@@ -814,7 +825,7 @@
               <input type="text" id="softwareInput" class="search-input" placeholder="Enter any PC game name..." />
               <button class="btn-primary" id="softwareSearchBtn">Search</button>
             </div>
-            <p class="hero-subtitle" style="margin-top: 10px; opacity: 0.7;">Checks for cracked mirrors of known softwares.</p>
+            <p class="hero-subtitle" style="margin-top: 10px; opacity: 0.7;">Checks matching PC game/software entries across multiple web sources.</p>
             
             <div id="softwareStatus" class="pakdb-status"></div>
             <div class="export-toolbar hidden" id="softwareExportBar">
@@ -1791,19 +1802,27 @@
           </div>
         </div>
         <div class="input-group">
+          <label>Network</label>
+          <select id="feedFilterNetwork">
+            <option value="">All Networks</option>
+            <option value="clearnet">Clearnet</option>
+            <option value="onion">Onion / Tor</option>
+          </select>
+        </div>
+        <div class="input-group">
           <label>Topic / Tag</label>
-          <input type="text" id="feedFilterTopic" placeholder="e.g. vulnerability, ransomware, leak" list="feedFilterTopicList" />
-          <datalist id="feedFilterTopicList">
-            <option value="vulnerability"></option>
-            <option value="ransomware"></option>
-            <option value="leak"></option>
-            <option value="data breach"></option>
-            <option value="research"></option>
-            <option value="policy"></option>
-            <option value="defacement"></option>
-            <option value="exploit"></option>
-            <option value="malware"></option>
-          </datalist>
+          <select id="feedFilterTopic">
+            <option value="">All Topics</option>
+            <option value="vulnerability">Vulnerability</option>
+            <option value="ransomware">Ransomware</option>
+            <option value="leak">Leak</option>
+            <option value="data breach">Data Breach</option>
+            <option value="research">Research</option>
+            <option value="policy">Policy</option>
+            <option value="defacement">Defacement</option>
+            <option value="exploit">Exploit</option>
+            <option value="malware">Malware</option>
+          </select>
         </div>
         <div id="feedFilterStatus" class="pakdb-status">No feed filters applied yet.</div>
       </div>

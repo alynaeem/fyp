@@ -39,6 +39,27 @@ class _pcgame_mod(api_collector_interface, ABC):
             "type": "wiki_direct",
             "search": "https://www.pcgamingwiki.com/wiki/{slug}",
         },
+        {
+            "name": "gog",
+            "base_url": "https://www.gog.com",
+            "search": "https://www.gog.com/en/games?query={game}&order=desc:score",
+            "result_selector": "a[href*='/game/'][href]",
+            "title_selector": None,
+        },
+        {
+            "name": "epic_games",
+            "base_url": "https://store.epicgames.com",
+            "search": "https://store.epicgames.com/en-US/browse?q={game}&sortBy=relevancy&sortDir=DESC&count=40",
+            "result_selector": "a[href*='/p/'][href], a[href*='/bundles/'][href]",
+            "title_selector": None,
+        },
+        {
+            "name": "itch_io",
+            "base_url": "https://itch.io",
+            "search": "https://itch.io/search?q={game}",
+            "result_selector": "a.title[href], a.game_link[href]",
+            "title_selector": None,
+        },
     ]
 
     def __new__(cls, *args, **kwargs):
@@ -77,7 +98,7 @@ class _pcgame_mod(api_collector_interface, ABC):
             }
         )
 
-        print("[API] _pcgame_mod Initialized ✅ (Steam + PCGamingWiki)")
+        print("[API] _pcgame_mod Initialized ✅ (multi-source exact search)")
 
     # ---------------- interface required ----------------
     @property
@@ -172,6 +193,59 @@ class _pcgame_mod(api_collector_interface, ABC):
             return aliases[n]
         cleaned = re.sub(r"\s+", " ", (name or "").strip())
         return cleaned.replace(" ", "_")
+
+    @staticmethod
+    def _normalize_text(value: str) -> str:
+        text = (value or "").lower()
+        text = text.replace("&", " and ")
+        text = re.sub(r"[^a-z0-9]+", " ", text)
+        return re.sub(r"\s+", " ", text).strip()
+
+    def _query_tokens(self, query: str) -> List[str]:
+        stopwords = {"the", "a", "an", "and", "of", "for", "pc", "game", "software"}
+        tokens = [t for t in self._normalize_text(query).split() if t not in stopwords]
+        return tokens or self._normalize_text(query).split()
+
+    def _is_relevant_match(self, query: str, title: str, url: str = "", details: Optional[Dict] = None) -> bool:
+        tokens = self._query_tokens(query)
+        if not tokens:
+            return False
+
+        detail_text = ""
+        if isinstance(details, dict):
+            detail_bits = [
+                str(details.get("name") or ""),
+                str(details.get("title") or ""),
+                str(details.get("developer") or ""),
+                str(details.get("publisher") or ""),
+            ]
+            detail_text = " ".join(detail_bits)
+
+        haystack = self._normalize_text(" ".join([title or "", url or "", detail_text]))
+
+        aliases = {
+            "gta v": "grand theft auto v",
+            "gta 5": "grand theft auto v",
+        }
+        normalized_query = self._normalize_text(query)
+        expanded_query = aliases.get(normalized_query, normalized_query)
+        expanded_tokens = self._query_tokens(expanded_query)
+        haystack_words = haystack.split()
+        haystack_tokens = set(haystack_words)
+
+        def has_phrase(words: List[str]) -> bool:
+            if not words:
+                return False
+            width = len(words)
+            return any(haystack_words[index:index + width] == words for index in range(len(haystack_words) - width + 1))
+
+        if expanded_query != normalized_query:
+            return has_phrase(expanded_tokens)
+        if len(expanded_tokens) == 1:
+            return expanded_tokens[0] in haystack_tokens
+        if has_phrase(expanded_tokens):
+            return True
+        return all(token in haystack for token in expanded_tokens)
 
     def _build_search_url(self, site: Dict, game_name: str) -> str:
         tpl = site.get("search", "")
@@ -327,6 +401,30 @@ class _pcgame_mod(api_collector_interface, ABC):
             "intro": intro[:600],
         }
 
+    def _extract_generic_details(self, url: str) -> Dict:
+        html = self._get_html(url, timeout=self._detail_timeout)
+        if not html:
+            return {}
+
+        soup = BeautifulSoup(html, "html.parser")
+        title = ""
+        og_title = soup.select_one("meta[property='og:title'], meta[name='twitter:title']")
+        if og_title and og_title.get("content"):
+            title = str(og_title.get("content")).strip()
+        if not title:
+            h1 = soup.select_one("h1")
+            title = h1.get_text(" ", strip=True) if h1 else self._page_title(html)
+
+        desc = ""
+        mdesc = soup.select_one("meta[name='description'], meta[property='og:description']")
+        if mdesc and mdesc.get("content"):
+            desc = str(mdesc.get("content")).strip()
+
+        return {
+            "title": title,
+            "description": desc[:600],
+        }
+
     def _print_dict(self, label: str, d: Dict):
         print("\n" + "-" * 85)
         print(f"[DETAIL] {label}")
@@ -374,6 +472,10 @@ class _pcgame_mod(api_collector_interface, ABC):
             for title, url in items:
                 if url in seen_urls:
                     continue
+
+                if not self._is_relevant_match(name, title, url):
+                    print(f"[API] [{site_name}] skipped unrelated: {title[:80]} | {url}")
+                    continue
                 seen_urls.add(url)
 
                 # ✅ DETAIL FETCH
@@ -384,10 +486,22 @@ class _pcgame_mod(api_collector_interface, ABC):
                 elif "pcgamingwiki" in site_name:
                     details = self._extract_pcgamingwiki_details(url)
                     self._print_dict(f"PCGW DETAILS for: {title}", details)
+                else:
+                    details = self._extract_generic_details(url)
+                    self._print_dict(f"{site_name.upper()} DETAILS for: {title}", details)
+
+                display_title = details.get("name") or details.get("title") or title
+                intro_text = self._normalize_text(str(details.get("intro") or ""))
+                if "pcgamingwiki" in site_name and "there is currently no text in this page" in intro_text:
+                    print(f"[API] [{site_name}] skipped missing wiki page: {display_title[:80]} | {url}")
+                    continue
+                if not self._is_relevant_match(name, display_title, url):
+                    print(f"[API] [{site_name}] skipped after detail mismatch: {display_title[:80]} | {url}")
+                    continue
 
                 # ✅ CARD BUILD
                 card = apk_model()
-                setattr(card, "m_app_name", details.get("name") or details.get("title") or title)
+                setattr(card, "m_app_name", display_title)
                 setattr(card, "m_app_url", url)
                 setattr(card, "m_package_id", self._slugify_pkg(url))
                 setattr(card, "m_mod_features", "")

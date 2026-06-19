@@ -4537,11 +4537,28 @@ function buildSeoExportPayload() {
     metadata: [
       ["Target URL", data.url || "-"],
       ["Host", (() => { try { return new URL(data.url).hostname; } catch { return "-"; } })()],
-      ["Grade", data.grade || "-"],
+      ["SEO Health Grade", data.seoHealthGrade || data.grade || "-"],
+      ["Scan Confidence", data.scanConfidenceGrade || "-"],
+      ["Scan Mode", data.scanModeUsed || "-"],
+      ["Raw Scan Available", data.rawScanAvailable ? "Yes" : "No"],
+      ["Rendered Scan Available", data.renderedScanAvailable ? "Yes" : "No"],
       ["Findings", audits.length],
       ["Scanned On", data.timestamp || "-"]
     ],
     sections: [
+      data.crawlerVisibility ? {
+        title: "Crawler Visibility",
+        text: data.crawlerVisibility.reason || "",
+        fields: [
+          ["Level", data.crawlerVisibility.level || "-"],
+          ["Raw Body Text", data.crawlerVisibility.signals?.bodyTextLength ?? "-"],
+          ["Raw Scripts", data.crawlerVisibility.signals?.scriptCount ?? "-"],
+          ["Rendered Body Text", data.crawlerVisibility.signals?.renderedBodyTextLength ?? "-"],
+          ["JS Heavy Likely", data.crawlerVisibility.signals?.jsHeavyLikely ? "Yes" : "No"],
+          ["Access Limited", data.crawlerVisibility.signals?.accessLimitedSignals ? "Yes" : "No"],
+          ["Bot Protection Likely", data.crawlerVisibility.signals?.botProtectionLikely ? "Yes" : "No"]
+        ]
+      } : null,
       data.ai_message || aiSuggestions.length ? {
         title: "Recommendations",
         text: data.ai_message || "",
@@ -4551,9 +4568,15 @@ function buildSeoExportPayload() {
         title: "Audit Findings",
         cards: audits.map((audit, index) => ({
           title: audit.title || `Audit ${index + 1}`,
-          subtitle: `Score ${audit.score ?? "-"}`,
-          text: audit.description || "",
-          fields: [["Audit Id", audit.id || index + 1]]
+          subtitle: `Score ${audit.score ?? "-"} | ${audit.status || "-"}`,
+          text: [audit.description, audit.note].filter(Boolean).join(" "),
+          fields: [
+            ["Audit Id", audit.id || index + 1],
+            ["Confidence", audit.confidence || "-"],
+            ["Evidence Source", audit.evidenceSource || "-"],
+            ["Evidence", audit.evidence || "-"],
+            ["Recommendation", audit.recommendation || "-"]
+          ]
         }))
       }
     ].filter(Boolean),
@@ -7445,25 +7468,61 @@ async function runSeoScan() {
 }
 
 function renderSeoReport(data) {
+  const seoHealthGrade = data.seoHealthGrade || data.grade || "-";
+  const scanConfidenceGrade = data.scanConfidenceGrade || "-";
+  const crawlerVisibility = data.crawlerVisibility || {};
+  const visibilityLevel = String(crawlerVisibility.level || "").toLowerCase();
   $("seoReportTitle").textContent = `Report for ${escapeHtml(data.url)}`;
   $("seoMetaUrl").textContent = data.url;
   $("seoMetaHost").textContent = new URL(data.url).hostname;
   $("seoMetaDate").textContent = data.timestamp;
-  $("seoGradeLetter").textContent = data.grade;
-  $("seoGradeCircle").className = `grade-circle grade-${data.grade.toLowerCase()}`;
+  $("seoGradeLetter").textContent = seoHealthGrade;
+  $("seoGradeLabel").textContent = "SEO Health";
+  $("seoGradeCircle").className = `grade-circle grade-${String(seoHealthGrade).toLowerCase()}`;
+  if ($("seoHealthGradeValue")) $("seoHealthGradeValue").textContent = seoHealthGrade;
+  if ($("seoScanConfidenceValue")) $("seoScanConfidenceValue").textContent = scanConfidenceGrade;
+  if ($("seoScanModeValue")) $("seoScanModeValue").textContent = data.scanModeUsed || "-";
+  const warningBox = $("seoCrawlerWarning");
+  const warningText = $("seoCrawlerWarningText");
+  if (warningBox && warningText) {
+    if (visibilityLevel === "low") {
+      warningBox.classList.remove("hidden");
+      warningText.textContent = "This page appears JavaScript-heavy, login-gated, or bot-protected. Some SEO findings are based only on limited crawler-visible HTML and should be treated as approximate.";
+    } else if (visibilityLevel === "medium") {
+      warningBox.classList.remove("hidden");
+      warningText.textContent = crawlerVisibility.reason || "Rendered scan returned partial evidence, so some findings may need manual verification.";
+    } else {
+      warningBox.classList.add("hidden");
+      warningText.textContent = "";
+    }
+  }
 
   const audits = data.audits || {};
   const auditItems = Object.keys(audits).map(id => audits[id]);
   $("seoFindingsCount").textContent = auditItems.length;
-  $("seoFindingsList").innerHTML = auditItems.map(a => `
+  $("seoFindingsList").innerHTML = auditItems.map(a => {
+    const status = String(a.status || (Number(a.score) >= 0.85 ? "pass" : Number(a.score) >= 0.55 ? "warning" : "fail"));
+    const evidence = String(a.evidence || "").trim();
+    const recommendation = String(a.recommendation || "").trim();
+    const confidence = String(a.confidence || "-");
+    const evidenceSource = String(a.evidenceSource || "-");
+    const note = String(a.note || "").trim();
+    return `
     <div class="compact-item">
       <div class="compact-title">${escapeHtml(a.title)}</div>
       <div class="compact-item-footer">
         <span class="compact-meta">Score: ${a.score}</span>
+        <span class="compact-meta">Status: ${escapeHtml(status)}</span>
+        <span class="compact-meta">Confidence: ${escapeHtml(confidence)}</span>
+        <span class="compact-meta">${escapeHtml(evidenceSource.replace(/_/g, " "))}</span>
       </div>
       <div class="compact-meta">${escapeHtml(a.description)}</div>
+      ${evidence ? `<div class="compact-meta">Evidence: ${escapeHtml(evidence)}</div>` : ""}
+      ${note ? `<div class="compact-meta">Note: ${escapeHtml(note)}</div>` : ""}
+      ${recommendation ? `<div class="compact-meta">Fix: ${escapeHtml(recommendation)}</div>` : ""}
     </div>
-  `).join("");
+  `;
+  }).join("");
 
   const aiBox = $("seoAiSuggestionsBox");
   const aiContent = $("seoAiSuggestionsContent");

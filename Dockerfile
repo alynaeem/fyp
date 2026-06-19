@@ -36,8 +36,8 @@ RUN pip install --no-cache-dir -r requirements.txt && \
 # Copy the full project
 COPY . .
 
-# Create logs directory
-RUN mkdir -p logs
+# Create runtime directories that are ignored from the Docker build context.
+RUN mkdir -p logs data/healing data/credential_checker api_collector/scripts/trivy_reports
 
 # Non-root user for security
 RUN useradd -m -u 1000 darkpulse && chown -R darkpulse:darkpulse /app

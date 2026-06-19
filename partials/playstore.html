@@ -1,0 +1,47 @@
+        <div class="view-panel hidden" id="viewPlaystore">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Digital Forensics</p>
+              <h2 class="section-title">Playstore Scanner</h2>
+            </div>
+          </div>
+          <div class="lookup-shell">
+            <div class="pakdb-search-row">
+              <input type="text" id="playstoreInput" class="search-input" placeholder="Enter Play Store URL (e.g. play.google.com/store/apps/details?id=com.example.app)" />
+              <button class="btn-primary" id="playstoreSearchBtn">Search</button>
+            </div>
+            <p class="hero-subtitle" style="margin-top: 10px; opacity: 0.7;">Checks for cracked key signals for the provided Play Store URL.</p>
+            
+            <div id="playstoreStatus" class="pakdb-status"></div>
+            <div class="export-toolbar hidden" id="playstoreExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export Playstore Scan</span>
+                <span class="export-toolbar-note">Download the current Playstore scanner result set.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="playstore" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="playstore" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
+
+            <div id="playstoreResultsHeader" class="results-stats-row hidden">
+              <div class="stat-card">
+                <span class="stat-label">API TYPE</span>
+                <span class="stat-value">cracked</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">TOTAL RESULTS</span>
+                <span class="stat-value" id="playstoreCount">0</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">QUERY</span>
+                <span class="stat-value" id="playstoreQueryLabel">-</span>
+              </div>
+            </div>
+
+            <div id="playstoreResults" class="playstore-results-container">
+              <!-- Results go here -->
+            </div>
+            <div id="playstorePagination" class="pagination-shell hidden"></div>
+          </div>
+        </div>

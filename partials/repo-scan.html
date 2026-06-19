@@ -1,0 +1,82 @@
+        <div class="view-panel hidden" id="viewRepoScan">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Security Posture</p>
+              <h2 class="section-title">Repository Scan</h2>
+            </div>
+          </div>
+          <div class="lookup-shell">
+            <div class="pakdb-search-row">
+              <input type="text" id="repoScanInput" class="search-input" placeholder="Enter GitHub repository URL (e.g. github.com/owner/repo)..." />
+              <button class="btn-primary" id="repoScanSearchBtn">Search</button>
+            </div>
+            <div id="repoScanStatus" class="pakdb-status"></div>
+            <div class="export-toolbar hidden" id="repoExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export Repository Scan</span>
+                <span class="export-toolbar-note">Download the latest repository posture report as JSON or PDF.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="repo" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="repo" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
+
+            <div id="repoScanReport" class="seo-report-container hidden">
+              <div class="seo-report-header">
+                <div class="seo-header-main">
+                  <div class="report-meta-group">
+                    <span class="badge-outline">Vulnerability Analysis</span>
+                    <h3 class="seo-report-title" id="repoReportTitle">Report for ...</h3>
+                    <p class="seo-report-subtitle">Trivy scan results for the provided repository.</p>
+                  </div>
+                  <div class="seo-grade-box">
+                    <div class="grade-circle" id="repoGradeCircle">
+                      <span class="grade-letter" id="repoGradeLetter">-</span>
+                      <span class="grade-label" id="repoGradeLabel">Scan</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="seo-meta-grid">
+                  <div class="mini-card">
+                    <span class="mini-card-label">Target URL</span>
+                    <span class="mini-card-value" id="repoMetaUrl">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Risk Score</span>
+                    <span class="mini-card-value" id="repoMetaScore">0</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Findings</span>
+                    <span class="mini-card-value" id="repoMetaCounts">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Status</span>
+                    <span class="badge-status status-ok" id="repoMetaStatus">Complete</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Scanned On</span>
+                    <span class="mini-card-value" id="repoMetaDate">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Scanned By</span>
+                    <span class="mini-card-value">DarkPulse / Trivy</span>
+                  </div>
+                </div>
+
+                <div id="repoRecommendationsBox" class="seo-suggestions-container hidden">
+                  <h4 class="suggestions-title hidden" id="repoRecommendationsTitle">AI Recommendations by DARKPULSE AI</h4>
+                  <div id="repoRecommendationsContent" class="suggestions-body"></div>
+                </div>
+              </div>
+
+              <div class="seo-findings-section">
+                <h4 class="findings-title">Vulnerabilities Findings (<span id="repoFindingsCount">0</span>)</h4>
+                <div id="repoFindingsList" class="findings-list">
+                  <!-- Findings Cards go here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>

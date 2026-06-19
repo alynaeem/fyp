@@ -3253,7 +3253,13 @@ function syncMapRegionTitles() {
     const code = String(region.getAttribute("data-code") || region.dataset?.code || "").toUpperCase();
     if (!code) return;
     const stats = state.countryStatsByCode[code];
-    const countryName = stats?.name || displayNames?.of(code) || code;
+    let displayName = "";
+    try {
+      displayName = displayNames?.of(code) || "";
+    } catch (_) {
+      displayName = "";
+    }
+    const countryName = stats?.name || displayName || code;
     const total = Number(stats?.total || 0);
     const titleText = total
       ? `${countryName} - ${total} tracked activity item${total === 1 ? "" : "s"}`
@@ -3437,10 +3443,12 @@ function getMapRegionStyle(country, spotlight = false) {
 
 function applyMapRegionVisual(code, country, spotlight = false) {
   const element = getMapRegionElement(code);
-  if (!element) return;
+  if (!element || !element.style || typeof element.style.setProperty !== "function") return;
   const style = getMapRegionStyle(country, spotlight);
-  element.classList.toggle("map-region-affected", !spotlight && Number(country?.total || 0) > 0);
-  element.classList.toggle("map-region-spotlight", spotlight);
+  if (element.classList) {
+    element.classList.toggle("map-region-affected", !spotlight && Number(country?.total || 0) > 0);
+    element.classList.toggle("map-region-spotlight", spotlight);
+  }
   element.style.setProperty("fill", style.fill, "important");
   element.style.setProperty("stroke", style.stroke, "important");
   element.style.setProperty("stroke-width", style.strokeWidth, "important");

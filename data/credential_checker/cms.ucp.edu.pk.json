@@ -1,0 +1,4465 @@
+{
+    "Result": [
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:fareedqureshi@ucp.edu.pk:Haier13579@",
+            "channel": "NEW Pegasus Cloud",
+            "file": null,
+            "filename": "Slurm Data Base [@SlurmDataBase].rar",
+            "password": "Haier13579@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "fareedqureshi@ucp.edu.pk"
+            ],
+            "username": [
+                "fareedqureshi"
+            ],
+            "m_index": "stealer_model-000128",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:rubina.naz@ucp.edu.pk:Feelmeok1234@",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10632).txt",
+            "password": "Feelmeok1234@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "rubina.naz@ucp.edu.pk"
+            ],
+            "username": [
+                "rubina.naz"
+            ],
+            "m_index": "stealer_model-000182",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:fizza.batool@ucp.edu.pk:Ucp123@",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10646).txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "fizza.batool@ucp.edu.pk"
+            ],
+            "username": [
+                "fizza.batool"
+            ],
+            "m_index": "stealer_model-000170",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:sobia.kiran@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "sobia.kiran"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "sobia.kiran@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "169833944666267119787384685140922487879",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:iqraiqbal01@ucp.edu.pk:ucp@1234",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "iqraiqbal01"
+            ],
+            "password": "ucp@1234",
+            "email": [
+                "iqraiqbal01@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "69074208881948456885304730019115342303",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:Kaleem.ullah@ucp.edu.pk:Hameem514409...%",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "Kaleem.ullah"
+            ],
+            "password": "Hameem514409...%",
+            "email": [
+                "Kaleem.ullah@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "323315758892915799011092681763224640256",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:zaira.sarmad@ucp.edu.pk:Lxj44422@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "zaira.sarmad"
+            ],
+            "password": "Lxj44422@",
+            "email": [
+                "zaira.sarmad@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "60394103749566233762057464955566044793",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk:3720394865247:qa5yo2ochk",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "3720394865247"
+            ],
+            "password": "qa5yo2ochk",
+            "m_hash": "187423848440575687218046943336121952029",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:sumera.zaib@ucp.edu.pk:Ucp@12345",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "sumera.zaib"
+            ],
+            "password": "Ucp@12345",
+            "email": [
+                "sumera.zaib@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "264263124487126160846766746638043841660",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:iemGArdwrY@live.com:SlavBrod",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "iemGArdwrY"
+            ],
+            "password": "SlavBrod",
+            "email": [
+                "iemGArdwrY@live.com"
+            ],
+            "domain": [
+                "live.com"
+            ],
+            "m_hash": "270740651435395312454821873020241130450",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:sadia.zia@ucp.edu.pk:786786Mehdi",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "sadia.zia"
+            ],
+            "password": "786786Mehdi",
+            "email": [
+                "sadia.zia@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "188168795883677206342901427277085093301",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:ameera.javeria@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ameera.javeria"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "ameera.javeria@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "56420472423586999834566092664902680306",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:sanabil.yaqoob.pk:Q6SX0Y",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "sanabil.yaqoob.pk"
+            ],
+            "password": "Q6SX0Y",
+            "m_hash": "269489658316035987868204249484013704074",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:sidra.umar@ucp.edu.pk:Click020*",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "sidra.umar"
+            ],
+            "password": "Click020*",
+            "email": [
+                "sidra.umar@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "331801066189457992161100375925149020238",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:basharat.malik@ucp.edu.pk:Bum@20june",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "basharat.malik"
+            ],
+            "password": "Bum@20june",
+            "email": [
+                "basharat.malik@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "173224363527033697317970399279841820172",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:holmesp@arcor.de:H09672nt",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "holmesp"
+            ],
+            "password": "H09672nt",
+            "email": [
+                "holmesp@arcor.de"
+            ],
+            "domain": [
+                "arcor.de"
+            ],
+            "m_hash": "49846320683153011954450198322112600263",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:rabia_aslam@ucp.edu.pk:SUBJECTIVe123*",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "rabia_aslam"
+            ],
+            "password": "SUBJECTIVe123*",
+            "email": [
+                "rabia_aslam@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "168628678974905059469924465898638803950",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:waseem.aslam@ucp.edu.pk:COALbywaseem@123",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "waseem.aslam"
+            ],
+            "password": "COALbywaseem@123",
+            "email": [
+                "waseem.aslam@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "163271324273462627367074225779433473882",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:m.kaleem@ucp.edu.pk:Relisys321@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "m.kaleem"
+            ],
+            "password": "Relisys321@",
+            "email": [
+                "m.kaleem@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "139967112613850086854183801108694826714",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:oursblanc@bt.com:Pimacn",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "oursblanc"
+            ],
+            "password": "Pimacn",
+            "email": [
+                "oursblanc@bt.com"
+            ],
+            "domain": [
+                "bt.com"
+            ],
+            "m_hash": "174801611458553353736113628491811602419",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:muhammadarslan@ucp.edu.pk:lahore@12345",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "muhammadarslan"
+            ],
+            "password": "lahore@12345",
+            "email": [
+                "muhammadarslan@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "297793613232937138053396605863088486190",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:ahmad.ali01@ucp.edu.pk:Arsa123456.7@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ahmad.ali01"
+            ],
+            "password": "Arsa123456.7@",
+            "email": [
+                "ahmad.ali01@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "15722903113786225258513213129472699070",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:ammara.farooq.pk:HeavenHello.28!",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ammara.farooq.pk"
+            ],
+            "password": "HeavenHello.28!",
+            "m_hash": "155046055827372805825737018279270813984",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:agnespaiutrite@fastmail.com:manue--__",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "agnespaiutrite"
+            ],
+            "password": "manue--__",
+            "email": [
+                "agnespaiutrite@fastmail.com"
+            ],
+            "domain": [
+                "fastmail.com"
+            ],
+            "m_hash": "196647216115922978381601417620362231070",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:muhammadarslan.pk:lahore@12345",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "muhammadarslan.pk"
+            ],
+            "password": "lahore@12345",
+            "m_hash": "246390929947167088388105244254472391591",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:aleena.qadeer@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "aleena.qadeer"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "aleena.qadeer@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "319756586094929667422670268586324670977",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:ngwessaaduler@googlemail.com:1jjeti149",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ngwessaaduler"
+            ],
+            "password": "1jjeti149",
+            "email": [
+                "ngwessaaduler@googlemail.com"
+            ],
+            "domain": [
+                "googlemail.com"
+            ],
+            "m_hash": "186898214172103780440247977075331197742",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:rohma.shahzad@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "rohma.shahzad"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "rohma.shahzad@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "283276896967717755851018216513814094502",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:sahir.mushtaq@ucp.edu.pk:arshad86",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "sahir.mushtaq"
+            ],
+            "password": "arshad86",
+            "email": [
+                "sahir.mushtaq@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "283929127884246387475847707852247671401",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:ghulam.shabir@ucp.edu.pk:Muha123mmad@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ghulam.shabir"
+            ],
+            "password": "Muha123mmad@",
+            "email": [
+                "ghulam.shabir@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "239603304306513906042849261384105664930",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:izzah.shahid@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "izzah.shahid"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "izzah.shahid@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "233707729014540284623155623542204646602",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:wojciechbatori@mail.ru:1000Fu",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "wojciechbatori"
+            ],
+            "password": "1000Fu",
+            "email": [
+                "wojciechbatori@mail.ru"
+            ],
+            "domain": [
+                "mail.ru"
+            ],
+            "m_hash": "259300719777013587399727841468306637171",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:FritCawAiotg@alice.it:al549ex#79",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "FritCawAiotg"
+            ],
+            "password": "al549ex#79",
+            "email": [
+                "FritCawAiotg@alice.it"
+            ],
+            "domain": [
+                "alice.it"
+            ],
+            "m_hash": "63885716570336681025512210273250023466",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:a.bakar@ucp.edu.pk:AllahAllah1~!",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "a.bakar"
+            ],
+            "password": "AllahAllah1~!",
+            "email": [
+                "a.bakar@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "145382146271400157133273506214833933424",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:L1F21BSCS0551:PortalHR4",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F21BSCS0551"
+            ],
+            "password": "PortalHR4",
+            "m_hash": "210321451513433665818220992039324157118",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:farhan.dawood@ucp.edu.pk:High781*",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "farhan.dawood"
+            ],
+            "password": "High781*",
+            "email": [
+                "farhan.dawood@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "46979872213820926437632912745404227234",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk/login nasirmahmood@ucp.edu.pk:Nasir@123",
+            "channel": "Database.",
+            "file": null,
+            "filename": "url.login.pass_5.txt",
+            "password": "Nasir@123",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "nasirmahmood@ucp.edu.pk"
+            ],
+            "username": [
+                "nasirmahmood"
+            ],
+            "m_index": "stealer_model-000064",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:risham.noor@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "risham.noor"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "risham.noor@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "2138843677753002451730881278248661207",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:ammara.farooq@ucp.edu.pk:HeavenHello.28!",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ammara.farooq"
+            ],
+            "password": "HeavenHello.28!",
+            "email": [
+                "ammara.farooq@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "169052260174379095055922967776178265505",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:nasirmahmood@ucp.edu.pk:Nasir@123",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "nasirmahmood"
+            ],
+            "password": "Nasir@123",
+            "email": [
+                "nasirmahmood@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "20952894714722270954081621585158435025",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:aisha.hakim@ucp.edu.pk:Ucp123@",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10536).txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "aisha.hakim@ucp.edu.pk"
+            ],
+            "username": [
+                "aisha.hakim"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:ameera.javeria@ucp.edu.pk:Ucp123@",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10536).txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "ameera.javeria@ucp.edu.pk"
+            ],
+            "username": [
+                "ameera.javeria"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:shafaqat.ali:shafaqat@123",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@KURTXT_ULP - URL LOGIN PASS PRIVATE #10.txt",
+            "date": "2026-04-11",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "shafaqat.ali"
+            ],
+            "password": "shafaqat@123",
+            "m_hash": "260038203434144313588037848049455156801",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:david.samuel@ucp.edu.pk:abcd@12345",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@Kiucci Pvt (4).txt",
+            "date": "2026-05-22",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "david.samuel"
+            ],
+            "password": "abcd@12345",
+            "email": [
+                "david.samuel@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "233914154854638110018676372644852946692",
+            "m_index": "stealer_model-000194",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:annas.waseem@ucp.edu.pk:abcd@12345",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@Kiucci Pvt (4).txt",
+            "date": "2026-05-22",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "annas.waseem"
+            ],
+            "password": "abcd@12345",
+            "email": [
+                "annas.waseem@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "51410299242559336007723556281330308146",
+            "m_index": "stealer_model-000194",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:athar.azeem1@ucp.edu.pk:Sash1976#",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "athar.azeem1"
+            ],
+            "password": "Sash1976#",
+            "email": [
+                "athar.azeem1@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "4408365189027035291713146924971315789",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:ali.raza01@ucp.edu.pk:Sobi55711@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ali.raza01"
+            ],
+            "password": "Sobi55711@",
+            "email": [
+                "ali.raza01@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "202679552484347608050987609621660838",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:marriam.baloch@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "marriam.baloch"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "marriam.baloch@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "149213190288166439924781788678711723937",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:hasan.anwer@ucp.edu.pk:Ucp123@",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10574).txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "hasan.anwer@ucp.edu.pk"
+            ],
+            "username": [
+                "hasan.anwer"
+            ],
+            "m_index": "stealer_model-000107",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:dmcclusk@terra.es:82pp38mM3",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "dmcclusk"
+            ],
+            "password": "82pp38mM3",
+            "email": [
+                "dmcclusk@terra.es"
+            ],
+            "domain": [
+                "terra.es"
+            ],
+            "m_hash": "219434800181144259028691504698445646375",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:mazeem@ucp.edu.pk:Ucp@321",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "mazeem"
+            ],
+            "password": "Ucp@321",
+            "email": [
+                "mazeem@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "131596846254124423618757366590626605011",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:tooba.mehboob@ucp.edu.pk:Murtaza123456@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "tooba.mehboob"
+            ],
+            "password": "Murtaza123456@",
+            "email": [
+                "tooba.mehboob@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "65833085912651574655276932876766534876",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:aisha.hakim@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "aisha.hakim"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "aisha.hakim@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "77637351385324937673014543112984879206",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:shafiq.jullandhry@ucp.edu.pk:123",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "shafiq.jullandhry"
+            ],
+            "password": "123",
+            "email": [
+                "shafiq.jullandhry@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "332422693378955167470733520983677450900",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/passwordChange:farhan.dawood:Manal781*",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "farhan.dawood"
+            ],
+            "password": "Manal781*",
+            "m_hash": "253559406236542294816705037887645388450",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:hasan.anwer@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "hasan.anwer"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "hasan.anwer@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "142110845444478269175195887322336574437",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:Dr.taimoor@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "Dr.taimoor"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "Dr.taimoor@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "280901347222931467213933222579745466281",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:kashif.khan01@ucp.edu.pk:28EM4Z",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "kashif.khan01"
+            ],
+            "password": "28EM4Z",
+            "email": [
+                "kashif.khan01@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "89190317694398507769940978881292651050",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk:k.ahmad@ucp.edu.pk:ucp@54321",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#193.txt",
+            "date": "2026-04-06",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "k.ahmad"
+            ],
+            "password": "ucp@54321",
+            "email": [
+                "k.ahmad@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "239058204770781662764780037089124140224",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:m.azeem01@ucp.edu.pk:827@Ucp",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "m.azeem01"
+            ],
+            "password": "827@Ucp",
+            "email": [
+                "m.azeem01@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "165695861368190298113260775396405521182",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:usman.rashid@ucp.edu.pk:SR802O",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "usman.rashid"
+            ],
+            "password": "SR802O",
+            "email": [
+                "usman.rashid@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "22354268449889025631701805492285449365",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:dr.taimoor@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "dr.taimoor"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "dr.taimoor@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "61341381971490096667194066408008793227",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:shafia.arshad01@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "shafia.arshad01"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "shafia.arshad01@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "24273428967370495215083321352484119798",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:asma.ahsan@ucp.edu.pk:Bismillah@623",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "asma.ahsan"
+            ],
+            "password": "Bismillah@623",
+            "email": [
+                "asma.ahsan@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "130421634214319887505103650578706632343",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:eichamlk7iefer@hotmail.de:Flaia8-18&q1",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "eichamlk7iefer"
+            ],
+            "password": "Flaia8-18&q1",
+            "email": [
+                "eichamlk7iefer@hotmail.de"
+            ],
+            "domain": [
+                "hotmail.de"
+            ],
+            "m_hash": "209306709840569212250071324364633173002",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:fizza.batool@ucp.edu.pk:Ucp912@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "fizza.batool"
+            ],
+            "password": "Ucp912@",
+            "email": [
+                "fizza.batool@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "203164077331300378510969069562189490012",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:saher.zia@ucp.edu.pk:Yaadnimnu@153162",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "saher.zia"
+            ],
+            "password": "Yaadnimnu@153162",
+            "email": [
+                "saher.zia@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "45365782964513070655890822475148210667",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:huda.rehman@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "huda.rehman"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "huda.rehman@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "71263454235990087531923154210836940465",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:ilsa.nadeem@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ilsa.nadeem"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "ilsa.nadeem@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "322916777520792835034470132452667615475",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:amtsotto@mailnesia.com:muS71H157",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "amtsotto"
+            ],
+            "password": "muS71H157",
+            "email": [
+                "amtsotto@mailnesia.com"
+            ],
+            "domain": [
+                "mailnesia.com"
+            ],
+            "m_hash": "27541850682039899670738777484606255211",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:ammara.farooq.pk:HeavenHell.28!",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ammara.farooq.pk"
+            ],
+            "password": "HeavenHell.28!",
+            "m_hash": "83262420317782860231160443154097661258",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk/login fareedqureshi@ucp.edu.pk:Haier13579@",
+            "channel": "textbases (url:log:pass)",
+            "file": null,
+            "filename": "@txtbaseportal - FREE [OCT].txt",
+            "password": "Haier13579@",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null,
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "fareedqureshi@ucp.edu.pk"
+            ],
+            "username": [
+                "fareedqureshi"
+            ],
+            "m_index": "stealer_model-000106",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk/login Saima.Aman@ucp.edu.pk:S@ima123",
+            "channel": "textbases (url:log:pass)",
+            "file": null,
+            "filename": "@txtbaseportal - FREE [OCT].txt",
+            "password": "S@ima123",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null,
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "Saima.Aman@ucp.edu.pk"
+            ],
+            "username": [
+                "Saima.Aman"
+            ],
+            "m_index": "stealer_model-000106",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:nisar.balti@ucp.edu.pk:Nisar@11Ali",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 467].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "nisar.balti"
+            ],
+            "password": "Nisar@11Ali",
+            "email": [
+                "nisar.balti@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "290916570614599550422907056392509662806",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:khalil.ahmad@ucp.edu.pk:R6YUPS",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10526).txt",
+            "password": "R6YUPS",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "khalil.ahmad@ucp.edu.pk"
+            ],
+            "username": [
+                "khalil.ahmad"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:ahmad.hammad@ucp.edu.pk:123",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@KURTXT_ULP - URL LOGIN PASS PRIVATE #9.txt",
+            "date": "2026-04-10",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ahmad.hammad"
+            ],
+            "password": "123",
+            "email": [
+                "ahmad.hammad@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "128316359756525725787799390056207275983",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:mohyuddin@live.com:XDGKAR",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#193.txt",
+            "date": "2026-04-06",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "mohyuddin"
+            ],
+            "password": "XDGKAR",
+            "email": [
+                "mohyuddin@live.com"
+            ],
+            "domain": [
+                "live.com"
+            ],
+            "m_hash": "19261255353898623668666836257895771551",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk:afshan.naeem@ucp.edu.pk:Flora@007",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+            "date": "2026-03-25",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "afshan.naeem"
+            ],
+            "password": "Flora@007",
+            "email": [
+                "afshan.naeem@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "248894249977468957814250266365103969217",
+            "m_index": "stealer_model-000189",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:saleemakhtar@ucp.edu.pk:Maghrana1@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@KURTXT_ULP - URL LOGIN PASS PRIVATE #9.txt",
+            "date": "2026-04-10",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "saleemakhtar"
+            ],
+            "password": "Maghrana1@",
+            "email": [
+                "saleemakhtar@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "299072102914683185388396223003218731811",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:shafaqat.ali@ucp.edu.pk:shafaqat@123",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10526).txt",
+            "password": "shafaqat@123",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "shafaqat.ali@ucp.edu.pk"
+            ],
+            "username": [
+                "shafaqat.ali"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:ammara.farooq@ucp.edu.pk:HeavenHello.28!",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10535).txt",
+            "password": "HeavenHello.28!",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "ammara.farooq@ucp.edu.pk"
+            ],
+            "username": [
+                "ammara.farooq"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:muhammad.awais01@ucp.edu.pk:UCP786@",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10535).txt",
+            "password": "UCP786@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "muhammad.awais01@ucp.edu.pk"
+            ],
+            "username": [
+                "muhammad.awais01"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:maria.zafar@ucp.edu.pk:25SQDO",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10535).txt",
+            "password": "25SQDO",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "maria.zafar@ucp.edu.pk"
+            ],
+            "username": [
+                "maria.zafar"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk:nazish.ashfaq@ucp.edu.pk:Ucp123@",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (7).txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null,
+                null,
+                null,
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "nazish.ashfaq@ucp.edu.pk"
+            ],
+            "username": [
+                "nazish.ashfaq"
+            ],
+            "m_index": "stealer_model-000100",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk:arshad.rasool@ucp.edu.pk:pakistan1122",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (7).txt",
+            "password": "pakistan1122",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null,
+                null,
+                null,
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "arshad.rasool@ucp.edu.pk"
+            ],
+            "username": [
+                "arshad.rasool"
+            ],
+            "m_index": "stealer_model-000100",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:i.arshad@ucp.edu.pk:P@ssw0rd",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10531).txt",
+            "password": "P@ssw0rd",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "i.arshad@ucp.edu.pk"
+            ],
+            "username": [
+                "i.arshad"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:nazish.ashfaq@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "nazish.ashfaq"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "nazish.ashfaq@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "333399908545434812870111613384619253340",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:dr.sabiha@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "dr.sabiha"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "dr.sabiha@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "291805474629628453853869469035605352284",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:hafiz.ahsan@ucp.edu.pk:Ahsan390#",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "hafiz.ahsan"
+            ],
+            "password": "Ahsan390#",
+            "email": [
+                "hafiz.ahsan@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "302113987903331112733644388555366760685",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:muhammad.awais01@ucp.edu.pk:UCP786@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "muhammad.awais01"
+            ],
+            "password": "UCP786@",
+            "email": [
+                "muhammad.awais01@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "301530352988636989394902535720556533819",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:shamaila@ucp.edu.pk:Sash1976#",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-01",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "shamaila"
+            ],
+            "password": "Sash1976#",
+            "email": [
+                "shamaila@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "259746538895782253578170883430775201783",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login fareedqureshi@ucp.edu.pk:Haier13579@",
+            "channel": "textbases (url:log:pass)",
+            "file": null,
+            "filename": "@txtbaseportal - FREE [OCT].txt",
+            "password": "Haier13579@",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "fareedqureshi@ucp.edu.pk"
+            ],
+            "username": [
+                "fareedqureshi"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login Saima.Aman@ucp.edu.pk:S@ima123",
+            "channel": "textbases (url:log:pass)",
+            "file": null,
+            "filename": "@txtbaseportal - FREE [OCT].txt",
+            "password": "S@ima123",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "Saima.Aman@ucp.edu.pk"
+            ],
+            "username": [
+                "Saima.Aman"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:fareedqureshi@ucp.edu.pk:Haier13579@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#204.txt",
+            "date": "2026-03-20",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "fareedqureshi"
+            ],
+            "password": "Haier13579@",
+            "email": [
+                "fareedqureshi@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "188117274108637613555886528628402575907",
+            "m_index": "stealer_model-000188",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login Asima.saleem@ucp.edu.pk:Ucp@12345",
+            "channel": "textbases (url:log:pass)",
+            "file": null,
+            "filename": "@txtbaseportal - FREE [OCT].txt",
+            "password": "Ucp@12345",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "Asima.saleem@ucp.edu.pk"
+            ],
+            "username": [
+                "Asima.saleem"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:aleena.khan@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#195.txt",
+            "date": "2026-03-25",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "aleena.khan"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "aleena.khan@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "338810012175285797462186652557283446251",
+            "m_index": "stealer_model-000189",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:ahsan.farooqi@ucp.edu.pk:Punjabianz@123",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#195.txt",
+            "date": "2026-03-25",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ahsan.farooqi"
+            ],
+            "password": "Punjabianz@123",
+            "email": [
+                "ahsan.farooqi@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "184068083181631090986114461017268762359",
+            "m_index": "stealer_model-000189",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:saba.khurshid@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#195.txt",
+            "date": "2026-03-25",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "saba.khurshid"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "saba.khurshid@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "301637548585519347207825003724507383100",
+            "m_index": "stealer_model-000189",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:rizwan.ali6@ucp.edu.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#195.txt",
+            "date": "2026-03-25",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "rizwan.ali6"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "rizwan.ali6@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "321707927204637330759168876461866834367",
+            "m_index": "stealer_model-000189",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:rubina.naz@ucp.edu.pk:Feelmeok1234@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#195.txt",
+            "date": "2026-03-25",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "rubina.naz"
+            ],
+            "password": "Feelmeok1234@",
+            "email": [
+                "rubina.naz@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "317683931331801416260633262696028281646",
+            "m_index": "stealer_model-000189",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk:i.arshad@ucp.edu.pk:P@ssw0rd",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@kingprosupport FRESH PRIV ULP (56) (2).txt",
+            "date": "2026-05-16",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "i.arshad"
+            ],
+            "password": "P@ssw0rd",
+            "email": [
+                "i.arshad@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "85736480248748539215590154797802640169",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:zohra.hassan@ucp.edu.pk:RT5TEG",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#195.txt",
+            "date": "2026-03-25",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "zohra.hassan"
+            ],
+            "password": "RT5TEG",
+            "email": [
+                "zohra.hassan@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "218487580972656126871841357642520291742",
+            "m_index": "stealer_model-000189",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk:annas.waseem@ucp.edu.pk:Annas#1Lahore",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (10).txt",
+            "password": "Annas#1Lahore",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "annas.waseem@ucp.edu.pk"
+            ],
+            "username": [
+                "annas.waseem"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:Saima.Aman@ucp.edu.pk:S@ima123",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS PRIVATE 466].txt",
+            "date": "2026-04-02",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "Saima.Aman"
+            ],
+            "password": "S@ima123",
+            "email": [
+                "Saima.Aman@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "266392758556521437547897049521519941967",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk:fahad.anis@ucp.edu.pk:Fmcs2019$",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#195.txt",
+            "date": "2026-03-25",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "fahad.anis"
+            ],
+            "password": "Fmcs2019$",
+            "email": [
+                "fahad.anis@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "101944633721831355800234386476998477730",
+            "m_index": "stealer_model-000189",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:saqib.ilyas@ucp.edu.pk:Shutdown@123",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "☆ VIP ULP @BlackCloudAdmin (2).txt",
+            "date": "2026-05-21",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "saqib.ilyas"
+            ],
+            "password": "Shutdown@123",
+            "email": [
+                "saqib.ilyas@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "229638950732526839806511618106111536634",
+            "m_index": "stealer_model-000194",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk/login dr.naveed@ucp.edu.pk:NULL",
+            "channel": "Database.",
+            "file": null,
+            "filename": "url.login.pass_49.txt",
+            "password": "NULL",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "dr.naveed@ucp.edu.pk"
+            ],
+            "username": [
+                "dr.naveed"
+            ],
+            "m_index": "stealer_model-000080",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:khalil.ahmad@ucp.edu.pk:R6YUPS",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@AhegaoCloud 30KK+ LINES.txt",
+            "date": "2026-03-20",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "khalil.ahmad"
+            ],
+            "password": "R6YUPS",
+            "email": [
+                "khalil.ahmad@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "238081681857654744644929797208312674538",
+            "m_index": "stealer_model-000188",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk:huda.rehman@ucp.edu.pk:Ucp123@",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (7).txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null,
+                null,
+                null,
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "huda.rehman@ucp.edu.pk"
+            ],
+            "username": [
+                "huda.rehman"
+            ],
+            "m_index": "stealer_model-000100",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:saad.ilyas@ucp.edu.pk:Ucp12345@",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "☆ VIP ULP @BlackCloudAdmin (2).txt",
+            "date": "2026-05-21",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "saad.ilyas"
+            ],
+            "password": "Ucp12345@",
+            "email": [
+                "saad.ilyas@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "67729787945548674326591419465124211339",
+            "m_index": "stealer_model-000194",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:arslaan.ahmad@ucp.edu.pk:Ucp123@",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "☆ VIP ULP @BlackCloudAdmin (2).txt",
+            "date": "2026-05-21",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "arslaan.ahmad"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "arslaan.ahmad@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "192308230216996290244816618140175584588",
+            "m_index": "stealer_model-000194",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk:khadija.tanveer@ucp.edu.pk:C@reerlabE20",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (6).txt",
+            "password": "C@reerlabE20",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "khadija.tanveer@ucp.edu.pk"
+            ],
+            "username": [
+                "khadija.tanveer"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk:arshad.rasool@ucp.edu.pk:pakistan1122",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (7).txt",
+            "password": "pakistan1122",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null,
+                null,
+                null,
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "arshad.rasool@ucp.edu.pk"
+            ],
+            "username": [
+                "arshad.rasool"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk:huda.rehman@ucp.edu.pk:Ucp123@",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (7).txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null,
+                null,
+                null,
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "huda.rehman@ucp.edu.pk"
+            ],
+            "username": [
+                "huda.rehman"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk:khadija.tanveer@ucp.edu.pk:C@reerlabE20",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#204.txt",
+            "date": "2026-03-20",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "khadija.tanveer"
+            ],
+            "password": "C@reerlabE20",
+            "email": [
+                "khadija.tanveer@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "70651365740786788319995729314626594017",
+            "m_index": "stealer_model-000188",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:asima.hameed@ucp.edu.pk:aSIMA1122@",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (9).txt",
+            "password": "aSIMA1122@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "asima.hameed@ucp.edu.pk"
+            ],
+            "username": [
+                "asima.hameed"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk/login m.kaleem@ucp.edu.pk:NULL",
+            "channel": "Database.",
+            "file": null,
+            "filename": "url.login.pass_15.txt",
+            "password": "NULL",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "m.kaleem@ucp.edu.pk"
+            ],
+            "username": [
+                "m.kaleem"
+            ],
+            "m_index": "stealer_model-000087",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:prof.lhapcs22@pgc.edu.pk:04EQS1",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#191.txt",
+            "date": "2026-04-07",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "prof.lhapcs22"
+            ],
+            "password": "04EQS1",
+            "email": [
+                "prof.lhapcs22@pgc.edu.pk"
+            ],
+            "domain": [
+                "pgc.edu.pk"
+            ],
+            "m_hash": "101307145853429237763179396501993019494",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:maria.zafar@ucp.edu.pk:25SQDO",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "LillitULP_5 (2).txt",
+            "date": "2026-05-23",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "maria.zafar"
+            ],
+            "password": "25SQDO",
+            "email": [
+                "maria.zafar@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "134661321608453012116665817188843304634",
+            "m_index": "stealer_model-000194",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk:fahad.anis@ucp.edu.pk:Fmcs2019$",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (4).txt",
+            "password": "Fmcs2019$",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "fahad.anis@ucp.edu.pk"
+            ],
+            "username": [
+                "fahad.anis"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:farzeen.aziz@ucp.edu.pk:Ucp123@",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "LillitULP_3 (2).txt",
+            "date": "2026-05-23",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "farzeen.aziz"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "farzeen.aziz@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "212767652991636134284449107961001298235",
+            "m_index": "stealer_model-000194",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk/login asima.saleem@ucp.edu.pk:Ucp@12345",
+            "channel": "textbases (url:log:pass)",
+            "file": null,
+            "filename": "@txtbaseportal - FREE [OCT].txt",
+            "password": "Ucp@12345",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "asima.saleem@ucp.edu.pk"
+            ],
+            "username": [
+                "asima.saleem"
+            ],
+            "m_index": "stealer_model-000023",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:muhammad.ijaz@ucp.edu.pk:vFZSKaEJ",
+            "channel": "Cloud url:log:pass",
+            "file": null,
+            "file_name": "@cloud t35.txt",
+            "date": "2026-04-22",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "muhammad.ijaz"
+            ],
+            "password": "vFZSKaEJ",
+            "email": [
+                "muhammad.ijaz@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "126627669240928091807565626524971884562",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:Zaidbin.tariq@ucp.edu.pk:1993January03!",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "LillitULP_2 (2).txt",
+            "date": "2026-05-23",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "Zaidbin.tariq"
+            ],
+            "password": "1993January03!",
+            "email": [
+                "Zaidbin.tariq@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "25860492815647610371742584008796218589",
+            "m_index": "stealer_model-000194",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:arshad.rasool.pk:pakistan1122",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@kingprosupport FRESH PRIV ULP (675).txt",
+            "date": "2026-05-17",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "arshad.rasool.pk"
+            ],
+            "password": "pakistan1122",
+            "m_hash": "559327799783469896223858742766495923",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:muhammad.kashif.pk:Crow@311",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#189.txt",
+            "date": "2026-04-07",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "muhammad.kashif.pk"
+            ],
+            "password": "Crow@311",
+            "m_hash": "109202320442548788794927911901973348935",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:Maryam.zafar.pk:UPJECT",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@kingprosupport FRESH PRIV ULP (675).txt",
+            "date": "2026-05-17",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "Maryam.zafar.pk"
+            ],
+            "password": "UPJECT",
+            "m_hash": "48896592016095515318136297445554673714",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:ahmad.hammad@ucp.edu.pk:444",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10560).txt",
+            "password": "444",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null,
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "ahmad.hammad@ucp.edu.pk"
+            ],
+            "username": [
+                "ahmad.hammad"
+            ],
+            "m_index": "stealer_model-000110",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login sanabil.yaqoob@ucp.edu.pk:Q6SX0Y",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#189.txt",
+            "date": "2026-04-07",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "sanabil.yaqoob"
+            ],
+            "password": "Q6SX0Y",
+            "email": [
+                "sanabil.yaqoob@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "197989431457370372144931556834836364955",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:dr.afzal@ucp.edu.pk:NULL",
+            "channel": "Cloud url:log:pass",
+            "file": null,
+            "file_name": "@cloud t26.txt",
+            "date": "2026-04-22",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "dr.afzal"
+            ],
+            "password": "NULL",
+            "email": [
+                "dr.afzal@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "213370297129380950147602295598541417237",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:dr.naveed.pk:NULL",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "ZUKAX CLOUD ULP VIP (5) (3).txt",
+            "date": "2026-05-18",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "dr.naveed.pk"
+            ],
+            "password": "NULL",
+            "m_hash": "177203440810848438633182287516330222025",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:shahpara.salim@ucp.edu.pk:Ucp123@",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10604).txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "shahpara.salim@ucp.edu.pk"
+            ],
+            "username": [
+                "shahpara.salim"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:raja.mashhood:Ms72086727",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10609).txt",
+            "password": "Ms72086727",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "raja.mashhood"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk : khalil.ahmad@ucp.edu.pk : R6YUPS",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#200.txt",
+            "date": "2026-04-03",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "khalil.ahmad"
+            ],
+            "password": "R6YUPS",
+            "email": [
+                "khalil.ahmad@ucp.edu.pk "
+            ],
+            "domain": [
+                "ucp.edu.pk "
+            ],
+            "m_hash": "217288927769157738372906706879675281827",
+            "m_index": "stealer_model-000190",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:ahmed.zohaib@ucp.edu.pk:AZZ@foe1",
+            "channel": "@URL_LOG Free Bases",
+            "file": null,
+            "file_name": "@url_log #91.txt",
+            "date": "2026-05-04",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ahmed.zohaib"
+            ],
+            "password": "AZZ@foe1",
+            "email": [
+                "ahmed.zohaib@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "75988121408062714424868600636418461181",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:ahmad.farid@ucp.edu.pk:aFa12345",
+            "channel": "@URL_LOG Free Bases",
+            "file": null,
+            "file_name": "@url_log #91.txt",
+            "date": "2026-05-04",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ahmad.farid"
+            ],
+            "password": "aFa12345",
+            "email": [
+                "ahmad.farid@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "32131469400903233503868117626940688662",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:ahmad.mahmood@ucp.edu.pk:Faisalabad041",
+            "channel": "@URL_LOG Free Bases",
+            "file": null,
+            "file_name": "@url_log #91.txt",
+            "date": "2026-05-04",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "ahmad.mahmood"
+            ],
+            "password": "Faisalabad041",
+            "email": [
+                "ahmad.mahmood@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "53721326381620388600082722383605099729",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:khizer.ahmed@ucp.edu.pk:WE9PXP",
+            "channel": "@URL_LOG Free Bases",
+            "file": null,
+            "file_name": "@url_log #91.txt",
+            "date": "2026-05-04",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "khizer.ahmed"
+            ],
+            "password": "WE9PXP",
+            "email": [
+                "khizer.ahmed@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "85442781258357445314659047097156854009",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk:khadija.tanveer@ucp.edu.pk:C@reerlabE20",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (2).txt",
+            "password": "C@reerlabE20",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "khadija.tanveer@ucp.edu.pk"
+            ],
+            "username": [
+                "khadija.tanveer"
+            ],
+            "m_index": "stealer_model-000044",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:ahmad.ali01@ucp.edu.pk:Arsa123456.7@",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10559).txt",
+            "password": "Arsa123456.7@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "ahmad.ali01@ucp.edu.pk"
+            ],
+            "username": [
+                "ahmad.ali01"
+            ],
+            "m_index": "stealer_model-000111",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:iqra.nasim@ucp.edu.pk:Ucp123@",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10612).txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "iqra.nasim@ucp.edu.pk"
+            ],
+            "username": [
+                "iqra.nasim"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:asia.parveen@ucp.edu.pk:NULL",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10612).txt",
+            "password": "NULL",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "asia.parveen@ucp.edu.pk"
+            ],
+            "username": [
+                "asia.parveen"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk/login dr.sabiha@ucp.edu.pk:Ucp123@",
+            "channel": "Database.",
+            "file": null,
+            "filename": "url.login.pass_74.txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "dr.sabiha@ucp.edu.pk"
+            ],
+            "username": [
+                "dr.sabiha"
+            ],
+            "m_index": "stealer_model-000072",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:amtsotto@mailnesia.com:muS71H157",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10622).txt",
+            "password": "muS71H157",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "mailnesia.com"
+            ],
+            "email": [
+                "amtsotto@mailnesia.com"
+            ],
+            "username": [
+                "amtsotto"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:fahadanis87:c_780ub.61gc67n",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@kingprosupport FRESH PRIV ULP (581).txt",
+            "date": "2026-05-18",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "fahadanis87"
+            ],
+            "password": "c_780ub.61gc67n",
+            "m_hash": "55332447227110088793332035985335760686",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:muhammad.awais90@ucp.edu.pk:UCP675@",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10616).txt",
+            "password": "UCP675@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "muhammad.awais90@ucp.edu.pk"
+            ],
+            "username": [
+                "muhammad.awais90"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:kashif.khan90@ucp.edu.pk:07EM3Z",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10616).txt",
+            "password": "07EM3Z",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "kashif.khan90@ucp.edu.pk"
+            ],
+            "username": [
+                "kashif.khan90"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:zaryab.mahmood@ucp.edu.pk:Ucp123@",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10598).txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "zaryab.mahmood@ucp.edu.pk"
+            ],
+            "username": [
+                "zaryab.mahmood"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:m.kaleem@ucp.edu.pk:Relisys200@",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10616).txt",
+            "password": "Relisys200@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "m.kaleem@ucp.edu.pk"
+            ],
+            "username": [
+                "m.kaleem"
+            ],
+            "m_index": "stealer_model-000113",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:aleena.qadeer.pk:Ucp345@",
+            "channel": "darkside linklogs",
+            "file": null,
+            "file_name": "mansory (7).txt",
+            "date": "2026-03-13",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "aleena.qadeer.pk"
+            ],
+            "password": "Ucp345@",
+            "m_hash": "9748758857769637861798032543683490825",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:asima.hameed@ucp.edu.pk:aSIMA1122@",
+            "channel": "darkside linklogs",
+            "file": null,
+            "file_name": "mansory (7).txt",
+            "date": "2026-03-13",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "asima.hameed"
+            ],
+            "password": "aSIMA1122@",
+            "email": [
+                "asima.hameed@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "77540422047147075932447415509492116298",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk/login sumera.zaib@ucp.edu.pk:Ucp@12345",
+            "channel": "Database.",
+            "file": null,
+            "filename": "url.login.pass_78.txt",
+            "password": "Ucp@12345",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null,
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "sumera.zaib@ucp.edu.pk"
+            ],
+            "username": [
+                "sumera.zaib"
+            ],
+            "m_index": "stealer_model-000071",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:huda.rehman.pk:Ucp123@",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#196.txt",
+            "date": "2026-03-25",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "huda.rehman.pk"
+            ],
+            "password": "Ucp123@",
+            "m_hash": "270314508550901967944020965948993438870",
+            "m_index": "stealer_model-000188",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk/login rohsha.tahir@ucp.edu.pk:NULL",
+            "channel": "Database.",
+            "file": null,
+            "filename": "url.login.pass_94.txt",
+            "password": "NULL",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "rohsha.tahir@ucp.edu.pk"
+            ],
+            "username": [
+                "rohsha.tahir"
+            ],
+            "m_index": "stealer_model-000066",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:raja.mashhood:Ms72086727",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@Dragonvitulpnew [ULP part.4].txt",
+            "date": "2026-05-19",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "raja.mashhood"
+            ],
+            "password": "Ms72086727",
+            "m_hash": "316527479261430138416097803435182611061",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk:mujeeb.rahman@ucp.edu.pk:Ucp123@",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@Dragonvitulpnew [ULP part.4].txt",
+            "date": "2026-05-19",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "mujeeb.rahman"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "mujeeb.rahman@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "151261516202261381732462955496257093489",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk:l1f21bscs0551:PortalHR4",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@Dragonvitulpnew [ULP part.4].txt",
+            "date": "2026-05-19",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "l1f21bscs0551"
+            ],
+            "password": "PortalHR4",
+            "m_hash": "277187146776585480902204151529869186394",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk:huda.rehman@ucp.edu.pk:Ucp123@",
+            "channel": "DARKSIDE REBORN",
+            "file": null,
+            "filename": "Mansory (7).txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "huda.rehman@ucp.edu.pk"
+            ],
+            "username": [
+                "huda.rehman"
+            ],
+            "m_index": "stealer_model-000105",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:mazeem@ucp.edu.pk:Ucp@321",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10550).txt",
+            "password": "Ucp@321",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "mazeem@ucp.edu.pk"
+            ],
+            "username": [
+                "mazeem"
+            ],
+            "m_index": "stealer_model-000112",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk/login Asima.saleem@ucp.edu.pk:Ucp@12345",
+            "channel": "textbases (url:log:pass)",
+            "file": null,
+            "filename": "@txtbaseportal - FREE [OCT].txt",
+            "password": "Ucp@12345",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "Asima.saleem@ucp.edu.pk"
+            ],
+            "username": [
+                "Asima.saleem"
+            ],
+            "m_index": "stealer_model-000023",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login : mujtaba.hassan@ucp.edu.pk : Academia@edu.pk",
+            "channel": "Darkside hub",
+            "file": null,
+            "file_name": "mansory (4).txt",
+            "date": "2026-03-14",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "mujtaba.hassan"
+            ],
+            "password": "Academia@edu.pk",
+            "email": [
+                "mujtaba.hassan@ucp.edu.pk "
+            ],
+            "domain": [
+                "ucp.edu.pk "
+            ],
+            "m_hash": "30619328843901391019268588589965154580",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk:raja.mashhood@ucp.edu.pk:Ms@72086727",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#183.txt",
+            "date": "2026-04-09",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "raja.mashhood"
+            ],
+            "password": "Ms@72086727",
+            "email": [
+                "raja.mashhood@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "156032006546689178031017613038531670102",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk : arshad.rasool@ucp.edu.pk : pakistan1122",
+            "channel": "Darkside hub",
+            "file": null,
+            "file_name": "mansory (4).txt",
+            "date": "2026-03-14",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "arshad.rasool"
+            ],
+            "password": "pakistan1122",
+            "email": [
+                "arshad.rasool@ucp.edu.pk "
+            ],
+            "domain": [
+                "ucp.edu.pk "
+            ],
+            "m_hash": "36733280651681726813534107055553982456",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:Nimrah.farooq@ucp.edu.pk:3DJZLX",
+            "channel": "TXTLOG",
+            "file": null,
+            "file_name": "28-04-2026.txt",
+            "date": "2026-05-08",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "Nimrah.farooq"
+            ],
+            "password": "3DJZLX",
+            "email": [
+                "Nimrah.farooq@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "39528357648185695463763209534859721364",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:Asima.saleem@ucp.edu.pk:Ucp@12345",
+            "channel": "darkside linklogs",
+            "file": null,
+            "file_name": "mansory (7).txt",
+            "date": "2026-03-31",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "Asima.saleem"
+            ],
+            "password": "Ucp@12345",
+            "email": [
+                "Asima.saleem@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "152586403102451997887946036023471538874",
+            "m_index": "stealer_model-000189",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:iqraasif@ucp.edu.pk:9FJFTC",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@Kiucci Pvt (1).txt",
+            "date": "2026-05-19",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "iqraasif"
+            ],
+            "password": "9FJFTC",
+            "email": [
+                "iqraasif@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "336025969276966955559284061054909294434",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk:afshan.naeem@ucp.edu.pk:Flora@007",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10555).txt",
+            "password": "Flora@007",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "afshan.naeem@ucp.edu.pk"
+            ],
+            "username": [
+                "afshan.naeem"
+            ],
+            "m_index": "stealer_model-000111",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:shahpara.salim@ucp.edu.pk:Ucp123@",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@kingprosupport FRESH PRIV ULP (673).txt",
+            "date": "2026-05-19",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "shahpara.salim"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "shahpara.salim@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "25254490080627820233698498232979271203",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk/login:ilsa.nadeem@ucp.edu.pk:Ucp123@",
+            "channel": "Database.",
+            "file": null,
+            "filename": "url.login.pass_66.txt",
+            "password": "Ucp123@",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}",
+                null,
+                null
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "ilsa.nadeem@ucp.edu.pk"
+            ],
+            "username": [
+                "ilsa.nadeem"
+            ],
+            "m_index": "stealer_model-000074",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk:nida.khalid@ucp.edu.pk:Ucp123@",
+            "channel": "TXTLOG",
+            "file": null,
+            "file_name": "24-04-2026.txt",
+            "date": "2026-05-08",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "nida.khalid"
+            ],
+            "password": "Ucp123@",
+            "email": [
+                "nida.khalid@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "122594911319132323692477660082972703788",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/passwordChange:farhan.dawood:Manal892*",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@InfernoLogsCloud [URL LOG PASS] FREE#183.txt",
+            "date": "2026-04-09",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "farhan.dawood"
+            ],
+            "password": "Manal892*",
+            "m_hash": "291927228965330323642398039482105943951",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:gull.bano@ucp.edu.pk:2K8HHD",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@KURTXT_ULP - URL LOGIN PASS PRIVATE #9.txt",
+            "date": "2026-04-10",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "gull.bano"
+            ],
+            "password": "2K8HHD",
+            "email": [
+                "gull.bano@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "8494776749007487056859859774905971144",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:L1F20BSPH0016:UCP560084",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@Dragonvitulpnew [Private ULP part5].txt",
+            "date": "2026-05-20",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F20BSPH0016"
+            ],
+            "password": "UCP560084",
+            "m_hash": "31734138125224104023285864214931183415",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "credential",
+            "raw": "https://cms.ucp.edu.pk/login dr.afzal@ucp.edu.pk:NULL",
+            "channel": "Database.",
+            "file": null,
+            "filename": "url.login.pass_11.txt",
+            "password": "NULL",
+            "delimiter": [
+                ":",
+                " "
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "dr.afzal@ucp.edu.pk"
+            ],
+            "username": [
+                "dr.afzal"
+            ],
+            "m_index": "stealer_model-000088",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk:afshan.naeem.pk:Flora@007",
+            "channel": "Darkside hub",
+            "file": null,
+            "file_name": "mansory (7).txt",
+            "date": "2026-03-14",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "afshan.naeem.pk"
+            ],
+            "password": "Flora@007",
+            "m_hash": "257900346646635681205995739398995973767",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "https://cms.ucp.edu.pk/login:salman.iqbal.pk:Sami$420",
+            "channel": "Darkside hub",
+            "file": null,
+            "file_name": "mansory (7).txt",
+            "date": "2026-03-14",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "salman.iqbal.pk"
+            ],
+            "password": "Sami$420",
+            "m_hash": "15339218776689813713158535396834017280",
+            "m_index": "stealer_model-000187",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:Zaidbin.tariq@ucp.edu.pk:1993January03!",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10550).txt",
+            "password": "1993January03!",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "Zaidbin.tariq@ucp.edu.pk"
+            ],
+            "username": [
+                "Zaidbin.tariq"
+            ],
+            "m_index": "stealer_model-000112",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:L1F22BSCS0358:Z1a2i3n4",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@kingprosupport PRIVATE (1829) (2).txt",
+            "date": "2026-05-20",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "L1F22BSCS0358"
+            ],
+            "password": "Z1a2i3n4",
+            "m_hash": "145376406818910378463686433518143649400",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:shafaqat.ali@ucp.edu.pk:shafaqat@123",
+            "channel": "Ω 𝙾𝙼𝙴𝙶𝙰 𝙲𝙻𝙾𝚄𝙳 Ω",
+            "file": null,
+            "file_name": "@AhegaoCloud 9KK+ LINES.txt",
+            "date": "2026-04-10",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "shafaqat.ali"
+            ],
+            "password": "shafaqat@123",
+            "email": [
+                "shafaqat.ali@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "146197983944831310329699248682968012379",
+            "m_index": "stealer_model-000191",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:dir.elc@ucp.edu.pk:Sadia198010!",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@kingprosupport PRIVATE (1829) (2).txt",
+            "date": "2026-05-20",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "dir.elc"
+            ],
+            "password": "Sadia198010!",
+            "email": [
+                "dir.elc@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "221064937261674846608831493543472038838",
+            "m_index": "stealer_model-000193",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "c",
+            "raw": "https://cms.ucp.edu.pk/login:dr.afzal@ucp.edu.pk:NULL",
+            "channel": "UNIVERSE CLOUD / txtbases",
+            "file": null,
+            "filename": "@UNIVERSECLOUDTXT(10550).txt",
+            "password": "NULL",
+            "delimiter": [
+                ":"
+            ],
+            "mapping": [
+                "{url}",
+                "{email}"
+            ],
+            "domain": [
+                "cms.ucp.edu.pk",
+                "ucp.edu.pk"
+            ],
+            "email": [
+                "dr.afzal@ucp.edu.pk"
+            ],
+            "username": [
+                "dr.afzal"
+            ],
+            "m_index": "stealer_model-000112",
+            "m_sub_host": "/"
+        },
+        {
+            "type": "combo",
+            "raw": "cms.ucp.edu.pk/login:kashif.khan90@ucp.edu.pk:07EM3Z",
+            "channel": "💭 OBSERVER CLOUD",
+            "file": null,
+            "file_name": "@kingprosupport FRESH PRIV ULP (585).txt",
+            "date": "2026-05-16",
+            "source_domain": [
+                "cms.ucp.edu.pk"
+            ],
+            "username": [
+                "kashif.khan90"
+            ],
+            "password": "07EM3Z",
+            "email": [
+                "kashif.khan90@ucp.edu.pk"
+            ],
+            "domain": [
+                "ucp.edu.pk"
+            ],
+            "m_hash": "303565249592895859762071774721759114529",
+            "m_index": "stealer_model-000192",
+            "m_sub_host": "/"
+        }
+    ],
+    "Suggestions": [],
+    "Page_Count": 1.0
+}

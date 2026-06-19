@@ -1,0 +1,127 @@
+        <section class="intel-notification-bar" id="intelNotificationBar">
+          <div class="intel-notification-main">
+            <span class="intel-notification-dot" id="intelNotificationDot"></span>
+            <div class="intel-notification-copy">
+              <span class="intel-notification-label" id="intelNotificationLabel">Automation Idle</span>
+              <h2 class="intel-notification-title" id="intelNotificationTitle">No intelligence update is running</h2>
+              <p class="intel-notification-message" id="intelNotificationMessage">Press Scan Now to run a headless background sync while existing dashboard records stay available.</p>
+            </div>
+          </div>
+          <div class="intel-notification-meta" id="intelNotificationMeta"></div>
+        </section>
+
+        <section class="stats-strip" id="statsStrip">
+          <div class="stat-pill">
+            <span class="stat-label">Total</span>
+            <span class="stat-value" id="statTotalCount">0</span>
+          </div>
+          <div class="stat-pill" data-tab="news">
+            <span class="stat-label">News</span>
+            <span class="stat-value" id="statNewsCount">0</span>
+          </div>
+          <div class="stat-pill" data-tab="leak">
+            <span class="stat-label">Leaks</span>
+            <span class="stat-value" id="statLeakCount">0</span>
+          </div>
+          <div class="stat-pill" data-tab="defacement">
+            <span class="stat-label">Compromised Monitoring</span>
+            <span class="stat-value" id="statDefaceCount">0</span>
+          </div>
+          <div class="stat-pill" data-tab="exploit">
+            <span class="stat-label">Exploit</span>
+            <span class="stat-value" id="statExploitCount">0</span>
+          </div>
+          <div class="stat-pill" data-tab="social">
+            <span class="stat-label">Social</span>
+            <span class="stat-value" id="statSocialCount">0</span>
+          </div>
+          <div class="stat-pill" data-tab="api">
+            <span class="stat-label">API</span>
+            <span class="stat-value" id="statVulnCount">0</span>
+          </div>
+          <div class="stat-pill stat-pill-support">
+            <span class="stat-label">Affected Countries</span>
+            <span class="stat-value" id="statCountryCount">0</span>
+          </div>
+          <div class="stat-pill stat-pill-support">
+            <span class="stat-label">Leak Coverage</span>
+            <span class="stat-value" id="statLeakCoverageCount">0</span>
+          </div>
+          <div class="stat-pill stat-pill-support">
+            <span class="stat-label">Compromised Coverage</span>
+            <span class="stat-value" id="statDefaceCoverageCount">0</span>
+          </div>
+          <div class="stat-pill stat-pill-support">
+            <span class="stat-label">Credential Matches</span>
+            <span class="stat-value" id="statCredentialCount">0</span>
+          </div>
+          <div class="stat-pill stat-pill-support">
+            <span class="stat-label">Credential Files</span>
+            <span class="stat-value" id="statCredentialDatasetCount">0</span>
+          </div>
+          <div class="stat-pill stat-pill-support">
+            <span class="stat-label">Confidential Findings</span>
+            <span class="stat-value" id="statConfidentialCount">0</span>
+          </div>
+        </section>
+
+        <div class="view-panel" id="viewHomepage">
+          <section class="impact-hero">
+            <div class="impact-header">
+              <div>
+                <p class="section-kicker">Global Impact Map</p>
+                <h2 class="section-title">Countries hit by leak and compromised activity</h2>
+                <p class="section-copy">Affected regions are highlighted in red across the live heat map, with the active country and leak total rotating automatically from the restored dataset.</p>
+              </div>
+              <div class="impact-summary-grid">
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Affected Countries</span>
+                  <span class="mini-stat-value" id="impactCountriesCount">0</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Leak Coverage</span>
+                  <span class="mini-stat-value" id="impactLeakCoverage">0</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Compromised Coverage</span>
+                  <span class="mini-stat-value" id="impactDefaceCoverage">0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="impact-layout">
+              <div class="map-focus-inline">
+                <span class="map-focus-inline-chip">
+                  <span>Country</span>
+                  <strong id="mapFocusCountry">Loading...</strong>
+                </span>
+                <span class="map-focus-inline-chip">
+                  <span>Leaks</span>
+                  <strong id="mapFocusLeaks">0</strong>
+                </span>
+              </div>
+              <div class="map-shell">
+                <div id="mapSpotlightTag" class="map-spotlight-tag hidden" aria-hidden="true"></div>
+                <div id="worldMap" class="heatmap-container"></div>
+              </div>
+
+              <aside class="impact-rail">
+                <div class="rail-card">
+                  <div class="rail-card-header">
+                    <span class="section-kicker">Affected Countries</span>
+                    <span class="rail-card-note">Leak / Compromised</span>
+                  </div>
+                  <div id="countryImpactList" class="country-impact-list"></div>
+                </div>
+
+                <div class="rail-card">
+                  <div class="rail-card-header">
+                    <span class="section-kicker">Latest Activity</span>
+                    <span class="rail-card-note">Click to inspect full JSON</span>
+                  </div>
+                  <div id="recentIntelList" class="compact-list"></div>
+                </div>
+              </aside>
+            </div>
+          </section>
+        </div>

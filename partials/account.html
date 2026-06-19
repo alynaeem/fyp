@@ -1,0 +1,72 @@
+        <div class="view-panel hidden" id="viewAccount">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Profile Settings</p>
+              <h2 class="section-title">Account Details</h2>
+            </div>
+          </div>
+          <div class="account-shell">
+            <div class="account-profile-header">
+              <div class="account-avatar-large">DP</div>
+              <div class="account-header-text">
+                <h3>Admin Profile</h3>
+                <p>Account details and preferences.</p>
+                <small>Version 1.0.0</small>
+              </div>
+            </div>
+
+            <div class="account-section">
+              <div class="account-section-title">
+                <h4>Profile</h4>
+                <p>Manage profile identity and assigned access.</p>
+              </div>
+              <div class="account-grid">
+                <div class="account-field">
+                  <label>USERNAME</label>
+                  <input type="text" class="account-input" id="profileDisplayUsername" value="admin" disabled />
+                </div>
+                <div class="account-field">
+                  <label>ROLE</label>
+                  <input type="text" class="account-input" id="profileDisplayRole" value="Administrator" disabled />
+                </div>
+                <div class="account-field flex-wide">
+                  <label>PROJECT NAME</label>
+                  <div class="account-input-group">
+                    <input type="text" class="account-input" id="projectBrandInput" value="DarkPulse Intelligence" />
+                    <button class="btn-primary" id="saveBrandBtn">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="account-section">
+              <div class="account-section-title">
+                <h4>Preferences</h4>
+                <p>Security and appearance settings.</p>
+              </div>
+              <div class="account-list">
+                <div class="account-list-item">
+                  <div class="account-list-text">
+                    <h5>2 Factor Authentication</h5>
+                    <p id="label2faState">Disabled</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="toggle2fa" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="account-list-item">
+                  <div class="account-list-text">
+                    <h5>Theme</h5>
+                    <p id="labelThemeState">Dark Mode</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="toggleTheme" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

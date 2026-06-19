@@ -1,0 +1,205 @@
+        <div class="view-panel hidden" id="viewHealing">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Self-Healing Scrapers</p>
+              <h2 class="section-title">Healing Monitor</h2>
+            </div>
+          </div>
+          <div class="lookup-shell healing-shell">
+            <div class="healing-toolbar">
+              <div class="healing-toolbar-copy">
+                <h3 class="healing-toolbar-title">Monitor HTML drift across collector scripts</h3>
+                <p class="healing-toolbar-note">DarkPulse stores baseline HTML, detects structure changes, tests selector health, and suggests fixes when a page drifts.</p>
+              </div>
+              <div class="healing-toolbar-actions">
+                <button class="btn-secondary" id="healingDiscoverBtn">Discover Targets</button>
+                <button class="btn-primary" id="healingRunBtn">Run Healing Scan</button>
+              </div>
+            </div>
+
+            <div class="healing-explainer-card" id="healingExplainerCard">
+              <div class="healing-explainer-head">
+                <div>
+                  <span class="section-kicker">How It Works</span>
+                  <h3 class="healing-explainer-title">Why the monitor shows fewer targets than total backend scripts</h3>
+                </div>
+                <span class="healing-status-pill status-changed" id="healingExplainerBadge">Loading...</span>
+              </div>
+              <p class="healing-explainer-copy" id="healingExplainerIntro">Healing discovery scans collector script folders, skips framework files, ignores utility modules without a target URL, and keeps only real monitorable web targets.</p>
+              <div class="healing-explainer-metrics">
+                <div class="mini-card healing-stat-card">
+                  <span class="mini-card-label">Python Files</span>
+                  <span class="mini-card-value" id="healingExplainFiles">0</span>
+                </div>
+                <div class="mini-card healing-stat-card">
+                  <span class="mini-card-label">Skipped Infra</span>
+                  <span class="mini-card-value" id="healingExplainSkipped">0</span>
+                </div>
+                <div class="mini-card healing-stat-card">
+                  <span class="mini-card-label">Utility / No URL</span>
+                  <span class="mini-card-value" id="healingExplainUtility">0</span>
+                </div>
+                <div class="mini-card healing-stat-card">
+                  <span class="mini-card-label">Actual Targets</span>
+                  <span class="mini-card-value" id="healingExplainTargets">0</span>
+                </div>
+                <div class="mini-card healing-stat-card">
+                  <span class="mini-card-label">Default Run Limit</span>
+                  <span class="mini-card-value" id="healingExplainLimit">0</span>
+                </div>
+              </div>
+              <div class="healing-explainer-steps">
+                <article class="healing-step-card">
+                  <span class="healing-pill-label">1. Discovery</span>
+                  <strong class="healing-step-title">Script folders are scanned</strong>
+                  <p class="healing-step-copy" id="healingExplainRoots">The monitor checks leak, news, exploit, compromised monitoring, social, and API collector folders.</p>
+                </article>
+                <article class="healing-step-card">
+                  <span class="healing-pill-label">2. Filtering</span>
+                  <strong class="healing-step-title">Only real web targets are kept</strong>
+                  <p class="healing-step-copy" id="healingExplainFiltering">Files like <code>__init__.py</code>, <code>main.py</code>, and utility helpers are excluded from target discovery.</p>
+                </article>
+                <article class="healing-step-card">
+                  <span class="healing-pill-label">3. Monitor Run</span>
+                  <strong class="healing-step-title">HTML snapshots are compared</strong>
+                  <p class="healing-step-copy" id="healingExplainMonitor">Each run fetches target pages, stores a new HTML snapshot, compares drift, and checks selector health.</p>
+                </article>
+              </div>
+              <div class="healing-explainer-note" id="healingExplainerNote">Utility files without target URLs will appear here once discovery stats load.</div>
+            </div>
+
+            <div id="healingStatus" class="pakdb-status">Monitor ready.</div>
+
+            <div class="healing-stats-grid" id="healingStatsGrid">
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="">
+                <span class="mini-card-label">Total Scripts</span>
+                <span class="mini-card-value" id="healingStatTotalScripts">0</span>
+              </div>
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="healthy">
+                <span class="mini-card-label">Healthy</span>
+                <span class="mini-card-value" id="healingStatHealthy">0</span>
+              </div>
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="no_data">
+                <span class="mini-card-label">No Data</span>
+                <span class="mini-card-value" id="healingStatNoData">0</span>
+              </div>
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="blocked">
+                <span class="mini-card-label">Unreachable</span>
+                <span class="mini-card-value" id="healingStatUnreachable">0</span>
+              </div>
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="html_changed">
+                <span class="mini-card-label">HTML Changed</span>
+                <span class="mini-card-value" id="healingStatChanged">0</span>
+              </div>
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="repair_ready">
+                <span class="mini-card-label">Repair Ready</span>
+                <span class="mini-card-value" id="healingStatRepairReady">0</span>
+              </div>
+              <div class="mini-card healing-stat-card" data-healing-stat-filter="needs_review">
+                <span class="mini-card-label">Needs Review</span>
+                <span class="mini-card-value" id="healingStatNeedsReview">0</span>
+              </div>
+            </div>
+
+            <div class="rail-card healing-collector-shell">
+              <div class="rail-card-header">
+                <span class="section-kicker">Collector Breakdown</span>
+                <span class="rail-card-note" id="healingCollectorsSummary">0 collectors</span>
+              </div>
+              <div id="healingCollectorsGrid" class="healing-collector-grid"></div>
+            </div>
+
+            <div class="rail-card healing-scripts-shell">
+              <div class="rail-card-header healing-scripts-head">
+                <div>
+                  <span class="section-kicker">Per-Script Health</span>
+                  <span class="rail-card-note" id="healingScriptsSummary">0 scripts tracked</span>
+                </div>
+                <div class="healing-filter-bar">
+                  <input id="healingSearchInput" class="healing-search-input" type="search" placeholder="Search domain, script, collector..." />
+                  <select id="healingCollectorFilter" class="healing-filter-select">
+                    <option value="">All Collectors</option>
+                  </select>
+                  <select id="healingStatusFilter" class="healing-filter-select">
+                    <option value="">All Statuses</option>
+                    <option value="discovered">Discovered</option>
+                    <option value="checking">Checking</option>
+                    <option value="healthy">Healthy</option>
+                    <option value="blocked">Blocked</option>
+                    <option value="needs_review">Needs Review</option>
+                    <option value="failed">Failed</option>
+                    <option value="html_changed">HTML Changed</option>
+                    <option value="repair_ready">Repair Ready</option>
+                    <option value="repaired">Repaired</option>
+                    <option value="no_data">No Data</option>
+                    <option value="skipped">Skipped</option>
+                    <option value="no_url">No URL</option>
+                  </select>
+                  <select id="healingIssueFilter" class="healing-filter-select">
+                    <option value="">All Issues</option>
+                    <option value="blocked">Blocked / Cloudflare</option>
+                    <option value="playwright">Playwright Missing</option>
+                    <option value="selector">Selector Failed</option>
+                    <option value="timeout">Timeout</option>
+                    <option value="no_url">No URL</option>
+                  </select>
+                  <button class="btn-secondary" id="healingRefreshBtn">Refresh</button>
+                </div>
+              </div>
+              <div class="healing-list-toolbar">
+                <span id="healingLimitNotice">Showing monitored targets.</span>
+                <div class="healing-pagination">
+                  <button class="healing-inline-btn" id="healingPrevPageBtn" type="button">Prev</button>
+                  <span id="healingPageLabel">Page 1</span>
+                  <button class="healing-inline-btn" id="healingNextPageBtn" type="button">Next</button>
+                </div>
+              </div>
+              <div class="healing-target-list" id="healingScriptsTableBody">
+                <div class="healing-empty-copy">Loading healing monitor...</div>
+              </div>
+            </div>
+
+            <div class="healing-grid">
+              <div class="healing-column">
+                <div class="rail-card healing-detail-shell">
+                  <div class="rail-card-header">
+                    <span class="section-kicker">Monitored Target Detail</span>
+                    <span class="rail-card-note" id="healingDetailSummary">Select a script to inspect</span>
+                  </div>
+                  <div id="healingDetailPanel" class="healing-detail-panel">
+                    <div class="healing-empty-copy">Select a script to inspect baseline snapshots, latest HTML drift, failed selectors, and repair suggestions.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="healing-column">
+                <div class="rail-card">
+                  <div class="rail-card-header">
+                    <span class="section-kicker">Recent Events</span>
+                    <span class="rail-card-note" id="healingEventsSummary">0 recent healing events</span>
+                  </div>
+                  <div id="healingEventsList" class="compact-list"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-backdrop hidden" id="healingCheckBackdrop">
+            <div class="modal-panel healing-check-modal">
+              <div class="modal-header">
+                <div>
+                  <span class="section-kicker">Run Check</span>
+                  <h3 class="modal-title" id="healingCheckTitle">Target Check</h3>
+                  <p class="modal-summary" id="healingCheckSubtitle">Preparing target validation...</p>
+                </div>
+                <button class="modal-close" id="healingCheckClose" type="button" aria-label="Close">x</button>
+              </div>
+              <div id="healingCheckMeta" class="healing-check-meta"></div>
+              <div id="healingCheckProgress" class="healing-check-progress"></div>
+              <div class="healing-subsection">
+                <span class="healing-pill-label">Diagnosis</span>
+                <div id="healingCheckDiagnosis" class="healing-diagnosis-box">Waiting for check result...</div>
+              </div>
+            </div>
+          </div>
+        </div>

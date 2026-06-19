@@ -1,0 +1,27 @@
+        <div class="view-panel hidden" id="viewPakdb">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Lookup</p>
+              <h2 class="section-title">National Identity Search</h2>
+            </div>
+          </div>
+          <div class="lookup-shell">
+            <div class="pakdb-search-row">
+              <input type="tel" id="pakdbInput" class="search-input" placeholder="CNIC or Phone..." />
+              <button class="btn-primary" id="pakdbSearchBtn">Search</button>
+            </div>
+            <div id="pakdbStatus" class="pakdb-status"></div>
+            <div class="export-toolbar hidden" id="pakdbExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export Lookup</span>
+                <span class="export-toolbar-note">Download the current identity lookup result set.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="pakdb" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="pakdb" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
+            <div id="pakdbHistoryList" class="compact-list"></div>
+            <div id="pakdbPagination" class="pagination-shell hidden"></div>
+          </div>
+        </div>

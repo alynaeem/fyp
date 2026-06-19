@@ -7179,7 +7179,7 @@ async function runSoftwareScan() {
   $("softwareResultsHeader").classList.add("hidden");
   clearPagination("softwarePagination");
   setExportToolbarState("softwareExportBar", false);
-  showListScanLoading("softwareStatus", "softwareResults", "Queued: checking cracked PC game sources...", "accordion", 3);
+  showListScanLoading("softwareStatus", "softwareResults", "Queued: checking matching PC game/software sources...", "accordion", 3);
 
   try {
     const data = await apiFetch("/pcgame/scan", false, {
@@ -7223,6 +7223,7 @@ function renderSoftwareAccordion(item) {
     { label: "App Name", value: item.app_name || item.name || "not available" },
     { label: "Package Id", value: item.package_id || "not available" },
     { label: "App Url", value: item.app_url || item.url || "not available" },
+    { label: "Source", value: item.source || "not available" },
     { label: "Network", value: item.network || "clearnet" },
     { label: "Version", value: item.version || "not available" },
     { label: "Content Type", value: item.content_type || "pc_game" },
@@ -7242,7 +7243,7 @@ function renderSoftwareAccordion(item) {
       <summary>
         <div class="software-summary-title">
           <strong>${escapeHtml(normalizePreviewText(item.app_name || item.name || "Untitled", "Untitled"))}</strong>
-          <small>10 Fields</small>
+          <small>${fields.length} Fields</small>
         </div>
       </summary>
       <div class="software-details-grid">${gridHtml}</div>

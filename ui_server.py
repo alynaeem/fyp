@@ -5591,7 +5591,7 @@ pcgame_col = db["pcgame_scans"]
 
 @app.post("/pcgame/scan")
 async def pcgame_scan(request: Request):
-    """Search Steam and PCGamingWiki for a game."""
+    """Search multiple PC game/software sources and return query-matching entries only."""
     import asyncio
     from datetime import datetime, timezone
 

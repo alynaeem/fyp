@@ -1,0 +1,251 @@
+  <div class="modal-backdrop auth-backdrop" id="loginBackdrop">
+    <div class="auth-shell" id="authShell">
+      <div class="modal modal-login">
+        <div class="modal-header auth-login-header">
+          <div class="logo modal-logo">
+            <img src="/assets/logos/darkpulse-threatmark.svg" alt="DarkPulse" class="logo-mark" />
+            <div class="logo-stack">
+              <span class="logo-text">Dark<span class="logo-accent">Pulse</span></span>
+              <span class="logo-subtext">Authenticate to the live console</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-body" id="loginForm">
+          <p class="section-kicker auth-login-kicker">Threat Intelligence Access</p>
+          <h2 class="modal-title" id="loginTitle">Access the DarkPulse console</h2>
+          <p class="auth-panel-copy">Sign in to monitor leak activity, track adversaries, run scans, and manage the restored DarkPulse workflow from one local command surface.</p>
+          <div class="auth-login-meta">
+            <span>Local-first</span>
+            <span>2FA ready</span>
+            <span>Approval workflow</span>
+          </div>
+          <div id="loginInfo" class="test-result hidden"></div>
+          <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="loginUsername" placeholder="admin" autofocus />
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" />
+          </div>
+          <div id="loginError" class="error-msg hidden"></div>
+          <div class="auth-links auth-links-grid">
+            <a href="#" id="showRegisterLink">Create account</a>
+            <a href="#" id="showApprovalLink">Need approval?</a>
+            <a href="#" id="showForgotLink">Forgot password?</a>
+          </div>
+        </div>
+
+        <div class="modal-body hidden" id="registerForm">
+          <h2 class="modal-title">Request access</h2>
+          <p class="auth-panel-copy">Submit your analyst access request. An administrator can review and approve it from the DarkPulse user management panel.</p>
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="regName" placeholder="John Doe" />
+          </div>
+          <div class="input-group">
+            <label>Email Address</label>
+            <input type="email" id="regEmail" placeholder="john@example.com" />
+          </div>
+          <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="regUsername" placeholder="johndoe" />
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="regPassword" placeholder="Minimum 8 characters" />
+          </div>
+          <div id="registerError" class="error-msg hidden"></div>
+          <div class="auth-links">
+            <a href="#" id="showLoginLink">Back to login</a>
+          </div>
+        </div>
+
+        <div class="modal-body hidden" id="forgotForm">
+          <h2 class="modal-title">Recover access</h2>
+          <p class="auth-panel-copy">Enter your username or email. DarkPulse will record a reset request for administrator review inside the local system.</p>
+          <div class="input-group">
+            <label>Username or Email</label>
+            <input type="text" id="forgotIdentity" placeholder="admin or analyst@example.com" />
+          </div>
+          <div class="input-group">
+            <label>Recovery Note</label>
+            <input type="text" id="forgotMessage" placeholder="Explain what needs reset or mention the account context" />
+          </div>
+          <div id="forgotError" class="error-msg hidden"></div>
+          <div class="auth-links">
+            <a href="#" id="forgotBackToLogin">Back to login</a>
+          </div>
+        </div>
+
+        <div class="modal-body hidden" id="approvalForm">
+          <h2 class="modal-title">Approval workflow</h2>
+          <p class="auth-panel-copy">If your account is not approved yet, use this workflow so an administrator can review and activate it properly.</p>
+          <div class="auth-guide">
+            <div class="auth-guide-step"><span>01</span><p>Create an account with your full name, email, and analyst username.</p></div>
+            <div class="auth-guide-step"><span>02</span><p>Wait for admin review in the DarkPulse User Management section.</p></div>
+            <div class="auth-guide-step"><span>03</span><p>Once approved, sign in normally. If 2FA is enabled, DarkPulse will ask for OTP.</p></div>
+          </div>
+          <div class="auth-links auth-links-grid">
+            <a href="#" id="approvalOpenRegister">Open access request</a>
+            <a href="#" id="approvalBackToLogin">Back to login</a>
+          </div>
+        </div>
+
+        <div class="modal-body hidden" id="mfaForm">
+          <h2 class="modal-title" id="mfaTitle">Verify your identity</h2>
+          <p class="mfa-copy" id="mfaCopy">Enter the 6-digit code from your authenticator app to finish signing in.</p>
+          <div class="mfa-qr-shell hidden" id="mfaQrSection">
+            <div class="mfa-qr-card">
+              <img id="mfaQrImage" src="" alt="2FA setup QR code" />
+            </div>
+            <div class="mfa-secret-shell">
+              <label>Manual setup key</label>
+              <code id="mfaManualSecret" class="mfa-secret-code">-</code>
+              <p id="mfaSecretHint" class="mfa-secret-hint">Scan the QR code once, or enter the secret manually in your authenticator app.</p>
+            </div>
+          </div>
+          <div class="input-group">
+            <label>One-Time Password</label>
+            <input type="text" id="mfaOtpInput" placeholder="123456" inputmode="numeric" maxlength="6" />
+          </div>
+          <div id="mfaError" class="error-msg hidden"></div>
+          <div class="auth-links">
+            <a href="#" id="mfaBackToLogin">Back to login</a>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-primary auth-submit" id="authSubmitBtn">Sign In</button>
+        </div>
+      </div>
+
+      <section class="auth-showcase" aria-hidden="true">
+        <div class="auth-showcase-grid"></div>
+        <div class="auth-showcase-copy">
+          <p class="section-kicker">Threat Intelligence Platform</p>
+          <div class="auth-brand-line">
+            <img src="/assets/logos/darkpulse-threatmark.svg" alt="DarkPulse mark" class="auth-brand-mark" />
+            <div>
+              <h1>Dark<span class="logo-accent">Pulse</span> Intelligence</h1>
+              <p>Operational visibility for leaks, ransomware signals, compromised website evidence, hostile channels, semantic routing, and collector healing.</p>
+            </div>
+          </div>
+          <div class="auth-feature-column">
+            <div class="auth-feature-card">
+              <span class="auth-feature-dot"></span>
+              <div>
+                <strong>Adversary Tracking</strong>
+                <p>Correlate actors, victim mentions, and restored evidence inside one console.</p>
+              </div>
+            </div>
+            <div class="auth-feature-card">
+              <span class="auth-feature-dot"></span>
+              <div>
+                <strong>Collector Healing</strong>
+                <p>Monitor HTML drift, selector health, and repair readiness before feeds break.</p>
+              </div>
+            </div>
+            <div class="auth-feature-card">
+              <span class="auth-feature-dot"></span>
+              <div>
+                <strong>Analyst Workflow</strong>
+                <p>Route search semantically, translate records, and review screenshots locally.</p>
+              </div>
+            </div>
+          </div>
+          <div class="auth-threat-ribbon">
+            <span class="auth-threat-pill critical">Leak Watch</span>
+            <span class="auth-threat-pill">Exploit Correlation</span>
+            <span class="auth-threat-pill">Dark Web Signals</span>
+            <span class="auth-threat-pill info">Collector Healing</span>
+          </div>
+        </div>
+        <div class="auth-visual-deck">
+          <div class="auth-console-preview">
+            <div class="auth-console-chrome">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="auth-console-frame">
+              <aside class="auth-console-sidebar">
+                <div class="auth-console-logo">
+                  <img src="/assets/logos/darkpulse-threatmark.svg" alt="" />
+                  <span>DarkPulse</span>
+                </div>
+                <div class="auth-console-nav">
+                  <span class="active">Command Center</span>
+                  <span>Leaks</span>
+                  <span>Compromised Monitoring</span>
+                  <span>Social Intel</span>
+                  <span>Documentation</span>
+                </div>
+              </aside>
+              <div class="auth-console-content">
+                <div class="auth-console-toolbar">
+                  <div class="auth-console-search"></div>
+                  <div class="auth-console-led"></div>
+                </div>
+                <div class="auth-console-stats">
+                  <div class="auth-console-stat"><strong>326</strong><span>Social</span></div>
+                  <div class="auth-console-stat"><strong>1520</strong><span>Leaks</span></div>
+                  <div class="auth-console-stat"><strong>9604</strong><span>Exploit</span></div>
+                </div>
+                <div class="auth-console-feed">
+                  <div class="auth-console-card live featured">
+                    <span class="auth-console-card-tag">Threat Intel</span>
+                    <strong>Iran-linked Microsoft 365 targeting surfaced</strong>
+                    <p>DarkPulse semantically connected this reporting to ransomware coverage, actor references, and linked campaign evidence already restored inside the local console.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="auth-visual-column">
+            <div class="auth-radar-panel">
+              <div class="auth-radar">
+                <div class="auth-radar-threats">
+                  <span class="auth-radar-threat label-1">Leaks</span>
+                  <span class="auth-radar-threat label-2">Ransomware</span>
+                  <span class="auth-radar-threat label-3">Compromised</span>
+                  <span class="auth-radar-threat label-4">Threat Intel</span>
+                </div>
+                <span class="auth-radar-ring ring-1"></span>
+                <span class="auth-radar-ring ring-2"></span>
+                <span class="auth-radar-ring ring-3"></span>
+                <span class="auth-radar-sweep"></span>
+                <span class="auth-radar-core"></span>
+              </div>
+              <div class="auth-radar-caption">
+                <strong>Active intelligence sweep</strong>
+                <p>Restored feeds, collector health, and evidence surfaces stay visible in one live command view.</p>
+              </div>
+            </div>
+          
+                
+             
+               
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="auth-loading-overlay hidden" id="authLoadingOverlay" aria-live="polite" aria-busy="true">
+      <div class="auth-loading-card">
+        <div class="auth-loading-ring" id="authLoadingRing" style="--auth-progress: 0%;">
+          <div class="auth-loading-ring-core">
+            <strong id="authLoadingPercent">0%</strong>
+            <span>DarkPulse</span>
+          </div>
+        </div>
+        <p class="section-kicker auth-loading-kicker" id="authLoadingKicker">Authenticating</p>
+        <h3 class="auth-loading-title" id="authLoadingTitle">Signing in to DarkPulse</h3>
+        <p class="auth-loading-copy" id="authLoadingCopy">Verifying your credentials and preparing the live console.</p>
+        <div class="auth-loading-stage" id="authLoadingStage">Checking username and password...</div>
+      </div>
+    </div>

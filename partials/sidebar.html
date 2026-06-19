@@ -1,0 +1,210 @@
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img src="/assets/logos/darkpulse-threatmark.svg" alt="DarkPulse" class="logo-mark" />
+          <div class="logo-stack">
+            <span class="logo-text" id="appBrandName">Dark<span class="logo-accent">Pulse</span></span>
+            <span class="logo-subtext">Live Intelligence Console</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-user" id="sidebarUser">
+        <div class="user-avatar">DP</div>
+        <div class="user-info">
+          <span class="user-name" id="currentUserName">admin</span>
+          <span class="user-role" id="currentUserRole">Administrator</span>
+        </div>
+      </div>
+
+      <div class="sidebar-scan-shell">
+        <div class="sidebar-scan-card">
+          <div class="sidebar-scan-copy">
+            <span class="sidebar-scan-kicker">Automation</span>
+            <strong class="sidebar-scan-title">One-Click Intelligence Update</strong>
+            <p class="sidebar-scan-meta">Start a hidden fast sync. Cached records stay visible while new dated intelligence is added to MongoDB.</p>
+          </div>
+          <div class="sidebar-scan-actions">
+            <button class="scan-now-btn" id="smartUpdateBtn" title="Scan Now">Scan Now</button>
+            <button class="scan-stop-btn" id="stopSmartUpdateBtn" title="Stop Scan" disabled>Stop Scan</button>
+          </div>
+          <button class="scan-alert-btn" id="alertSummaryBtn" title="Alert Summary" disabled>Alert Summary</button>
+          <div class="sidebar-translate-shell">
+            <div class="sidebar-translate-row">
+              <button class="scan-translate-btn" id="translateViewBtn" title="Translate Current View">Translate View</button>
+              <button class="scan-language-reset" id="resetLanguageBtn" title="Reset to English" disabled>Original</button>
+            </div>
+            <p class="sidebar-translate-note" id="languageIndicator">Original intelligence text</p>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-separator">Overview</div>
+          <div class="nav-item active" data-view="homepage">
+            <span class="nav-icon">01</span>
+            <div class="nav-copy">
+              <span class="nav-label">Command Center</span>
+              <span class="nav-meta">Impact map and live hotspots</span>
+            </div>
+          </div>
+          <div class="nav-item" data-tab="all">
+            <span class="nav-icon">02</span>
+            <div class="nav-copy">
+              <span class="nav-label">Live Feed</span>
+              <span class="nav-meta">All restored intelligence items</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-section nav-section-compact">
+          <div class="nav-separator">Intel Streams</div>
+          <div class="nav-item" data-tab="news">
+            <span class="nav-icon">N</span>
+            <div class="nav-copy">
+              <span class="nav-label">News</span>
+              <span class="nav-meta">Security reporting and advisories</span>
+            </div>
+          </div>
+          <div class="nav-item" data-tab="leak">
+            <span class="nav-icon">L</span>
+            <div class="nav-copy">
+              <span class="nav-label">Leaks</span>
+              <span class="nav-meta">Breach tracking, disclosures, dumps</span>
+            </div>
+          </div>
+          <div class="nav-item" data-tab="defacement">
+            <span class="nav-icon">D</span>
+            <div class="nav-copy">
+              <span class="nav-label">Compromised Monitoring</span>
+              <span class="nav-meta">Targeted compromised website activity</span>
+            </div>
+          </div>
+          <div class="nav-item" data-tab="exploit">
+            <span class="nav-icon">E</span>
+            <div class="nav-copy">
+              <span class="nav-label">Exploits</span>
+              <span class="nav-meta">Weaponized exploits and PoCs</span>
+            </div>
+          </div>
+          <div class="nav-item" data-tab="social">
+            <span class="nav-icon">S</span>
+            <div class="nav-copy">
+              <span class="nav-label">Social</span>
+              <span class="nav-meta">Forum and channel monitoring</span>
+            </div>
+          </div>
+          <div class="nav-item" data-tab="api">
+            <span class="nav-icon">A</span>
+            <div class="nav-copy">
+              <span class="nav-label">API Tools</span>
+              <span class="nav-meta">Collected API outputs and scanners</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-section nav-section-compact">
+          <div class="nav-separator">Lookup & Exposure</div>
+          <div class="nav-item" data-view="pakdb">
+            <span class="nav-icon">PK</span>
+            <div class="nav-copy">
+              <span class="nav-label">National Identity</span>
+              <span class="nav-meta">Entity and phone lookup workflow</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="credential-checker" id="sidebarNavItemCredentialChecker">
+            <span class="nav-icon">CC</span>
+            <div class="nav-copy">
+              <span class="nav-label">Credential Checker</span>
+              <span class="nav-meta">Search local stealer-log JSON datasets</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="confidential-data" id="sidebarNavItemConfidentialData">
+            <span class="nav-icon">CD</span>
+            <div class="nav-copy">
+              <span class="nav-label">Confidential Data</span>
+              <span class="nav-meta">Guarded review for sensitive document evidence</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="seo" id="sidebarNavItemSeo">
+            <span class="nav-icon">SO</span>
+            <div class="nav-copy">
+              <span class="nav-label">SEO Checker</span>
+              <span class="nav-meta">Full report for website audits</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="repo-scan" id="sidebarNavItemRepoScan">
+            <span class="nav-icon">RS</span>
+            <div class="nav-copy">
+              <span class="nav-label">Repository Scan</span>
+              <span class="nav-meta">GitHub vulnerability analysis</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-section nav-section-compact">
+          <div class="nav-separator">App & Software Scans</div>
+          <div class="nav-item" data-view="playstore" id="sidebarNavItemPlaystore">
+            <span class="nav-icon">PS</span>
+            <div class="nav-copy">
+              <span class="nav-label">Play Store</span>
+              <span class="nav-meta">Search for modded APK versions</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="software" id="sidebarNavItemSoftware">
+            <span class="nav-icon">PC</span>
+            <div class="nav-copy">
+              <span class="nav-label">PC Game Scan</span>
+              <span class="nav-meta">Search for PC games and mods</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-section nav-section-compact">
+          <div class="nav-separator">Operations</div>
+          <div class="nav-item" data-view="healing" id="sidebarNavItemHealing">
+            <span class="nav-icon">HM</span>
+            <div class="nav-copy">
+              <span class="nav-label">Healing Monitor</span>
+              <span class="nav-meta">HTML drift, selector breakage, auto-fix status</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="leak-source-status" id="sidebarNavItemLeakSourceStatus">
+            <span class="nav-icon">LS</span>
+            <div class="nav-copy">
+              <span class="nav-label">Leak Sources</span>
+              <span class="nav-meta">Every leak script, Mongo docs, and crawl result</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="docs" id="sidebarNavItemDocs">
+            <span class="nav-icon">DC</span>
+            <div class="nav-copy">
+              <span class="nav-label">Documentation</span>
+              <span class="nav-meta">Guides, features, workflows, and operating notes</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="account" id="sidebarNavItemAccount">
+            <span class="nav-icon">AC</span>
+            <div class="nav-copy">
+              <span class="nav-label">Account</span>
+              <span class="nav-meta">Profile and system settings</span>
+            </div>
+          </div>
+          <div class="nav-item" data-view="admin-users" id="sidebarNavItemUsers" style="display:none;">
+            <span class="nav-icon">U</span>
+            <div class="nav-copy">
+              <span class="nav-label">Users</span>
+              <span class="nav-meta">Approval and access management</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="logout-btn" id="logoutBtn">
+          <span class="nav-icon">X</span>
+          <span class="nav-label">Logout</span>
+        </button>
+      </div>
+    </aside>

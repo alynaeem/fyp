@@ -1,0 +1,47 @@
+        <div class="view-panel hidden" id="viewSoftware">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Digital Forensics</p>
+              <h2 class="section-title">PC Game Scan</h2>
+            </div>
+          </div>
+          <div class="lookup-shell">
+            <div class="pakdb-search-row">
+              <input type="text" id="softwareInput" class="search-input" placeholder="Enter any PC game name..." />
+              <button class="btn-primary" id="softwareSearchBtn">Search</button>
+            </div>
+            <p class="hero-subtitle" style="margin-top: 10px; opacity: 0.7;">Checks matching PC game/software entries across multiple web sources.</p>
+            
+            <div id="softwareStatus" class="pakdb-status"></div>
+            <div class="export-toolbar hidden" id="softwareExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export PC Game Scan</span>
+                <span class="export-toolbar-note">Download the current PC game scan result set.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="software" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="software" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
+
+            <div id="softwareResultsHeader" class="results-stats-row hidden">
+              <div class="stat-card">
+                <span class="stat-label">API TYPE</span>
+                <span class="stat-value">software</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">TOTAL RESULTS</span>
+                <span class="stat-value" id="softwareCount">0</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">QUERY 1</span>
+                <span class="stat-value" id="softwareQueryLabel">-</span>
+              </div>
+            </div>
+
+            <div id="softwareResults" class="software-results-container">
+              <!-- Results go here -->
+            </div>
+            <div id="softwarePagination" class="pagination-shell hidden"></div>
+          </div>
+        </div>

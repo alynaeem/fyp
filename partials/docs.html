@@ -1,0 +1,114 @@
+        <div class="view-panel hidden" id="viewDocs">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Operator Manual</p>
+              <h2 class="section-title">DarkPulse Documentation</h2>
+            </div>
+          </div>
+          <div class="docs-shell">
+            <aside class="docs-rail">
+              <a href="#docs-quickstart" class="docs-rail-link">Quick Start</a>
+              <a href="#docs-auth" class="docs-rail-link">Access and Auth</a>
+              <a href="#docs-command" class="docs-rail-link">Command Center</a>
+              <a href="#docs-search" class="docs-rail-link">Semantic Search</a>
+              <a href="#docs-scanners" class="docs-rail-link">Scanners</a>
+              <a href="#docs-healing" class="docs-rail-link">Healing Monitor</a>
+              <a href="#docs-admin" class="docs-rail-link">Admin Operations</a>
+            </aside>
+            <article class="docs-article">
+              <section class="docs-hero" id="docs-quickstart">
+                <p class="section-kicker">DarkPulse Manual</p>
+                <h3 class="docs-title">Threat intelligence, scanning, translation, search, healing, and operator workflows in one local console.</h3>
+                <p class="docs-copy">This page documents the features already implemented in DarkPulse so analysts and admins can move through authentication, feeds, scanners, automation, 2FA, healing, and recovery flows without guesswork.</p>
+                <div class="docs-chip-row">
+                  <span class="docs-chip">Live Intelligence Feed</span>
+                  <span class="docs-chip">One-Click Scan</span>
+                  <span class="docs-chip">Semantic Search</span>
+                  <span class="docs-chip">Translation</span>
+                  <span class="docs-chip">Healing Monitor</span>
+                  <span class="docs-chip">2FA Access</span>
+                </div>
+              </section>
+
+              <section class="docs-section" id="docs-auth">
+                <h4>Access and Authentication</h4>
+                <p>DarkPulse supports approved-user login, access requests, approval guidance, 2-factor authentication, OTP verification, and an operator-visible password recovery workflow. First-time 2FA setup shows a QR code. Later sign-ins require OTP only. Forgot-password requests are recorded for admin review inside the local system.</p>
+                <ul class="docs-list">
+                  <li>Sign in with approved username and password.</li>
+                  <li>Request analyst access from the login screen.</li>
+                  <li>Open the approval workflow page to understand how access is granted.</li>
+                  <li>Submit a password recovery request when account access is lost, then let an administrator review it from the recovery queue.</li>
+                  <li>Use authenticator-based OTP for 2FA-protected accounts.</li>
+                </ul>
+              </section>
+
+              <section class="docs-section" id="docs-command">
+                <h4>Command Center and Feeds</h4>
+                <p>The Command Center is the operator launch surface. It combines automation status, source counters, global impact mapping, and routing into detailed feeds. Analysts can jump directly into News, Leaks, Compromised Monitoring, Exploits, Social, and API/Tools from the sidebar.</p>
+                <div class="docs-grid">
+                  <div class="docs-card">
+                    <strong>Live Feed</strong>
+                    <p>Unified restored records with screenshots, evidence links, categories, entities, and raw JSON available in the detail modal.</p>
+                  </div>
+                  <div class="docs-card">
+                    <strong>One-Click Intelligence Update</strong>
+                    <p>Manual orchestration for news, leaks, social, and compromised monitoring with live dashboard state and result summaries.</p>
+                  </div>
+                  <div class="docs-card">
+                    <strong>Alert Summary</strong>
+                    <p>Per-source scan completion, new records, and delivery summary after each intelligence update.</p>
+                  </div>
+                  <div class="docs-card">
+                    <strong>Translation and Review</strong>
+                    <p>Translate the current view or an opened detail modal into another language, then return to the original source text instantly.</p>
+                  </div>
+                </div>
+              </section>
+
+              <section class="docs-section" id="docs-search">
+                <h4>Semantic Search</h4>
+                <p>The global header search is designed to behave like an intelligence search, not just a literal string filter. When a query is entered from the Command Center, DarkPulse analyzes the query, estimates the most relevant stream, and routes the operator into the feed with matching intelligence. If there are no matches, the feed shows a clear no-result state.</p>
+                <ul class="docs-list">
+                  <li>Works with simple actor or topic terms like <code>bitcoin</code>, <code>anubis</code>, <code>telegram</code>.</li>
+                  <li>Supports multi-term searches like <code>iran vs israel</code> and routes to the most relevant stream.</li>
+                  <li>Matches title, summary, description, categories, entities, IPs, actors, teams, URLs, and stored source text.</li>
+                  <li>Use the global header search and press <code>Enter</code> from the Command Center to route into the best matching intelligence stream.</li>
+                </ul>
+              </section>
+
+              <section class="docs-section" id="docs-scanners">
+                <h4>Scanners and Operator Tools</h4>
+                <p>DarkPulse includes multiple scanner workflows alongside the core intelligence feeds.</p>
+                <div class="docs-grid">
+                  <div class="docs-card"><strong>Credential Checker</strong><p>Searches local stealer-log JSON files and shows redacted exposure matches, source files, dates, and host context.</p></div>
+                  <div class="docs-card"><strong>Confidential Data</strong><p>Guarded review panel for highly sensitive document evidence, with metadata and withheld preview handling.</p></div>
+                  <div class="docs-card"><strong>SEO Checker</strong><p>Website posture report, grade output, audits, and AI/fallback recommendations.</p></div>
+                  <div class="docs-card"><strong>Playstore Scanner</strong><p>Checks for modded APK signals from a Play Store URL.</p></div>
+                  <div class="docs-card"><strong>PC Game Scan</strong><p>Looks for cracked or mirrored PC game/software results.</p></div>
+                  <div class="docs-card"><strong>Repository Scan</strong><p>Trivy-backed repo posture grading with findings and remediation guidance.</p></div>
+                  <div class="docs-card"><strong>National Identity</strong><p>Local connected-DB lookup for CNIC or phone-based result retrieval.</p></div>
+                </div>
+              </section>
+
+              <section class="docs-section" id="docs-healing">
+                <h4>Healing Monitor</h4>
+                <p>The healing system stores HTML snapshots for collector targets, checks selector health, detects page drift, and flags scripts as healthy, changed, repair-ready, or needing review. It is built for controlled recovery, not blind rewrites.</p>
+                <ul class="docs-list">
+                  <li>Target discovery from collector scripts.</li>
+                  <li>Historical HTML snapshots per script target.</li>
+                  <li>Selector drift detection and status history.</li>
+                  <li>Repair suggestions for broken extraction paths.</li>
+                  <li>Operator visibility on what changed and what needs review.</li>
+                </ul>
+              </section>
+
+              <section class="docs-section" id="docs-admin">
+                <h4>Admin Operations</h4>
+                <p>Admins can approve users, manage 2FA, trigger healing scans, run intelligence updates, and review the local dashboard state. Security-sensitive values like GitHub tokens should stay in <code>.env</code> only and never be committed into source files.</p>
+                <div class="docs-note">
+                  <strong>Operator note:</strong> use the Documentation page as the local operating reference when onboarding new analysts into DarkPulse.
+                </div>
+              </section>
+            </article>
+          </div>
+        </div>

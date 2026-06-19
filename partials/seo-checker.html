@@ -1,0 +1,104 @@
+        <div class="view-panel hidden" id="viewSeo">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Digital Footprint</p>
+              <h2 class="section-title">SEO Analysis Tool</h2>
+            </div>
+          </div>
+          <div class="lookup-shell">
+            <div class="pakdb-search-row">
+              <input type="text" id="seoInput" class="search-input" placeholder="Enter website URL (e.g. www.example.com)..." />
+              <button class="btn-primary" id="seoSearchBtn">Analyze</button>
+            </div>
+            <div id="seoStatus" class="pakdb-status"></div>
+            <div class="export-toolbar hidden" id="seoExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export SEO Report</span>
+                <span class="export-toolbar-note">Download the latest SEO analysis as JSON or PDF.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="seo" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="seo" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
+
+            <div id="seoReport" class="seo-report-container hidden">
+              <!-- SEO Report Header (Matches Screenshot) -->
+              <div class="seo-report-header">
+                <div class="seo-header-main">
+                  <div class="report-meta-group">
+                    <span class="badge-outline">Security Posture</span>
+                    <h3 class="seo-report-title" id="seoReportTitle">Report for ...</h3>
+                    <p class="seo-report-subtitle">Snapshot of core endpoint metadata and scan context.</p>
+                  </div>
+                  <div class="seo-grade-box">
+                    <div class="grade-circle" id="seoGradeCircle">
+                      <span class="grade-letter" id="seoGradeLetter">-</span>
+                      <span class="grade-label" id="seoGradeLabel">Analysis</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="seo-meta-grid">
+                  <div class="mini-card">
+                    <span class="mini-card-label">Target URL</span>
+                    <span class="mini-card-value" id="seoMetaUrl">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Host</span>
+                    <span class="mini-card-value" id="seoMetaHost">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Port</span>
+                    <span class="mini-card-value">443</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">TLS Status</span>
+                    <span class="badge-status status-ok">Ssl Enabled</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Scanned On</span>
+                    <span class="mini-card-value" id="seoMetaDate">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Scanned By</span>
+                    <span class="mini-card-value">DarkPulse Intelligence</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">SEO Health Grade</span>
+                    <span class="mini-card-value" id="seoHealthGradeValue">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Scan Confidence</span>
+                    <span class="mini-card-value" id="seoScanConfidenceValue">-</span>
+                  </div>
+                  <div class="mini-card">
+                    <span class="mini-card-label">Scan Mode</span>
+                    <span class="mini-card-value" id="seoScanModeValue">-</span>
+                  </div>
+                </div>
+
+                <div id="seoCrawlerWarning" class="seo-suggestions-container hidden">
+                  <div class="suggestions-body">
+                    <p class="suggestions-note" id="seoCrawlerWarningText"></p>
+                  </div>
+                </div>
+
+                <!-- DARKPULSE AI Recommendations Box -->
+                <div id="seoAiSuggestionsBox" class="seo-suggestions-container hidden">
+                  <div id="seoAiSuggestionsContent" class="suggestions-body">
+                    <!-- DARKPULSE AI recommendations render here -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- SEO Audits Findings -->
+              <div class="seo-findings-section">
+                <h4 class="findings-title">SEO Audits Findings (<span id="seoFindingsCount">0</span>)</h4>
+                <div id="seoFindingsList" class="findings-list">
+                  <!-- Audit cards go here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>

@@ -1,0 +1,53 @@
+        <div class="view-panel hidden" id="viewAdminUsers">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Administration</p>
+              <h2 class="section-title">User Management</h2>
+            </div>
+          </div>
+          <div class="admin-panel-stack">
+            <div class="table-container">
+              <div class="panel-subheader">
+                <div>
+                  <h3 class="panel-subtitle">Access Requests and Analysts</h3>
+                  <p class="panel-subcopy">Approve pending users, reject invalid requests, and manage analyst access from one place.</p>
+                </div>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="userTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="table-container">
+              <div class="panel-subheader">
+                <div>
+                  <h3 class="panel-subtitle">Password Recovery Queue</h3>
+                  <p class="panel-subcopy">Operators can request access recovery from the login page. Review the request, contact the analyst, and mark it handled here.</p>
+                </div>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Requested By</th>
+                    <th>Identity</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="resetRequestTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>

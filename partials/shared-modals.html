@@ -1,0 +1,300 @@
+  <div class="modal-backdrop hidden" id="detailBackdrop">
+    <div class="modal modal-detail">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div id="modalSource" class="modal-source"></div>
+          <div id="modalTopTag" class="modal-top-tag"></div>
+        </div>
+        <button class="modal-close" id="detailClose">x</button>
+      </div>
+
+      <div class="modal-body modal-detail-body">
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-meta" id="modalMeta"></div>
+
+        <div class="fact-grid" id="modalFactGrid"></div>
+
+        <div class="modal-section">
+          <label>AI Summary</label>
+          <p id="modalAiSummary" class="modal-ai-summary"></p>
+        </div>
+
+        <div id="modalMediaSection" class="modal-section hidden">
+          <label>Screenshot Evidence</label>
+          <div id="modalMediaGallery" class="modal-media-gallery"></div>
+        </div>
+
+        <div id="modalEvidenceSection" class="modal-section hidden">
+          <label>Evidence Links</label>
+          <div id="modalEvidenceLinks" class="modal-evidence-links"></div>
+        </div>
+
+        <div class="modal-section">
+          <label>Description</label>
+          <p id="modalSummary" class="modal-summary"></p>
+        </div>
+
+        <div id="modalEntitiesSection" class="modal-section">
+          <label>Entities</label>
+          <div id="modalEntities" class="entity-groups"></div>
+        </div>
+
+        <div class="modal-section">
+          <label>Categories</label>
+          <div id="modalCategories" class="entity-groups"></div>
+        </div>
+
+        <div class="modal-section">
+          <label>Raw JSON</label>
+          <pre id="modalRawJson" class="json-viewer"></pre>
+        </div>
+      </div>
+
+      <div class="modal-footer detail-footer">
+        <button class="btn-secondary" id="detailTranslateBtn" type="button">Translate</button>
+        <button class="btn-secondary" type="button" data-export-target="detail" data-export-format="json">Download JSON</button>
+        <button class="btn-secondary" type="button" data-export-target="detail" data-export-format="pdf">Download PDF</button>
+        <a class="btn-primary" id="modalReadBtn" href="#" target="_blank">Open Source</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="confidentialDetailBackdrop">
+    <div class="modal modal-detail">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div class="modal-source">Masked Finding</div>
+          <div id="confidentialDetailTopTag" class="modal-top-tag"></div>
+        </div>
+        <button class="modal-close" id="confidentialDetailClose">x</button>
+      </div>
+      <div class="modal-body modal-detail-body">
+        <h2 class="modal-title" id="confidentialDetailTitle">Confidential Finding</h2>
+        <div class="modal-meta" id="confidentialDetailMeta"></div>
+        <div class="fact-grid" id="confidentialDetailFacts"></div>
+        <div class="modal-section">
+          <label>Parsed Masked Fields</label>
+          <div class="confidential-field-grid" id="confidentialParsedFields"></div>
+        </div>
+        <div class="modal-section">
+          <label>Reason for Detection</label>
+          <p id="confidentialDetailReason" class="modal-summary"></p>
+        </div>
+        <div class="modal-section">
+          <label>Masked Context Snippet</label>
+          <p id="confidentialDetailContext" class="modal-summary"></p>
+        </div>
+        <div class="modal-section">
+          <label>Analyst Notes</label>
+          <p id="confidentialDetailNotes" class="modal-summary"></p>
+        </div>
+      </div>
+      <div class="modal-footer detail-footer">
+        <button class="btn-secondary" type="button" id="confidentialDetailDismiss">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="mediaLightboxBackdrop">
+    <div class="modal modal-media-lightbox">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div class="modal-source">DarkPulse Evidence Viewer</div>
+          <div class="modal-top-tag" id="mediaLightboxTitle">Evidence image</div>
+        </div>
+        <button class="modal-close" id="mediaLightboxClose">x</button>
+      </div>
+      <div class="modal-body modal-media-lightbox-body">
+        <img id="mediaLightboxImage" class="modal-lightbox-image" src="" alt="Evidence image" />
+      </div>
+      <div class="modal-footer detail-footer">
+        <a class="btn-primary" id="mediaLightboxOpen" href="#" target="_blank" rel="noopener noreferrer">Open Original</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="feedFiltersBackdrop">
+    <div class="modal modal-settings modal-feed-filters">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div class="modal-source">DarkPulse Feed Filters</div>
+          <div class="modal-top-tag">Date Range and Topic Routing</div>
+        </div>
+        <button class="modal-close" id="feedFiltersClose">x</button>
+      </div>
+      <div class="modal-body modal-summary-body">
+        <h2 class="modal-title">Filter feed sections</h2>
+        <p class="translate-copy">Apply one set of filters across the live feed tabs like News, Leaks, Compromised Monitoring, Social, Exploit, and API.</p>
+        <div class="feed-filter-grid">
+          <div class="input-group">
+            <label>Start Date</label>
+            <input type="date" id="feedFilterStartDate" />
+          </div>
+          <div class="input-group">
+            <label>End Date</label>
+            <input type="date" id="feedFilterEndDate" />
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Network</label>
+          <select id="feedFilterNetwork">
+            <option value="">All Networks</option>
+            <option value="clearnet">Clearnet</option>
+            <option value="onion">Onion / Tor</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Topic / Tag</label>
+          <select id="feedFilterTopic">
+            <option value="">All Topics</option>
+            <option value="vulnerability">Vulnerability</option>
+            <option value="ransomware">Ransomware</option>
+            <option value="leak">Leak</option>
+            <option value="data breach">Data Breach</option>
+            <option value="research">Research</option>
+            <option value="policy">Policy</option>
+            <option value="defacement">Defacement</option>
+            <option value="exploit">Exploit</option>
+            <option value="malware">Malware</option>
+          </select>
+        </div>
+        <div id="feedFilterStatus" class="pakdb-status">No feed filters applied yet.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="feedFiltersResetBtn" type="button">Reset Filters</button>
+        <button class="btn-primary" id="feedFiltersApplyBtn" type="button">Apply Filters</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating DARKPULSE Chatbot Widget -->
+  <button class="dp-chat-fab hidden" id="dpChatFab" title="DARKPULSE Chatbot">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </button>
+
+  <div class="dp-chat-widget hidden" id="dpChatWidget">
+    <div class="dp-chat-header" id="dpChatHeader">
+      <div class="dp-chat-header-left">
+        <span class="dp-chat-avatar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </span>
+        <div>
+          <span class="dp-chat-header-title">DARKPULSE Chatbot</span>
+          <span class="dp-chat-header-sub" id="dpChatHeaderSub">DARKPULSE AI intelligence search</span>
+        </div>
+      </div>
+      <div class="dp-chat-header-actions">
+        <button class="dp-chat-hdr-btn" id="dpChatClearBtn" title="Clear chat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+        </button>
+        <button class="dp-chat-hdr-btn" id="dpChatMinBtn" title="Minimize">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="dp-chat-hdr-btn" id="dpChatCloseBtn" title="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="dp-chat-messages" id="dpChatMessages">
+      <div class="dp-chat-welcome">
+        <div class="dp-chat-welcome-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>
+        <p class="dp-chat-welcome-title">DARKPULSE Chatbot</p>
+        <p class="dp-chat-welcome-text">Ask about threat actors, leaks, CVEs, ransomware campaigns, or any topic in the local MongoDB.</p>
+      </div>
+    </div>
+    <div class="dp-chat-input-bar">
+      <input class="dp-chat-input" id="dpChatInput" type="text" placeholder="Ask DARKPULSE AI..." autocomplete="off" />
+      <button class="dp-chat-send" id="dpChatSendBtn" title="Send">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="settingsBackdrop">
+    <div class="modal modal-settings">
+      <div class="modal-header">
+        <h2 class="modal-title">Connection Settings</h2>
+        <button class="modal-close" id="settingsClose">x</button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+          <label>API KEY (X-API-KEY)</label>
+          <input type="password" id="apiKeyInput" placeholder="your-api-key" />
+        </div>
+        <div class="input-group">
+          <label>BACKEND URL</label>
+          <input type="text" id="apiBaseInput" placeholder="http://localhost:9000" />
+        </div>
+        <div id="testResult" class="test-result"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="testConnBtn">Test Connection</button>
+        <button class="btn-primary" id="saveSettingsBtn">Save and Reload</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="alertSummaryBackdrop">
+    <div class="modal modal-alert-summary">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div class="modal-source">Arya Notification</div>
+          <div class="modal-top-tag" id="alertSummaryStatusTag">Latest Scan Summary</div>
+        </div>
+        <button class="modal-close" id="alertSummaryClose">x</button>
+      </div>
+      <div class="modal-body modal-summary-body">
+        <h2 class="modal-title" id="alertSummaryTitle">Scan Summary</h2>
+        <div class="modal-meta" id="alertSummaryMeta"></div>
+        <div class="fact-grid" id="alertSummaryFactGrid"></div>
+        <div class="modal-section">
+          <label>Source Breakdown</label>
+          <div class="summary-source-list" id="alertSummarySources"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="alertSummaryDone">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="translateBackdrop">
+    <div class="modal modal-translate">
+      <div class="modal-header">
+        <div class="modal-source-stack">
+          <div class="modal-source">DarkPulse Language Relay</div>
+          <div class="modal-top-tag" id="translateScopeTag">Translate Current View</div>
+        </div>
+        <button class="modal-close" id="translateClose">x</button>
+      </div>
+      <div class="modal-body modal-summary-body">
+        <h2 class="modal-title">Choose a language</h2>
+        <p class="translate-copy">Translate the current results into another language without leaving the dashboard.</p>
+        <div class="input-group">
+          <label>Target Language</label>
+          <select id="translateLanguageSelect" class="search-input">
+            <option value="en">English</option>
+            <option value="ur">Urdu</option>
+            <option value="ar">Arabic</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="tr">Turkish</option>
+            <option value="ru">Russian</option>
+            <option value="hi">Hindi</option>
+            <option value="pt">Portuguese</option>
+            <option value="it">Italian</option>
+            <option value="ja">Japanese</option>
+            <option value="zh-CN">Chinese (Simplified)</option>
+          </select>
+        </div>
+        <div id="translateStatus" class="pakdb-status"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="translateResetModalBtn" type="button">Reset to English</button>
+        <button class="btn-primary" id="translateApplyBtn" type="button">Apply Translation</button>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,104 @@
+        <div class="view-panel hidden" id="viewConfidentialData">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Restricted Review</p>
+              <h2 class="section-title">Confidential Data</h2>
+            </div>
+          </div>
+          <div class="lookup-shell confidential-shell">
+            <div class="confidential-banner">
+              <div class="confidential-banner-copy">
+                <span class="badge-outline">Sensitive Evidence</span>
+                <h3 class="confidential-banner-title">Masked payment and credential exposure review</h3>
+                <p class="confidential-banner-copytext">This tool is for authorised defensive analysis only. Sensitive values are masked and raw secrets are never displayed or stored.</p>
+              </div>
+            </div>
+
+            <div class="confidential-upload-card">
+              <div>
+                <h3 class="credential-section-title">Local file analysis</h3>
+                <p class="credential-empty-copy">Upload .txt, .csv, .json, or .log files. Processing happens locally on this server at runtime; uploaded files are not saved permanently.</p>
+              </div>
+              <div class="confidential-upload-row">
+                <input type="file" id="confidentialFileInput" accept=".txt,.csv,.json,.log" class="search-input" />
+                <button class="btn-primary" id="confidentialAnalyzeBtn">Analyse File</button>
+              </div>
+              <p class="confidential-disclaimer">Detected records are only potential matches and must be verified by an authorised analyst. CVV, passwords, tokens, and card values are redacted before rendering.</p>
+            </div>
+
+            <div id="confidentialStatus" class="pakdb-status"></div>
+
+            <div id="confidentialStats" class="results-stats-row hidden">
+              <div class="stat-card">
+                <span class="stat-label">Elapsed</span>
+                <span class="stat-value" id="confidentialElapsed">0 ms</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Findings</span>
+                <span class="stat-value" id="confidentialCount">0</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">High Risk</span>
+                <span class="stat-value" id="confidentialHighRisk">0</span>
+              </div>
+            </div>
+
+            <div class="export-toolbar hidden" id="confidentialExportBar">
+              <div class="export-toolbar-copy">
+                <span class="export-toolbar-label">Export Masked Findings</span>
+                <span class="export-toolbar-note">Exports contain masked values and detection metadata only.</span>
+              </div>
+              <div class="export-toolbar-actions">
+                <button class="btn-secondary" type="button" data-export-target="confidential" data-export-format="json">Download JSON</button>
+                <button class="btn-secondary" type="button" data-export-target="confidential" data-export-format="pdf">Download PDF</button>
+              </div>
+            </div>
+
+            <div class="confidential-filter-row">
+              <select id="confidentialTypeFilter" class="search-input">
+                <option value="">All Types</option>
+              </select>
+              <select id="confidentialRiskFilter" class="search-input">
+                <option value="">All Risk Levels</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+              <select id="confidentialConfidenceFilter" class="search-input">
+                <option value="">All Confidence</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+              <select id="confidentialStatusFilter" class="search-input">
+                <option value="">All Status</option>
+                <option value="New">New</option>
+                <option value="Reviewed">Reviewed</option>
+                <option value="False Positive">False Positive</option>
+                <option value="Confirmed">Confirmed</option>
+              </select>
+            </div>
+
+            <div class="table-wrap confidential-table-wrap">
+              <table class="data-table confidential-table">
+                <thead>
+                  <tr>
+                    <th>Record ID</th>
+                    <th>Detected Type</th>
+                    <th>Masked Value</th>
+                    <th>Card Brand Guess</th>
+                    <th>Expiry Date</th>
+                    <th>Detection Confidence</th>
+                    <th>Risk Level</th>
+                    <th>Status</th>
+                    <th>Timestamp</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="confidentialResultsBody">
+                  <tr><td colspan="10">Upload a local file to begin masked defensive analysis.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>

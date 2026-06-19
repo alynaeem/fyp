@@ -1822,8 +1822,11 @@ async def _build_leak_source_status_payload() -> dict[str, Any]:
 # ---------- Static file serving ----------
 _STATIC_DIR = pathlib.Path(__file__).resolve().parent
 _ASSETS_DIR = _STATIC_DIR / "assets"
+_PARTIALS_DIR = _STATIC_DIR / "partials"
 if _ASSETS_DIR.exists():
     app.mount("/assets", StaticFiles(directory=str(_ASSETS_DIR)), name="assets")
+if _PARTIALS_DIR.exists():
+    app.mount("/partials", StaticFiles(directory=str(_PARTIALS_DIR)), name="partials")
 
 # ---------- API endpoints ----------
 @app.get("/")

@@ -203,6 +203,10 @@ const VIEW_META = {
   "admin-users": {
     title: "User Management",
     subtitle: "Approve, reject, and review dashboard access."
+  },
+  account: {
+    title: "Account",
+    subtitle: "Profile, appearance, and security preferences."
   }
 };
 
@@ -268,6 +272,7 @@ const state = {
   feedFilters: {
     startDate: "",
     endDate: "",
+    network: "",
     topic: ""
   },
   feedAbortController: null,
@@ -475,6 +480,7 @@ function getBlankFeedFilters() {
   return {
     startDate: "",
     endDate: "",
+    network: "",
     topic: ""
   };
 }
@@ -483,6 +489,7 @@ function normalizeFeedFilters(filters = {}) {
   return {
     startDate: String(filters.startDate || "").trim(),
     endDate: String(filters.endDate || "").trim(),
+    network: String(filters.network || "").trim().toLowerCase(),
     topic: String(filters.topic || "").trim()
   };
 }
@@ -492,6 +499,7 @@ function buildFeedSnapshotKeyFor(sourceType = currentSourceType(), query = "", f
   const filterKey = [
     normalizedFilters.startDate,
     normalizedFilters.endDate,
+    normalizedFilters.network,
     normalizedFilters.topic
   ].join("|");
   return `${String(sourceType || "all").trim().toLowerCase()}::${String(query || "").trim().toLowerCase()}::filters:${filterKey}::page:${page}`;
@@ -1545,7 +1553,10 @@ function updateHeader(viewName) {
 }
 
 function setLastUpdated() {
-  $("lastUpdated").textContent = `Updated ${new Date().toLocaleTimeString()}`;
+  const lastUpdated = $("lastUpdated");
+  if (lastUpdated) {
+    lastUpdated.textContent = `Updated ${new Date().toLocaleTimeString()}`;
+  }
 }
 
 function isSmartUpdateRunning(status) {
@@ -2170,7 +2181,10 @@ function handleLogout(notice = "") {
   localStorage.removeItem(USER_ROLE_KEY);
   setChatAvailability(false);
   localStorage.removeItem(USER_NAME_KEY);
-  window.location.reload();
+  $("appWrapper").classList.add("hidden");
+  $("loginBackdrop").classList.remove("hidden");
+  setAuthStage("login");
+  restoreAuthNotice();
 }
 
 function setAuthStage(stage) {
@@ -2404,13 +2418,14 @@ function getActiveFeedFilters() {
 
 function countActiveFeedFilters() {
   const filters = getActiveFeedFilters();
-  return [filters.startDate, filters.endDate, filters.topic].filter(Boolean).length;
+  return [filters.startDate, filters.endDate, filters.network, filters.topic].filter(Boolean).length;
 }
 
 function buildFeedFilterSummary(filters = getActiveFeedFilters()) {
   const parts = [];
   if (filters.startDate) parts.push(`From ${filters.startDate}`);
   if (filters.endDate) parts.push(`To ${filters.endDate}`);
+  if (filters.network) parts.push(filters.network === "onion" ? "Onion / Tor" : "Clearnet");
   if (filters.topic) parts.push(`Topic ${filters.topic}`);
   return parts.length ? parts.join(" • ") : "No feed filters applied.";
 }
@@ -2445,6 +2460,7 @@ function renderFeedFilterState() {
   chips.innerHTML = [
     filters.startDate ? `<span class="feed-filter-chip">Start ${escapeHtml(filters.startDate)}</span>` : "",
     filters.endDate ? `<span class="feed-filter-chip">End ${escapeHtml(filters.endDate)}</span>` : "",
+    filters.network ? `<span class="feed-filter-chip">${escapeHtml(filters.network === "onion" ? "Onion / Tor" : "Clearnet")}</span>` : "",
     filters.topic ? `<span class="feed-filter-chip">Topic ${escapeHtml(filters.topic)}</span>` : ""
   ].filter(Boolean).join("");
   bar.classList.remove("hidden");
@@ -2472,6 +2488,7 @@ function setHeaderSearchBusy(isBusy, label = "Searching local intelligence...") 
 function openFeedFiltersModal() {
   $("feedFilterStartDate").value = state.feedFilters.startDate || "";
   $("feedFilterEndDate").value = state.feedFilters.endDate || "";
+  $("feedFilterNetwork").value = state.feedFilters.network || "";
   $("feedFilterTopic").value = state.feedFilters.topic || "";
   renderFeedFilterState();
   $("feedFiltersBackdrop").classList.remove("hidden");
@@ -2848,9 +2865,11 @@ function openAiChatModal() { dpChatShow(); }
 function closeAiChatModal() { dpChatMinimize(); }
 function clearAiChat() { dpChatClear(); }
 
-async function applyFeedFilters() {
+async function applyFeedFilters(options = {}) {
+  const closeModal = options.closeModal !== false;
   const startDate = $("feedFilterStartDate").value.trim();
   const endDate = $("feedFilterEndDate").value.trim();
+  const network = $("feedFilterNetwork").value.trim();
   const topic = $("feedFilterTopic").value.trim();
 
   if (startDate && endDate && startDate > endDate) {
@@ -2858,9 +2877,9 @@ async function applyFeedFilters() {
     return;
   }
 
-  state.feedFilters = { startDate, endDate, topic };
+  state.feedFilters = { startDate, endDate, network, topic };
   renderFeedFilterState();
-  closeFeedFiltersModal();
+  if (closeModal) closeFeedFiltersModal();
 
   if (!TOOL_VIEWS.includes(state.currentView) && state.currentView !== "homepage") {
     await loadArticles(true, 1);
@@ -2868,12 +2887,12 @@ async function applyFeedFilters() {
 }
 
 async function resetFeedFilters() {
-  state.feedFilters = { startDate: "", endDate: "", topic: "" };
+  state.feedFilters = { startDate: "", endDate: "", network: "", topic: "" };
   $("feedFilterStartDate").value = "";
   $("feedFilterEndDate").value = "";
+  $("feedFilterNetwork").value = "";
   $("feedFilterTopic").value = "";
   renderFeedFilterState();
-  closeFeedFiltersModal();
 
   if (!TOOL_VIEWS.includes(state.currentView) && state.currentView !== "homepage") {
     await loadArticles(true, 1);
@@ -2910,6 +2929,7 @@ function buildFeedRequestPath({
   if (query) params.set("q", query);
   if (safeFilters.startDate) params.set("start_date", safeFilters.startDate);
   if (safeFilters.endDate) params.set("end_date", safeFilters.endDate);
+  if (safeFilters.network) params.set("network", safeFilters.network);
   if (safeFilters.topic) params.set("topic", safeFilters.topic);
   if (includeRaw) params.set("include_raw", "true");
 
@@ -5774,6 +5794,7 @@ async function applyHealingRepair(scriptId, button = null) {
 async function refreshUserList() {
   try {
     const data = await apiFetch("/admin/users");
+    const currentUsername = (localStorage.getItem(USER_NAME_KEY) || "").trim().toLowerCase();
     $("userTableBody").innerHTML = data.users.map(user => `
       <tr>
         <td>${escapeHtml(user.name || user.username)}</td>
@@ -5782,8 +5803,10 @@ async function refreshUserList() {
         <td>${escapeHtml(user.role || "user")}</td>
         <td><span class="status-badge status-${escapeHtml(user.status)}">${escapeHtml(user.status)}</span></td>
         <td>
-          ${user.status === "pending" ? `<button class="btn-secondary" onclick="approveUser('${escapeHtml(user.username)}')">Approve</button>` : ""}
-          <button class="btn-secondary" onclick="deleteUser('${escapeHtml(user.username)}')">Reject</button>
+          ${user.status === "pending" ? `<button class="btn-secondary compact-btn" type="button" onclick="approveUser('${escapeHtml(user.username)}')">Approve</button>` : ""}
+          ${String(user.username || "").trim().toLowerCase() === currentUsername
+            ? `<span class="status-inline-note">Current admin</span>`
+            : `<button class="btn-secondary compact-btn" type="button" onclick="deleteUser('${escapeHtml(user.username)}')">Reject</button>`}
         </td>
       </tr>
     `).join("");
@@ -5816,13 +5839,27 @@ async function refreshPasswordResetRequests() {
 }
 
 window.approveUser = async username => {
-  await apiFetch(`/admin/users/${username}/approve`, false, { method: "POST" });
-  refreshUserList();
+  try {
+    await apiFetch(`/admin/users/${username}/approve`, false, { method: "POST" });
+    showToast(`${username} approved.`, "success");
+    refreshUserList();
+  } catch (error) {
+    showToast(error.message || "Could not approve user.", "error");
+  }
 };
 
 window.deleteUser = async username => {
-  await apiFetch(`/admin/users/${username}/reject`, false, { method: "POST" });
-  refreshUserList();
+  if ((username || "").trim().toLowerCase() === (localStorage.getItem(USER_NAME_KEY) || "").trim().toLowerCase()) {
+    showToast("You cannot reject your own admin account.", "error");
+    return;
+  }
+  try {
+    await apiFetch(`/admin/users/${username}/reject`, false, { method: "POST" });
+    showToast(`${username} rejected.`, "success");
+    refreshUserList();
+  } catch (error) {
+    showToast(error.message || "Could not reject user.", "error");
+  }
 };
 
 window.resolvePasswordResetRequest = async requestId => {
@@ -6355,11 +6392,15 @@ function closeConfidentialDetailModal() {
 async function checkHealth() {
   try {
     const data = await apiFetch("/health", true);
-    $("statusDot").className = `status-dot ${data.status === "ok" ? "ok" : "error"}`;
-    $("statusText").textContent = data.status === "ok" ? "Connected" : "Degraded";
+    const statusDot = $("statusDot");
+    const statusText = $("statusText");
+    if (statusDot) statusDot.className = `status-dot ${data.status === "ok" ? "ok" : "error"}`;
+    if (statusText) statusText.textContent = data.status === "ok" ? "Connected" : "Degraded";
   } catch (error) {
-    $("statusDot").className = "status-dot error";
-    $("statusText").textContent = "Offline";
+    const statusDot = $("statusDot");
+    const statusText = $("statusText");
+    if (statusDot) statusDot.className = "status-dot error";
+    if (statusText) statusText.textContent = "Offline";
   }
 }
 
@@ -6562,8 +6603,12 @@ function setupEventListeners() {
   $("resetLanguageBtn").onclick = resetTranslationToEnglish;
   $("feedFilterBtn").onclick = openFeedFiltersModal;
   $("feedFiltersClose").onclick = closeFeedFiltersModal;
-  $("feedFiltersApplyBtn").onclick = applyFeedFilters;
+  $("feedFiltersApplyBtn").onclick = () => applyFeedFilters({ closeModal: true });
   $("feedFiltersResetBtn").onclick = resetFeedFilters;
+  ["feedFilterStartDate", "feedFilterEndDate", "feedFilterNetwork", "feedFilterTopic"].forEach(id => {
+    const input = $(id);
+    if (input) input.addEventListener("change", () => applyFeedFilters({ closeModal: false }));
+  });
   $("aiChatLaunchBtn").onclick = dpChatShow;
   $("dpChatFab").onclick = dpChatShow;
   $("dpChatCloseBtn").onclick = dpChatHide;

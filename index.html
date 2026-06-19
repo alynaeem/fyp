@@ -244,13 +244,6 @@
         </div>
 
         <div class="header-right">
-          <div class="status-indicator">
-            <span class="status-dot ok" id="statusDot"></span>
-            <div class="status-copy">
-              <span id="statusText">Connected</span>
-              <span class="status-note" id="lastUpdated">Updated just now</span>
-            </div>
-          </div>
           <button class="icon-btn ai-chat-header-btn" id="aiChatLaunchBtn" title="DARKPULSE Chatbot">DARKPULSE Chatbot</button>
           <button class="icon-btn" id="settingsBtn" title="Settings">Settings</button>
         </div>
@@ -1809,19 +1802,27 @@
           </div>
         </div>
         <div class="input-group">
+          <label>Network</label>
+          <select id="feedFilterNetwork">
+            <option value="">All Networks</option>
+            <option value="clearnet">Clearnet</option>
+            <option value="onion">Onion / Tor</option>
+          </select>
+        </div>
+        <div class="input-group">
           <label>Topic / Tag</label>
-          <input type="text" id="feedFilterTopic" placeholder="e.g. vulnerability, ransomware, leak" list="feedFilterTopicList" />
-          <datalist id="feedFilterTopicList">
-            <option value="vulnerability"></option>
-            <option value="ransomware"></option>
-            <option value="leak"></option>
-            <option value="data breach"></option>
-            <option value="research"></option>
-            <option value="policy"></option>
-            <option value="defacement"></option>
-            <option value="exploit"></option>
-            <option value="malware"></option>
-          </datalist>
+          <select id="feedFilterTopic">
+            <option value="">All Topics</option>
+            <option value="vulnerability">Vulnerability</option>
+            <option value="ransomware">Ransomware</option>
+            <option value="leak">Leak</option>
+            <option value="data breach">Data Breach</option>
+            <option value="research">Research</option>
+            <option value="policy">Policy</option>
+            <option value="defacement">Defacement</option>
+            <option value="exploit">Exploit</option>
+            <option value="malware">Malware</option>
+          </select>
         </div>
         <div id="feedFilterStatus" class="pakdb-status">No feed filters applied yet.</div>
       </div>

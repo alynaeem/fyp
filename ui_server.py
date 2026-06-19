@@ -2551,8 +2551,11 @@ async def approve_user(username: str):
     return {"status": "ok", "message": f"User {username} approved"}
 
 
-@app.post("/admin/users/{username}/reject", dependencies=[Depends(admin_required)])
-async def reject_user(username: str):
+@app.post("/admin/users/{username}/reject")
+async def reject_user(username: str, current_user: dict = Depends(admin_required)):
+    current_username = str(current_user.get("username") or "").strip().lower()
+    if username.strip().lower() == current_username:
+        raise HTTPException(status_code=400, detail="You cannot reject or delete your own admin account.")
     result = await users_col.delete_one({"username": username})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="User not found")
@@ -3547,16 +3550,30 @@ def _apply_feed_filters(
     topic: str = "",
     start_date: str = "",
     end_date: str = "",
+    network: str = "",
 ) -> list[dict]:
     normalized_topic = _normalize_search_text(topic)
     start_bound = _parse_feed_filter_date(start_date)
     end_bound = _parse_feed_filter_date(end_date)
+    normalized_network = (network or "").strip().lower()
 
-    if not normalized_topic and not start_bound and not end_bound:
+    if not normalized_topic and not start_bound and not end_bound and not normalized_network:
         return items
 
     filtered: list[dict] = []
     for item in items:
+        if normalized_network:
+            item_network = str(item.get("network") or "").strip().lower()
+            item_url_blob = " ".join(
+                str(item.get(field) or "")
+                for field in ("url", "link", "source_url", "weblink", "m_url", "app_url")
+            ).lower()
+            is_onion = item_network in {"onion", "tor", "darkweb", "dark_web"} or ".onion" in item_url_blob
+            if normalized_network == "onion" and not is_onion:
+                continue
+            if normalized_network == "clearnet" and is_onion:
+                continue
+
         if normalized_topic:
             haystack = _compose_search_blob(
                 item.get("title"),
@@ -4419,6 +4436,7 @@ async def list_feed(
     topic: str = Query(""),
     start_date: str = Query(""),
     end_date: str = Query(""),
+    network: str = Query(""),
     include_raw: bool = Query(False),
 ):
     canonical = _canonical_source_type(source_type)
@@ -4431,6 +4449,7 @@ async def list_feed(
         topic.strip().lower(),
         start_date.strip(),
         end_date.strip(),
+        network.strip().lower(),
         bool(include_raw),
     )
     if not include_raw:
@@ -4439,7 +4458,7 @@ async def list_feed(
             return cached_page
 
     if canonical == "news":
-        if not q and not include_raw and not topic and not start_date and not end_date:
+        if not q and not include_raw and not topic and not start_date and not end_date and not network:
             total, items = await _fetch_news_page(limit, offset)
             return _cache_set_feed_page(fast_cache_key, {
                 "total": total,
@@ -4452,7 +4471,7 @@ async def list_feed(
         else:
             items = await _fetch_news_items(include_raw=include_raw)
     elif canonical in {"exploit", "leak", "defacement", "social", "api"}:
-        if not q and not include_raw and not topic and not start_date and not end_date:
+        if not q and not include_raw and not topic and not start_date and not end_date and not network:
             total, items = await _fetch_threat_page(canonical, limit, offset)
             return _cache_set_feed_page(fast_cache_key, {
                 "total": total,
@@ -4465,7 +4484,7 @@ async def list_feed(
         else:
             items = await _fetch_threat_items(canonical, include_raw=include_raw)
     else:
-        if not q and not include_raw and not topic and not start_date and not end_date:
+        if not q and not include_raw and not topic and not start_date and not end_date and not network:
             total, items = await _fetch_combined_feed_page(limit, offset)
             return _cache_set_feed_page(fast_cache_key, {
                 "total": total,
@@ -4488,7 +4507,7 @@ async def list_feed(
     items = sorted(items, key=_feed_sort_key, reverse=True)
     if q:
         items = _filter_feed_items(items, q)
-    items = _apply_feed_filters(items, topic=topic, start_date=start_date, end_date=end_date)
+    items = _apply_feed_filters(items, topic=topic, start_date=start_date, end_date=end_date, network=network)
     return _cache_set_feed_page(fast_cache_key, {
         "total": len(items),
         "offset": offset,

@@ -7145,12 +7145,14 @@ def _parse_github_repo_url(repo_url: str) -> tuple[str, str, str] | None:
 
 
 def _github_api_headers(token: str) -> dict[str, str]:
-    return {
-        "Authorization": f"Bearer {token}",
+    headers = {
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
         "User-Agent": "DarkPulse-Repository-Scanner",
     }
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    return headers
 
 
 def _github_api_get(path: str, token: str, *, timeout: int = 20) -> tuple[int, dict[str, Any], dict[str, str]]:
@@ -7190,6 +7192,18 @@ async def _inspect_github_repository(owner: str, repo: str, token: str) -> dict[
         lambda: _github_api_get(repo_path, token),
     )
     log.info("GitHub API repo status for %s/%s: %s", owner, repo, status_code)
+    effective_token = token
+    authenticated = bool(token)
+    if status_code == 404 and token:
+        public_status, public_payload, public_headers = await loop.run_in_executor(
+            None,
+            lambda: _github_api_get(repo_path, ""),
+        )
+        log.info("GitHub public API repo status for %s/%s: %s", owner, repo, public_status)
+        if public_status == 200:
+            status_code, repo_payload, headers = public_status, public_payload, public_headers
+            effective_token = ""
+            authenticated = False
     if status_code != 200:
         raise ValueError(_github_error_message(status_code, repo_payload, headers))
 
@@ -7210,7 +7224,7 @@ async def _inspect_github_repository(owner: str, repo: str, token: str) -> dict[
         api_path = f"/repos/{owner}/{repo}/contents/{quote(path)}?ref={quote(default_branch)}"
         status, payload, _headers = await loop.run_in_executor(
             None,
-            lambda api_path=api_path: _github_api_get(api_path, token, timeout=12),
+            lambda api_path=api_path: _github_api_get(api_path, effective_token, timeout=12),
         )
         log.info("GitHub API content status for %s/%s %s: %s", owner, repo, path, status)
         return path, status, payload
@@ -7235,6 +7249,7 @@ async def _inspect_github_repository(owner: str, repo: str, token: str) -> dict[
         "pushed_at": repo_payload.get("pushed_at"),
         "language": repo_payload.get("language"),
         "open_issues_count": repo_payload.get("open_issues_count", 0),
+        "authenticated": authenticated,
         "discovered_files": sorted(set(discovered_files))[:20],
         "inaccessible_paths": inaccessible_paths[:10],
     }
@@ -7380,7 +7395,7 @@ async def scan_repo(request: Request):
         scan_query = {
             "github": normalized_repo_url,
             "git_token": git_token,
-            "timeout": 55,
+            "timeout": 180,
             "print_details": False,
             "keep_workdir": False,
         }
@@ -7392,7 +7407,7 @@ async def scan_repo(request: Request):
                     None,
                     lambda: asyncio.run(scanner.parse_leak_data(query=scan_query, context=None)),
                 ),
-                timeout=65,
+                timeout=210,
             )
         except asyncio.TimeoutError:
             log.error("Repository scan timed out for %s/%s", owner, repo)

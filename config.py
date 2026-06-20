@@ -141,7 +141,7 @@ def _load() -> DarkPulseConfig:
         smtp_host=os.getenv("SMTP_HOST", ""),
         smtp_port=_int(os.getenv("SMTP_PORT", "587"), 587),
         smtp_username=os.getenv("SMTP_USERNAME", ""),
-        smtp_password=os.getenv("SMTP_PASSWORD", ""),
+        smtp_password="".join(os.getenv("SMTP_PASSWORD", "").split()),
         smtp_from_email=os.getenv("SMTP_FROM_EMAIL", ""),
         smtp_use_tls=_bool(os.getenv("SMTP_USE_TLS", "true"), True),
         email_verification_expire_minutes=max(1, _int(os.getenv("EMAIL_VERIFICATION_EXPIRE_MINUTES", "10"), 10)),

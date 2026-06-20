@@ -23,6 +23,23 @@ const SEMANTIC_CACHE_TTL_MS = 60 * 1000;
 const TRANSLATION_LANGUAGE_KEY = "darkpulse_translation_language";
 const TRANSLATION_LABEL_KEY = "darkpulse_translation_label";
 const HEALING_CACHE_KEY = "darkpulse_healing_cache";
+const AUTH_EMAIL_PATTERN = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+const COMMON_EMAIL_DOMAIN_TYPOS = {
+  "gmai.co": "gmail.com",
+  "gmai.com": "gmail.com",
+  "gmial.com": "gmail.com",
+  "gamil.com": "gmail.com",
+  "gmail.co": "gmail.com",
+  "gmail.con": "gmail.com",
+  "gnail.com": "gmail.com",
+  "hotmial.com": "hotmail.com",
+  "hotmai.com": "hotmail.com",
+  "hotmail.co": "hotmail.com",
+  "outlok.com": "outlook.com",
+  "outlook.co": "outlook.com",
+  "yaho.com": "yahoo.com",
+  "yahoo.co": "yahoo.com"
+};
 
 const TRANSLATION_OPTIONS = [
   { code: "en", label: "English" },
@@ -282,6 +299,8 @@ const state = {
   authChallengeType: "",
   authPendingUsername: "",
   authPendingRole: "",
+  authEmailVerificationToken: "",
+  authPendingEmail: "",
   authQrCodeUrl: "",
   authManualSecret: "",
   authLoadingActive: false,
@@ -2192,12 +2211,15 @@ function setAuthStage(stage) {
   state.isRegistering = stage === "register";
   $("loginForm").classList.toggle("hidden", stage !== "login");
   $("registerForm").classList.toggle("hidden", stage !== "register");
+  $("emailVerifyForm").classList.toggle("hidden", stage !== "email-verify");
   $("forgotForm").classList.toggle("hidden", stage !== "forgot");
   $("approvalForm").classList.toggle("hidden", stage !== "approval");
   $("mfaForm").classList.toggle("hidden", stage !== "mfa");
   $("authSubmitBtn").classList.toggle("hidden", stage === "approval");
   $("authSubmitBtn").textContent = stage === "register"
     ? "Request Access"
+    : stage === "email-verify"
+      ? "Verify Email"
     : stage === "mfa"
       ? "Verify OTP"
       : stage === "forgot"
@@ -2216,6 +2238,12 @@ function clearAuthChallenge() {
   $("mfaQrImage").src = "";
   $("mfaManualSecret").textContent = "-";
   $("mfaQrSection").classList.add("hidden");
+}
+
+function clearEmailVerification() {
+  state.authEmailVerificationToken = "";
+  state.authPendingEmail = "";
+  $("emailVerificationCode").value = "";
 }
 
 function toggleAuthMode() {
@@ -2262,8 +2290,40 @@ function showError(id, message) {
   element.classList.remove("hidden");
 }
 
+function getAuthEmailValidationError(email) {
+  const normalized = String(email || "").trim().toLowerCase();
+  if (!normalized) return "Email is required";
+  if (normalized.length > 254 || !AUTH_EMAIL_PATTERN.test(normalized)) {
+    return "Enter a valid email address";
+  }
+
+  const [localPart, domain] = normalized.split("@");
+  if (!localPart || !domain) return "Enter a valid email address";
+  if (!/[A-Za-z]/.test(localPart)) return "Email must include letters before @";
+  if (
+    localPart.startsWith(".")
+    || localPart.endsWith(".")
+    || localPart.includes("..")
+    || domain.includes("..")
+    || domain.split(".").some(label => label.startsWith("-") || label.endsWith("-"))
+  ) {
+    return "Enter a valid email address";
+  }
+
+  const suggestedDomain = COMMON_EMAIL_DOMAIN_TYPOS[domain];
+  if (suggestedDomain) {
+    return `Email domain looks misspelled. Did you mean ${suggestedDomain}?`;
+  }
+
+  return "";
+}
+
+function normalizeAuthEmail(email) {
+  return String(email || "").trim().toLowerCase();
+}
+
 function clearErrors() {
-  ["loginError", "registerError", "forgotError", "mfaError"].forEach(id => {
+  ["loginError", "registerError", "emailVerifyError", "forgotError", "mfaError"].forEach(id => {
     $(id).textContent = "";
     $(id).classList.add("hidden");
   });
@@ -2280,13 +2340,38 @@ async function handleAuthSubmit() {
   try {
     if (state.authStage === "register") {
       const requestedUsername = $("regUsername").value.trim();
-      await apiFetch("/auth/register", true, {
+      const requestedEmail = normalizeAuthEmail($("regEmail").value);
+      const emailError = getAuthEmailValidationError(requestedEmail);
+      if (emailError) throw new Error(emailError);
+
+      const data = await apiFetch("/auth/register", true, {
         method: "POST",
         body: {
           username: requestedUsername,
           password: $("regPassword").value,
-          email: $("regEmail").value.trim(),
+          email: requestedEmail,
           name: $("regName").value.trim()
+        }
+      });
+      if (!data.verification_token) {
+        throw new Error("Email verification could not start. Try again.");
+      }
+
+      state.authEmailVerificationToken = data.verification_token;
+      state.authPendingUsername = requestedUsername;
+      state.authPendingEmail = requestedEmail;
+      $("emailVerificationCode").value = "";
+      $("emailVerifyCopy").textContent = data.message || `Enter the 6-digit code sent to ${requestedEmail}. After verification, an administrator can approve your account.`;
+      setAuthStage("email-verify");
+      return;
+    }
+
+    if (state.authStage === "email-verify") {
+      const data = await apiFetch("/auth/register/verify-email", true, {
+        method: "POST",
+        body: {
+          verification_token: state.authEmailVerificationToken,
+          code: $("emailVerificationCode").value.trim()
         }
       });
       $("regName").value = "";
@@ -2294,18 +2379,24 @@ async function handleAuthSubmit() {
       $("regUsername").value = "";
       $("regPassword").value = "";
       setAuthStage("login");
-      $("loginUsername").value = requestedUsername;
+      $("loginUsername").value = state.authPendingUsername;
       $("loginPassword").value = "";
-      $("loginInfo").textContent = "Registration submitted. Wait for admin approval before signing in.";
+      $("loginInfo").textContent = data.message || "Email verified. Wait for admin approval before signing in.";
       $("loginInfo").classList.remove("hidden");
+      clearEmailVerification();
       return;
     }
 
     if (state.authStage === "forgot") {
+      const resetIdentityRaw = $("forgotIdentity").value.trim();
+      const resetIdentity = resetIdentityRaw.includes("@") ? normalizeAuthEmail(resetIdentityRaw) : resetIdentityRaw;
+      const resetEmailError = resetIdentity.includes("@") ? getAuthEmailValidationError(resetIdentity) : "";
+      if (resetEmailError) throw new Error(resetEmailError);
+
       const data = await apiFetch("/auth/password-reset-request", true, {
         method: "POST",
         body: {
-          identity: $("forgotIdentity").value.trim(),
+          identity: resetIdentity,
           message: $("forgotMessage").value.trim()
         }
       });
@@ -2384,6 +2475,8 @@ async function handleAuthSubmit() {
     hideAuthLoading();
     const errorTarget = state.authStage === "register"
       ? "registerError"
+      : state.authStage === "email-verify"
+        ? "emailVerifyError"
       : state.authStage === "mfa"
         ? "mfaError"
         : state.authStage === "forgot"
@@ -2397,6 +2490,8 @@ async function handleAuthSubmit() {
       button.textContent = "Sign In";
     } else if (state.authStage === "register") {
       button.textContent = "Request Access";
+    } else if (state.authStage === "email-verify") {
+      button.textContent = "Verify Email";
     } else if (state.authStage === "forgot") {
       button.textContent = "Request Reset";
     } else if (state.authStage === "mfa") {
@@ -6686,6 +6781,18 @@ function setupEventListeners() {
     clearErrors();
     setAuthStage("login");
   });
+  $("emailVerifyBackToRegister").addEventListener("click", event => {
+    event.preventDefault();
+    clearErrors();
+    clearEmailVerification();
+    setAuthStage("register");
+  });
+  $("emailVerifyBackToLogin").addEventListener("click", event => {
+    event.preventDefault();
+    clearErrors();
+    clearEmailVerification();
+    setAuthStage("login");
+  });
   $("approvalBackToLogin").addEventListener("click", event => {
     event.preventDefault();
     clearErrors();
@@ -6702,7 +6809,7 @@ function setupEventListeners() {
     clearAuthChallenge();
     setAuthStage("login");
   });
-  ["loginUsername", "loginPassword", "mfaOtpInput", "regName", "regEmail", "regUsername", "regPassword", "forgotIdentity", "forgotMessage"].forEach(id => {
+  ["loginUsername", "loginPassword", "mfaOtpInput", "regName", "regEmail", "regUsername", "regPassword", "emailVerificationCode", "forgotIdentity", "forgotMessage"].forEach(id => {
     $(id).addEventListener("keydown", event => {
       if (event.key !== "Enter") return;
       event.preventDefault();

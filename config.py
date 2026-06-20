@@ -50,6 +50,13 @@ class DarkPulseConfig:
     api_host: str = "0.0.0.0"
     api_port: int = 8000
     credential_upload_max_bytes: int = 25 * 1024 * 1024
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_username: str = ""
+    smtp_password: str = ""
+    smtp_from_email: str = ""
+    smtp_use_tls: bool = True
+    email_verification_expire_minutes: int = 10
 
     # ── GitHub ───────────────────────────────────────────────────────────────
     github_token: str = ""
@@ -131,6 +138,13 @@ def _load() -> DarkPulseConfig:
         api_host=os.getenv("API_HOST", "0.0.0.0"),
         api_port=_int(os.getenv("API_PORT", "8000"), 8000),
         credential_upload_max_bytes=_int(os.getenv("CREDENTIAL_UPLOAD_MAX_BYTES", str(25 * 1024 * 1024)), 25 * 1024 * 1024),
+        smtp_host=os.getenv("SMTP_HOST", ""),
+        smtp_port=_int(os.getenv("SMTP_PORT", "587"), 587),
+        smtp_username=os.getenv("SMTP_USERNAME", ""),
+        smtp_password=os.getenv("SMTP_PASSWORD", ""),
+        smtp_from_email=os.getenv("SMTP_FROM_EMAIL", ""),
+        smtp_use_tls=_bool(os.getenv("SMTP_USE_TLS", "true"), True),
+        email_verification_expire_minutes=max(1, _int(os.getenv("EMAIL_VERIFICATION_EXPIRE_MINUTES", "10"), 10)),
         github_token=os.getenv("GITHUB_TOKEN", ""),
         gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
         pagespeed_api_key=os.getenv("PAGESPEED_API_KEY", ""),

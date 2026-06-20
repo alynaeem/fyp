@@ -39,7 +39,7 @@
 
         <div class="modal-body hidden" id="registerForm">
           <h2 class="modal-title">Request access</h2>
-          <p class="auth-panel-copy">Submit your analyst access request. An administrator can review and approve it from the DarkPulse user management panel.</p>
+          <p class="auth-panel-copy">Submit your analyst access request. DarkPulse will verify your email before an administrator reviews the account.</p>
           <div class="input-group">
             <label>Full Name</label>
             <input type="text" id="regName" placeholder="John Doe" />
@@ -59,6 +59,20 @@
           <div id="registerError" class="error-msg hidden"></div>
           <div class="auth-links">
             <a href="#" id="showLoginLink">Back to login</a>
+          </div>
+        </div>
+
+        <div class="modal-body hidden" id="emailVerifyForm">
+          <h2 class="modal-title">Verify your email</h2>
+          <p class="auth-panel-copy" id="emailVerifyCopy">Enter the 6-digit code sent to your email. After verification, an administrator can approve your account.</p>
+          <div class="input-group">
+            <label>Email Code</label>
+            <input type="text" id="emailVerificationCode" placeholder="123456" inputmode="numeric" maxlength="6" />
+          </div>
+          <div id="emailVerifyError" class="error-msg hidden"></div>
+          <div class="auth-links auth-links-grid">
+            <a href="#" id="emailVerifyBackToRegister">Edit signup</a>
+            <a href="#" id="emailVerifyBackToLogin">Back to login</a>
           </div>
         </div>
 
@@ -84,8 +98,8 @@
           <p class="auth-panel-copy">If your account is not approved yet, use this workflow so an administrator can review and activate it properly.</p>
           <div class="auth-guide">
             <div class="auth-guide-step"><span>01</span><p>Create an account with your full name, email, and analyst username.</p></div>
-            <div class="auth-guide-step"><span>02</span><p>Wait for admin review in the DarkPulse User Management section.</p></div>
-            <div class="auth-guide-step"><span>03</span><p>Once approved, sign in normally. If 2FA is enabled, DarkPulse will ask for OTP.</p></div>
+            <div class="auth-guide-step"><span>02</span><p>Enter the email verification code sent by DarkPulse.</p></div>
+            <div class="auth-guide-step"><span>03</span><p>Wait for admin review, then sign in normally after approval.</p></div>
           </div>
           <div class="auth-links auth-links-grid">
             <a href="#" id="approvalOpenRegister">Open access request</a>

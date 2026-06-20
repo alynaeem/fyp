@@ -6,6 +6,7 @@ import pathlib
 import json
 import re
 import signal
+import smtplib
 import socket
 import sys
 import time
@@ -14,6 +15,7 @@ import hashlib
 import hmac
 import secrets
 import struct
+from email.message import EmailMessage
 from typing import Any, Dict, List, Optional
 from urllib.parse import parse_qs, quote, unquote, urlencode, urlparse, urljoin
 from uuid import uuid4
@@ -26,6 +28,7 @@ from fastapi.security import APIKeyHeader, HTTPBearer, HTTPAuthorizationCredenti
 from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
+from pydantic import BaseModel, Field, ValidationError, field_validator
 from pymongo import ReturnDocument
 
 from config import cfg
@@ -46,6 +49,7 @@ collector_source_status_col = db["collector_source_status"]
 # Users collection and auth setup
 users_col = db["users"]
 password_reset_requests_col = db["password_reset_requests"]
+email_verifications_col = db["email_verifications"]
 intelligence_runs_col = db["intelligence_runs"]
 intelligence_notifications_col = db["dashboard_notifications"]
 automation_state_col = db["automation_state"]
@@ -1468,6 +1472,185 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def get_password_hash(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
+EMAIL_PATTERN = re.compile(r"^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
+COMMON_EMAIL_DOMAIN_TYPOS = {
+    "gmai.co": "gmail.com",
+    "gmai.com": "gmail.com",
+    "gmial.com": "gmail.com",
+    "gamil.com": "gmail.com",
+    "gmail.co": "gmail.com",
+    "gmail.con": "gmail.com",
+    "gnail.com": "gmail.com",
+    "hotmial.com": "hotmail.com",
+    "hotmai.com": "hotmail.com",
+    "hotmail.co": "hotmail.com",
+    "outlok.com": "outlook.com",
+    "outlook.co": "outlook.com",
+    "yaho.com": "yahoo.com",
+    "yahoo.co": "yahoo.com",
+}
+
+
+def _validate_auth_email(email: str) -> str:
+    normalized = str(email or "").strip().lower()
+    if not normalized:
+        raise ValueError("Email is required")
+    if len(normalized) > 254 or not EMAIL_PATTERN.fullmatch(normalized):
+        raise ValueError("Enter a valid email address")
+
+    local_part, domain = normalized.rsplit("@", 1)
+    if not local_part or not domain:
+        raise ValueError("Enter a valid email address")
+    if not re.search(r"[A-Za-z]", local_part):
+        raise ValueError("Email must include letters before @")
+    if local_part.startswith(".") or local_part.endswith(".") or ".." in local_part or ".." in domain:
+        raise ValueError("Enter a valid email address")
+    if any(label.startswith("-") or label.endswith("-") for label in domain.split(".")):
+        raise ValueError("Enter a valid email address")
+
+    suggested_domain = COMMON_EMAIL_DOMAIN_TYPOS.get(domain)
+    if suggested_domain:
+        raise ValueError(f"Email domain looks misspelled. Did you mean {suggested_domain}?")
+
+    return normalized
+
+
+def _pydantic_error_message(exc: ValidationError) -> str:
+    first_error = exc.errors()[0] if exc.errors() else {}
+    message = first_error.get("msg") or "Invalid request"
+    return message.removeprefix("Value error, ")
+
+
+def _parse_auth_payload(model: type[BaseModel], body: dict[str, Any]) -> BaseModel:
+    try:
+        return model.model_validate(body)
+    except ValidationError as exc:
+        raise HTTPException(status_code=400, detail=_pydantic_error_message(exc)) from exc
+
+
+class LoginRequest(BaseModel):
+    username: str = Field(default="")
+    password: str = Field(default="")
+
+    @field_validator("username", mode="before")
+    @classmethod
+    def clean_username(cls, value: Any) -> str:
+        return str(value or "").strip()
+
+    @field_validator("password", mode="before")
+    @classmethod
+    def clean_password(cls, value: Any) -> str:
+        return str(value or "")
+
+
+class RegisterRequest(BaseModel):
+    username: str = Field(default="")
+    password: str = Field(default="")
+    email: str = Field(default="")
+    name: str = Field(default="")
+
+    @field_validator("username", "name", mode="before")
+    @classmethod
+    def clean_text(cls, value: Any) -> str:
+        return str(value or "").strip()
+
+    @field_validator("password", mode="before")
+    @classmethod
+    def clean_register_password(cls, value: Any) -> str:
+        return str(value or "")
+
+    @field_validator("email", mode="before")
+    @classmethod
+    def clean_email(cls, value: Any) -> str:
+        return _validate_auth_email(str(value or ""))
+
+
+class PasswordResetRequest(BaseModel):
+    identity: str = Field(default="")
+    message: str = Field(default="")
+
+    @field_validator("identity", mode="before")
+    @classmethod
+    def clean_identity(cls, value: Any) -> str:
+        identity = str(value or "").strip()
+        if "@" in identity:
+            return _validate_auth_email(identity)
+        return identity
+
+    @field_validator("message", mode="before")
+    @classmethod
+    def clean_message(cls, value: Any) -> str:
+        return str(value or "").strip()
+
+
+class AdminCreateUserRequest(RegisterRequest):
+    role: str = Field(default="user")
+
+    @field_validator("role", mode="before")
+    @classmethod
+    def clean_role(cls, value: Any) -> str:
+        return str(value or "user").strip() or "user"
+
+
+class EmailVerificationRequest(BaseModel):
+    verification_token: str = Field(default="")
+    code: str = Field(default="")
+
+    @field_validator("verification_token", mode="before")
+    @classmethod
+    def clean_token(cls, value: Any) -> str:
+        return str(value or "").strip()
+
+    @field_validator("code", mode="before")
+    @classmethod
+    def clean_code(cls, value: Any) -> str:
+        return re.sub(r"\D+", "", str(value or ""))
+
+
+def _email_code() -> str:
+    return f"{secrets.randbelow(1_000_000):06d}"
+
+
+def _hash_email_verification_code(token: str, code: str) -> str:
+    payload = f"{token}:{code}".encode("utf-8")
+    return hmac.new(SECRET_KEY.encode("utf-8"), payload, hashlib.sha256).hexdigest()
+
+
+def _smtp_configured() -> bool:
+    return bool(cfg.smtp_host.strip() and cfg.smtp_from_email.strip())
+
+
+def _send_email_verification_code(email: str, code: str) -> bool:
+    if not _smtp_configured():
+        log.warning(
+            "SMTP is not configured. Email verification code for %s is %s. "
+            "Set SMTP_HOST and SMTP_FROM_EMAIL to send real emails.",
+            email,
+            code,
+        )
+        return False
+
+    message = EmailMessage()
+    message["Subject"] = "DarkPulse email verification code"
+    message["From"] = cfg.smtp_from_email
+    message["To"] = email
+    message.set_content(
+        "Use this code to verify your DarkPulse access request:\n\n"
+        f"{code}\n\n"
+        f"This code expires in {cfg.email_verification_expire_minutes} minutes. "
+        "After verification, an administrator still needs to approve your account."
+    )
+
+    with smtplib.SMTP(cfg.smtp_host, cfg.smtp_port, timeout=20) as smtp:
+        if cfg.smtp_use_tls:
+            smtp.starttls()
+        if cfg.smtp_username or cfg.smtp_password:
+            smtp.login(cfg.smtp_username, cfg.smtp_password)
+        smtp.send_message(message)
+
+    return True
+
+
 def create_access_token(data: dict, expires_delta: int = ACCESS_TOKEN_EXPIRE_MINUTES):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=expires_delta)
@@ -1533,6 +1716,7 @@ async def verify_api_key(
         "/auth/login",
         "/auth/login/verify-otp",
         "/auth/register",
+        "/auth/register/verify-email",
     }
     
     if path in PUBLIC_PATHS:
@@ -1580,6 +1764,8 @@ async def create_default_admin():
                 "name": cfg.initial_admin_name.strip() or initial_username,
                 "status": "approved",
                 "role": "admin",
+                "email_verified": True,
+                "email_verified_at": datetime.utcnow().isoformat(),
                 "two_factor_enabled": False,
             })
             log.info("Initial admin user created from environment configuration.")
@@ -1600,6 +1786,9 @@ async def create_default_admin():
         },
         upsert=True,
     )
+    await email_verifications_col.create_index("expires_at", expireAfterSeconds=0)
+    await email_verifications_col.create_index("username")
+    await email_verifications_col.create_index("email")
     await _ensure_intelligence_indexes()
 
 
@@ -2248,9 +2437,9 @@ async def health():
 # ── Authentication Endpoints ────────────────────────────────────────────────
 @app.post("/auth/login")
 async def login(request: Request):
-    body = await request.json()
-    username = (body.get("username") or "").strip()
-    password = body.get("password") or ""
+    payload = _parse_auth_payload(LoginRequest, await request.json())
+    username = payload.username
+    password = payload.password
     
     user = await users_col.find_one({"username": username})
     if not user or not verify_password(password, user["password"]):
@@ -2368,11 +2557,11 @@ async def verify_login_otp(request: Request):
 
 @app.post("/auth/register")
 async def register(request: Request):
-    body = await request.json()
-    username = body.get("username", "").strip()
-    password = body.get("password", "")
-    email = body.get("email", "").strip()
-    name = body.get("name", "").strip()
+    payload = _parse_auth_payload(RegisterRequest, await request.json())
+    username = payload.username
+    password = payload.password
+    email = payload.email
+    name = payload.name
     
     if not username or not password or not email:
         raise HTTPException(status_code=400, detail="Username, password, and email are required")
@@ -2383,33 +2572,106 @@ async def register(request: Request):
     if len(password) < 8:
         raise HTTPException(status_code=400, detail="Password must be at least 8 characters long")
         
-    if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
-        raise HTTPException(status_code=400, detail="Invalid email format")
-        
     existing = await users_col.find_one({"$or": [{"username": username}, {"email": email}]})
     if existing:
         raise HTTPException(status_code=400, detail="Username or Email already registered")
-        
+
     hashed = get_password_hash(password)
-    user_doc = {
+    verification_token = secrets.token_urlsafe(32)
+    verification_code = _email_code()
+    expires_at = datetime.utcnow() + timedelta(minutes=cfg.email_verification_expire_minutes)
+    pending_doc = {
+        "_id": verification_token,
         "username": username,
         "password": hashed,
         "email": email,
         "name": name or username,
+        "code_hash": _hash_email_verification_code(verification_token, verification_code),
+        "created_at": datetime.utcnow(),
+        "expires_at": expires_at,
+    }
+
+    await email_verifications_col.delete_many({"$or": [{"username": username}, {"email": email}]})
+    await email_verifications_col.insert_one(pending_doc)
+
+    try:
+        email_sent = await asyncio.to_thread(_send_email_verification_code, email, verification_code)
+    except Exception as exc:
+        email_sent = False
+        log.error(f"Could not send verification email to {email}: {exc}")
+        log.warning(
+            "Email verification code for %s is %s. The pending verification was kept so the user can still enter the code.",
+            email,
+            verification_code,
+        )
+
+    message = "Verification code sent. Enter it to submit your account for admin approval."
+    if not email_sent:
+        message = "Verification code generated, but email delivery failed. Check the server logs for the code and fix SMTP settings."
+
+    return {
+        "status": "verification_required",
+        "verification_required": True,
+        "email_sent": email_sent,
+        "verification_token": verification_token,
+        "email": email,
+        "message": message,
+        "expires_in_minutes": cfg.email_verification_expire_minutes,
+    }
+
+
+@app.post("/auth/register/verify-email")
+async def verify_registration_email(request: Request):
+    payload = _parse_auth_payload(EmailVerificationRequest, await request.json())
+    verification_token = payload.verification_token
+    code = payload.code
+
+    if not verification_token or not re.fullmatch(r"\d{6}", code):
+        raise HTTPException(status_code=400, detail="Enter the 6-digit email verification code")
+
+    pending = await email_verifications_col.find_one({"_id": verification_token})
+    if not pending:
+        raise HTTPException(status_code=400, detail="Verification code expired. Request access again.")
+
+    expires_at = pending.get("expires_at")
+    if isinstance(expires_at, datetime) and expires_at < datetime.utcnow():
+        await email_verifications_col.delete_one({"_id": verification_token})
+        raise HTTPException(status_code=400, detail="Verification code expired. Request access again.")
+
+    expected_hash = pending.get("code_hash", "")
+    provided_hash = _hash_email_verification_code(verification_token, code)
+    if not hmac.compare_digest(expected_hash, provided_hash):
+        raise HTTPException(status_code=400, detail="Invalid email verification code")
+
+    username = pending.get("username", "")
+    email = pending.get("email", "")
+    existing = await users_col.find_one({"$or": [{"username": username}, {"email": email}]})
+    if existing:
+        await email_verifications_col.delete_one({"_id": verification_token})
+        raise HTTPException(status_code=400, detail="Username or Email already registered")
+
+    user_doc = {
+        "username": username,
+        "password": pending.get("password", ""),
+        "email": email,
+        "name": pending.get("name") or username,
         "status": "pending",
         "role": "user",
         "created_at": datetime.utcnow().isoformat(),
+        "email_verified": True,
+        "email_verified_at": datetime.utcnow().isoformat(),
         "two_factor_enabled": False,
     }
     await users_col.insert_one(user_doc)
-    return {"status": "ok", "message": "Registration successful. Please wait for admin approval."}
+    await email_verifications_col.delete_one({"_id": verification_token})
+    return {"status": "ok", "message": "Email verified. Wait for admin approval before signing in."}
 
 
 @app.post("/auth/password-reset-request")
 async def password_reset_request(request: Request):
-    body = await request.json()
-    identity = (body.get("identity") or "").strip()
-    message = (body.get("message") or "").strip()
+    payload = _parse_auth_payload(PasswordResetRequest, await request.json())
+    identity = payload.identity
+    message = payload.message
 
     if not identity:
         raise HTTPException(status_code=400, detail="Username or email is required")
@@ -2567,12 +2829,12 @@ async def reject_user(username: str, current_user: dict = Depends(admin_required
 
 @app.post("/admin/users", dependencies=[Depends(admin_required)])
 async def admin_create_user(request: Request):
-    body = await request.json()
-    username = body.get("username", "").strip()
-    password = body.get("password", "")
-    email = body.get("email", "").strip()
-    name = body.get("name", "").strip()
-    role = body.get("role", "user")
+    payload = _parse_auth_payload(AdminCreateUserRequest, await request.json())
+    username = payload.username
+    password = payload.password
+    email = payload.email
+    name = payload.name
+    role = payload.role
     
     if not username or not password or not email:
         raise HTTPException(status_code=400, detail="Username, password, and email are required")
@@ -2582,9 +2844,6 @@ async def admin_create_user(request: Request):
         
     if len(password) < 8:
         raise HTTPException(status_code=400, detail="Password must be at least 8 characters long")
-        
-    if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
-        raise HTTPException(status_code=400, detail="Invalid email format")
         
     existing = await users_col.find_one({"$or": [{"username": username}, {"email": email}]})
     if existing:
@@ -2599,6 +2858,8 @@ async def admin_create_user(request: Request):
         "status": "approved",
         "role": role,
         "created_at": datetime.utcnow().isoformat(),
+        "email_verified": True,
+        "email_verified_at": datetime.utcnow().isoformat(),
         "two_factor_enabled": False,
     }
     await users_col.insert_one(user_doc)
@@ -5739,8 +6000,6 @@ async def live_feed(websocket: WebSocket):
     except Exception as e:
         log.error(f"WebSocket error: {e}")
 
-
-from pydantic import BaseModel
 
 class PlaystoreRequest(BaseModel):
     url: str

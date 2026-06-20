@@ -6,9 +6,31 @@
             </div>
           </div>
           <div class="lookup-shell">
+            <div class="pakdb-source-card">
+              <div class="pakdb-source-copy">
+                <span class="section-kicker">External Source</span>
+                <h3 class="panel-subtitle">Pakistan Database Agency</h3>
+                <p class="panel-subcopy">Open the source site in your browser and complete Cloudflare or onion verification manually when required.</p>
+              </div>
+              <div class="pakdb-source-actions">
+                <a class="btn-secondary" href="https://pakistandatabase.com/index.php" target="_blank" rel="noopener noreferrer">Open Clearnet</a>
+                <a class="btn-secondary" href="https://pakistandatabase.com/index.php" target="_blank" rel="noopener noreferrer">Open Tor Site</a>
+              </div>
+            </div>
             <div class="pakdb-search-row">
               <input type="tel" id="pakdbInput" class="search-input" placeholder="CNIC or Phone..." />
               <button class="btn-primary" id="pakdbSearchBtn">Search</button>
+            </div>
+            <div class="pakdb-import-panel hidden" id="pakdbImportPanel">
+              <div class="pakdb-import-copy">
+                <span class="section-kicker">Manual Import</span>
+                <p class="panel-subcopy">After completing Cloudflare, CAPTCHA, login, and search in Tor Browser, paste the result text, HTML table, or JSON below.</p>
+              </div>
+              <textarea id="pakdbImportInput" class="pakdb-import-input" placeholder="Paste result text, HTML, or JSON here..."></textarea>
+              <div class="pakdb-import-actions">
+                <button class="btn-secondary" id="pakdbImportClearBtn" type="button">Clear Paste</button>
+                <button class="btn-primary" id="pakdbImportBtn" type="button">Import Result</button>
+              </div>
             </div>
             <div id="pakdbStatus" class="pakdb-status"></div>
             <div class="export-toolbar hidden" id="pakdbExportBar">

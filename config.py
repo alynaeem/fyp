@@ -34,6 +34,8 @@ def _int(val: str, default: int = 0) -> int:
 class DarkPulseConfig:
     # ── Tor / Proxy ──────────────────────────────────────────────────────────
     tor_proxy_url: str = ""        # e.g. "socks5://127.0.0.1:9150", empty = no proxy
+    tor_browser_path: str = ""     # local Tor Browser executable for manual source lookups
+    lookup_site_url: str = "https://pakistandatabase.com/index.php"
 
     # ── MongoDB ──────────────────────────────────────────────────────────────
     mongo_uri: str = "mongodb://127.0.0.1:27017"
@@ -119,6 +121,8 @@ def _load() -> DarkPulseConfig:
     cors_list = [o.strip() for o in cors_raw.split(",") if o.strip()]
     return DarkPulseConfig(
         tor_proxy_url=os.getenv("TOR_PROXY_URL", ""),
+        tor_browser_path=os.getenv("TOR_BROWSER_PATH", ""),
+        lookup_site_url=os.getenv("LOOKUP_SITE_URL", "https://pakistandatabase.com/index.php"),
         mongo_uri=os.getenv("MONGO_URI", "mongodb://127.0.0.1:27017"),
         mongo_db=os.getenv("MONGO_DB", "darkpulse"),
         api_key=os.getenv("API_KEY", ""),

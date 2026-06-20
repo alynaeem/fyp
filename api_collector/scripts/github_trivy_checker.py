@@ -1,9 +1,11 @@
 import os
 import json
 import re
+import signal
 import shutil
 import tempfile
 import subprocess
+import tarfile
 from pathlib import Path
 from abc import ABC
 from typing import Dict, List, Optional, Any
@@ -57,27 +59,143 @@ def _run_blocking(
     timeout: int = 600,
     env: Optional[Dict[str, str]] = None,
 ) -> Dict[str, Any]:
+    process = None
     try:
-        completed = subprocess.run(
+        process = subprocess.Popen(
             cmd,
             cwd=str(cwd) if cwd else None,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            timeout=timeout,
             env=env,
+            start_new_session=os.name != "nt",
         )
+        stdout, stderr = process.communicate(timeout=timeout)
         return {
-            "return_code": completed.returncode,
-            "stdout": completed.stdout or "",
-            "stderr": completed.stderr or "",
+            "return_code": process.returncode,
+            "stdout": stdout or "",
+            "stderr": stderr or "",
         }
     except subprocess.TimeoutExpired as te:
-        return {"return_code": -1, "stdout": "", "stderr": f"timeout: {te}"}
+        if process is not None:
+            try:
+                if os.name == "nt":
+                    process.kill()
+                else:
+                    os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            try:
+                stdout, stderr = process.communicate(timeout=5)
+            except Exception:
+                stdout, stderr = "", ""
+        else:
+            stdout, stderr = "", ""
+        return {
+            "return_code": -1,
+            "stdout": stdout or "",
+            "stderr": f"command timed out after {timeout}s: {te}\n{stderr or ''}".strip(),
+        }
     except FileNotFoundError as fe:
         return {"return_code": -1, "stdout": "", "stderr": str(fe)}
     except Exception as e:
         return {"return_code": -1, "stdout": "", "stderr": str(e)}
+
+
+def _download_github_archive(
+    owner_repo: str,
+    token: str,
+    destination: Path,
+    timeout: int,
+) -> Dict[str, Any]:
+    import requests
+
+    url = f"https://api.github.com/repos/{owner_repo}/tarball"
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "DarkPulse-Repository-Scanner",
+    }
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+
+    archive_path = destination.parent / f"{destination.name}.tar.gz"
+    response = None
+    try:
+        response = requests.get(
+            url,
+            headers=headers,
+            stream=True,
+            allow_redirects=True,
+            timeout=(10, timeout),
+        )
+        if token and response.status_code in (401, 404):
+            response.close()
+            headers.pop("Authorization", None)
+            response = requests.get(
+                url,
+                headers=headers,
+                stream=True,
+                allow_redirects=True,
+                timeout=(10, timeout),
+            )
+        if response.status_code != 200:
+            return {
+                "return_code": response.status_code,
+                "stdout": "",
+                "stderr": f"GitHub archive download failed with HTTP {response.status_code}",
+            }
+
+        with archive_path.open("wb") as archive_file:
+            for chunk in response.iter_content(chunk_size=1024 * 1024):
+                if chunk:
+                    archive_file.write(chunk)
+
+        destination.mkdir(parents=True, exist_ok=True)
+        destination_root = destination.resolve()
+        extracted_files = 0
+        with tarfile.open(archive_path, "r:gz") as archive:
+            for member in archive.getmembers():
+                parts = Path(member.name).parts
+                if len(parts) <= 1:
+                    continue
+                relative_path = Path(*parts[1:])
+                if relative_path.is_absolute() or ".." in relative_path.parts:
+                    continue
+                target_path = (destination / relative_path).resolve()
+                if target_path != destination_root and destination_root not in target_path.parents:
+                    continue
+                if member.isdir():
+                    target_path.mkdir(parents=True, exist_ok=True)
+                    continue
+                if not member.isfile():
+                    continue
+                target_path.parent.mkdir(parents=True, exist_ok=True)
+                source = archive.extractfile(member)
+                if source is None:
+                    continue
+                with source, target_path.open("wb") as output:
+                    shutil.copyfileobj(source, output)
+                extracted_files += 1
+
+        if extracted_files == 0:
+            return {"return_code": -1, "stdout": "", "stderr": "GitHub archive contained no files"}
+        return {
+            "return_code": 0,
+            "stdout": f"Extracted {extracted_files} file(s) from GitHub archive",
+            "stderr": "",
+        }
+    except requests.RequestException as exc:
+        return {"return_code": -1, "stdout": "", "stderr": f"GitHub archive request failed: {exc}"}
+    except (OSError, tarfile.TarError) as exc:
+        return {"return_code": -1, "stdout": "", "stderr": f"GitHub archive extraction failed: {exc}"}
+    finally:
+        if response is not None:
+            response.close()
+        try:
+            archive_path.unlink(missing_ok=True)
+        except OSError:
+            pass
 
 
 def _safe_int(x: Any, default: int) -> int:
@@ -565,13 +683,23 @@ class github_trivy_checker(api_collector_interface, ABC):
 
         try:
             # Clone (safe auth header)
+            fetch_method = "git_clone"
             clone_cmd: List[str] = [git_bin]
             if git_token and "github.com" in repo_url and repo_url.startswith("https://"):
                 clone_cmd += ["-c", f"http.extraheader={_make_git_auth_header(git_token)}"]
 
             clone_cmd += ["clone", "--depth", "1", "--filter=blob:none", repo_url, str(workdir)]
             print(f"[TRIVY] Running   : {git_bin} clone --depth 1 --filter=blob:none <repo> <dir>")
-            clone_res = self._executor.submit(_run_blocking, clone_cmd, None, max(300, int(timeout / 3)), None).result()
+            clone_timeout = max(20, min(60, int(timeout / 6)))
+            clone_env = os.environ.copy()
+            clone_env["GIT_TERMINAL_PROMPT"] = "0"
+            clone_res = self._executor.submit(
+                _run_blocking,
+                clone_cmd,
+                None,
+                clone_timeout,
+                clone_env,
+            ).result()
 
             if clone_res["return_code"] != 0 and git_token and "github.com" in repo_url and repo_url.startswith("https://"):
                 stderr_lower = str(clone_res.get("stderr") or "").lower()
@@ -586,25 +714,40 @@ class github_trivy_checker(api_collector_interface, ABC):
                 )
                 if auth_denied:
                     print("[TRIVY] Token-auth clone failed; retrying public clone without token.")
+                    _rm_rf(workdir)
                     public_clone_cmd = [git_bin, "clone", "--depth", "1", "--filter=blob:none", repo_url, str(workdir)]
                     clone_res = self._executor.submit(
                         _run_blocking,
                         public_clone_cmd,
                         None,
-                        max(300, int(timeout / 3)),
-                        None,
+                        clone_timeout,
+                        clone_env,
                     ).result()
                     clone_cmd = public_clone_cmd
 
             if clone_res["return_code"] != 0:
-                err_msg = f"git clone failed: {clone_res.get('stderr', 'unknown error')}"
-                print(f"[TRIVY] ❌ {err_msg}")
-                return _empty_model({
-                    "error": "git clone failed",
-                    "stderr": clone_res["stderr"],
-                    "stdout": clone_res["stdout"],
-                    "command": " ".join(clone_cmd).replace(git_token, "********") if git_token else " ".join(clone_cmd)
-                })
+                print("[TRIVY] Git clone failed or timed out; trying GitHub archive download.")
+                _rm_rf(workdir)
+                workdir.mkdir(parents=True, exist_ok=True)
+                archive_res = _download_github_archive(
+                    owner_repo,
+                    git_token,
+                    workdir,
+                    timeout=max(30, min(120, int(timeout / 2))),
+                )
+                if archive_res["return_code"] != 0:
+                    err_msg = (
+                        f"git clone failed: {clone_res.get('stderr', 'unknown error')}; "
+                        f"archive fallback failed: {archive_res.get('stderr', 'unknown error')}"
+                    )
+                    print(f"[TRIVY] ❌ {err_msg}")
+                    return _empty_model({
+                        "error": "repository download failed",
+                        "stderr": err_msg,
+                        "stdout": clone_res.get("stdout", ""),
+                    })
+                fetch_method = "github_archive"
+                print(f"[TRIVY] Archive fallback succeeded: {archive_res.get('stdout', '')}")
 
             # Trivy env
             env = os.environ.copy()
@@ -651,6 +794,7 @@ class github_trivy_checker(api_collector_interface, ABC):
                 "report_path": str(out_file),
                 "trivy_path": trivy_bin,
                 "trivy_return_code": scan_res["return_code"],
+                "fetch_method": fetch_method,
                 "raw_keys": list(trivy_json.keys()),
                 "coverage": repo_inventory,
             }
@@ -678,6 +822,7 @@ class github_trivy_checker(api_collector_interface, ABC):
                 "web_url": web_url,
                 "report_path": str(out_file),
                 "trivy_return_code": scan_res["return_code"],
+                "fetch_method": fetch_method,
                 "grade": summary["grade"],
                 "risk_score": summary["risk_score"],
                 "counts": summary["counts"],

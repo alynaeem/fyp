@@ -8,18 +8,21 @@ const USER_ROLE_KEY = "darkpulse_role";
 const USER_NAME_KEY = "darkpulse_name";
 const API_BASE_KEY = "darkpulse_base";
 const AUTH_NOTICE_KEY = "darkpulse_auth_notice";
+const LEGACY_SW_RELOAD_KEY = "darkpulse_legacy_sw_removed";
 const PAGE_SIZE = 30;
 const PAGINATION_WINDOW = 5;
-const REFRESH_MS = 2 * 60 * 1000;
-const SMART_UPDATE_POLL_MS = 5 * 1000;
-const MAP_LIVE_REFRESH_MS = 15 * 1000;
+const CLIENT_CACHE_TTL_MS = 60 * 60 * 1000;
+const REFRESH_MS = CLIENT_CACHE_TTL_MS;
+const SMART_UPDATE_ACTIVE_POLL_MS = 2 * 1000;
+const SMART_UPDATE_IDLE_POLL_MS = CLIENT_CACHE_TTL_MS;
+const MAP_LIVE_REFRESH_MS = CLIENT_CACHE_TTL_MS;
 const MAP_SPOTLIGHT_MS = 2200;
 const SEARCH_DEBOUNCE_MS = 550;
 const AUTH_PROGRESS_TICK_MS = 140;
 const MIN_GLOBAL_SEARCH_LENGTH = 2;
-const FEED_SNAPSHOT_TTL_MS = 90 * 1000;
+const FEED_SNAPSHOT_TTL_MS = CLIENT_CACHE_TTL_MS;
 const FEED_PREFETCH_DELAY_MS = 120;
-const SEMANTIC_CACHE_TTL_MS = 60 * 1000;
+const SEMANTIC_CACHE_TTL_MS = CLIENT_CACHE_TTL_MS;
 const TRANSLATION_LANGUAGE_KEY = "darkpulse_translation_language";
 const TRANSLATION_LABEL_KEY = "darkpulse_translation_label";
 const HEALING_CACHE_KEY = "darkpulse_healing_cache";
@@ -248,6 +251,9 @@ const state = {
   feedSnapshots: new Map(),
   feedPrefetchPromises: new Map(),
   feedWarmupPromise: null,
+  apiResponseCache: new Map(),
+  apiRequestPromises: new Map(),
+  viewLoadedAt: new Map(),
   semanticGuideCache: new Map(),
   paginatedResults: {
     pakdb: { items: [], page: 1 },
@@ -1921,23 +1927,24 @@ function renderSmartUpdateBanner(payload = {}) {
 }
 
 async function refreshAfterSmartUpdate() {
+  clearClientDataCaches();
   await checkHealth();
-  await fetchStats();
+  await fetchStats(true);
 
   if (state.currentView === "homepage") {
-    await Promise.all([initHeatmap(), fetchRecentIntel()]);
+    await Promise.all([initHeatmap(true), fetchRecentIntel(true)]);
   } else if (state.currentView === "admin-users") {
     await refreshUserList();
   } else if (state.currentView === "healing") {
-    await loadHealingMonitor(true);
+    await loadHealingMonitor(true, true);
   } else if (!TOOL_VIEWS.includes(state.currentView)) {
-    await loadArticles(true, state.feedPage || 1);
+    await loadArticles(true, state.feedPage || 1, { forceRefresh: true });
   }
 
   setLastUpdated();
 }
 
-function scheduleSmartUpdateMonitor(delay = SMART_UPDATE_POLL_MS) {
+function scheduleSmartUpdateMonitor(delay = SMART_UPDATE_IDLE_POLL_MS) {
   clearTimeout(state.smartUpdateTimer);
   if (!getToken()) return;
   state.smartUpdateTimer = setTimeout(() => {
@@ -1946,12 +1953,12 @@ function scheduleSmartUpdateMonitor(delay = SMART_UPDATE_POLL_MS) {
 }
 
 async function pollSmartUpdateStatus(silent = false) {
-  let nextDelay = SMART_UPDATE_POLL_MS;
+  let nextDelay = SMART_UPDATE_IDLE_POLL_MS;
 
   try {
     const previousJobId = state.smartUpdateJobId;
     const previousStatus = state.smartUpdateStatus;
-    const data = await apiFetch("/api/intelligence/status");
+    const data = await apiFetch("/api/intelligence/status", false, { cache: false });
     renderSmartUpdateBanner(data);
 
     const latestRunIsActive = data.latest_run && isSmartUpdateRunning(data.latest_run.status);
@@ -1984,7 +1991,7 @@ async function pollSmartUpdateStatus(silent = false) {
       state.smartUpdateJobId = observedRun.job_id || "";
       state.smartUpdateStatus = currentStatus;
       syncSmartUpdateButton(isSmartUpdateRunning(currentStatus));
-      nextDelay = isSmartUpdateRunning(currentStatus) ? 2000 : SMART_UPDATE_POLL_MS;
+      nextDelay = isSmartUpdateRunning(currentStatus) ? SMART_UPDATE_ACTIVE_POLL_MS : SMART_UPDATE_IDLE_POLL_MS;
     } else {
       state.smartUpdateJobId = "";
       state.smartUpdateStatus = "idle";
@@ -1995,6 +2002,28 @@ async function pollSmartUpdateStatus(silent = false) {
   } finally {
     scheduleSmartUpdateMonitor(nextDelay);
   }
+}
+
+function isViewDataFresh(key, ttlMs = CLIENT_CACHE_TTL_MS) {
+  const loadedAt = Number(state.viewLoadedAt.get(key) || 0);
+  return loadedAt > 0 && Date.now() - loadedAt < ttlMs;
+}
+
+function markViewDataLoaded(key) {
+  state.viewLoadedAt.set(key, Date.now());
+}
+
+function clearClientDataCaches() {
+  state.apiResponseCache.clear();
+  state.apiRequestPromises.clear();
+  state.viewLoadedAt.clear();
+  state.feedSnapshots.clear();
+  state.feedPrefetchPromises.clear();
+  state.semanticGuideCache.clear();
+  state.detailCache.clear();
+  state.semanticSearch = null;
+  state.latestStats = null;
+  state.feedWarmupPromise = null;
 }
 
 async function apiFetch(path, noAuth = false, options = {}) {
@@ -2008,21 +2037,54 @@ async function apiFetch(path, noAuth = false, options = {}) {
   if (!noAuth && token) headers.Authorization = `Bearer ${token}`;
   if (apiKey) headers["X-API-Key"] = apiKey;
 
-  const response = await fetch(getBase() + path, {
-    method: options.method || "GET",
-    headers,
-    body: options.body ? JSON.stringify(options.body) : undefined,
-    signal: options.signal
-  });
+  const method = String(options.method || "GET").toUpperCase();
+  const cacheEnabled = method === "GET" && options.cache !== false && !options.signal;
+  const forceRefresh = Boolean(options.forceRefresh);
+  const cacheTtlMs = Number(options.cacheTtlMs || CLIENT_CACHE_TTL_MS);
+  const cacheKey = `${getBase()}::${noAuth ? "public" : "authenticated"}::${path}`;
 
-  if (response.status === 401 && !noAuth) {
-    handleLogout();
-    throw new Error("Session expired");
+  if (cacheEnabled && !forceRefresh) {
+    const cached = state.apiResponseCache.get(cacheKey);
+    if (cached && Date.now() - cached.cachedAt < cacheTtlMs) {
+      return cached.data;
+    }
+    const pending = state.apiRequestPromises.get(cacheKey);
+    if (pending) return pending;
   }
 
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.detail || `HTTP ${response.status}`);
-  return data;
+  const request = (async () => {
+    const response = await fetch(getBase() + path, {
+      method,
+      headers,
+      body: options.body ? JSON.stringify(options.body) : undefined,
+      signal: options.signal
+    });
+
+    if (response.status === 401 && !noAuth) {
+      handleLogout();
+      throw new Error("Session expired");
+    }
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.detail || `HTTP ${response.status}`);
+
+    if (cacheEnabled) {
+      state.apiResponseCache.set(cacheKey, { cachedAt: Date.now(), data });
+    } else if (method !== "GET") {
+      state.apiResponseCache.clear();
+      state.viewLoadedAt.clear();
+    }
+    return data;
+  })();
+
+  if (cacheEnabled) state.apiRequestPromises.set(cacheKey, request);
+  try {
+    return await request;
+  } finally {
+    if (cacheEnabled && state.apiRequestPromises.get(cacheKey) === request) {
+      state.apiRequestPromises.delete(cacheKey);
+    }
+  }
 }
 
 function clearAuthLoadingTimer() {
@@ -2191,6 +2253,7 @@ function handleLogout(notice = "") {
   clearTimeout(state.smartUpdateTimer);
   clearTimeout(state.mapRefreshTimer);
   clearTimeout(state.mapSpotlightTimer);
+  clearClientDataCaches();
   if (notice) {
     sessionStorage.setItem(AUTH_NOTICE_KEY, notice);
   } else {
@@ -3632,10 +3695,15 @@ function setHeatmapShellState(mode = "loading", message = "Loading live impact m
   `;
 }
 
-async function initHeatmap() {
+async function initHeatmap(forceRefresh = false) {
+  if (!forceRefresh && state.mapInstance && isViewDataFresh("homepage-map")) {
+    scheduleMapSpotlight();
+    scheduleLiveMapRefresh();
+    return;
+  }
   setHeatmapShellState("loading", "Loading live impact map...");
   try {
-    const payload = await apiFetch("/stats/map");
+    const payload = await apiFetch("/stats/map", false, { forceRefresh });
     const countries = payload.countries || [];
     const spotlightCountries = countries
       .filter(country => Number(country.leak_count || 0) > 0)
@@ -3752,6 +3820,7 @@ async function initHeatmap() {
       }
       scheduleMapSpotlight();
     }, 120);
+    markViewDataLoaded("homepage-map");
     scheduleLiveMapRefresh();
   } catch (error) {
     console.error(error);
@@ -3779,8 +3848,11 @@ function createCompactItem(item) {
   return element;
 }
 
-async function fetchRecentIntel() {
-  const data = await apiFetch("/feed?limit=8&offset=0");
+async function fetchRecentIntel(forceRefresh = false) {
+  if (!forceRefresh && isViewDataFresh("homepage-recent") && $("recentIntelList").children.length) {
+    return;
+  }
+  const data = await apiFetch("/feed?limit=8&offset=0", false, { forceRefresh });
   const items = data.items || [];
   const list = $("recentIntelList");
   list.innerHTML = "";
@@ -3789,6 +3861,7 @@ async function fetchRecentIntel() {
     state.detailCache.set(item.aid, item);
     list.appendChild(createCompactItem(item));
   });
+  markViewDataLoaded("homepage-recent");
 }
 
 function buildCardChip(label, value) {
@@ -3938,39 +4011,73 @@ function setFeedState(title, message = "", mode = "idle") {
   emptyState.dataset.mode = mode;
 }
 
-async function loadArticles(reset = false, targetPage = 1) {
-  renderSearchInsight();
-  if (state.feedAbortController) {
-    state.feedAbortController.abort();
+function renderFeedSnapshot(snapshot, requestedPage) {
+  const items = Array.isArray(snapshot.items) ? snapshot.items : [];
+  const totalItems = Number(snapshot.total || 0);
+  const metrics = getPaginationMetrics(totalItems, requestedPage);
+  const grid = $("cardsGrid");
+
+  state.feedPage = requestedPage;
+  state.offset = metrics.startIndex;
+  state.total = totalItems;
+  grid.innerHTML = "";
+
+  if (!items.length) {
+    const noResultsMessage = countActiveFeedFilters()
+      ? "No records matched the current search and feed filters. Try widening the date range or changing the topic."
+      : "Try a different search term or switch to another intelligence stream.";
+    setFeedState("No matching records", noResultsMessage, "empty");
+    $("emptyState").classList.remove("hidden");
+    clearPagination("feedPagination");
+    $("feedSummary").textContent = "0 cached results";
+    renderSearchInsight();
+    return;
   }
-  const controller = new AbortController();
-  state.feedAbortController = controller;
+
+  items.forEach(item => {
+    state.detailCache.set(item.aid, item);
+    grid.appendChild(renderCard(item));
+  });
+  $("emptyState").classList.add("hidden");
+
+  const visibleEnd = Math.min(metrics.startIndex + items.length, totalItems);
+  const filterPrefix = countActiveFeedFilters() ? "Filtered • " : "";
+  $("feedSummary").textContent = `${filterPrefix}Cached • Page ${metrics.page} of ${Math.max(metrics.totalPages, 1)} • Showing ${metrics.startLabel}-${visibleEnd} of ${totalItems} records for ${humanViewName(state.activeTab)}`;
+  renderPagination("feedPagination", "feed", { ...metrics, endLabel: visibleEnd });
+  renderSearchInsight();
+  void maybeApplyActiveTranslation("view");
+}
+
+async function loadArticles(reset = false, targetPage = 1, options = {}) {
+  renderSearchInsight();
   const requestedPage = Math.max(1, Number(targetPage) || 1);
   const snapshotKey = buildFeedSnapshotKey(requestedPage);
+  const forceRefresh = Boolean(options.forceRefresh);
 
   if (reset) {
     state.feedPage = requestedPage;
   }
 
+  const snapshot = state.feedSnapshots.get(snapshotKey);
+  if (reset && !forceRefresh && isFeedSnapshotFresh(snapshot)) {
+    if (state.feedAbortController) state.feedAbortController.abort();
+    state.feedAbortController = null;
+    renderFeedSnapshot(snapshot, requestedPage);
+    return;
+  }
+
+  if (state.feedAbortController) {
+    state.feedAbortController.abort();
+  }
+  const controller = new AbortController();
+  state.feedAbortController = controller;
+
   $("feedSummary").textContent = `Loading ${humanViewName(state.activeTab)}...`;
   clearPagination("feedPagination");
   if (reset) {
-    const snapshot = state.feedSnapshots.get(snapshotKey);
-    const hasFreshSnapshot = isFeedSnapshotFresh(snapshot) && Array.isArray(snapshot.items) && snapshot.items.length;
-    if (hasFreshSnapshot) {
-      $("cardsGrid").innerHTML = "";
-      snapshot.items.forEach(item => {
-        state.detailCache.set(item.aid, item);
-        $("cardsGrid").appendChild(renderCard(item));
-      });
-      $("feedSummary").textContent = `Showing cached ${humanViewName(state.activeTab)} while refreshing live data...`;
-      $("emptyState").classList.add("hidden");
-      maybeApplyActiveTranslation("view");
-    } else {
-      $("cardsGrid").innerHTML = renderLoadingSkeleton("feed", 6);
-      setFeedState("Loading records", "DarkPulse is fetching the latest results for this stream.", "loading");
-      $("emptyState").classList.add("hidden");
-    }
+    $("cardsGrid").innerHTML = renderLoadingSkeleton("feed", 6);
+    setFeedState("Loading records", "DarkPulse is fetching the latest results for this stream.", "loading");
+    $("emptyState").classList.add("hidden");
   }
 
   try {
@@ -3986,6 +4093,15 @@ async function loadArticles(reset = false, targetPage = 1) {
       await loadArticles(true, metrics.totalPages);
       return;
     }
+
+    storeFeedSnapshot(
+      currentSourceType(),
+      $("searchInput").value.trim(),
+      getActiveFeedFilters(),
+      requestedPage,
+      items,
+      totalItems || items.length
+    );
 
     if (reset && items.length === 0) {
       grid.innerHTML = "";
@@ -4013,7 +4129,6 @@ async function loadArticles(reset = false, targetPage = 1) {
     state.feedPage = requestedPage;
     state.offset = metrics.startIndex;
     state.total = totalItems || items.length;
-    storeFeedSnapshot(currentSourceType(), $("searchInput").value.trim(), getActiveFeedFilters(), requestedPage, items, state.total);
 
     const visibleEnd = items.length ? Math.min(metrics.startIndex + items.length, state.total) : metrics.endLabel;
     const filterPrefix = countActiveFeedFilters() ? "Filtered • " : "";
@@ -4044,7 +4159,7 @@ async function loadArticles(reset = false, targetPage = 1) {
   }
 }
 
-async function fetchStats() {
+async function fetchStats(forceRefresh = false) {
   const statBindings = {
     statTotalCount: "display_total",
     statNewsCount: "news",
@@ -4061,18 +4176,7 @@ async function fetchStats() {
     statConfidentialCount: "confidential"
   };
 
-  Object.keys(statBindings).forEach(id => {
-    const el = $(id);
-    if (el) {
-      el.closest(".stat-pill")?.setAttribute("data-state", "loading");
-    }
-  });
-
-  try {
-    const data = await apiFetch("/stats");
-    const counts = data.counts || data || {};
-    state.latestStats = counts;
-
+  const renderCounts = counts => {
     Object.entries(statBindings).forEach(([id, key]) => {
       const el = $(id);
       if (!el) return;
@@ -4080,10 +4184,25 @@ async function fetchStats() {
       const value = Number(rawValue || 0);
       el.textContent = Number.isFinite(value) ? String(value) : "0";
       const card = el.closest(".stat-pill");
-      if (card) {
-        card.setAttribute("data-state", value > 0 ? "ready" : "empty");
-      }
+      if (card) card.setAttribute("data-state", value > 0 ? "ready" : "empty");
     });
+  };
+
+  if (!forceRefresh && state.latestStats && isViewDataFresh("homepage-stats")) {
+    renderCounts(state.latestStats);
+    return;
+  }
+
+  Object.keys(statBindings).forEach(id => {
+    $(id)?.closest(".stat-pill")?.setAttribute("data-state", "loading");
+  });
+
+  try {
+    const data = await apiFetch("/stats", false, { forceRefresh });
+    const counts = data.counts || data || {};
+    state.latestStats = counts;
+    renderCounts(counts);
+    markViewDataLoaded("homepage-stats");
   } catch (error) {
     Object.keys(statBindings).forEach(id => {
       const el = $(id);
@@ -5404,7 +5523,11 @@ function readHealingCache() {
   try {
     const raw = window.localStorage.getItem(HEALING_CACHE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw);
+    const cached = JSON.parse(raw);
+    if (!cached?.cachedAt || Date.now() - Number(cached.cachedAt) >= CLIENT_CACHE_TTL_MS) {
+      return null;
+    }
+    return cached;
   } catch (error) {
     return null;
   }
@@ -5539,19 +5662,21 @@ function applyHealingMonitorPayload(payload, { preserveStatus = false, fromCache
   }
 }
 
-async function loadLeakSourceStatus(preserveStatus = false) {
+async function loadLeakSourceStatus(preserveStatus = false, forceRefresh = false) {
+  if (!forceRefresh && isViewDataFresh("leak-source-status")) return;
   if (!preserveStatus) {
     setScanStatusLoading("leakSourceStatusNotice", "Loading leak script status...");
   }
   $("leakSourceStatusTableBody").innerHTML = `<tr><td colspan="7">Loading leak source status...</td></tr>`;
 
   try {
-    const data = await apiFetch("/leaks/source-status");
+    const data = await apiFetch("/leaks/source-status", false, { forceRefresh });
     const summary = data.summary || {};
     const items = Array.isArray(data.items) ? data.items : [];
     const statusCounts = summary.status_counts || {};
 
     state.leakSourceStatus = { summary, items };
+    markViewDataLoaded("leak-source-status");
 
     $("leakSourceStatTotal").textContent = String(summary.total_scripts ?? items.length ?? 0);
     $("leakSourceStatWithData").textContent = String(summary.with_data ?? 0);
@@ -5582,7 +5707,16 @@ async function loadLeakSourceStatus(preserveStatus = false) {
   }
 }
 
-async function loadHealingMonitor(preserveStatus = false) {
+async function loadHealingMonitor(preserveStatus = false, forceRefresh = false) {
+  if (!forceRefresh && isViewDataFresh("healing-monitor")) return;
+  if (!forceRefresh) {
+    const cached = readHealingCache();
+    if (cached?.payload) {
+      applyHealingMonitorPayload(cached.payload, { preserveStatus });
+      markViewDataLoaded("healing-monitor");
+      return;
+    }
+  }
   if (!preserveStatus) {
     setScanStatusLoading("healingStatus", "Loading healing monitor state...");
   }
@@ -5595,10 +5729,10 @@ async function loadHealingMonitor(preserveStatus = false) {
 
   try {
     const [summaryData, collectorsData, scriptsData, eventsData] = await Promise.all([
-      apiFetch("/api/healing/summary"),
-      apiFetch("/api/healing/collectors"),
-      apiFetch("/api/healing/scripts?limit=240"),
-      apiFetch("/api/healing/events?limit=40")
+      apiFetch("/api/healing/summary", false, { forceRefresh }),
+      apiFetch("/api/healing/collectors", false, { forceRefresh }),
+      apiFetch("/api/healing/scripts?limit=240", false, { forceRefresh }),
+      apiFetch("/api/healing/events?limit=40", false, { forceRefresh })
     ]);
     const payload = {
       summary: summaryData.summary || {},
@@ -5608,6 +5742,7 @@ async function loadHealingMonitor(preserveStatus = false) {
     };
     writeHealingCache(payload);
     applyHealingMonitorPayload(payload, { preserveStatus });
+    markViewDataLoaded("healing-monitor");
     await maybeApplyActiveTranslation("view");
   } catch (error) {
     const cached = readHealingCache();
@@ -5667,7 +5802,7 @@ async function runHealingDiscover() {
   try {
     const data = await apiFetch("/healing/discover", false, { method: "POST" });
     $("healingStatus").textContent = data.message || "Healing targets discovered.";
-    await loadHealingMonitor(true);
+    await loadHealingMonitor(true, true);
     showToast(data.message || "Healing targets discovered.", "success");
   } catch (error) {
     $("healingStatus").textContent = `Discovery failed: ${error.message}`;
@@ -5832,7 +5967,7 @@ async function runHealingMonitor(targetKey = "", inlineButton = null) {
         message: `${data.message || statusLine || "Target check complete."} ${repairMessage} Opened inline details on this card.`
       });
     }
-    await loadHealingMonitor(true);
+    await loadHealingMonitor(true, true);
     if (isSingleTarget) {
       await loadHealingScriptDetail(targetKey);
     }
@@ -5861,7 +5996,7 @@ async function generateHealingRepair(scriptId, button = null) {
   try {
     const data = await apiFetch(`/api/healing/repair/${encodeURIComponent(scriptId)}`, false, { method: "POST" });
     showToast(data.repair?.message || "Repair preview generated.", "success");
-    await loadHealingMonitor(true);
+    await loadHealingMonitor(true, true);
     await loadHealingScriptDetail(scriptId);
   } catch (error) {
     showToast(`Repair preview failed: ${error.message}`, "error");
@@ -5882,7 +6017,7 @@ async function applyHealingRepair(scriptId, button = null) {
   try {
     const data = await apiFetch(`/api/healing/apply-repair/${encodeURIComponent(scriptId)}`, false, { method: "POST" });
     showToast(data.message || "Repair apply complete.", data.status === "ok" ? "success" : "warning");
-    await loadHealingMonitor(true);
+    await loadHealingMonitor(true, true);
     await loadHealingScriptDetail(scriptId);
   } catch (error) {
     showToast(`Repair apply failed: ${error.message}`, "error");
@@ -6494,7 +6629,7 @@ function closeConfidentialDetailModal() {
 
 async function checkHealth() {
   try {
-    const data = await apiFetch("/health", true);
+    const data = await apiFetch("/health", true, { cache: false });
     const statusDot = $("statusDot");
     const statusText = $("statusText");
     if (statusDot) statusDot.className = `status-dot ${data.status === "ok" ? "ok" : "error"}`;
@@ -6505,6 +6640,31 @@ async function checkHealth() {
     if (statusDot) statusDot.className = "status-dot error";
     if (statusText) statusText.textContent = "Offline";
   }
+}
+
+async function removeLegacyServiceWorker() {
+  if (!("serviceWorker" in navigator)) return false;
+
+  try {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    const hadLegacyWorker = registrations.length > 0 || Boolean(navigator.serviceWorker.controller);
+    await Promise.all(registrations.map(registration => registration.unregister()));
+
+    if ("caches" in window) {
+      const cacheNames = await window.caches.keys();
+      await Promise.all(cacheNames.map(cacheName => window.caches.delete(cacheName)));
+    }
+
+    if (hadLegacyWorker && navigator.serviceWorker.controller && !sessionStorage.getItem(LEGACY_SW_RELOAD_KEY)) {
+      sessionStorage.setItem(LEGACY_SW_RELOAD_KEY, "1");
+      window.location.reload();
+      return true;
+    }
+  } catch (error) {
+    console.warn("Could not remove legacy service worker", error);
+  }
+
+  return false;
 }
 
 async function switchView(target, options = {}) {
@@ -6531,7 +6691,10 @@ async function switchView(target, options = {}) {
 
   if (target === "admin-users") {
     $("viewAdminUsers").classList.remove("hidden");
-    await Promise.all([refreshUserList(), refreshPasswordResetRequests()]);
+    if (!isViewDataFresh("admin-users")) {
+      await Promise.all([refreshUserList(), refreshPasswordResetRequests()]);
+      markViewDataLoaded("admin-users");
+    }
     await maybeApplyActiveTranslation("view");
     return;
   }
@@ -6544,7 +6707,10 @@ async function switchView(target, options = {}) {
 
   if (target === "credential-checker") {
     $("viewCredentialChecker").classList.remove("hidden");
-    await refreshCredentialDatasets();
+    if (!isViewDataFresh("credential-datasets")) {
+      await refreshCredentialDatasets();
+      markViewDataLoaded("credential-datasets");
+    }
     maybeApplyActiveTranslation("view");
     return;
   }
@@ -6594,7 +6760,10 @@ async function switchView(target, options = {}) {
   }
   if (target === "account") {
     $("viewAccount").classList.remove("hidden");
-    await initAccountSettings();
+    if (!isViewDataFresh("account-settings")) {
+      await initAccountSettings();
+      markViewDataLoaded("account-settings");
+    }
     maybeApplyActiveTranslation("view");
     return;
   }
@@ -6612,17 +6781,18 @@ function scheduleRefresh() {
   state.refreshTimer = setTimeout(async () => {
     try {
       await checkHealth();
-      await fetchStats();
+      await fetchStats(true);
       if (state.currentView === "homepage") {
-        await Promise.all([initHeatmap(), fetchRecentIntel()]);
+        await Promise.all([initHeatmap(true), fetchRecentIntel(true)]);
       } else if (state.currentView === "admin-users") {
         await Promise.all([refreshUserList(), refreshPasswordResetRequests()]);
+        markViewDataLoaded("admin-users");
       } else if (state.currentView === "healing") {
-        await loadHealingMonitor(true);
+        await loadHealingMonitor(true, true);
       } else if (state.currentView === "leak-source-status") {
-        await loadLeakSourceStatus(true);
+        await loadLeakSourceStatus(true, true);
       } else if (!TOOL_VIEWS.includes(state.currentView)) {
-        await loadArticles(true, state.feedPage || 1);
+        await loadArticles(true, state.feedPage || 1, { forceRefresh: true });
       }
       setLastUpdated();
     } catch (error) {
@@ -6680,7 +6850,7 @@ function setupEventListeners() {
     openMediaLightbox(card.dataset.mediaSrc || "", card.dataset.mediaTitle || "Evidence image");
   });
   $("mediaLightboxClose").addEventListener("click", closeMediaLightbox);
-  $("leakSourceRefreshBtn").addEventListener("click", () => loadLeakSourceStatus(false));
+  $("leakSourceRefreshBtn").addEventListener("click", () => loadLeakSourceStatus(false, true));
   $("mediaLightboxBackdrop").addEventListener("click", event => {
     if (event.target === $("mediaLightboxBackdrop")) closeMediaLightbox();
   });
@@ -6908,7 +7078,7 @@ function setupEventListeners() {
   });
   $("healingDiscoverBtn").addEventListener("click", runHealingDiscover);
   $("healingRunBtn").addEventListener("click", () => runHealingMonitor());
-  $("healingRefreshBtn").addEventListener("click", () => loadHealingMonitor());
+  $("healingRefreshBtn").addEventListener("click", () => loadHealingMonitor(false, true));
   $("healingSearchInput").addEventListener("input", () => {
     state.healingMonitor.filters.query = $("healingSearchInput").value.trim();
     resetHealingListPage();
@@ -7061,6 +7231,8 @@ async function save2FA(isEnabled) {
 }
 
 async function initApp() {
+  if (await removeLegacyServiceWorker()) return;
+
   // Bootstrapping App Theme & Brand
   const savedTheme = localStorage.getItem("app_theme") || "dark";
   applyTheme(savedTheme);

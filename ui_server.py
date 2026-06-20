@@ -122,16 +122,17 @@ SMART_UPDATE_BASE_ENV = {
     "PWDEBUG": "0",
     "CI": "1",
 }
-FEED_CACHE_TTL_SECONDS = 30
+DASHBOARD_CACHE_TTL_SECONDS = max(60, int(os.getenv("DASHBOARD_CACHE_TTL_SECONDS", "3600")))
+FEED_CACHE_TTL_SECONDS = max(30, int(os.getenv("FEED_CACHE_TTL_SECONDS", str(DASHBOARD_CACHE_TTL_SECONDS))))
 _FEED_ITEMS_CACHE: dict[tuple[str, bool], tuple[float, list[dict]]] = {}
-FEED_PAGE_CACHE_TTL_SECONDS = 180
+FEED_PAGE_CACHE_TTL_SECONDS = max(30, int(os.getenv("FEED_PAGE_CACHE_TTL_SECONDS", str(DASHBOARD_CACHE_TTL_SECONDS))))
 _FEED_PAGE_CACHE: dict[tuple[Any, ...], tuple[float, dict]] = {}
-MAP_STATS_CACHE_TTL_SECONDS = 120
+MAP_STATS_CACHE_TTL_SECONDS = max(30, int(os.getenv("MAP_STATS_CACHE_TTL_SECONDS", str(DASHBOARD_CACHE_TTL_SECONDS))))
 _MAP_STATS_CACHE: tuple[float, dict] | None = None
 _MAP_STATS_INFLIGHT: asyncio.Task | None = None
-STATS_CACHE_TTL_SECONDS = 60
+STATS_CACHE_TTL_SECONDS = max(30, int(os.getenv("STATS_CACHE_TTL_SECONDS", str(DASHBOARD_CACHE_TTL_SECONDS))))
 _STATS_CACHE: tuple[float, dict] | None = None
-SEMANTIC_SEARCH_CACHE_TTL_SECONDS = 90
+SEMANTIC_SEARCH_CACHE_TTL_SECONDS = max(30, int(os.getenv("SEMANTIC_SEARCH_CACHE_TTL_SECONDS", str(DASHBOARD_CACHE_TTL_SECONDS))))
 _SEMANTIC_SEARCH_CACHE: dict[tuple[str, int], tuple[float, dict]] = {}
 _TRANSLATION_CACHE: dict[tuple[str, str], str] = {}
 TRANSLATION_BATCH_LIMIT = 100
@@ -7475,7 +7476,7 @@ async def _inspect_github_repository(owner: str, repo: str, token: str) -> dict[
     log.info("GitHub API repo status for %s/%s: %s", owner, repo, status_code)
     effective_token = token
     authenticated = bool(token)
-    if status_code == 404 and token:
+    if status_code in (401, 404) and token:
         public_status, public_payload, public_headers = await loop.run_in_executor(
             None,
             lambda: _github_api_get(repo_path, ""),
@@ -7619,13 +7620,6 @@ async def scan_repo(request: Request):
 
         owner, repo, normalized_repo_url = parsed_repo
         log.info("Repository scan requested for URL=%s owner=%s repo=%s", repo_url, owner, repo)
-
-        if not git_token:
-            log.warning("Repository scan cannot start: GITHUB_TOKEN is missing")
-            return {
-                "status": "error",
-                "message": "GitHub token is missing. Please set GITHUB_TOKEN in .env and restart the server.",
-            }
 
         cached_scan = await github_col.find_one(
             {
